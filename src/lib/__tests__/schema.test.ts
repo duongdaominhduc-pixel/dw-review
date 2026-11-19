@@ -1,0 +1,61 @@
+import { describe, it, expect } from 'vitest';
+import questionsData from '../../data/questions.json';
+import chaptersData from '../../data/chapters.json';
+import { Question, Chapter } from '../../types';
+
+describe('Data Schema Validation', () => {
+  it('loads exactly 47 questions covering all 40 questions and sub-items', () => {
+    expect(questionsData.length).toBe(47);
+  });
+
+  it('validates each question conforms to schema', () => {
+    const questions = questionsData as Question[];
+    const ids = new Set<string>();
+
+    for (const q of questions) {
+      expect(q.id).toBeDefined();
+      expect(ids.has(q.id)).toBe(false);
+      ids.add(q.id);
+
+      expect(q.number).toBeDefined();
+      expect(q.chapterId).toBeDefined();
+      expect(q.topic).toBeDefined();
+      expect(['theory', 'formula', 'calculation', 'diagram']).toContain(q.type);
+      expect(q.prompt).toBeTruthy();
+      expect(q.answer).toBeTruthy();
+      expect(q.explanation).toBeTruthy();
+      expect(typeof q.needsSlideCheck).toBe('boolean');
+    }
+  });
+
+  it('checks theory questions flagged with needsSlideCheck', () => {
+    const questions = questionsData as Question[];
+    // Questions 1-15, 30, 35-39 should have needsSlideCheck = true
+    const checkNums = [
+      '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+      '11', '12', '13', '14', '15', '30', '35', '36', '37', '38', '39'
+    ];
+    for (const num of checkNums) {
+      const q = questions.find(item => item.number === num);
+      expect(q).toBeDefined();
+      expect(q!.needsSlideCheck).toBe(true);
+    }
+  });
+
+  it('validates chapters conform to schema', () => {
+    const chapters = chaptersData as Chapter[];
+    expect(chapters.length).toBe(8);
+
+    // Chapter 1 has 1 fully completed lesson
+    const ch1 = chapters.find(c => c.id === 'ch1');
+    expect(ch1).toBeDefined();
+    expect(ch1!.lessons.length).toBeGreaterThan(0);
+    const les1 = ch1!.lessons[0];
+    expect(les1.status).toBe('done');
+    expect(les1.sections.length).toBeGreaterThan(0);
+
+    // Other lessons have empty status as specified
+    const otherLessons = chapters.flatMap(c => c.lessons).filter(l => l.id !== 'les-1-1');
+    expect(otherLessons.every(l => l.status === 'empty')).toBe(true);
+  });
+});

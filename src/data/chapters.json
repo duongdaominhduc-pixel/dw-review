@@ -1,0 +1,428 @@
+[
+  {
+    "id": "ch1",
+    "title": "Chương 1: Modern Data Warehouse và Nền tảng Đám mây",
+    "order": 1,
+    "objectives": [
+      "Hiểu bản chất tách rời Compute và Storage trên nền tảng Cloud",
+      "Nắm vững các chiến lược quản lý chi phí: Caching, Auto-suspend",
+      "Nắm kiến trúc Data Fabric và Data Catalog",
+      "Hiểu các cơ chế bảo mật trên Cloud Object Storage"
+    ],
+    "lessons": [
+      {
+        "id": "les-1-1",
+        "title": "Bài 1: Kiến trúc Modern Data Warehouse và Data Fabric",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Phân biệt Cloud DWH truyền thống và Modern DWH",
+              "Hiểu các nền tảng tiêu biểu: Snowflake, BigQuery, Firebolt",
+              "Nắm vững mục tiêu và nguyên tắc của Data Fabric"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### Bản chất của Modern Data Warehouse\n\nĐiểm đột phá lớn nhất của Modern Data Warehouse trên nền tảng đám mây là **sự tách rời hoàn toàn giữa tài nguyên tính toán (Compute) và tài nguyên lưu trữ (Storage)**. \n\n- **Storage (Lưu trữ)**: Dữ liệu được lưu trữ trên Object Storage giá rẻ (như AWS S3, Azure ADLS, Google Cloud Storage) với độ bền 99.999999999%.\n- **Compute (Điện toán)**: Các cụm máy ảo tính toán (Virtual Warehouses) có thể bật/tắt tự động (Auto-suspend/Auto-resume) chỉ khi có truy vấn phát sinh.\n\n### Chiến lược quản lý chi phí\n1. **Auto-suspend**: Tự động tắt cụm compute sau một khoảng thời gian không có truy vấn.\n2. **Query Result Caching**: Lưu tạm kết quả truy vấn cũ để trả về ngay cho các truy vấn lặp lại mà không tốn credit tính toán.\n3. **Data Pruning**: Tận dụng metadata Min/Max của các phân vùng để chỉ quét đúng dữ liệu cần thiết."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ thực tế**: Khi người quản lý mở Dashboard doanh thu mỗi 10 phút một lần:\n- Lần 1: Cụm Compute bật lên, quét dữ liệu và tính toán, lưu kết quả vào Cache.\n- Lần 2, 3: Hệ thống phát hiện dữ liệu nguồn không đổi, trả ngay kết quả từ Cache trong 0.05 giây mà **không tốn thêm một đồng chi phí Compute nào**."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> Hãy ghi nhớ: **Firebolt** là nền tảng Cloud DWH tập trung vào tốc độ sub-second cho phân tích thời gian thực; **Data Fabric** là kiến trúc tấm vải kết nối dữ liệu đa nguồn Zero-copy."
+          }
+        ],
+        "miniQuiz": [
+          "q1",
+          "q2",
+          "q3",
+          "q4",
+          "q5"
+        ],
+        "relatedQuestionIds": [
+          "q1",
+          "q2",
+          "q3",
+          "q4",
+          "q5"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-1-2",
+        "title": "Bài 2: Tối ưu lưu trữ và bảo mật Object Storage",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [],
+        "relatedQuestionIds": [
+          "q5"
+        ],
+        "labIds": []
+      }
+    ]
+  },
+  {
+    "id": "ch2",
+    "title": "Chương 2: Mô hình hóa Chiều dữ liệu (Dimensional Modeling)",
+    "order": 2,
+    "objectives": [
+      "Hiểu Micro-partitioning và cơ chế Data Pruning",
+      "Nắm vững kỹ thuật chọn Clustering Key",
+      "Phân biệt các loại Fact Table: Accumulating Snapshot Fact Table",
+      "Ứng dụng Bridge Table cho quan hệ nhiều-nhiều",
+      "Hiểu lợi ích của Flat Tables trong kỷ nguyên Cloud"
+    ],
+    "lessons": [
+      {
+        "id": "les-2-1",
+        "title": "Bài 1: Micro-partitioning và Chiến lược Clustering",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q6",
+          "q7",
+          "q10"
+        ],
+        "relatedQuestionIds": [
+          "q6",
+          "q7",
+          "q10"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-2-2",
+        "title": "Bài 2: Thiết kế Fact Tables nâng cao và Bridge Tables",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q8",
+          "q9"
+        ],
+        "relatedQuestionIds": [
+          "q8",
+          "q9"
+        ],
+        "labIds": []
+      }
+    ]
+  },
+  {
+    "id": "ch3",
+    "title": "Chương 3: dbt, Jinja, Airflow và Quản lý Pipeline",
+    "order": 3,
+    "objectives": [
+      "Hiểu triết lý ELT hiện đại và công cụ dbt",
+      "Sử dụng Jinja viết Dynamic SQL và Macros",
+      "Thiết lập Schema Tests trong dbt",
+      "Hiểu cơ chế thích ứng Schema Evolution",
+      "Nắm vững Orchestration với Apache Airflow và Storage Mirroring"
+    ],
+    "lessons": [
+      {
+        "id": "les-3-1",
+        "title": "Bài 1: dbt, Dynamic SQL với Jinja và Kiểm thử dữ liệu",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q12",
+          "q13"
+        ],
+        "relatedQuestionIds": [
+          "q12",
+          "q13"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-3-2",
+        "title": "Bài 2: Điều phối Airflow, Schema Evolution & Mirroring",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q11",
+          "q14",
+          "q15"
+        ],
+        "relatedQuestionIds": [
+          "q11",
+          "q14",
+          "q15"
+        ],
+        "labIds": []
+      }
+    ]
+  },
+  {
+    "id": "ch4",
+    "title": "Chương 4: Tiền xử lý Dữ liệu (Preprocessing)",
+    "order": 4,
+    "objectives": [
+      "Tính toán Entropy, Info_A và Information Gain",
+      "Áp dụng các phương pháp chuẩn hóa: Min-Max, Z-Score, Decimal Scaling",
+      "Kỹ thuật rời rạc hóa (Binning): Equal-width, Equal-frequency",
+      "Khái niệm giảm chiều dữ liệu PCA",
+      "Tính toán trung bình trượt đơn giản SMA cho chuỗi thời gian"
+    ],
+    "lessons": [
+      {
+        "id": "les-4-1",
+        "title": "Bài 1: Đo lường Entropy và Độ lợi thông tin (InfoGain)",
+        "status": "empty",
+        "sections": [
+          {
+            "kind": "lab",
+            "labId": "entropy-lab"
+          }
+        ],
+        "miniQuiz": [
+          "q16",
+          "q19",
+          "q20"
+        ],
+        "relatedQuestionIds": [
+          "q16",
+          "q19",
+          "q20"
+        ],
+        "labIds": [
+          "entropy-lab"
+        ]
+      },
+      {
+        "id": "les-4-2",
+        "title": "Bài 2: Chuẩn hóa dữ liệu và Rời rạc hóa (Binning)",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q17",
+          "q18",
+          "q21",
+          "q22",
+          "q23",
+          "q24"
+        ],
+        "relatedQuestionIds": [
+          "q17",
+          "q18",
+          "q21",
+          "q22",
+          "q23",
+          "q24"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-4-3",
+        "title": "Bài 3: Phân tích thành phần chính (PCA) và Chuỗi thời gian (SMA)",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q25",
+          "q26"
+        ],
+        "relatedQuestionIds": [
+          "q25",
+          "q26"
+        ],
+        "labIds": []
+      }
+    ]
+  },
+  {
+    "id": "ch5",
+    "title": "Chương 5: Khai phá Luật Kết hợp (Apriori & FP-Growth)",
+    "order": 5,
+    "objectives": [
+      "Nắm vững các chỉ số luật kết hợp: Support, Confidence, Lift, Leverage",
+      "Tính tổ hợp sinh tập ứng viên C(n, 2)",
+      "Quy trình xây dựng cây FP-tree từng bước",
+      "Khai phá tập phổ biến từ Conditional Pattern Base"
+    ],
+    "lessons": [
+      {
+        "id": "les-5-1",
+        "title": "Bài 1: Các chỉ số chất lượng luật kết hợp",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q27",
+          "q28a",
+          "q28b",
+          "q28c",
+          "q28d",
+          "q28f",
+          "q30"
+        ],
+        "relatedQuestionIds": [
+          "q27",
+          "q28a",
+          "q28b",
+          "q28c",
+          "q28d",
+          "q28f",
+          "q30"
+        ],
+        "labIds": [
+          "rule-metrics-lab"
+        ]
+      },
+      {
+        "id": "les-5-2",
+        "title": "Bài 2: Thuật toán FP-Growth từng bước",
+        "status": "empty",
+        "sections": [
+          {
+            "kind": "lab",
+            "labId": "fpgrowth-lab"
+          }
+        ],
+        "miniQuiz": [
+          "q28e",
+          "q29"
+        ],
+        "relatedQuestionIds": [
+          "q28e",
+          "q29"
+        ],
+        "labIds": [
+          "fpgrowth-lab"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch6",
+    "title": "Chương 6: Khai phá Web và Đồ thị (PageRank, BFS/DFS)",
+    "order": 6,
+    "objectives": [
+      "Hiểu nguyên lý thuật toán PageRank của Google",
+      "Tính toán PageRank từng vòng lặp với Damping Factor",
+      "Phân biệt và thực thi duyệt đồ thị BFS và DFS"
+    ],
+    "lessons": [
+      {
+        "id": "les-6-1",
+        "title": "Bài 1: Thuật toán PageRank và Damping Factor",
+        "status": "empty",
+        "sections": [
+          {
+            "kind": "lab",
+            "labId": "pagerank-lab"
+          }
+        ],
+        "miniQuiz": [
+          "q31a",
+          "q31b",
+          "q40"
+        ],
+        "relatedQuestionIds": [
+          "q31a",
+          "q31b",
+          "q40"
+        ],
+        "labIds": [
+          "pagerank-lab"
+        ]
+      },
+      {
+        "id": "les-6-2",
+        "title": "Bài 2: Duyệt đồ thị theo chiều rộng (BFS) và chiều sâu (DFS)",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q33b",
+          "q34"
+        ],
+        "relatedQuestionIds": [
+          "q33b",
+          "q34"
+        ],
+        "labIds": []
+      }
+    ]
+  },
+  {
+    "id": "ch7",
+    "title": "Chương 7: Dự đoán Chuỗi với Compact Prediction Tree (CPT)",
+    "order": 7,
+    "objectives": [
+      "Nắm cấu trúc 3 phần của CPT: Prediction Tree, Inverted Index, Lookup Table",
+      "Thực hiện thuật toán dự đoán phần tử tiếp theo cho chuỗi query"
+    ],
+    "lessons": [
+      {
+        "id": "les-7-1",
+        "title": "Bài 1: Cấu trúc dữ liệu và giải thuật CPT",
+        "status": "empty",
+        "sections": [
+          {
+            "kind": "lab",
+            "labId": "cpt-lab"
+          }
+        ],
+        "miniQuiz": [
+          "q32",
+          "q33"
+        ],
+        "relatedQuestionIds": [
+          "q32",
+          "q33"
+        ],
+        "labIds": [
+          "cpt-lab"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch8",
+    "title": "Chương 8: Blockchain, Vector Search và Đạo luật AI Act",
+    "order": 8,
+    "objectives": [
+      "Hiểu bản chất dữ liệu thô trên Blockchain và kỹ thuật trích xuất",
+      "Chỉ mục IVFFLAT trong Vector Search",
+      "Bảo mật Column-level Masking (CLM)",
+      "4 cấp độ rủi ro trong Đạo luật AI Act của EU",
+      "Truy vấn nhiều cấp và phân tích đa chiều"
+    ],
+    "lessons": [
+      {
+        "id": "les-8-1",
+        "title": "Bài 1: Phân tích dữ liệu Blockchain và Vector Search",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q35",
+          "q36"
+        ],
+        "relatedQuestionIds": [
+          "q35",
+          "q36"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-8-2",
+        "title": "Bài 2: Quản trị bảo mật CLM, AI Act và Khai phá đa cấp",
+        "status": "empty",
+        "sections": [],
+        "miniQuiz": [
+          "q37",
+          "q38",
+          "q39"
+        ],
+        "relatedQuestionIds": [
+          "q37",
+          "q38",
+          "q39"
+        ],
+        "labIds": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,895 @@
+[
+  {
+    "id": "q1",
+    "number": "1",
+    "chapterId": "ch1",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Firebolt là một nền tảng có đặc điểm gì?",
+    "answer": "Cloud Data Warehouse tập trung vào tốc độ truy vấn cực nhanh (sub-second) cho phân tích thời gian thực; tách rời Compute/Storage, dùng SQL, có Sparse Index và Aggregating Index.",
+    "explanation": "Theo Slide 1 (trang 11), Firebolt là nền tảng Modern Data Warehouse trên Cloud với đặc tính: 'Tập trung vào tốc độ truy vấn cực nhanh cho các ứng dụng phân tích thời gian thực'. Nền tảng này ứng dụng kiến trúc tách rời Compute/Storage, dùng SQL chuẩn, đồng thời áp dụng chỉ mục thưa (sparse index) và aggregating index để giảm tối đa khối lượng dữ liệu cần quét.",
+    "eli5": "Như một cỗ xe đua F1 trong làng kho dữ liệu: sinh ra để trả về kết quả dưới 1 giây cho các biểu đồ phân tích trực tiếp, ai hỏi gì là trả lời ngay lập tức.",
+    "commonMistakes": [
+      "Nhầm Firebolt là công cụ trực quan hóa (như Tableau) hoặc công cụ ETL."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q2",
+    "number": "2",
+    "chapterId": "ch1",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Trong chiến lược quản lý chi phí trong Modern Data Warehouse, cơ chế nào được dùng để tránh tính toán lại những kết quả cũ?",
+    "answer": "Cơ chế Caching (Query Result Caching) và Materialized Views.",
+    "explanation": "Theo Slide 1 (trang 12), mục Quản lý chi phí nêu rõ: 'Quản lý truy vấn lặp: Sử dụng cơ chế Caching để tránh tính toán lại những kết quả cũ'. Khi người dùng gửi truy vấn trùng khớp với truy vấn đã chạy trước đó và dữ liệu gốc không đổi, hệ thống trả về kết quả lưu tạm ngay mà không tốn tài nguyên Compute.",
+    "eli5": "Giống như bạn đã tính sẵn kết quả ra giấy nháp; lần sau ai hỏi lại đúng câu đó thì bạn đọc ngay đáp án trên giấy nháp chứ không cần bấm máy tính lại.",
+    "commonMistakes": [
+      "Nhầm với Auto-suspend (tắt cụm khi không có truy vấn) hoặc Data Pruning (loại bỏ phân vùng)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q3",
+    "number": "3",
+    "chapterId": "ch1",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Data Fabric có những mục tiêu quan trọng nào?",
+    "answer": "Kết nối mọi nguồn dữ liệu rời rạc thành một thể thống nhất, xóa bỏ Data Silos, hỗ trợ Hybrid-Cloud, truy cập Zero-copy qua ảo hóa (Virtualization), và tự động hóa quản trị qua Active Metadata.",
+    "explanation": "Theo Slide 1 (trang 13-15), triết lý Data Fabric là 'Tấm vải dữ liệu': kết nối mọi nguồn dữ liệu rời rạc thành thể thống nhất. Mục tiêu cốt lõi: xóa bỏ Data Silos, cung cấp cổng truy cập duy nhất (Single pane of glass), truy cập dữ liệu tại nguồn không cần sao chép (Zero-copy Virtualization) và tự động hóa tối ưu bằng Active Metadata do AI dẫn dắt.",
+    "eli5": "Như một tấm vải dệt phủ lên mọi kho dữ liệu phân tán khắp công ty; bạn chỉ cần đứng trên tấm vải là với tay lấy được dữ liệu ở bất kỳ nguồn nào mà không cần kéo dữ liệu về một chỗ.",
+    "commonMistakes": [
+      "Nghĩ rằng Data Fabric bắt buộc gom toàn bộ dữ liệu vật lý về một cơ sở dữ liệu duy nhất."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q4",
+    "number": "4",
+    "chapterId": "ch1",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Data Catalog là gì?",
+    "answer": "Danh mục lưu trữ và quản lý metadata tập trung (thông tin bảng, cột, chủ sở hữu, nguồn gốc lineage, chất lượng), giúp người dùng dễ dàng tìm kiếm, hiểu và tin cậy dữ liệu.",
+    "explanation": "Theo Slide 1 (trang 20), Data Catalog giúp hiện thực hóa tính năng 'Discoverability' trong Data Mesh và Data Fabric. Nó lưu trữ siêu dữ liệu (metadata) có tổ chức: dữ liệu nằm ở đâu, ai tạo ra, cấu trúc thế nào, độ tin cậy ra sao (SLA), giúp người phân tích tra cứu và hiểu nguồn dữ liệu nhanh chóng.",
+    "eli5": "Như cuốn danh bạ hoặc bảng menu chi tiết trong nhà hàng: liệt kê tất cả các món ăn (dữ liệu), kèm thành phần, giá cả và đầu bếp chế biến.",
+    "commonMistakes": [
+      "Nhầm Data Catalog là nơi lưu trữ toàn bộ dữ liệu thô (nó chỉ lưu metadata - dữ liệu về dữ liệu)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q5",
+    "number": "5",
+    "chapterId": "ch1",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Bucket Policies có chức năng gì?",
+    "answer": "Quy định và kiểm soát quyền truy cập chi tiết cho toàn bộ Data Container / Bucket từ bên ngoài trên Cloud Object Storage (như AWS S3).",
+    "explanation": "Theo Slide 1 (trang 37), trên Object Storage: Bucket Policies có chức năng 'Quy định quyền truy cập cho toàn bộ Data Container từ bên ngoài'. Nó là tập luật JSON xác định ai (principal), thực hiện hành động gì (action) trên tài nguyên nào trong bucket và trong điều kiện nào (IP, TLS, VPC).",
+    "eli5": "Như tấm biển nội quy treo trước cổng nhà kho: ghi rõ ai được phép bước vào, vào giờ nào và được mang xe gì vào bốc dỡ hàng.",
+    "commonMistakes": [
+      "Nhầm Bucket Policies (gắn với thùng chứa) với IAM Policies (gắn với danh tính cá nhân người dùng)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q6",
+    "number": "6",
+    "chapterId": "ch2",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Với Micro-partitioning, mỗi phân vùng chứa dữ liệu nén có kích cỡ bao nhiêu?",
+    "answer": "Mỗi phân vùng thường có từ 50MB đến 500MB dữ liệu nén (theo Slide 2 trang 9).",
+    "explanation": "Theo Slide 2 (trang 9), bản chất của Micro-partitioning trong Snowflake: 'Hệ thống tự động chia nhỏ các bảng dữ liệu thành các tập tin lưu trữ nhỏ. Mỗi phân vùng thường có từ 50MB đến 500MB dữ liệu nén. Dữ liệu tổ chức theo Columnar, tự động lưu trữ Min/Max của mỗi cột trong metadata'. Lưu ý: Phụ lục A trước đây ghi 'chưa nén', nhưng bài giảng slide của giảng viên khẳng định rõ là 50MB-500MB dữ liệu nén.",
+    "eli5": "Thay vì lưu cả cuốn từ điển dày 10.000 trang, máy tự chia thành các tập nhỏ 50-500 trang ép gọn lại, bìa tập ghi rõ từ chữ gì đến chữ gì để mở ra xem cực nhanh.",
+    "commonMistakes": [
+      "Ghi nhầm là vài GB hoặc vài KB.",
+      "Nhầm giữa dữ liệu nén (compressed) và chưa nén."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q7",
+    "number": "7",
+    "chapterId": "ch2",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Trong chiến lược Clustering, Clustering Key được chọn dựa trên đối tượng nào?",
+    "answer": "Dựa trên các cột có độ chọn lọc cao (high cardinality) và thường xuyên xuất hiện trong các điều kiện lọc (WHERE), JOIN, hoặc Range queries.",
+    "explanation": "Theo Slide 2 (trang 11), chiến lược Clustering: sắp xếp dữ liệu trong các Micro-partitions dựa trên một hoặc nhiều cột khóa để các phân vùng có phạm vi giá trị hẹp và không chồng lấn. 'Cần chọn các cột có độ chọn lọc cao làm Clustering Key', tối ưu hóa cho Range queries và các cột thường xuyên lọc.",
+    "eli5": "Khi xếp hồ sơ, bạn chọn xếp theo Tỉnh thành và Ngày tháng vì sếp luôn hỏi: 'Tìm hợp đồng ở TP.HCM trong tháng 5'. Nhờ vậy rút hồ sơ trong 1 giây.",
+    "commonMistakes": [
+      "Chọn các cột ít giá trị khác biệt (low cardinality) như Giới tính làm clustering key độc lập."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q8",
+    "number": "8",
+    "chapterId": "ch2",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Accumulating Snapshot Fact Tables phù hợp cho ngữ cảnh nào?",
+    "answer": "Theo dõi tiến độ của một quy trình kinh doanh có nhiều giai đoạn với thời điểm bắt đầu và kết thúc xác định (ví dụ xử lý đơn hàng), mỗi dòng đại diện cho một thực thể và được cập nhật các mốc thời gian qua từng giai đoạn.",
+    "explanation": "Theo Slide 2 (trang 16): Accumulating Snapshot Fact Tables theo dõi tiến độ của một quy trình có nhiều giai đoạn (ví dụ quy trình đơn hàng: đặt hàng -> đóng gói -> vận chuyển -> giao hàng -> thanh toán). Mỗi dòng đại diện cho một thực thể và được cập nhật dần các mốc thời gian, giúp tính toán Lead time giữa các bước.",
+    "eli5": "Như phiếu theo dõi hồ sơ xin việc: từ nộp đơn, phỏng vấn vòng 1, vòng 2 đến nhận việc; hồ sơ của bạn nằm trên 1 dòng và mỗi khi qua một ải thì ghi thêm ngày hoàn thành.",
+    "commonMistakes": [
+      "Nhầm với Transaction Fact Table (mỗi hành động tạo ra 1 dòng mới, không bao giờ cập nhật dòng cũ)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q9",
+    "number": "9",
+    "chapterId": "ch2",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Chức năng của Bridge Table?",
+    "answer": "Giải quyết mối quan hệ nhiều-nhiều (M-M) giữa Fact Table và Dimension Table, hoặc ánh xạ giữa các nhóm thực thể không có liên kết trực tiếp / cấu trúc phân cấp.",
+    "explanation": "Theo Slide 2 (trang 18): 'Bridge Table dùng để giải quyết mối quan hệ M-M. Giúp ánh xạ giữa các nhóm thực thể không có liên kết trực tiếp'. Ví dụ: một tài khoản ngân hàng có nhiều chủ tài khoản, và một khách hàng có thể sở hữu nhiều tài khoản; Bridge Table sẽ lưu tỷ lệ sở hữu hoặc danh sách cặp.",
+    "eli5": "Như chiếc cầu nối giữa hai nhóm đông người: nhiều bác sĩ cùng chữa cho nhiều bệnh nhân, chiếc cầu ghi lại chi tiết bác sĩ nào phụ trách bệnh nhân nào.",
+    "commonMistakes": [
+      "Lạm dụng Bridge Table làm giảm hiệu năng truy vấn do bùng nổ dữ liệu (data explosion)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q10",
+    "number": "10",
+    "chapterId": "ch2",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Flat tables được dùng để giảm thiểu phép tính nào?",
+    "answer": "Giảm thiểu phép tính JOIN.",
+    "explanation": "Theo Slide 2 (trang 6): 'Tác động của việc tách rời Compute/Storage: Khuyến khích sử dụng Flat tables để giảm thiểu phép Join'. Trong Cloud DW, việc gộp nhiều bảng thành bảng phẳng (denormalization) giúp truy vấn đọc thẳng một bảng mà không tốn công ghép dữ liệu từ nhiều nơi.",
+    "eli5": "Thay vì để thông tin khách hàng ở 3 ngăn tủ khác nhau rồi mỗi lần tra cứu phải chạy đi mở 3 ngăn ghép lại, bạn ghi tất cả vào 1 tờ giấy dài để xem ngay tắp lự.",
+    "commonMistakes": [
+      "Nghĩ rằng Flat table dùng để giảm dung lượng lưu trữ (thực tế Flat table làm tăng dung lượng lưu trữ nhưng giảm chi phí tính toán JOIN)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q11",
+    "number": "11",
+    "chapterId": "ch3",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Những đặc tính của Snowflake Evolution (Schema Evolution)?",
+    "answer": "Tự động nhận diện và mở rộng thêm cột khi nguồn phát sinh thuộc tính mới (Auto-column addition), linh hoạt bọc thay đổi bằng VARIANT/JSON, tự nâng cấp kiểu (Type Coercion) và không làm gián đoạn pipeline.",
+    "explanation": "Theo Slide 3 (trang 31-32): Schema Evolution giải quyết Schema Drift với các đặc tính: (1) Sử dụng kiểu dữ liệu bán cấu trúc linh hoạt (VARIANT/JSON), (2) Auto-column addition (tự động nhận diện và mở rộng thêm cột khi nguồn có thêm trường mới), (3) Type Coercion (tự động nâng cấp kiểu tương thích), (4) Triển khai an toàn không phá vỡ logic truy vấn hiện tại, (5) Cơ chế cảnh báo sớm.",
+    "eli5": "Như một chiếc kệ tự động mọc thêm ngăn mới mỗi khi bạn mua một món đồ mới lạ về nhà, không làm hỏng các đồ đạc cũ và không cần gọi thợ mộc đến đục đẽo lại.",
+    "commonMistakes": [
+      "Nghĩ rằng phải sửa câu lệnh DDL `ALTER TABLE` thủ công mỗi khi nguồn dữ liệu có thêm cột mới."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q12",
+    "number": "12",
+    "chapterId": "ch3",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Những chức năng của Schema Tests trong dbt?",
+    "answer": "Tự động kiểm tra chất lượng dữ liệu cơ bản khai báo qua file YAML: unique (tính duy nhất), not_null (không rỗng), accepted_values (giá trị hợp lệ) và relationships (ràng buộc khóa ngoại).",
+    "explanation": "Theo Slide 3 (trang 28): 'Schema Tests: Tự động xác thực các điều kiện cơ bản như cột rỗng hay trùng lặp. Tích hợp trong CI/CD để ngăn dữ liệu xấu đi vào sản xuất'. 4 bài test tiêu chuẩn của dbt gồm: unique, not_null, accepted_values, relationships.",
+    "eli5": "Như người gác cổng kiểm tra 4 điều: vé không được trùng, không được đi chui (vé rỗng), phải đúng loại vé và mã vé phải tồn tại trong danh sách phát hành.",
+    "commonMistakes": [
+      "Nhầm Schema Tests với Singular Tests (viết bằng câu truy vấn SQL riêng lẻ cho logic nghiệp vụ phức tạp)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q13",
+    "number": "13",
+    "chapterId": "ch3",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Jinja là gì?",
+    "answer": "Templating Engine mạnh mẽ của Python, cho phép viết Dynamic SQL bằng các cấu trúc điều khiển (vòng lặp, rẽ nhánh, biến số qua {{ }} và {% %}), đóng gói macro tái sử dụng trong dbt.",
+    "explanation": "Theo Slide 3 (trang 27): 'Sử dụng Jinja để bổ sung các cấu trúc điều khiển vào câu lệnh SQL tĩnh. Đóng gói Macros thành hàm để gọi tự động, quản lý môi trường Dev/Test/Prod, giảm thiểu hơn 50% dòng code dư thừa'. Trong dbt, Jinja hỗ trợ hàm `{{ ref('...') }}` tạo đường dẫn phụ thuộc tự động.",
+    "eli5": "Như tính năng điền tự động thông minh: bạn viết 1 khung SQL mẫu, Jinja sẽ tự động lặp qua 100 bảng hoặc đổi tên bảng theo môi trường mà không cần bạn gõ tay 100 lần.",
+    "commonMistakes": [
+      "Nghĩ rằng Jinja là một hệ quản trị cơ sở dữ liệu hoặc một ngôn ngữ truy vấn thay thế SQL."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q14",
+    "number": "14",
+    "chapterId": "ch3",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Apache Airflow có những đặc tính nào?",
+    "answer": "Tiêu chuẩn công nghiệp cho Orchestration (điều phối workflow) bằng code Python dưới dạng Đồ thị có hướng không chu trình (DAG), quản lý phụ thuộc, lập lịch, cơ chế retry tự động và giao diện web giám sát trực quan.",
+    "explanation": "Theo Slide 3 (trang 18-20): Apache Airflow là công cụ Orchestration tiếp cận Task-centric kinh điển: định nghĩa luồng dữ liệu bằng mã Python (Configuration as Code) dưới dạng DAG (Directed Acyclic Graph), quản lý phụ thuộc giữa các bước, lập lịch định kỳ, tự động chạy lại khi gặp sự cố mạng (retry) và có hệ sinh thái thư viện kết nối cực kỳ phong phú.",
+    "eli5": "Như tổng chỉ huy điều phối các toa tàu: lập thời gian biểu, bảo tàu 1 chạy xong thì tàu 2 mới được xuất bến, tàu nào gặp sự cố thì tự động thử khởi động lại.",
+    "commonMistakes": [
+      "Nghĩ rằng Airflow trực tiếp xử lý dữ liệu nặng (Airflow chỉ gửi lệnh điều phối chứ không phải là engine tính toán dữ liệu lớn)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q15",
+    "number": "15",
+    "chapterId": "ch3",
+    "topic": "modern-dw",
+    "type": "theory",
+    "prompt": "Storage Mirroring có những chức năng nào?",
+    "answer": "Kỹ thuật nhân bản dữ liệu tự động và liên tục ở tầng hệ thống vật lý để dự phòng, đảm bảo tính sẵn sàng cao (High Availability), khắc phục thảm họa (Disaster Recovery), và là công nghệ cốt lõi của Zero-ETL (như trong Microsoft Fabric) để đưa dữ liệu từ cơ sở dữ liệu giao dịch sang kho phân tích mà không cần viết pipeline ETL thủ công.",
+    "explanation": "Theo Slide 3 (trang 12): Storage Mirroring là một trong những công nghệ cốt lõi của Zero-ETL Integration: 'Kỹ thuật nhân bản dữ liệu tự động và liên tục ở tầng hệ thống vật lý'. Dữ liệu từ cơ sở dữ liệu vận hành (Cosmos DB, Azure SQL, Snowflake) được tự động sao chép sang định dạng mở Delta Parquet trên OneLake, sẵn sàng cho truy vấn phân tích tức thời.",
+    "eli5": "Như một tấm gương thần thoại: phía bên này viết chữ gì thì phía bên kia tự động hiện y như vậy ngay lập tức mà không cần ai sao chép tay.",
+    "commonMistakes": [
+      "Nhầm Storage Mirroring với sao lưu định kỳ (backup) hàng ngày."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q16",
+    "number": "16",
+    "chapterId": "ch4",
+    "topic": "entropy",
+    "type": "calculation",
+    "prompt": "Giả sử một dataset D có 2 lớp với 6 Good và 4 Bad thì Entropy của D sẽ bằng bao nhiêu?",
+    "answer": "0.9710",
+    "steps": [
+      "Tổng số mẫu: |D| = 6 + 4 = 10",
+      "Xác suất lớp Good: p₁ = 6/10 = 0.6",
+      "Xác suất lớp Bad: p₂ = 4/10 = 0.4",
+      "Công thức: Info(D) = - (p₁ * log₂(p₁) + p₂ * log₂(p₂))",
+      "Thay số: Info(D) = - (0.6 * log₂(0.6) + 0.4 * log₂(0.4))",
+      "= - (0.6 * (-0.73697) + 0.4 * (-1.32193)) = 0.44218 + 0.52877 ≈ 0.9710"
+    ],
+    "explanation": "Entropy đo mức độ hỗn loạn của dữ liệu. Nếu tỉ lệ là 50/50 (5 Good, 5 Bad) thì Entropy = 1. Nếu toàn bộ là Good (10 Good, 0 Bad) thì Entropy = 0. Với 6 Good và 4 Bad, dữ liệu gần cân bằng nên Entropy đạt xấp xỉ 0.9710.",
+    "eli5": "Trong 10 quả bóng có 6 quả xanh và 4 quả đỏ. Độ khó để đoán đúng màu khi bốc ngẫu nhiên đạt 0.971 trên thang điểm 1.",
+    "commonMistakes": [
+      "Dùng log cơ số 10 (log10) hoặc log tự nhiên (ln) thay vì log cơ số 2 (log2)."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generateEntropy"
+  },
+  {
+    "id": "q17",
+    "number": "17",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "calculation",
+    "prompt": "Nếu một khách hàng có thu nhập thấp nhất là 5 triệu, cao nhất là 10 triệu thì thu nhập 8 triệu của khách hàng đó sau khi chuẩn hóa về [0, 1] có giá trị là bao nhiêu theo Min-Max Normalization?",
+    "answer": "0.6",
+    "steps": [
+      "Xác định các tham số: min = 5, max = 10, v = 8",
+      "Khoảng giá trị mới: new_min = 0, new_max = 1",
+      "Công thức: v' = (v - min) / (max - min) * (new_max - new_min) + new_min",
+      "Thay số: v' = (8 - 5) / (10 - 5) = 3 / 5 = 0.6"
+    ],
+    "explanation": "Min-Max Normalization co giãn tuyến tính dữ liệu gốc về dải mới. Điểm 8 triệu nằm cách mốc 5 triệu một khoảng là 3 triệu trên tổng độ dài dải là 5 triệu, nên giá trị sau chuẩn hóa là 3/5 = 0.6.",
+    "eli5": "Thang điểm từ 5 đến 10 có độ dài là 5 nấc. Bạn được 8 điểm, tức là đã vượt qua mốc tối thiểu 3 nấc. 3 nấc trên 5 nấc là 60% (tức 0.6).",
+    "commonMistakes": [
+      "Quên trừ min ở mẫu số (lấy v/max = 8/10 = 0.8 là sai)."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generateMinMax"
+  },
+  {
+    "id": "q18",
+    "number": "18",
+    "chapterId": "ch4",
+    "topic": "binning",
+    "type": "calculation",
+    "prompt": "Ngân hàng X muốn chia các khách hàng thành 3 nhóm theo phương pháp Equal-width Binning. Nếu hạn mức thấp nhất là 100 triệu đồng, hạn mức cao nhất là 700 triệu đồng. Vậy nhóm có khoảng hạn mức thấp nhất là bao nhiêu?",
+    "answer": "100–300 triệu",
+    "steps": [
+      "Xác định độ dài dải giá trị: Range = max - min = 700 - 100 = 600 triệu",
+      "Số nhóm (bins) k = 3",
+      "Độ rộng mỗi bin: Width = Range / k = 600 / 3 = 200 triệu",
+      "Nhóm 1 (thấp nhất): [100, 100 + 200] = [100, 300] triệu",
+      "Nhóm 2: [300, 300 + 200] = [300, 500] triệu",
+      "Nhóm 3: [500, 700] triệu"
+    ],
+    "explanation": "Equal-width Binning chia đều khoảng cách giữa giá trị lớn nhất và nhỏ nhất thành k đoạn có độ rộng bằng nhau. Với min = 100 và max = 700, mỗi đoạn rộng 200 triệu nên khoảng thấp nhất là từ 100 đến 300 triệu.",
+    "eli5": "Một thanh gỗ dài từ vạch 100cm đến 700cm (dài 600cm). Cắt thành 3 khúc bằng nhau thì mỗi khúc dài 200cm. Khúc đầu tiên là từ 100cm đến 300cm.",
+    "commonMistakes": [
+      "Lấy max chia k (700/3) thay vì lấy (max - min)/k."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generateEqualWidth"
+  },
+  {
+    "id": "q19",
+    "number": "19",
+    "chapterId": "ch4",
+    "topic": "entropy",
+    "type": "formula",
+    "prompt": "Cho biết ý nghĩa của công thức sau:\n\n$$Info_A(D) = \\sum_{j=1}^{v} \\frac{|D_j|}{|D|} \\times Info(D_j)$$",
+    "answer": "Entropy kỳ vọng (Expected Entropy) của tập D sau khi được phân chia theo thuộc tính A.",
+    "explanation": "Công thức tính lượng thông tin kỳ vọng cần thiết để phân loại một mẫu trong D sau khi dữ liệu được phân nhánh theo các giá trị của thuộc tính A. Trong đó:\n- v: số giá trị phân biệt của thuộc tính A (số phân vùng con)\n- |D_j| / |D|: trọng số của phân vùng thứ j (tỉ lệ số phần tử của D_j trên tổng số mẫu D)\n- Info(D_j): Entropy của phân vùng con D_j.\nLượng thông tin thu được (Information Gain) sẽ là: Gain(A) = Info(D) - Info_A(D).",
+    "eli5": "Đo xem sau khi chia lớp học thành các nhóm theo thuộc tính A (ví dụ: Nam/Nữ), độ lộn xộn trung bình còn lại của các nhóm là bao nhiêu.",
+    "commonMistakes": [
+      "Nhầm công thức này với công thức Entropy tổng thể Info(D)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q20",
+    "number": "20",
+    "chapterId": "ch4",
+    "topic": "entropy",
+    "type": "formula",
+    "prompt": "Cho biết ý nghĩa của công thức sau:\n\n$$Info(D) = -\\sum_{i=1}^{m} p_i \\log_2(p_i)$$",
+    "answer": "Entropy của tập dữ liệu D (lượng thông tin cần thiết để xác định nhãn lớp của một mẫu trong D).",
+    "explanation": "Công thức Entropy Shannon đo lường độ tinh khiết (purity) hoặc độ không chắc chắn (impurity) của tập dữ liệu D ban đầu trước khi phân chia. Trong đó:\n- m: số lượng lớp phân loại (classes)\n- p_i: xác suất một mẫu ngẫu nhiên trong D thuộc về lớp thứ i (p_i = |C_i| / |D|).\nGiá trị càng gần 0 thì tập dữ liệu càng thuần nhất (tinh khiết); giá trị càng lớn thì dữ liệu càng hỗn loạn.",
+    "eli5": "Thước đo mức độ 'rối rắm' hoặc không đoán trước được của dữ liệu ban đầu.",
+    "commonMistakes": [
+      "Quên dấu trừ phía trước tổng làm kết quả bị âm."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q21",
+    "number": "21",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "theory",
+    "prompt": "Hiểu về Z-Score Normalization (Chuẩn hóa điểm số Z)?",
+    "answer": "Chuẩn hóa theo độ lệch chuẩn: v' = (v - μ) / σ, biến đổi dữ liệu về phân phối có trung bình 0 và phương sai 1; ít bị ảnh hưởng bởi ngoại lai (outliers) hơn Min-Max.",
+    "steps": [
+      "Tính trung bình cộng μ (mean) của thuộc tính.",
+      "Tính độ lệch chuẩn σ (standard deviation).",
+      "Với mỗi giá trị v, áp dụng công thức: v' = (v - μ) / σ"
+    ],
+    "explanation": "Z-score normalization (hay zero-mean normalization) đo xem một giá trị cách xa giá trị trung bình bao nhiêu lần độ lệch chuẩn. Ưu điểm lớn nhất là không bị bó hẹp trong dải [0, 1] cố định và có khả năng chống chịu tốt hơn khi dữ liệu có chứa điểm ngoại lai bất thường (outliers).",
+    "eli5": "Cho biết bạn đang giỏi hơn hay kém hơn mức trung bình của lớp bao nhiêu 'bước' (mỗi bước là một độ lệch chuẩn).",
+    "commonMistakes": [
+      "Chia cho phương sai σ² thay vì độ lệch chuẩn σ."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generateZScore"
+  },
+  {
+    "id": "q22",
+    "number": "22",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "theory",
+    "prompt": "Hiểu về Decimal Scaling (Chuẩn hóa tỉ lệ thập phân)?",
+    "answer": "Chuẩn hóa bằng cách dịch chuyển dấu thập phân: v' = v / 10^j, trong đó j là số nguyên nhỏ nhất sao cho giá trị tuyệt đối lớn nhất của v' nhỏ hơn 1 (max|v'| < 1).",
+    "steps": [
+      "Tìm giá trị tuyệt đối lớn nhất trong tập dữ liệu: M = max(|v|)",
+      "Tìm số nguyên j nhỏ nhất sao cho: M / 10^j < 1 (tức 10^j > M)",
+      "Chia mọi phần tử trong tập dữ liệu cho 10^j: v' = v / 10^j"
+    ],
+    "explanation": "Decimal Scaling chuẩn hóa bằng cách dịch chuyển dấu phẩy thập phân của các giá trị. Ví dụ: tập dữ liệu có giá trị lớn nhất là 986, ta chọn j = 3 (vì 986 / 10³ = 0.986 < 1). Khi đó 986 -> 0.986, 12 -> 0.012, 45 -> 0.045.",
+    "eli5": "Như việc dời dấu phẩy sang trái từng bước cho tới khi tất cả các số đều biến thành 'không phẩy mấy'.",
+    "commonMistakes": [
+      "Chọn j quá lớn hoặc quá nhỏ làm max(|v'|) >= 1 hoặc quá bé."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generateDecimalScaling"
+  },
+  {
+    "id": "q23",
+    "number": "23",
+    "chapterId": "ch4",
+    "topic": "binning",
+    "type": "theory",
+    "prompt": "Phương pháp Equal-frequency Binning (Rời rạc hóa theo tần số bằng nhau)?",
+    "answer": "Chia dữ liệu đã sắp xếp thành k nhóm sao cho mỗi nhóm có số lượng phần tử (tần suất) bằng nhau (xấp xỉ N/k).",
+    "steps": [
+      "Sắp xếp toàn bộ N giá trị theo thứ tự tăng dần.",
+      "Xác định số lượng phần tử trong mỗi bin: size = N / k.",
+      "Gán tuần tự các phần tử vào từng bin sao cho mỗi bin có đúng cùng số lượng phần tử."
+    ],
+    "explanation": "Equal-frequency Binning (hay Equal-depth Binning) đảm bảo phân bố mẫu đồng đều giữa các nhóm. Phương pháp này rất hữu ích khi dữ liệu bị lệch (skewed), tránh tình trạng một nhóm quá đông trong khi nhóm khác lại không có phần tử nào.",
+    "eli5": "Chia 12 viên bi cho 3 đứa trẻ sao cho đứa nào cũng nhận được đúng 4 viên bi, bất kể bi to hay bi nhỏ.",
+    "commonMistakes": [
+      "Không sắp xếp dữ liệu trước khi chia nhóm."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generateEqualFrequency"
+  },
+  {
+    "id": "q24",
+    "number": "24",
+    "chapterId": "ch4",
+    "topic": "binning",
+    "type": "theory",
+    "prompt": "Phương pháp Discretization (Rời rạc hóa dữ liệu) là gì?",
+    "answer": "Quá trình chuyển đổi các thuộc tính liên tục (số thực) thành các khoảng giá trị hoặc danh mục nhãn rời rạc (ví dụ: Equal-width, Equal-frequency, dựa trên cây quyết định).",
+    "explanation": "Rời rạc hóa dữ liệu là kỹ thuật tiền xử lý biến đổi một dải giá trị liên tục vô hạn (như Tuổi: 1 đến 100) thành một tập hữu hạn các khoảng hoặc nhãn mang ý nghĩa nghiệp vụ (như [0-18: Thiếu niên], [19-60: Trưởng thành], [>60: Cao tuổi]). Giúp các thuật toán khai phá luật kết hợp hoặc phân loại dễ học và giảm chi phí tính toán.",
+    "eli5": "Thay vì nhớ chính xác nhiệt độ là 36.8°C hay 37.2°C, bạn chỉ cần xếp vào loại 'Bình thường' hay 'Sốt nhẹ'.",
+    "commonMistakes": [
+      "Nhầm Discretization (rời rạc hóa số thành khoảng) với Binarization (chỉ thành 0 và 1)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q25",
+    "number": "25",
+    "chapterId": "ch4",
+    "topic": "pca",
+    "type": "theory",
+    "prompt": "Phép biến đổi PCA (Principal Component Analysis) là gì?",
+    "answer": "Phương pháp giảm chiều dữ liệu tuyến tính bằng cách tìm các trục tọa độ mới (thành phần chính) vuông góc với nhau và giữ lại phương sai lớn nhất của dữ liệu, loại bỏ nhiễu và thông tin dư thừa.",
+    "explanation": "PCA (Phân tích thành phần chính) là kỹ thuật không giám sát giúp giảm số lượng thuộc tính trong khi bảo toàn tối đa thông tin (phương sai) của tập dữ liệu ban đầu. Trục thành phần chính thứ nhất (PC1) đi dọc theo hướng dữ liệu phân tán mạnh nhất, PC2 vuông góc với PC1 và giải thích phần phương sai lớn tiếp theo. Người ta thường chọn k thành phần chính đầu tiên đủ để giải thích >= 90-95% tổng phương sai.",
+    "eli5": "Như việc chụp bóng của một vật thể 3D lên bức tường 2D: bạn xoay góc đèn sao cho chiếc bóng rõ nét và hiển thị đầy đủ hình dáng nhất của vật thể.",
+    "commonMistakes": [
+      "Nghĩ rằng PCA chọn lọc lại các cột cũ (PCA tạo ra các trục hoàn toàn mới từ tổ hợp tuyến tính của các cột cũ)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q26",
+    "number": "26",
+    "chapterId": "ch4",
+    "topic": "time-series",
+    "type": "calculation",
+    "prompt": "Giả sử chúng ta theo dõi giá dầu trong 6 ngày liên tiếp với kích thước cửa sổ k = 3. Dữ liệu giá dầu thực tế như sau: Ngày 1: 75 (USD); Ngày 2: 78 (USD); Ngày 3: 76 (USD); Ngày 4: 80 (USD); Ngày 5: 82 (USD); Ngày 6: 81 (USD). SMA Ngày 4 là bao nhiêu?",
+    "answer": "78 USD",
+    "steps": [
+      "Kích thước cửa sổ trượt: k = 3 ngày",
+      "Tính SMA cho Ngày 4 nghĩa là lấy trung bình cộng của 3 ngày kết thúc tại Ngày 4: Ngày 2, Ngày 3, Ngày 4",
+      "Giá Ngày 2 = 78 USD, Ngày 3 = 76 USD, Ngày 4 = 80 USD",
+      "SMA(Ngày 4) = (78 + 76 + 80) / 3 = 234 / 3 = 78 USD"
+    ],
+    "explanation": "Simple Moving Average (SMA - Trung bình trượt đơn giản) làm mịn chuỗi thời gian bằng cách tính trung bình trong một khung cửa sổ cố định k ngày. Tại ngày thứ 4 với k = 3, cửa sổ trượt bao gồm ngày 2, ngày 3 và ngày 4, cho kết quả là 78 USD.",
+    "eli5": "Lấy trung bình điểm của 3 bài kiểm tra gần nhất kết thúc tại bài số 4 (bài 2, 3 và 4) để xem phong độ học tập.",
+    "commonMistakes": [
+      "Lấy trung bình từ ngày 1 đến ngày 3 (đó là SMA ngày 3).",
+      "Lấy trung bình cả 4 ngày từ ngày 1 đến ngày 4."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generateSMA"
+  },
+  {
+    "id": "q27",
+    "number": "27",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Nếu có 6 items đơn lẻ là phổ biến, thì số lượng itemset gồm 2 phần tử được sinh ra để kiểm tra xấp xỉ là bao nhiêu?",
+    "answer": "15",
+    "steps": [
+      "Số phần tử đơn lẻ phổ biến: n = 6",
+      "Kích thước tập mục cần sinh: k = 2 phần tử",
+      "Số tổ hợp chập 2 từ 6 phần tử: C(6, 2) = 6! / (2! * (6 - 2)!)",
+      "Công thức nhanh: C(n, 2) = n * (n - 1) / 2",
+      "Thay số: C(6, 2) = 6 * 5 / 2 = 30 / 2 = 15"
+    ],
+    "explanation": "Trong thuật toán Apriori, tập ứng viên kích thước 2 (C₂) được tạo bằng cách ghép cặp 2 món hàng bất kỳ từ tập các món hàng phổ biến kích thước 1 (L₁). Số cách ghép cặp không phân biệt thứ tự là tổ hợp chập 2 của n: C(n, 2) = n*(n-1)/2.",
+    "eli5": "Trong phòng có 6 người, mỗi người bắt tay với tất cả những người còn lại đúng 1 lần. Tổng cộng có 15 cái bắt tay.",
+    "commonMistakes": [
+      "Tính chỉnh hợp A(6, 2) = 30 (nhầm lẫn việc cặp {A, B} và {B, A} là một)."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generatePairs"
+  },
+  {
+    "id": "q28a",
+    "number": "28a",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Cho CSDL 8 giao dịch và công thức Leverage:\n$$Leverage(X \\to Y) = Sup(X \\cup Y) - Sup(X) \\times Sup(Y)$$\nVới luật L: {c} → {d, e}, Leverage(L) có giá trị là bao nhiêu?",
+    "answer": "0.0469",
+    "figure": "figures/q28_transactions.png",
+    "steps": [
+      "Tổng số giao dịch: |D| = 8",
+      "Tập {c} xuất hiện ở các giao dịch: T1, T2, T4, T5, T6, T7, T8 => Sup({c}) = 7/8",
+      "Tập {d, e} xuất hiện ở các giao dịch: T2, T4, T7 => Sup({d, e}) = 3/8",
+      "Tập {c, d, e} xuất hiện ở các giao dịch: T2, T4, T7 => Sup({c, d, e}) = 3/8",
+      "Thay vào công thức: Leverage = Sup({c, d, e}) - Sup({c}) * Sup({d, e})",
+      "= 3/8 - (7/8 * 3/8) = 3/8 - 21/64 = 24/64 - 21/64 = 3/64 = 0.046875 ≈ 0.0469"
+    ],
+    "explanation": "Leverage đo lường sự chênh lệch giữa tần suất xuất hiện đồng thời thực tế của X và Y so với tần suất kỳ vọng nếu X và Y hoàn toàn độc lập thống kê. Leverage = 0 nghĩa là độc lập; Leverage > 0 chứng tỏ hai vế có mối quan hệ thúc đẩy lẫn nhau.",
+    "eli5": "Đo xem số lần khách mua cả hai món nhiều hơn bao nhiêu so với trường hợp khách chọn hai món ngẫu nhiên không liên quan gì nhau.",
+    "commonMistakes": [
+      "Tính nhầm số lần xuất hiện của {c} (quên đếm các giao dịch chỉ có 1 item)."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generateRuleMetrics"
+  },
+  {
+    "id": "q28b",
+    "number": "28b",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Với cơ sở dữ liệu giao dịch ở câu 28, đối với luật L: {c} → {d, e}, Sup(L) có giá trị là bao nhiêu?",
+    "answer": "0.375",
+    "figure": "figures/q28_transactions.png",
+    "steps": [
+      "Độ hỗ trợ của luật Sup(L) = Sup(X ∪ Y) = Sup({c, d, e})",
+      "Kiểm tra 8 giao dịch có chứa cả 3 mục c, d, e:",
+      "- T1: {a, b, c} (không có d, e)",
+      "- T2: {a, b, c, d, e} (CÓ)",
+      "- T3: {b} (không)",
+      "- T4: {c, d, e} (CÓ)",
+      "- T5: {c} (không)",
+      "- T6: {b, c, d} (không có e)",
+      "- T7: {c, d, e} (CÓ)",
+      "- T8: {c, e} (không có d)",
+      "Tổng số giao dịch thỏa mãn: 3 giao dịch (T2, T4, T7)",
+      "Sup(L) = 3 / 8 = 0.375 (tức 37.5%)"
+    ],
+    "explanation": "Độ hỗ trợ (Support) của một luật kết hợp X -> Y là tỉ lệ số giao dịch chứa cả hai vế (X hợp Y) trên tổng số giao dịch.",
+    "eli5": "Trong 8 giỏ hàng siêu thị, có 3 giỏ hàng chứa đầy đủ cả c, d và e, nên tỉ lệ là 3/8 = 37.5%.",
+    "commonMistakes": [
+      "Chỉ đếm Sup của vế trái X."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q28c",
+    "number": "28c",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Với cơ sở dữ liệu giao dịch ở câu 28, đối với luật L: {c} → {d, e}, Conf(L) có giá trị là bao nhiêu?",
+    "answer": "0.4286",
+    "figure": "figures/q28_transactions.png",
+    "steps": [
+      "Công thức: Conf(X → Y) = Sup(X ∪ Y) / Sup(X) = count(X ∪ Y) / count(X)",
+      "count({c, d, e}) = 3 (T2, T4, T7)",
+      "count({c}) = 7 (T1, T2, T4, T5, T6, T7, T8)",
+      "Conf({c} → {d, e}) = 3 / 7 ≈ 0.42857 ≈ 0.4286 (tức 42.86%)"
+    ],
+    "explanation": "Độ tin cậy (Confidence) là xác suất có điều kiện: trong những khách hàng đã mua c, có bao nhiêu phần trăm khách hàng sẽ mua thêm {d, e}.",
+    "eli5": "Trong 7 người mua c, có 3 người mua thêm {d, e}. Tỷ lệ tin cậy là 3/7 = 42.86%.",
+    "commonMistakes": [
+      "Lấy 3 chia 8 (nhầm với Support) thay vì lấy 3 chia 7 (số lần xuất hiện của vế trái)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q28d",
+    "number": "28d",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Với cơ sở dữ liệu giao dịch ở câu 28, đối với luật L: {c} → {d, e}, Lift(L) có giá trị là bao nhiêu?",
+    "answer": "1.1429",
+    "figure": "figures/q28_transactions.png",
+    "steps": [
+      "Công thức: Lift(X → Y) = Conf(X → Y) / Sup(Y) = Sup(X ∪ Y) / (Sup(X) * Sup(Y))",
+      "Conf({c} → {d, e}) = 3 / 7",
+      "Sup({d, e}) = 3 / 8",
+      "Lift = (3 / 7) / (3 / 8) = 8 / 7 ≈ 1.142857 ≈ 1.1429"
+    ],
+    "explanation": "Lift đo lường mức độ tác động của việc mua X lên khả năng mua Y. Lift = 1: độc lập; Lift > 1: tương quan dương (mua c làm tăng khả năng mua {d, e}); Lift < 1: tương quan âm (ức chế lẫn nhau).",
+    "eli5": "Lift = 1.14 > 1 chứng tỏ khách đã mua c thì khả năng mua thêm {d, e} tăng 14% so với khách vãng lai bình thường.",
+    "commonMistakes": [
+      "Lấy Conf chia Sup(X) thay vì chia Sup(Y)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q28e",
+    "number": "28e",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "calculation",
+    "prompt": "Với cơ sở dữ liệu ở câu 28, chuỗi cố định để chuẩn bị cho thuật toán FP-Growth với Minsup = 4 có thể là chuỗi nào?",
+    "answer": "c, b, d, e",
+    "figure": "figures/q28_transactions.png",
+    "steps": [
+      "Bước 1: Đếm tần suất từng item trong 8 giao dịch:",
+      "- a: xuất hiện 2 lần (T1, T2)",
+      "- b: xuất hiện 4 lần (T1, T2, T3, T6)",
+      "- c: xuất hiện 7 lần (T1, T2, T4, T5, T6, T7, T8)",
+      "- d: xuất hiện 4 lần (T2, T4, T6, T7)",
+      "- e: xuất hiện 4 lần (T2, T4, T7, T8)",
+      "Bước 2: Lọc theo ngưỡng Minsup = 4:",
+      "Item 'a' (2 lần) < 4 nên bị loại bỏ.",
+      "Các item thỏa mãn: c (7), b (4), d (4), e (4)",
+      "Bước 3: Sắp xếp giảm dần theo tần suất:",
+      "'c' xuất hiện 7 lần (nhiều nhất) đứng đầu. Các item b, d, e cùng có tần suất 4 nên có thể sắp theo thứ tự ổn định: c, b, d, e (hoặc các hoán vị tương đương giữa b, d, e)."
+    ],
+    "explanation": "Trong bước 1 của FP-Growth, ta duyệt CSDL để đếm tần suất các item đơn lẻ, loại bỏ các item không đạt minsup và sắp xếp các item còn lại theo thứ tự giảm dần của tần suất. Chuỗi này là thứ tự ưu tiên cố định để dựng cây FP-tree.",
+    "eli5": "Xếp các món hàng bán chạy nhất lên đầu: c bán chạy nhất (7 lần), sau đó tới b, d, e (mỗi món 4 lần). Món 'a' bán ế (chỉ 2 lần) nên bị loại khỏi cuộc chơi.",
+    "commonMistakes": [
+      "Không loại bỏ item 'a' (do tần suất 2 < 4).",
+      "Không đưa item 'c' lên vị trí đầu tiên."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q28f",
+    "number": "28f",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Với cơ sở dữ liệu ở câu 28, độ hỗ trợ của itemset {c, d, b} là bao nhiêu?",
+    "answer": "2 (hoặc 0.25 / 25%)",
+    "figure": "figures/q28_transactions.png",
+    "steps": [
+      "Đếm số giao dịch chứa cả 3 phần tử c, d, b:",
+      "- T1: {a, b, c} (không có d)",
+      "- T2: {a, b, c, d, e} (chứa b, c, d => CÓ)",
+      "- T3: {b} (không)",
+      "- T4: {c, d, e} (không có b)",
+      "- T5: {c} (không)",
+      "- T6: {b, c, d} (chứa b, c, d => CÓ)",
+      "- T7: {c, d, e} (không có b)",
+      "- T8: {c, e} (không)",
+      "Tập {c, d, b} xuất hiện trong đúng 2 giao dịch (T2 và T6).",
+      "Support count = 2. Tương ứng Support tỉ lệ = 2/8 = 0.25 (25%)."
+    ],
+    "explanation": "Độ hỗ trợ có thể biểu diễn dưới dạng số lần xuất hiện tuyệt đối (support count = 2) hoặc tỉ lệ tương đối (support = 2/8 = 0.25).",
+    "eli5": "Chỉ có 2 giỏ hàng (giỏ số 2 và giỏ số 6) là có đủ cả 3 món b, c, d.",
+    "commonMistakes": [
+      "Bỏ sót giao dịch T6."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q29",
+    "number": "29",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "calculation",
+    "prompt": "Cho một phần thông tin của bảng Condition Pattern Base (CPB) với:\nX: {Y:4}\nY: {X:4, T:3}\nZ: {X:3, Y:4, T:3}\nT: {Y:4, Z:3}\nVới thuật toán FP-Growth, Minsup = 4, những tập phổ biến có 2 items không chứa item X là những tập nào?",
+    "answer": "{Y, Z} và {Y, T}",
+    "figure": "figures/q29_cpb.png",
+    "steps": [
+      "Yêu cầu: Tìm tập phổ biến 2 items không chứa X với Minsup = 4.",
+      "1. Xét dòng Z trong bảng: xuất hiện {X:3, Y:4, T:3}",
+      "Ghép item Z với các item trong tiền tố của nó:",
+      "- Cặp {Z, Y}: có tần suất 4 >= 4 => Tập phổ biến {Y, Z} (support = 4).",
+      "- Cặp {Z, T}: tần suất 3 < 4 (loại).",
+      "2. Xét dòng T trong bảng: xuất hiện {Y:4, Z:3}",
+      "Ghép item T với các item trong tiền tố của nó:",
+      "- Cặp {T, Y}: có tần suất 4 >= 4 => Tập phổ biến {Y, T} (support = 4).",
+      "- Cặp {T, Z}: tần suất 3 < 4 (loại).",
+      "Kết luận: Các tập phổ biến 2 item không chứa X thỏa mãn Minsup = 4 là {Y, Z} và {Y, T}.",
+      "Ghi chú mâu thuẫn đề: Bảng đề gốc có dòng Y ghi T:3 nhưng dòng T lại ghi Y:4. Theo dòng T thì {Y, T} đạt tần suất 4."
+    ],
+    "explanation": "Khi khai phá tập phổ biến từ Conditional Pattern Base, ta xét từng item mục tiêu và tìm các phần tử có tần suất tích lũy trong tiền tố đạt ngưỡng minsup. Ở đây {Y, Z} và {Y, T} đều đạt ngưỡng 4 mà không chứa X.",
+    "eli5": "Tìm những cặp bạn thân 2 người chơi chung với nhau ít nhất 4 lần mà trong nhóm không có bạn X.",
+    "commonMistakes": [
+      "Liệt kê thêm các tập chứa X như {X, Y}."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q30",
+    "number": "30",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "theory",
+    "prompt": "Thông thường, người ta thường chọn ngưỡng minsup là bao nhiêu?",
+    "answer": "Khoảng 1% (hoặc 1%–5%) (theo Slide 5 trang 9 ghi minsup thường là 0.01 tức 1% và minconf thường là 0.8 tức 80%).",
+    "explanation": "Theo Slide 5 (trang 9), giáo trình nêu rõ: '...giá trị ngưỡng tối thiểu được gọi là minsup, thường là 0.01 (1%) và đồng thời cũng loại bỏ tất cả các luật có độ tin cậy nằm dưới minconf, thường là 0.8 (tức là 80%)'. Trong thực tế các cơ sở dữ liệu bán lẻ khổng lồ, minsup thường được đặt trong khoảng từ 1% đến 5% để không bỏ sót các luật kết hợp hữu ích.",
+    "eli5": "Nếu siêu thị có 100.000 lượt khách mỗi ngày, chỉ cần 1% (1.000 khách) cùng mua 2 món là đã đủ tạo ra doanh thu rất lớn rồi.",
+    "commonMistakes": [
+      "Chọn minsup quá cao (như 50%) khiến không tìm được luật nào hữu ích."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q31a",
+    "number": "31a",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "calculation",
+    "prompt": "Cho đồ thị liên kết 5 trang. PageRank của các trang được khởi tạo là 1, vậy giá trị PageRank của Page 2 ở vòng lặp đầu tiên là bao nhiêu?",
+    "answer": "1.2125",
+    "figure": "figures/q31_pagerank.png",
+    "steps": [
+      "Công thức PageRank với damping factor d = 0.85 (theo Slide 6 trang 18):",
+      "PR₁(v) = (1 - d) + d * Σ (PR₀(u) / C(u)) với u là các trang trỏ đến v",
+      "Với d = 0.85 thì (1 - d) = 0.15",
+      "Tìm các trang trỏ liên kết đến Page 2:",
+      "- Page 1 trỏ đến Page 2. Số liên kết ra của Page 1: C(1) = 1",
+      "- Page 3 trỏ đến Page 2. Số liên kết ra của Page 3: C(3) = 4 (trỏ tới 1, 2, 4, 5)",
+      "Thay số vào công thức:",
+      "PR₁(Page 2) = 0.15 + 0.85 * (PR₀(1)/C(1) + PR₀(3)/C(3))",
+      "= 0.15 + 0.85 * (1/1 + 1/4) = 0.15 + 0.85 * 1.25 = 0.15 + 1.0625 = 1.2125",
+      "(Lưu ý: Nếu đề thi dùng công thức giản lược không có damping factor d thì PR₁(Page 2) = 1/1 + 1/4 = 1.25)"
+    ],
+    "explanation": "PageRank phân phối độ tin cậy qua các liên kết mạng. Page 2 nhận liên kết từ Page 1 (cho toàn bộ 1 điểm) và Page 3 (chia đều 1 điểm cho 4 trang đích), sau đó nhân hệ số suy giảm 0.85 và cộng điểm ngẫu nhiên 0.15.",
+    "eli5": "Trang 2 được hai người giới thiệu: anh số 1 chỉ khen duy nhất trang 2 (cho trọn 1 phiếu), anh số 3 khen 4 trang khác nhau (chia cho trang 2 1/4 phiếu).",
+    "commonMistakes": [
+      "Đếm sai số liên kết ra C(3) của Page 3 (bỏ sót liên kết 3->4 hoặc 3->5)."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generatePageRankVariant"
+  },
+  {
+    "id": "q31b",
+    "number": "31b",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "calculation",
+    "prompt": "Cho đồ thị liên kết 5 trang. PageRank của các trang được khởi tạo là 1, vậy giá trị PageRank của Page 1 ở vòng lặp đầu tiên là bao nhiêu?",
+    "answer": "0.3625",
+    "figure": "figures/q31_pagerank.png",
+    "steps": [
+      "Công thức: PR₁(Page 1) = (1 - d) + d * Σ (PR₀(u) / C(u))",
+      "Với d = 0.85 thì (1 - d) = 0.15",
+      "Tìm các trang trỏ liên kết đến Page 1:",
+      "Chỉ có duy nhất Page 3 trỏ đến Page 1.",
+      "Số liên kết ra của Page 3: C(3) = 4",
+      "Thay số:",
+      "PR₁(Page 1) = 0.15 + 0.85 * (PR₀(3) / C(3)) = 0.15 + 0.85 * (1 / 4) = 0.15 + 0.2125 = 0.3625",
+      "(Lưu ý: Nếu dùng công thức giản lược không có damping factor thì PR₁(Page 1) = 1/4 = 0.25)"
+    ],
+    "explanation": "Page 1 chỉ nhận được một luồng phiếu duy nhất từ Page 3 (vốn bị chia 4), nên điểm PageRank ở vòng 1 giảm mạnh từ 1 xuống còn 0.3625.",
+    "eli5": "Trang 1 chỉ có đúng một người nhắc tới là anh số 3, mà anh số 3 lại nhắc tới tận 4 người cùng lúc, nên trang 1 nhận được rất ít phiếu bầu.",
+    "commonMistakes": [
+      "Tính cả liên kết ra từ Page 1 trỏ tới Page 2 (nhầm liên kết đến và đi)."
+    ],
+    "needsSlideCheck": false,
+    "generatorId": "generatePageRankVariant"
+  },
+  {
+    "id": "q32",
+    "number": "32",
+    "chapterId": "ch7",
+    "topic": "cpt",
+    "type": "calculation",
+    "prompt": "Cho cây CPT. Phần tử có điểm dự đoán cao nhất khi dự đoán chuỗi <D, C> với giải thuật CPT là phần tử nào?",
+    "answer": "B",
+    "figure": "figures/q32_cpt.jpeg",
+    "steps": [
+      "Bước 1: Trích xuất các chuỗi huấn luyện từ cây CPT và Lookup Table:",
+      "- Chuỗi s1: A, B, C, D, F",
+      "- Chuỗi s2: D, C, B, E",
+      "- Chuỗi s3: E, A, D, C, B",
+      "- Chuỗi s4: E, G, A, D, B, C",
+      "Bước 2: Tìm phần đứng sau mẫu <D, C> trong từng chuỗi:",
+      "- s1: D xuất hiện trước F => phần hậu tố sau D là {F}",
+      "- s2: Sau chuỗi <D, C> là hai phần tử {B, E}",
+      "- s3: Sau chuỗi <D, C> là phần tử {B}",
+      "- s4: Thứ tự là D -> B -> C, sau C không còn phần tử nào ({})",
+      "Bước 3: Tổng hợp điểm số cho các ứng viên:",
+      "- Ứng viên B: xuất hiện ở s2 và s3 => Điểm = 2",
+      "- Ứng viên E: xuất hiện ở s2 => Điểm = 1",
+      "- Ứng viên F: xuất hiện ở s1 => Điểm = 1",
+      "Kết luận: Phần tử có điểm dự đoán cao nhất là B (với 2 lần xuất hiện)."
+    ],
+    "explanation": "Trong Compact Prediction Tree (CPT), thuật toán tìm tất cả các chuỗi có chứa các phần tử của truy vấn, sau đó thu thập các phần tử xuất hiện ở hậu tố (phía sau). Phần tử nào xuất hiện nhiều lần nhất trong các hậu tố sẽ có điểm dự đoán cao nhất.",
+    "eli5": "Xem lại nhật ký hành vi: sau khi khách làm hành động D và C, thì hành động tiếp theo thường là gì. Có 2 lần khách làm B, 1 lần làm E, 1 lần làm F. Vậy máy đoán tiếp theo là B.",
+    "commonMistakes": [
+      "Nhầm lẫn giữa thứ tự trong s4 (trong s4 C là phần tử cuối cùng nên không đóng góp hậu tố)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "q33",
+    "number": "33",
+    "chapterId": "ch7",
+    "topic": "cpt",
+    "type": "theory",
+    "prompt": "Hiểu về cấu trúc cây CPT (Compact Prediction Tree)?",
+    "answer": "CPT gồm 3 cấu trúc chính: (1) Prediction Tree (cây nén tiền tố chung), (2) Inverted Index (chỉ mục đảo lưu vị trí item trong các chuỗi), (3) Lookup Table (bảng tra cứu nối chuỗi với nút lá trong cây); ưu điểm: nén bộ nhớ và tìm kiếm chuỗi tương đồng siêu nhanh.",
+    "figure": "figures/q33_cpt_structure.png",
+    "explanation": "Theo Slide 6 (trang 8-15): CPT (Compact Prediction Tree) giải quyết bài toán dự đoán chuỗi mà không làm mất thông tin như Markov model. Cấu trúc gồm 3 thành phần liên kết chặt chẽ:\n1. Prediction Tree: lưu trữ các chuỗi huấn luyện, nén các chuỗi có chung tiền tố (prefix).\n2. Inverted Index: ma trận/bảng tra nhanh bitmask ghi nhận mỗi item xuất hiện trong những chuỗi nào (s1..sn).\n3. Lookup Table: mảng con trỏ cho phép từ mã chuỗi s_i nhảy thẳng tới nút lá tương ứng trên cây để duyệt ngược lên gốc.",
+    "eli5": "Như một hệ thống thư viện siêu cấp: có cây thư mục nén sách, có cuốn sổ tra nhanh tên tác giả nằm ở những kệ nào, và tấm thẻ đánh dấu trang để mở thẳng đến trang cuối cùng của cuốn sách.",
+    "commonMistakes": [
+      "Nghĩ rằng CPT chỉ có cây Prediction Tree mà quên mất Inverted Index và Lookup Table."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q33b",
+    "number": "33b",
+    "chapterId": "ch6",
+    "topic": "graph-search",
+    "type": "theory",
+    "prompt": "Hiểu về BFS (Breadth-First Search - Tìm kiếm theo chiều rộng)?",
+    "answer": "Thuật toán tìm kiếm theo chiều rộng duyệt đồ thị theo từng tầng mức (level-by-level), sử dụng cấu trúc Hàng đợi (Queue - FIFO), ứng dụng tìm đường đi ngắn nhất trên đồ thị không trọng số.",
+    "explanation": "BFS duyệt tất cả các đỉnh lân cận ở mức k trước khi chuyển sang mức k+1. Đặc điểm: dùng Queue (vào trước ra trước), đảm bảo tìm được đường đi có ít cạnh nhất từ đỉnh xuất phát tới đỉnh đích trong đồ thị không trọng số; nhược điểm là tốn bộ nhớ để lưu trữ toàn bộ các đỉnh ở tầng hiện tại.",
+    "eli5": "Như vết dầu loang trên mặt nước: từ tâm loang đều ra vòng tròn gần nhất, rồi mới loang tiếp tới vòng tròn xa hơn.",
+    "commonMistakes": [
+      "Dùng Stack thay vì Queue (nhầm sang DFS)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q34",
+    "number": "34",
+    "chapterId": "ch6",
+    "topic": "graph-search",
+    "type": "theory",
+    "prompt": "Hiểu về DFS (Depth-First Search - Tìm kiếm theo chiều sâu)?",
+    "answer": "Thuật toán tìm kiếm theo chiều sâu đi sâu vào nhánh con đến tận cùng rồi mới quay lui (backtracking), sử dụng cấu trúc Ngăn xếp (Stack - LIFO) hoặc đệ quy, tiết kiệm bộ nhớ và ứng dụng phát hiện chu trình, sắp xếp tô-pô.",
+    "explanation": "DFS đi men theo một nhánh từ đỉnh gốc xuống sâu nhất có thể cho tới khi gặp đỉnh cụt hoặc đỉnh đã thăm, sau đó quay lui (backtrack) về đỉnh trước đó để khám phá nhánh tiếp theo. Đặc điểm: dùng Stack (hoặc gọi đệ quy), bộ nhớ tiêu tốn chỉ tỉ lệ thuận với độ sâu tối đa của cây O(h), rất phù hợp để giải mê cung, sắp xếp tô-pô và tìm thành phần liên thông mạnh.",
+    "eli5": "Như người đi khám phá hang động: cứ chọn một ngách đi sâu mãi cho tới khi đụng ngõ cụt thì mới lùi lại ngã ba vừa rồi để đi ngách khác.",
+    "commonMistakes": [
+      "Dễ bị tràn ngăn xếp (Stack Overflow) nếu đồ thị có chu trình vô hạn mà không lưu vết các đỉnh đã thăm."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q35",
+    "number": "35",
+    "chapterId": "ch8",
+    "topic": "blockchain-ai",
+    "type": "theory",
+    "prompt": "Dữ liệu thô trên Blockchain tồn tại ở dạng nào?",
+    "answer": "Tồn tại dưới dạng byte/hex phi cấu trúc (unstructured byte/hex) và phân tán trên các khối (Blocks) được liên kết bằng mã băm mã hóa (Hash).",
+    "explanation": "Theo Slide 9 (trang 19): 'Dữ liệu thô trên Blockchain có tính minh bạch tuyệt đối nhưng tồn tại dưới dạng byte/hex phi cấu trúc và phân tán trên hàng ngàn nút (Nodes)'. Các thông tin giao dịch, số dư, tham số thực thi của Smart Contract nằm trong phần Logs được mã hóa nhị phân/hex, cần thông qua tệp giao diện ABI (Application Binary Interface) để giải mã (Event Decoding) thành dữ liệu có cấu trúc bảng trước khi phân tích.",
+    "eli5": "Như những dòng mật mã hex dài ngoằng 0x4a7f... viết trên những cuốn sổ cái phân tán khắp nơi; phải dùng cuốn sổ giải mã (file ABI) thì mới đọc ra được ai gửi tiền cho ai.",
+    "commonMistakes": [
+      "Nghĩ rằng dữ liệu trên Blockchain đã được lưu sẵn dưới dạng bảng quan hệ SQL (bảng, hàng, cột)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q36",
+    "number": "36",
+    "chapterId": "ch8",
+    "topic": "blockchain-ai",
+    "type": "theory",
+    "prompt": "Khái niệm IVFFLAT trong Vector Search?",
+    "answer": "Inverted File Flat - Chỉ mục tìm kiếm vector gần đúng (ANN) phân cụm không gian vector (bằng k-means), chỉ quét trong các cụm gần nhất (probes) và lưu vector gốc không nén (Flat) giúp cân bằng giữa tốc độ tìm kiếm và độ chính xác.",
+    "explanation": "Theo Slide 8 (trang 10): Trong các hệ thống Modern Data Warehouse hỗ trợ Vector Search, IVFFLAT (Inverted File Flat) là thuật toán tạo chỉ mục cho phép tìm kiếm hàng triệu vector tương đồng trong vài mili giây. Cơ chế: dùng k-means gom các vector thành nhiều cụm (inverted lists); khi có vector truy vấn, hệ thống chỉ so sánh với các vector trong một vài cụm gần nhất (tham số probes) thay vì quét toàn bộ kho dữ liệu (Flat scan).",
+    "eli5": "Chia hàng triệu cuốn sách thành 100 kệ theo chủ đề. Khi bạn cần tìm cuốn sách gần giống, bạn chỉ đến 2-3 kệ gần nhất để lật từng cuốn (Flat), chứ không cần đi lật từng cuốn sách trên cả 100 kệ.",
+    "commonMistakes": [
+      "Nghĩ rằng IVFFLAT nén các vector làm mất mát số chiều (chữ 'Flat' chỉ ra vector được lưu nguyên bản, không nén)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q37",
+    "number": "37",
+    "chapterId": "ch8",
+    "topic": "blockchain-ai",
+    "type": "theory",
+    "prompt": "Hiểu về CLM (Column-level Masking)?",
+    "answer": "Column-level Masking (Che giấu dữ liệu cấp cột): cơ chế bảo mật tinh mịn (fine-grained security) cho phép ẩn hoặc mã hóa một phần dữ liệu nhạy cảm (PII) như số điện thoại, CMND/CCCD mà không làm thay đổi cấu trúc bảng hay kiểu dữ liệu.",
+    "explanation": "Theo Slide 7 (trang 10): 'Column-level Masking (CLM - Che dấu cấp cột): Cơ chế ẩn hoặc mã hóa một phần dữ liệu nhạy cảm (PII) mà không làm thay đổi cấu trúc bảng. Ví dụ: Số điện thoại hiển thị dạng 091xxxx888'. Lưu ý: Phụ lục A từng phỏng đoán CLM là Causal Language Modeling, nhưng Slide bài giảng khẳng định rõ là Column-level Masking trong bảo mật kho dữ liệu.",
+    "eli5": "Như việc nhân viên ngân hàng nhìn vào màn hình chỉ thấy số điện thoại của bạn hiện là 090****123 để bảo vệ sự riêng tư của bạn mà không làm hỏng form nhập liệu.",
+    "commonMistakes": [
+      "Nhầm với Row-level Security (RLS - ẩn toàn bộ dòng dữ liệu dựa trên danh tính người dùng).",
+      "Nhầm với Causal Language Modeling của mảng AI/LLM."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q38",
+    "number": "38",
+    "chapterId": "ch8",
+    "topic": "blockchain-ai",
+    "type": "theory",
+    "prompt": "Đạo luật AI Act của Liên minh Châu Âu (EU)?",
+    "answer": "Khung quản trị dữ liệu và pháp lý phân cấp hệ thống AI thành 4 mức độ rủi ro: Không thể chấp nhận (Unacceptable Risk - cấm), Rủi ro cao (High Risk - kiểm soát nghiêm ngặt và minh bạch), Rủi ro hạn chế (Limited Risk - dán nhãn thông báo) và Rủi ro tối thiểu (Minimal Risk - tự do vận hành).",
+    "explanation": "Theo Slide 7 (trang 4-6): AI Act là khung pháp lý toàn diện của EU quản trị AI dựa trên rủi ro. 4 cấp độ: (1) Unacceptable Risk (chấm điểm công dân, thao túng tâm lý => cấm triệt để); (2) High Risk (AI tín dụng Fintech, tuyển dụng, y tế => bắt buộc kiểm soát chất lượng dữ liệu, có Human Oversight và lưu vết kỹ thuật); (3) Limited/Transparent Risk (Chatbot, Deepfake => dán nhãn rõ ràng); (4) Minimal Risk (bộ lọc spam, game => tự do).",
+    "eli5": "Như luật giao thông cho các loại xe: xe tăng bị cấm chạy ngoài phố (rủi ro không thể chấp nhận), xe tải lớn phải kiểm định nghiêm ngặt (rủi ro cao), xe hơi phải bật đèn xi-nhan (minh bạch), xe đạp được chạy tự do.",
+    "commonMistakes": [
+      "Ghi sai các mức độ rủi ro hoặc áp đặt ngày tháng cụ thể dễ bị lỗi thời."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q39",
+    "number": "39",
+    "chapterId": "ch8",
+    "topic": "blockchain-ai",
+    "type": "theory",
+    "prompt": "Khả năng truy vấn nhiều cấp liên quan đến khai phá dữ liệu dạng nào?",
+    "answer": "Khai phá dữ liệu đa cấp / phân cấp (Multi-level Data Mining, ví dụ Multi-level Association Rules) gắn liền với cấu trúc phân cấp khái niệm (Concept Hierarchy) và các thao tác OLAP đa chiều (Roll-up, Drill-down).",
+    "explanation": "Truy vấn nhiều cấp (Multi-level querying) cho phép người dùng xem dữ liệu ở các tầng trừu tượng khác nhau dựa trên cây phân cấp khái niệm (Concept Hierarchy). Trong khai phá dữ liệu, nó liên quan mật thiết đến Khai phá luật kết hợp đa cấp (Multi-level Association Rules) và phân cụm phân cấp (Hierarchical Clustering), cho phép khoan sâu (Drill-down) hoặc cuộn lên (Roll-up) giữa mức tổng quát (như Quốc gia, Danh mục lớn) và mức chi tiết (như Tỉnh thành, Mã sản phẩm cụ thể).",
+    "eli5": "Như bản đồ vệ tinh: bạn có thể nhìn từ tầm nhìn cả nước (cấp 1), phóng to xuống từng tỉnh (cấp 2), rồi phóng to tới từng con phố (cấp 3) để tìm quy luật mua sắm.",
+    "commonMistakes": [
+      "Nghĩ rằng truy vấn nhiều cấp chỉ là các câu lệnh lồng nhau (Sub-queries)."
+    ],
+    "needsSlideCheck": true
+  },
+  {
+    "id": "q40",
+    "number": "40",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "theory",
+    "prompt": "Chỉ số damping factor thường được các nhà nghiên cứu sử dụng với giá trị là bao nhiêu trong PageRank?",
+    "answer": "d = 0.85",
+    "explanation": "Theo Slide 6 (trang 18) & Phụ lục A: Hệ số suy giảm (damping factor) d đại diện cho xác suất một người dùng ngẫu nhiên tiếp tục bấm vào một liên kết trên trang web hiện tại (thay vì nhảy ngẫu nhiên sang một trang bất kỳ khác với xác suất 1 - d = 0.15). Giá trị tiêu chuẩn được Google và các nhà nghiên cứu sử dụng là d = 0.85.",
+    "eli5": "Cứ 100 lần lướt web thì có 85 lần người ta kiên nhẫn bấm vào các đường link trong trang để đọc tiếp, và 15 lần người ta chán nản gõ một địa chỉ web mới toanh vào thanh URL.",
+    "commonMistakes": [
+      "Nhầm d = 0.15 (đó là xác suất nhảy ngẫu nhiên 1 - d)."
+    ],
+    "needsSlideCheck": false
+  }
+]
