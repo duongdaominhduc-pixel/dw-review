@@ -31,28 +31,41 @@
       </button>
     </div>
 
-    <!-- Sub-tabs for Chapter 1: Lessons vs Slide Questions Bank -->
-    <div v-if="activeChapterId === 'ch1'" class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+    <!-- Sub-tabs for Chapter Study: Lessons vs Quiz Mode vs Slide Bank -->
+    <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 overflow-x-auto scrollbar-none">
       <button
         @click="chapterTab = 'lessons'"
-        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
+        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
         :class="chapterTab === 'lessons' ? 'bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
       >
         <span>📖</span>
-        <span>8 Bài học chi tiết</span>
+        <span>Bài học lý thuyết</span>
       </button>
+
       <button
+        @click="chapterTab = 'quiz'"
+        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
+        :class="chapterTab === 'quiz' ? 'bg-purple-600 text-white shadow-sm' : 'text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/40'"
+      >
+        <span>📝</span>
+        <span>Làm Quiz trắc nghiệm</span>
+        <span class="px-1.5 py-0.2 rounded-full text-[10px] font-black bg-white/20 text-current">
+          {{ activeChapterQuestions.length }} câu
+        </span>
+      </button>
+
+      <button
+        v-if="activeChapterId === 'ch1'"
         @click="chapterTab = 'slide_questions'"
-        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
+        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
         :class="chapterTab === 'slide_questions' ? 'bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
       >
-        <span>🎯</span>
-        <span>47 Câu hỏi trích từ Slide 1</span>
-        <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-brand-500 text-white font-black">47</span>
+        <span>📋</span>
+        <span>Tra cứu 47 câu Slide 1</span>
       </button>
     </div>
 
-    <!-- VIEW MODE 1: Lessons Sidebar + Content (Default) -->
+    <!-- TAB 1: Lessons Sidebar + Content -->
     <div v-if="chapterTab === 'lessons'" class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
       <!-- Lessons Sidebar List -->
       <div class="md:col-span-4 space-y-3">
@@ -129,7 +142,7 @@
             </p>
           </div>
 
-          <!-- Sections Renderer (Rendered with MarkdownView for proper formatting) -->
+          <!-- Sections Renderer -->
           <div v-else class="space-y-6">
             <div
               v-for="(sec, idx) in activeLesson.sections"
@@ -156,7 +169,7 @@
                 </div>
               </div>
 
-              <!-- Kind: Concept (Using MarkdownView for headings, bold, bullet points) -->
+              <!-- Kind: Concept (Using MarkdownView) -->
               <div
                 v-else-if="sec.kind === 'concept'"
                 class="p-1 text-slate-800 dark:text-slate-200"
@@ -213,7 +226,12 @@
                 <span>🎯</span>
                 <span>Câu hỏi ôn tập của bài này ({{ currentLessonQuestions.length }} câu)</span>
               </h3>
-              <span class="text-xs text-slate-400">Trích từ Slide & Đề cương</span>
+              <button
+                @click="chapterTab = 'quiz'"
+                class="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1"
+              >
+                <span>Chuyển sang làm Quiz trắc nghiệm →</span>
+              </button>
             </div>
 
             <div class="space-y-3">
@@ -238,7 +256,6 @@
                   <FormulaView :formula="q.prompt" />
                 </div>
 
-                <!-- Answer & Explanation Reveal -->
                 <div
                   v-if="expandedQuestionIds.has(q.id)"
                   class="pt-3 border-t border-slate-200/80 dark:border-slate-700/80 space-y-2.5 animate-fadeIn"
@@ -270,7 +287,15 @@
       </div>
     </div>
 
-    <!-- VIEW MODE 2: Comprehensive 47 Questions Bank for Slide 1 (All-in-one Chapter Practice) -->
+    <!-- TAB 2: Interactive Chapter Quiz Mode -->
+    <div v-else-if="chapterTab === 'quiz'">
+      <ChapterQuiz
+        :chapterTitle="activeChapter.title"
+        :questions="activeChapterQuestions"
+      />
+    </div>
+
+    <!-- TAB 3: Comprehensive 47 Questions List for Slide 1 -->
     <div v-else class="space-y-4">
       <div class="p-4 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-3">
@@ -359,6 +384,7 @@ import chapter1QuestionsData from '../data/chapter1Questions.json';
 import { Chapter, Lesson, Question } from '../types';
 import FormulaView from '../components/FormulaView.vue';
 import MarkdownView from '../components/MarkdownView.vue';
+import ChapterQuiz from '../components/ChapterQuiz.vue';
 import LabShell from '../components/LabShell.vue';
 import StepControls from '../components/StepControls.vue';
 
@@ -375,7 +401,7 @@ const allQuestionsMap = computed(() => {
 });
 
 const activeChapterId = ref(chapters[0].id);
-const chapterTab = ref<'lessons' | 'slide_questions'>('lessons');
+const chapterTab = ref<'lessons' | 'quiz' | 'slide_questions'>('lessons');
 const slideSearchQuery = ref('');
 const expandedQuestionIds = ref<Set<string>>(new Set());
 
@@ -396,6 +422,17 @@ const activeLesson = computed<Lesson>(() => {
     activeChapter.value.lessons.find(l => l.id === activeLessonId.value) ||
     activeChapter.value.lessons[0]
   );
+});
+
+// Questions pool for the active chapter (used in Quiz Mode)
+const activeChapterQuestions = computed<Question[]>(() => {
+  if (activeChapterId.value === 'ch1') {
+    // For Chapter 1, combine both the 47 slide questions and relevant outline questions (q1-q5)
+    const relatedOutline = originalQuestions.filter(q => q.chapterId === 'ch1');
+    return [...chapter1Questions, ...relatedOutline];
+  }
+  // For other chapters, take questions belonging to that chapter
+  return originalQuestions.filter(q => q.chapterId === activeChapterId.value);
 });
 
 // Questions relevant to the currently viewed lesson
