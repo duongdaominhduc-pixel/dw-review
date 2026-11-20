@@ -7,13 +7,13 @@
           <span>📚 Khung Chương học (Chapter Study)</span>
         </h1>
         <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-          Cấu trúc 8 chương theo đề cương môn học • Điều hướng Chương &gt; Bài &gt; Phần
+          Học theo từng chương môn học • Điều hướng Chương &gt; Bài &gt; Phần
         </p>
       </div>
 
       <div class="flex items-center gap-2">
         <span class="text-xs px-2.5 py-1 rounded-lg font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-          1 bài mẫu hoàn thiện (Bài 1.1)
+          Chương 1: Hoàn thiện 8/8 bài (Slide 1)
         </span>
       </div>
     </div>
@@ -31,8 +31,29 @@
       </button>
     </div>
 
-    <!-- Chapter Layout: Sidebar Lessons + Lesson Content Area -->
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+    <!-- Sub-tabs for Chapter 1: Lessons vs Slide Questions Bank -->
+    <div v-if="activeChapterId === 'ch1'" class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+      <button
+        @click="chapterTab = 'lessons'"
+        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
+        :class="chapterTab === 'lessons' ? 'bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
+      >
+        <span>📖</span>
+        <span>8 Bài học chi tiết</span>
+      </button>
+      <button
+        @click="chapterTab = 'slide_questions'"
+        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
+        :class="chapterTab === 'slide_questions' ? 'bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
+      >
+        <span>🎯</span>
+        <span>47 Câu hỏi trích từ Slide 1</span>
+        <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-brand-500 text-white font-black">47</span>
+      </button>
+    </div>
+
+    <!-- VIEW MODE 1: Lessons Sidebar + Content (Default) -->
+    <div v-if="chapterTab === 'lessons'" class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
       <!-- Lessons Sidebar List -->
       <div class="md:col-span-4 space-y-3">
         <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm">
@@ -78,14 +99,14 @@
 
       <!-- Active Lesson Content Body -->
       <div class="md:col-span-8 space-y-6">
-        <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
+        <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6 scroll-mt-28">
           <!-- Lesson Header -->
-          <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div class="pb-4 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
             <div>
               <div class="text-xs font-bold text-brand-600 dark:text-brand-400 mb-1">
                 {{ activeChapter.title }}
               </div>
-              <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
+              <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white leading-snug">
                 {{ activeLesson.title }}
               </h2>
             </div>
@@ -94,21 +115,21 @@
             </span>
           </div>
 
-          <!-- Empty Status Placeholder -->
+          <!-- Empty Status Placeholder (For Chapters 2-8 MVP) -->
           <div
             v-if="activeLesson.status === 'empty' || activeLesson.sections.length === 0"
             class="p-10 text-center rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-dashed border-slate-300 dark:border-slate-700"
           >
             <div class="text-4xl mb-2">📋</div>
             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">
-              Bài học này chưa có nội dung chi tiết (Khung MVP)
+              Bài học này đang được chuẩn bị nội dung
             </h3>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
-              Nội dung sẽ được cập nhật vào file <code>src/data/chapters.json</code> mà không cần sửa code. Hãy xem <b>Bài 1: Kiến trúc Modern Data Warehouse</b> để xem cấu trúc mẫu hoàn chỉnh!
+              Chương 1 đã hoàn thiện đầy đủ 8 bài học theo Slide 1. Hãy bấm sang <b>Chương 1</b> để trải nghiệm đầy đủ!
             </p>
           </div>
 
-          <!-- Sections Renderer -->
+          <!-- Sections Renderer (Rendered with MarkdownView for proper formatting) -->
           <div v-else class="space-y-6">
             <div
               v-for="(sec, idx) in activeLesson.sections"
@@ -135,27 +156,24 @@
                 </div>
               </div>
 
-              <!-- Kind: Concept -->
+              <!-- Kind: Concept (Using MarkdownView for headings, bold, bullet points) -->
               <div
                 v-else-if="sec.kind === 'concept'"
-                class="prose prose-slate dark:prose-invert max-w-none text-xs sm:text-sm leading-relaxed"
+                class="p-1 text-slate-800 dark:text-slate-200"
               >
-                <div class="whitespace-pre-line text-slate-800 dark:text-slate-200">
-                  <FormulaView :formula="sec.markdown" />
-                </div>
+                <MarkdownView :content="sec.markdown" />
               </div>
 
-              <!-- Kind: Example -->
+              <!-- Kind: Example (Green Box with MarkdownView) -->
               <div
                 v-else-if="sec.kind === 'example'"
-                class="p-4 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/60 text-xs sm:text-sm text-emerald-950 dark:text-emerald-100"
+                class="p-4 sm:p-5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/60 text-xs sm:text-sm text-emerald-950 dark:text-emerald-100"
               >
-                <div class="font-bold mb-1 text-emerald-800 dark:text-emerald-300">
-                  💡 Ví dụ minh họa thực tế:
+                <div class="font-bold mb-2 text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                  <span>💡</span>
+                  <span>Ví dụ minh họa thực tế:</span>
                 </div>
-                <div class="whitespace-pre-line leading-relaxed">
-                  <FormulaView :formula="sec.markdown" />
-                </div>
+                <MarkdownView :content="sec.markdown" />
               </div>
 
               <!-- Kind: Lab Placeholder -->
@@ -175,42 +193,156 @@
                 </LabShell>
               </div>
 
-              <!-- Kind: Note -->
+              <!-- Kind: Note (Amber Box with MarkdownView) -->
               <div
                 v-else-if="sec.kind === 'note'"
-                class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/60 text-xs sm:text-sm text-amber-900 dark:text-amber-200"
+                class="p-4 sm:p-5 rounded-2xl bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/60 text-xs sm:text-sm text-amber-950 dark:text-amber-100"
               >
-                <FormulaView :formula="sec.markdown" />
+                <MarkdownView :content="sec.markdown" />
               </div>
             </div>
           </div>
 
-          <!-- Bottom: Mini Quiz & Related Bank Questions -->
+          <!-- Bottom: Mini Quiz & Interactive Practice Questions for this Lesson -->
           <div
-            v-if="activeLesson.relatedQuestionIds && activeLesson.relatedQuestionIds.length > 0"
-            class="pt-6 border-t border-slate-100 dark:border-slate-800 space-y-3"
+            v-if="currentLessonQuestions.length > 0"
+            class="pt-6 border-t border-slate-100 dark:border-slate-800 space-y-4"
           >
             <div class="flex items-center justify-between">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Câu hỏi liên quan trong đề cương 40 câu:
-              </h4>
-              <router-link
-                :to="{ name: 'Learn', query: { topic: activeLessonQuestionTopic } }"
-                class="text-xs text-brand-600 dark:text-brand-400 font-bold hover:underline"
-              >
-                Ôn toàn bộ chủ đề này →
-              </router-link>
+              <h3 class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                <span>🎯</span>
+                <span>Câu hỏi ôn tập của bài này ({{ currentLessonQuestions.length }} câu)</span>
+              </h3>
+              <span class="text-xs text-slate-400">Trích từ Slide & Đề cương</span>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              <router-link
-                v-for="qid in activeLesson.relatedQuestionIds"
-                :key="qid"
-                :to="{ name: 'Learn', query: { q: qid } }"
-                class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 text-xs font-bold text-center text-slate-700 dark:text-slate-300 transition-all shadow-sm"
+            <div class="space-y-3">
+              <div
+                v-for="q in currentLessonQuestions"
+                :key="q.id"
+                class="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 space-y-3 text-xs sm:text-sm"
               >
-                Câu {{ getQuestionNumber(qid) }}
-              </router-link>
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-black px-2 py-0.5 rounded-lg bg-brand-100 dark:bg-brand-900/60 text-brand-800 dark:text-brand-300 text-xs">
+                    Câu {{ q.number }}
+                  </span>
+                  <button
+                    @click="toggleQuestionAnswer(q.id)"
+                    class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1"
+                  >
+                    <span>{{ expandedQuestionIds.has(q.id) ? 'Ẩn đáp án ▴' : 'Xem đáp án & giải thích ▾' }}</span>
+                  </button>
+                </div>
+
+                <div class="font-bold text-slate-900 dark:text-white leading-relaxed">
+                  <FormulaView :formula="q.prompt" />
+                </div>
+
+                <!-- Answer & Explanation Reveal -->
+                <div
+                  v-if="expandedQuestionIds.has(q.id)"
+                  class="pt-3 border-t border-slate-200/80 dark:border-slate-700/80 space-y-2.5 animate-fadeIn"
+                >
+                  <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-950 dark:text-emerald-100">
+                    <span class="font-bold">Đáp án chuẩn: </span>
+                    <FormulaView :formula="q.answer" />
+                  </div>
+
+                  <div class="text-slate-700 dark:text-slate-300 text-xs leading-relaxed">
+                    <span class="font-bold text-slate-900 dark:text-slate-100">Giải thích chi tiết: </span>
+                    <FormulaView :formula="q.explanation" />
+                  </div>
+
+                  <div v-if="q.eli5" class="p-3 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 text-xs text-blue-950 dark:text-blue-100">
+                    <span class="font-bold">💡 Dễ hiểu cho người mới (ELI5): </span>
+                    <span>{{ q.eli5 }}</span>
+                  </div>
+
+                  <div v-if="q.commonMistakes && q.commonMistakes.length > 0" class="p-3 rounded-xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800 text-xs text-rose-950 dark:text-rose-100">
+                    <span class="font-bold">⚠️ Lỗi dễ mắc phải: </span>
+                    <span>{{ q.commonMistakes.join('; ') }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW MODE 2: Comprehensive 47 Questions Bank for Slide 1 (All-in-one Chapter Practice) -->
+    <div v-else class="space-y-4">
+      <div class="p-4 sm:p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+              🎯 47 Câu hỏi ôn tập chi tiết trích từ Slide 1
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Phủ kín toàn bộ các slide bài giảng Chương 1 • Giữ nguyên độc lập không ảnh hưởng đề cương 40 câu gốc
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button
+              @click="toggleAllSlideAnswers"
+              class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200"
+            >
+              {{ areAllSlideAnswersExpanded ? 'Ẩn tất cả đáp án' : 'Hiện tất cả đáp án' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter / Search input -->
+        <div class="flex flex-wrap gap-2">
+          <input
+            v-model="slideSearchQuery"
+            type="text"
+            placeholder="🔍 Tìm nhanh câu hỏi slide (RDBMS, Zero-copy, Medallion, S3, Snowflake...)"
+            class="flex-1 min-w-[240px] px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          />
+        </div>
+
+        <!-- List of all 47 questions -->
+        <div class="space-y-3 pt-2">
+          <div
+            v-for="q in filteredSlideQuestions"
+            :key="q.id"
+            class="p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 space-y-3 text-xs sm:text-sm"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-black px-2 py-0.5 rounded-lg bg-brand-600 text-white text-xs">
+                Câu {{ q.number }}
+              </span>
+              <button
+                @click="toggleQuestionAnswer(q.id)"
+                class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline"
+              >
+                {{ expandedQuestionIds.has(q.id) ? 'Ẩn đáp án ▴' : 'Xem đáp án ▾' }}
+              </button>
+            </div>
+
+            <div class="font-bold text-slate-900 dark:text-white leading-relaxed">
+              <FormulaView :formula="q.prompt" />
+            </div>
+
+            <div
+              v-if="expandedQuestionIds.has(q.id)"
+              class="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-2 animate-fadeIn"
+            >
+              <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-950 dark:text-emerald-100">
+                <span class="font-bold">Đáp án: </span>
+                <FormulaView :formula="q.answer" />
+              </div>
+              <div class="text-slate-700 dark:text-slate-300 text-xs leading-relaxed">
+                <span class="font-bold text-slate-900 dark:text-slate-100">Giải thích: </span>
+                <FormulaView :formula="q.explanation" />
+              </div>
+              <div v-if="q.eli5" class="p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 text-xs text-blue-900 dark:text-blue-100">
+                <span class="font-bold">💡 ELI5: </span>{{ q.eli5 }}
+              </div>
+              <div v-if="q.commonMistakes && q.commonMistakes.length > 0" class="p-2.5 rounded-xl bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800 text-xs text-rose-900 dark:text-rose-100">
+                <span class="font-bold">⚠️ Lưu ý: </span>{{ q.commonMistakes.join('; ') }}
+              </div>
             </div>
           </div>
         </div>
@@ -223,15 +355,29 @@
 import { ref, computed } from 'vue';
 import chaptersData from '../data/chapters.json';
 import questionsData from '../data/questions.json';
+import chapter1QuestionsData from '../data/chapter1Questions.json';
 import { Chapter, Lesson, Question } from '../types';
 import FormulaView from '../components/FormulaView.vue';
+import MarkdownView from '../components/MarkdownView.vue';
 import LabShell from '../components/LabShell.vue';
 import StepControls from '../components/StepControls.vue';
 
 const chapters = chaptersData as Chapter[];
-const questions = questionsData as Question[];
+const originalQuestions = questionsData as Question[];
+const chapter1Questions = chapter1QuestionsData as Question[];
+
+// Combined lookup for questions in lessons
+const allQuestionsMap = computed(() => {
+  const map = new Map<string, Question>();
+  for (const q of originalQuestions) map.set(q.id, q);
+  for (const q of chapter1Questions) map.set(q.id, q);
+  return map;
+});
 
 const activeChapterId = ref(chapters[0].id);
+const chapterTab = ref<'lessons' | 'slide_questions'>('lessons');
+const slideSearchQuery = ref('');
+const expandedQuestionIds = ref<Set<string>>(new Set());
 
 const activeChapter = computed(() => {
   return chapters.find(c => c.id === activeChapterId.value) || chapters[0];
@@ -242,6 +388,7 @@ const activeLessonId = ref(activeChapter.value.lessons[0]?.id || '');
 function selectChapter(chId: string) {
   activeChapterId.value = chId;
   activeLessonId.value = activeChapter.value.lessons[0]?.id || '';
+  chapterTab.value = 'lessons';
 }
 
 const activeLesson = computed<Lesson>(() => {
@@ -251,16 +398,48 @@ const activeLesson = computed<Lesson>(() => {
   );
 });
 
-const activeLessonQuestionTopic = computed(() => {
-  if (!activeLesson.value?.relatedQuestionIds?.length) return '';
-  const firstQ = questions.find(q => q.id === activeLesson.value.relatedQuestionIds[0]);
-  return firstQ ? firstQ.topic : '';
+// Questions relevant to the currently viewed lesson
+const currentLessonQuestions = computed<Question[]>(() => {
+  if (!activeLesson.value?.relatedQuestionIds) return [];
+  const list: Question[] = [];
+  for (const qid of activeLesson.value.relatedQuestionIds) {
+    const q = allQuestionsMap.value.get(qid);
+    if (q) list.push(q);
+  }
+  return list;
 });
 
-function getQuestionNumber(qid: string): string {
-  const q = questions.find(item => item.id === qid);
-  return q ? q.number : qid;
+function toggleQuestionAnswer(qid: string) {
+  if (expandedQuestionIds.value.has(qid)) {
+    expandedQuestionIds.value.delete(qid);
+  } else {
+    expandedQuestionIds.value.add(qid);
+  }
 }
+
+const areAllSlideAnswersExpanded = computed(() => {
+  return chapter1Questions.every(q => expandedQuestionIds.value.has(q.id));
+});
+
+function toggleAllSlideAnswers() {
+  if (areAllSlideAnswersExpanded.value) {
+    for (const q of chapter1Questions) expandedQuestionIds.value.delete(q.id);
+  } else {
+    for (const q of chapter1Questions) expandedQuestionIds.value.add(q.id);
+  }
+}
+
+const filteredSlideQuestions = computed(() => {
+  if (!slideSearchQuery.value.trim()) return chapter1Questions;
+  const q = slideSearchQuery.value.toLowerCase().trim();
+  return chapter1Questions.filter(
+    item =>
+      item.number.toLowerCase().includes(q) ||
+      item.prompt.toLowerCase().includes(q) ||
+      item.answer.toLowerCase().includes(q) ||
+      item.explanation.toLowerCase().includes(q)
+  );
+});
 
 function statusName(status: string): string {
   const map: Record<string, string> = {
@@ -282,3 +461,19 @@ function statusBadgeClass(status: string): string {
   return map[status] || 'bg-slate-100 text-slate-700';
 }
 </script>
+
+<style scoped>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+</style>

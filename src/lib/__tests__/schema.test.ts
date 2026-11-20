@@ -4,8 +4,8 @@ import chaptersData from '../../data/chapters.json';
 import { Question, Chapter } from '../../types';
 
 describe('Data Schema Validation', () => {
-  it('loads all questions covering 40 questions and detailed chapter study items', () => {
-    expect(questionsData.length).toBeGreaterThanOrEqual(47);
+  it('loads exactly 47 questions covering all 40 questions and sub-items', () => {
+    expect(questionsData.length).toBe(47);
   });
 
   it('validates each question conforms to schema', () => {
