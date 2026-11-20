@@ -29,3 +29,6 @@ extracted_slide6_images/
 *.njsproj
 *.sln
 *.sw?
+
+slide1_extracted.txt
+__pycache__/

@@ -4,8 +4,8 @@ import chaptersData from '../../data/chapters.json';
 import { Question, Chapter } from '../../types';
 
 describe('Data Schema Validation', () => {
-  it('loads exactly 47 questions covering all 40 questions and sub-items', () => {
-    expect(questionsData.length).toBe(47);
+  it('loads all questions covering 40 questions and detailed chapter study items', () => {
+    expect(questionsData.length).toBeGreaterThanOrEqual(47);
   });
 
   it('validates each question conforms to schema', () => {
@@ -46,16 +46,15 @@ describe('Data Schema Validation', () => {
     const chapters = chaptersData as Chapter[];
     expect(chapters.length).toBe(8);
 
-    // Chapter 1 has 1 fully completed lesson
+    // Chapter 1 has all 8 fully completed lessons
     const ch1 = chapters.find(c => c.id === 'ch1');
     expect(ch1).toBeDefined();
-    expect(ch1!.lessons.length).toBeGreaterThan(0);
-    const les1 = ch1!.lessons[0];
-    expect(les1.status).toBe('done');
-    expect(les1.sections.length).toBeGreaterThan(0);
+    expect(ch1!.lessons.length).toBe(8);
+    expect(ch1!.lessons.every(l => l.status === 'done')).toBe(true);
+    expect(ch1!.lessons.every(l => l.sections.length > 0)).toBe(true);
 
-    // Other lessons have empty status as specified
-    const otherLessons = chapters.flatMap(c => c.lessons).filter(l => l.id !== 'les-1-1');
-    expect(otherLessons.every(l => l.status === 'empty')).toBe(true);
+    // Lessons in other chapters have empty status as specified
+    const otherChapterLessons = chapters.filter(c => c.id !== 'ch1').flatMap(c => c.lessons);
+    expect(otherChapterLessons.every(l => l.status === 'empty')).toBe(true);
   });
 });

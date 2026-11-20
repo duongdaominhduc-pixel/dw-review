@@ -1,65 +1,365 @@
 [
   {
     "id": "ch1",
-    "title": "Chương 1: Modern Data Warehouse và Nền tảng Đám mây",
+    "title": "Chương 1: Chiến lược & Kiến trúc dữ liệu hiện đại (Slide 1)",
     "order": 1,
     "objectives": [
-      "Hiểu bản chất tách rời Compute và Storage trên nền tảng Cloud",
-      "Nắm vững các chiến lược quản lý chi phí: Caching, Auto-suspend",
-      "Nắm kiến trúc Data Fabric và Data Catalog",
-      "Hiểu các cơ chế bảo mật trên Cloud Object Storage"
+      "Nắm vững sự tiến hóa từ RDBMS truyền thống đến AI-Native Lakehouse",
+      "Hiểu bản chất và vận hành của Modern Data Warehouse trên Cloud (Snowflake, BigQuery, Firebolt)",
+      "Nắm vững 4 chiến lược quản lý chi phí: Auto-suspend, Caching, Data Pruning, Storage Tiering",
+      "Hiểu sâu kiến trúc Data Fabric và Data Catalog / Active Metadata",
+      "Nắm 4 nguyên lý cốt lõi của Data Mesh và triết lý Data as a Product",
+      "Hiểu kiến trúc Unified Lakehouse, Open Table Formats và mô hình Medallion (Bronze, Silver, Gold)",
+      "So sánh đa chiều giữa Data Fabric, Data Mesh và Unified Lakehouse",
+      "Nắm vững hạ tầng Cloud Object Storage (S3, ADLS), độ bền 11 số 9 và các cơ chế bảo mật (Bucket Policies)",
+      "Hiểu nguyên lý tách rời Compute và Storage cùng hình mẫu kiến trúc Snowflake"
     ],
     "lessons": [
       {
         "id": "les-1-1",
-        "title": "Bài 1: Kiến trúc Modern Data Warehouse và Data Fabric",
+        "title": "Bài 1: Sự tiến hóa từ RDBMS đến AI-Native Lakehouse",
         "status": "done",
         "sections": [
           {
             "kind": "objectives",
             "items": [
-              "Phân biệt Cloud DWH truyền thống và Modern DWH",
-              "Hiểu các nền tảng tiêu biểu: Snowflake, BigQuery, Firebolt",
-              "Nắm vững mục tiêu và nguyên tắc của Data Fabric"
+              "Nắm được lịch sử tiến hóa của hệ sinh thái dữ liệu qua các thập kỷ (1980s -> 2020s)",
+              "Hiểu rõ 7 hạn chế cốt tử của RDBMS truyền thống trong kỷ nguyên Big Data",
+              "Nắm vững 7 đặc điểm cốt lõi của kiến trúc AI-Native Lakehouse",
+              "Hiểu lý do tại sao doanh nghiệp cần chuyển đổi kiến trúc dữ liệu ngay hôm nay"
             ]
           },
           {
             "kind": "concept",
-            "markdown": "### Bản chất của Modern Data Warehouse\n\nĐiểm đột phá lớn nhất của Modern Data Warehouse trên nền tảng đám mây là **sự tách rời hoàn toàn giữa tài nguyên tính toán (Compute) và tài nguyên lưu trữ (Storage)**. \n\n- **Storage (Lưu trữ)**: Dữ liệu được lưu trữ trên Object Storage giá rẻ (như AWS S3, Azure ADLS, Google Cloud Storage) với độ bền 99.999999999%.\n- **Compute (Điện toán)**: Các cụm máy ảo tính toán (Virtual Warehouses) có thể bật/tắt tự động (Auto-suspend/Auto-resume) chỉ khi có truy vấn phát sinh.\n\n### Chiến lược quản lý chi phí\n1. **Auto-suspend**: Tự động tắt cụm compute sau một khoảng thời gian không có truy vấn.\n2. **Query Result Caching**: Lưu tạm kết quả truy vấn cũ để trả về ngay cho các truy vấn lặp lại mà không tốn credit tính toán.\n3. **Data Pruning**: Tận dụng metadata Min/Max của các phân vùng để chỉ quét đúng dữ liệu cần thiết."
+            "markdown": "### 1. Sự tiến hóa của hệ sinh thái dữ liệu qua các thập kỷ\nHệ sinh thái lưu trữ và xử lý dữ liệu đã trải qua 5 bước chuyển dịch lớn:\n- **1980s – Kỷ nguyên RDBMS**: Tập trung cho các giao dịch đơn lẻ mang tính nguyên tử (OLTP - Online Transaction Processing).\n- **1990s – Sự trỗi dậy của Data Warehouse**: Phục vụ báo cáo quản trị và phân tích tổng hợp (OLAP - Online Analytical Processing).\n- **2010s – Làn sóng Data Lake**: Lưu trữ dữ liệu thô quy mô lớn không giới hạn định dạng trên Hadoop và Cloud Storage (S3, ADLS).\n- **2020s – Sự xuất hiện của Lakehouse**: Hợp nhất sự tin cậy, giao dịch ACID của Data Warehouse với tính linh hoạt, chi phí rẻ của Data Lake.\n- **Xu hướng hiện nay – AI-Native Architecture**: Dịch chuyển sang kiến trúc hỗ trợ AI ngay từ tầng lưu trữ dữ liệu, với các định dạng bảng mở (**Open Table Formats**) như Apache Iceberg và Delta Lake.\n- **Thay đổi tư duy cốt lõi**: Chuyển từ *\"Lưu trữ để báo cáo quá khứ\"* sang *\"Lưu trữ để dự báo và tự động hành động\"*.\n\n---\n\n### 2. Bảy hạn chế của RDBMS trong kỷ nguyên Big Data\nKhi đối mặt với khối lượng dữ liệu khổng lồ (Volume, Velocity, Variety), RDBMS truyền thống bộc lộ những điểm nghẽn nghiêm trọng:\n1. **Nghẽn cổ chai khi mở rộng (Scalability Bottleneck)**: RDBMS chủ yếu mở rộng theo chiều dọc (Scale-up bằng cách mua máy chủ to hơn), rất đắt đỏ và có giới hạn vật lý, khó mở rộng theo chiều ngang (Scale-out).\n2. **Sự cứng nhắc của Schema-on-write**: Bắt buộc phải định nghĩa cấu trúc bảng (schema) nghiêm ngặt trước khi nạp dữ liệu. Nếu cấu trúc thay đổi, toàn bộ pipeline nạp dữ liệu có nguy cơ gãy vỡ.\n3. **Hạn chế đa loại hình dữ liệu**: Không được tối ưu cho dữ liệu bán cấu trúc (JSON, XML) và dữ liệu phi cấu trúc (video, âm thanh, văn bản tự do).\n4. **Chi phí bản quyền cao**: Các hệ thống cơ sở dữ liệu thương mại (Oracle, MS SQL Server) đi kèm phí giấy phép đắt đỏ theo từng lõi CPU (core-based licensing).\n5. **Tương tác kém với AI/ML**: Các thư viện khoa học dữ liệu (Python, PyTorch, TensorFlow) khó truy cập dữ liệu trực tiếp ở quy mô phân tán.\n6. **Rủi ro Silo dữ liệu**: Mỗi phòng ban tự vận hành một cơ sở dữ liệu riêng biệt, dẫn đến sự phân mảnh, mâu thuẫn số liệu và khó tích hợp.\n7. **Tính toán và lưu trữ bị trói buộc (Coupled Architecture)**: Không thể nâng cấp dung lượng đĩa cứng mà không trả thêm tiền cho CPU, hoặc ngược lại.\n\n---\n\n### 3. Bảy đặc điểm của AI-Native Lakehouse\nKiến trúc AI-Native Lakehouse được thiết kế để trở thành bệ phóng cho Trí tuệ nhân tạo (AI & Generative AI):\n1. **Hỗ trợ Native Vector**: Lưu trữ và truy vấn Vector Embeddings trực tiếp trong kho dữ liệu phục vụ các mô hình ngôn ngữ lớn (LLMs, RAG).\n2. **Quản trị Metadata tự động bằng AI**: AI tự động gán nhãn dữ liệu, phân loại độ nhạy cảm (PII) và áp dụng chính sách bảo mật tự động.\n3. **Công cụ Compute đa năng**: Một nền tảng duy nhất có thể chạy song song cả SQL Analytics lẫn các cụm tính toán Machine Learning phân tán (Spark, Ray).\n4. **Cơ chế ACID trên Object Storage**: Đảm bảo tính nhất quán và toàn vẹn dữ liệu ngay trên hệ thống lưu trữ đám mây giá rẻ.\n5. **Tích hợp Feature Store**: Quản lý, kiểm soát phiên bản và tái sử dụng các đặc trưng (features) cho quá trình huấn luyện và phục vụ mô hình ML.\n6. **Khả năng Streaming thời gian thực**: Nạp và phân tích dữ liệu ngay khi vừa phát sinh (micro-batching hoặc real-time stream).\n7. **Kiến trúc Serverless hoàn toàn**: Người dùng tập trung vào khai phá giá trị dữ liệu mà không cần quan tâm đến việc vận hành máy chủ vật lý.\n\n---\n\n### 4. Tại sao doanh nghiệp cần chuyển đổi ngay?\n- **Tăng tốc độ Time-to-Insight**: Rút ngắn thời gian từ lúc dữ liệu phát sinh đến lúc ra quyết định kinh doanh từ nhiều ngày xuống còn vài phút.\n- **Tối ưu hóa chi phí vận hành**: Xóa bỏ sự lãng phí khi phải duy trì song song hai hệ thống độc lập (Data Lake để lưu thô + Data Warehouse để làm báo cáo).\n- **Sẵn sàng cho kỷ nguyên Generative AI**: Cung cấp nguồn \"nhiên liệu dữ liệu sạch\" và có ngữ cảnh cho các ứng dụng AI Agent.\n- **Tuân thủ pháp lý & kiểm toán**: Dễ dàng theo dõi dòng đời dữ liệu (Data Lineage) và kiểm toán nguồn dữ liệu huấn luyện cho AI.\n- **Hợp nhất đội ngũ Data**: Xóa bỏ ranh giới ngăn cách giữa Data Engineers, Data Analysts và Data Scientists."
           },
           {
             "kind": "example",
-            "markdown": "**Ví dụ thực tế**: Khi người quản lý mở Dashboard doanh thu mỗi 10 phút một lần:\n- Lần 1: Cụm Compute bật lên, quét dữ liệu và tính toán, lưu kết quả vào Cache.\n- Lần 2, 3: Hệ thống phát hiện dữ liệu nguồn không đổi, trả ngay kết quả từ Cache trong 0.05 giây mà **không tốn thêm một đồng chi phí Compute nào**."
+            "markdown": "**Ví dụ thực tế**:\nMột công ty thương mại điện tử lớn trước đây dùng RDBMS để lưu đơn hàng và Hadoop Data Lake lưu log clickstream của khách. Đội BI mất 24 tiếng chạy ETL để xuất báo cáo doanh số, trong khi đội AI không thể kết nối trực tiếp vào đơn hàng để gợi ý sản phẩm theo thời gian thực.\nKhi chuyển sang **AI-Native Lakehouse**:\n- Dữ liệu clickstream và đơn hàng cùng đổ về một kho lưu trữ duy nhất dưới dạng Delta/Iceberg.\n- Đội BI dùng SQL truy vấn ra báo cáo doanh thu sau 5 giây.\n- Đội AI dùng Vector Search kết nối trực tiếp vào dữ liệu để gợi ý sản phẩm ngay khi khách đang lướt ứng dụng."
           },
           {
             "kind": "note",
-            "markdown": "> [!TIP]\n> Hãy ghi nhớ: **Firebolt** là nền tảng Cloud DWH tập trung vào tốc độ sub-second cho phân tích thời gian thực; **Data Fabric** là kiến trúc tấm vải kết nối dữ liệu đa nguồn Zero-copy."
+            "markdown": "> [!NOTE]\n> **Chuyển đổi tư duy quan trọng nhất**: Dữ liệu không còn đơn thuần là tài sản tĩnh lưu lại để xem báo cáo hôm qua bán được bao nhiêu tiền, mà là **nhiên liệu thời gian thực** để hệ thống AI dự báo và tự động hành động ngay lúc này."
           }
         ],
         "miniQuiz": [
-          "q1",
-          "q2",
-          "q3",
-          "q4",
-          "q5"
+          "ch1_q01",
+          "ch1_q02",
+          "ch1_q03",
+          "ch1_q04"
         ],
         "relatedQuestionIds": [
-          "q1",
-          "q2",
-          "q3",
-          "q4",
-          "q5"
+          "ch1_q01",
+          "ch1_q02",
+          "ch1_q03",
+          "ch1_q04",
+          "ch1_q05",
+          "ch1_q06",
+          "ch1_q07",
+          "ch1_q08",
+          "q1"
         ],
         "labIds": []
       },
       {
         "id": "les-1-2",
-        "title": "Bài 2: Tối ưu lưu trữ và bảo mật Object Storage",
-        "status": "empty",
-        "sections": [],
-        "miniQuiz": [],
+        "title": "Bài 2: Modern Data Warehouse vận hành trên Cloud & Quản lý chi phí",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững bản chất và ưu thế của Modern Data Warehouse trên nền tảng Cloud",
+              "Hiểu đặc trưng của 4 nền tảng tiêu biểu: Snowflake, BigQuery, Firebolt, Redshift",
+              "Nắm chắc 4 chiến lược quản lý chi phí hàng đầu: Auto-suspend, Caching, Data Pruning, Storage Tiering"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bản chất của Modern Data Warehouse trên Cloud\nKhác với Data Warehouse truyền thống (On-premises như Teradata hay SQL Server Appliance), Modern DWH được thiết kế lại từ đầu để tận dụng sức mạnh của đám mây:\n- **100% Cloud-Native**: Không cần cài đặt phần cứng vật lý; triển khai đa đám mây (AWS, Azure, GCP).\n- **Tách rời hoàn toàn Compute và Storage**: Lưu trữ dữ liệu vô hạn trên Object Storage giá rẻ; cụm tính toán chỉ cấp phát khi có truy vấn.\n- **Lưu trữ dữ liệu bán cấu trúc (Semi-structured)**: Hỗ trợ kiểu dữ liệu `VARIANT` (JSON, Avro, Parquet) trực tiếp trong bảng mà không cần flatten trước.\n- **Mô hình thanh toán Pay-as-you-go**: Chỉ trả tiền cho tài nguyên tính toán thực tế sử dụng theo từng giây/phút.\n\n---\n\n### 2. Các nền tảng Modern Data Warehouse tiêu biểu\nMỗi nền tảng có một triết lý thiết kế và thế mạnh vượt trội:\n1. **Snowflake**:\n   - Kiến trúc 3 tầng độc lập: *Database Storage*, *Query Processing (Virtual Warehouses)*, *Cloud Services*.\n   - Cho phép tạo vô số Virtual Warehouse riêng biệt cho từng phòng ban mà không bao giờ tranh chấp tài nguyên.\n   - Tính năng độc quyền: **Zero-copy Cloning** (tạo bản sao dữ liệu tức thì không tốn dung lượng) và **Data Sharing** (chia sẻ dữ liệu trực tiếp với đối tác).\n2. **Google BigQuery**:\n   - Nền tảng hoàn toàn **Serverless**: Người dùng không cần tạo hay quản lý bất kỳ cụm máy chủ nào.\n   - Phân tách tầng lưu trữ **Colossus** và tầng tính toán **Borg** kết nối qua mạng siêu tốc **Jupiter**.\n   - Tích hợp **BigQuery ML**: Cho phép huấn luyện mô hình Machine Learning trực tiếp bằng câu lệnh SQL tiêu chuẩn.\n3. **Firebolt**:\n   - Tập trung vào **tốc độ phản hồi sub-second (dưới 1 giây)** cho các ứng dụng phân tích dữ liệu thời gian thực quy mô cực lớn.\n   - Sử dụng cơ chế nén dữ liệu độc quyền và cấu trúc chỉ mục thưa (**Sparse Index / Aggregating Index**) để quét cực ít dữ liệu khi truy vấn.\n4. **Amazon Redshift Serverless**:\n   - Tự động đo lường khối lượng công việc và co giãn tài nguyên điện toán (Redshift Processing Units - RPU) theo thời gian thực.\n\n---\n\n### 3. Bốn chiến lược quản lý chi phí trong Modern DWH\nVì chi phí trên Cloud tính theo mức độ sử dụng, các chiến lược kiểm soát tài nguyên sau đây là kiến thức bắt buộc:\n1. **Auto-suspend / Auto-resume**:\n   - Thiết lập cụm tính toán (Virtual Warehouse) tự động tắt sau một khoảng thời gian nhàn rỗi (ví dụ: sau 5 phút không có câu truy vấn nào).\n   - Tự động bật lại ngay trong vòng 1-2 giây khi có người dùng hoặc tác vụ gửi truy vấn mới.\n2. **Query Result Caching (Bộ nhớ đệm kết quả truy vấn)**:\n   - Hệ thống tự động lưu lại kết quả của các truy vấn đã thực thi trong vòng 24 giờ.\n   - Khi gặp truy vấn giống hệt và dữ liệu nguồn không thay đổi, kết quả được trả về ngay lập tức từ Cache mà **không tiêu tốn bất kỳ credit Compute nào**.\n3. **Data Pruning (Tối ưu hóa quét dữ liệu)**:\n   - Dựa trên metadata lưu trữ giá trị Min/Max của từng phân vùng dữ liệu để loại bỏ những khối dữ liệu không liên quan, giảm tối đa dung lượng dữ liệu cần quét (Bytes Scanned).\n4. **Storage Tiering (Phân tầng lưu trữ)**:\n   - Dữ liệu mới được lưu ở tầng Hot Storage để truy vấn nhanh; dữ liệu cũ ít dùng tự động chuyển sang tầng Cold Storage để giảm tới 80% chi phí lưu trữ."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ minh họa cho câu hỏi thi**:\n- **Câu hỏi**: *\"Trong chiến lược quản lý chi phí trong Modern Data Warehouse, cơ chế nào được dùng để tránh tính toán lại những kết quả cũ?\"*\n- **Trả lời**: Cơ chế **Query Result Caching** (kết hợp với **Auto-suspend** khi nhàn rỗi).\n- **Minh họa**: Khi giám đốc xem Dashboard doanh số mỗi 15 phút:\n  - Lần 1: Cụm tính toán bật lên (Auto-resume), quét dữ liệu, tính toán mất 3 giây, lưu kết quả vào Cache.\n  - Các lần tiếp theo trong ngày: Kết quả lấy trực tiếp từ Cache trong 0.05 giây, cụm tính toán vẫn ở trạng thái tắt (Suspended), chi phí phát sinh bằng 0!"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Điểm trọng tâm trong đề thi**: Nhớ rõ đặc điểm của **Firebolt** là nền tảng Cloud DWH tập trung vào **tốc độ sub-second cho phân tích thời gian thực** (Câu 1), và cơ chế tránh tính toán lại kết quả cũ là **Query Result Caching** (Câu 2)."
+          }
+        ],
+        "miniQuiz": [
+          "ch1_q09",
+          "ch1_q10",
+          "ch1_q11",
+          "ch1_q12"
+        ],
         "relatedQuestionIds": [
+          "ch1_q09",
+          "ch1_q10",
+          "ch1_q11",
+          "ch1_q12",
+          "ch1_q13",
+          "ch1_q14",
+          "ch1_q15",
+          "ch1_q16",
+          "q1",
+          "q2"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-1-3",
+        "title": "Bài 3: Kiến trúc Data Fabric - Tấm vải dữ liệu kết nối đa nguồn",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Định nghĩa bản chất kiến trúc Data Fabric và nguyên lý Zero-copy",
+              "Nắm vững 4 thành phần trụ cột công nghệ tạo nên Data Fabric",
+              "Hiểu định nghĩa và vai trò của Data Catalog cùng Active Metadata",
+              "Nắm được 3 mục tiêu chiến lược quan trọng của Data Fabric"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bản chất của kiến trúc Data Fabric\n**Data Fabric** (Tấm vải dữ liệu) là một kiến trúc thiết kế và tập hợp các dịch vụ dữ liệu nhằm cung cấp khả năng tích hợp dữ liệu nhất quán, linh hoạt và liền mạch trên khắp các môi trường phân tán (On-premises, Multi-cloud, Edge).\n- **Nguyên lý Zero-copy**: Thay vì phải sao chép vật lý toàn bộ dữ liệu từ các hệ thống nguồn về một kho dữ liệu trung tâm duy nhất, Data Fabric tạo ra một **lớp logic trừu tượng (Logical Layer)** cho phép người dùng truy cập và phân tích dữ liệu ngay tại nơi nó đang lưu trữ.\n- **Tiếp cận dựa trên AI (AI-driven)**: Sử dụng các thuật toán máy học để tự động quét, phân tích và kết nối các nguồn dữ liệu rời rạc.\n\n---\n\n### 2. Bốn thành phần trụ cột công nghệ của Data Fabric\n1. **Data Catalog & Active Metadata (Danh mục dữ liệu & Siêu dữ liệu động)**:\n   - **Data Catalog**: Là danh mục lưu trữ và quản lý metadata tập trung, giúp người dùng dễ dàng tìm kiếm (search), khám phá (discover), nắm bắt ngữ cảnh và đánh giá độ tin cậy của tài sản dữ liệu trong toàn tổ chức.\n   - **Active Metadata**: Khác với metadata tĩnh (chỉ mô tả tên cột, kiểu dữ liệu), Active Metadata liên tục ghi nhận lịch sử truy cập, tần suất sử dụng, hiệu năng truy vấn và phân loại nhãn dữ liệu nhạy cảm bằng AI theo thời gian thực.\n2. **Knowledge Graph (Đồ thị tri thức dữ liệu)**:\n   - Mô hình hóa mối quan hệ nghiệp vụ phức tạp giữa các thực thể dữ liệu (ví dụ: Khách hàng - Đơn hàng - Hóa đơn - Tài khoản ngân hàng).\n   - Biến các bảng dữ liệu kỹ thuật khô khan thành mạng lưới ngữ nghĩa kinh doanh (Business Semantics).\n3. **Data Virtualization Engine (Công cụ ảo hóa dữ liệu)**:\n   - Cho phép người dùng thực thi các câu lệnh SQL liên nguồn (**Federated Queries**) trực tiếp qua các công cụ như Trino, Starburst, Presto hoặc Dremio.\n   - Người dùng cảm giác như đang truy vấn một bảng duy nhất, trong khi thực tế dữ liệu đang nằm ở PostgreSQL, MongoDB và AWS S3.\n4. **Automated Data Integration (Tự động hóa tích hợp)**:\n   - Hệ thống tự động đề xuất và sinh ra các luồng tích hợp, chuyển đổi dữ liệu tối ưu dựa trên thói quen sử dụng của người dùng.\n\n---\n\n### 3. Ba mục tiêu quan trọng của Data Fabric\nTheo tài liệu môn học và đề cương, Data Fabric theo đuổi 3 mục tiêu chiến lược cốt lõi:\n1. **Kết nối mọi nguồn dữ liệu rời rạc**: Liên kết các hệ thống dữ liệu không đồng nhất (Cloud, On-premise, SaaS) thành một thể thống nhất mà không cần di chuyển dữ liệu vật lý (**Zero-copy**).\n2. **Tăng tốc độ tự phục vụ dữ liệu (Self-service Analytics)**: Giúp nhân viên nghiệp vụ (Business Users) và Data Analysts dễ dàng tìm kiếm và sử dụng dữ liệu tin cậy mà không phải chờ đợi đội kỹ sư dữ liệu viết code ETL thủ công.\n3. **Thống nhất quản trị và bảo mật (Unified Governance)**: Áp dụng các chính sách bảo mật, phân quyền truy cập, gắn nhãn PII và tuân thủ pháp lý đồng bộ trên toàn bộ tài sản dữ liệu của doanh nghiệp từ một điểm quản trị duy nhất."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ thực tế**:\nMột tập đoàn bán lẻ đa quốc gia có dữ liệu khách hàng lưu trong CRM Salesforce, dữ liệu tồn kho lưu trong hệ thống SAP On-premise, và dữ liệu hành vi web lưu trong AWS S3.\n- Nếu không có Data Fabric: Đội ngũ kỹ sư phải viết 3 pipeline ETL đưa toàn bộ về một Data Warehouse, tốn 2 tháng và dữ liệu luôn bị trễ 1 ngày.\n- Với **Data Fabric**: Data Virtualization Engine cho phép người phân tích viết 1 câu lệnh SQL duy nhất `JOIN` dữ liệu từ Salesforce, SAP và S3 ngay lập tức. Active Metadata tự động che giấu số thẻ tín dụng của khách theo quy định GDPR."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!NOTE]\n> **Câu hỏi thi cốt lõi**: \n> - **Câu 3**: *Data Fabric có những mục tiêu quan trọng nào?* -> Trả lời: **Kết nối mọi nguồn dữ liệu rời rạc thành một thể thống nhất không cần di chuyển vật lý (Zero-copy), tăng tốc độ tự phục vụ dữ liệu, và thống nhất quản trị bảo mật toàn diện**.\n> - **Câu 4**: *Data Catalog là gì?* -> Trả lời: **Danh mục lưu trữ và quản lý metadata tập trung, giúp tìm kiếm, khám phá ngữ cảnh và đánh giá độ tin cậy của tài sản dữ liệu**."
+          }
+        ],
+        "miniQuiz": [
+          "ch1_q17",
+          "ch1_q18",
+          "ch1_q19",
+          "ch1_q20"
+        ],
+        "relatedQuestionIds": [
+          "ch1_q17",
+          "ch1_q18",
+          "ch1_q19",
+          "ch1_q20",
+          "ch1_q21",
+          "ch1_q22",
+          "q3",
+          "q4"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-1-4",
+        "title": "Bài 4: Data Mesh - Phân cấp quyền sở hữu dữ liệu theo miền",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu bối cảnh ra đời của kiến trúc Data Mesh do Zhamak Dehghani khởi xướng",
+              "Nắm vững 4 nguyên lý vàng của Data Mesh",
+              "Phân biệt rõ khái niệm 'Data as a Product' và Data Contract",
+              "Hiểu bản chất khác biệt giữa Data Mesh (văn hóa/tổ chức) và Data Fabric (công nghệ)"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bối cảnh ra đời của Data Mesh\nTrong các tổ chức truyền thống, toàn bộ dữ liệu từ khắp các phòng ban đều được đổ về một **Đội Dữ liệu Trung tâm (Centralized Data Team)** để xử lý. Mô hình này gặp phải 2 nghịch lý lớn:\n- **Nút thắt cổ chai (Bottleneck)**: Một nhóm kỹ sư dữ liệu trung tâm phải phục vụ hàng trăm yêu cầu phân tích từ kinh doanh, tiếp thị, kế toán, chuỗi cung ứng.\n- **Khoảng cách về nghiệp vụ**: Kỹ sư dữ liệu giỏi về kỹ thuật (Spark, SQL, Airflow) nhưng không hiểu sâu bản chất nghiệp vụ của từng phòng ban, dẫn đến việc chuyển đổi dữ liệu sai sót hoặc chậm trễ.\n\nNăm 2019, chuyên gia **Zhamak Dehghani** (ThoughtWorks) đã đề xuất kiến trúc **Data Mesh** nhằm giải quyết vấn đề này từ góc độ **mô hình tổ chức và con người**.\n\n---\n\n### 2. Bốn nguyên lý cốt lõi của Data Mesh\n1. **Domain-driven Data Ownership (Quyền sở hữu dữ liệu theo miền)**:\n   - Dữ liệu thuộc về miền nghiệp vụ nào thì miền đó (ví dụ: Miền Tiếp thị, Miền Bán hàng, Miền Thanh toán) phải trực tiếp chịu trách nhiệm thiết kế, làm sạch và duy trì.\n   - Trao quyền quản lý dữ liệu cho những người hiểu rõ nghiệp vụ nhất.\n2. **Data as a Product - DaaP (Dữ liệu như một sản phẩm)**:\n   - Dữ liệu không còn là phụ phẩm bỏ lại sau giao dịch mà được coi là một **Sản phẩm hoàn chỉnh** phục vụ người tiêu dùng nội bộ (người phân tích, AI model).\n   - Mỗi sản phẩm dữ liệu phải có:\n     - **Chủ sở hữu sản phẩm dữ liệu (Data Product Owner)** chịu trách nhiệm về chất lượng.\n     - **Hợp đồng dữ liệu (Data Contract)** quy định rõ ràng schema, ngữ nghĩa và cam kết chất lượng (SLA về độ trễ, độ chính xác).\n     - Tài liệu hướng dẫn sử dụng và API/SQL endpoint rõ ràng.\n3. **Self-serve Data Platform (Nền tảng hạ tầng tự phục vụ)**:\n   - Đội kỹ thuật dữ liệu trung tâm không còn làm ETL thủ công mà chuyển sang vai trò **xây dựng nền tảng nền tảng (Platform Team)**.\n   - Nền tảng này cung cấp các công cụ tự động hóa (cấp phát tài nguyên lưu trữ, bảo mật, pipeline CI/CD) giúp các miền nghiệp vụ có thể tự xây dựng và triển khai sản phẩm dữ liệu của mình mà không cần chờ IT.\n4. **Federated Computational Governance (Quản trị liên bang tính toán)**:\n   - Mô hình quản trị cân bằng: Vừa đảm bảo tính độc lập, tự chủ của từng miền, vừa đảm bảo tính tuân thủ các tiêu chuẩn chung của toàn công ty (chuẩn định danh khách hàng, bảo mật dữ liệu PII, tuân thủ pháp lý).\n   - Áp dụng cơ chế **Policy-as-Code**: Các quy tắc quản trị được tự động hóa bằng phần mềm và kiểm tra tự động trong mọi luồng dữ liệu."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ thực tế**:\nTại một ứng dụng đặt xe công nghệ (như Grab hay Gojek):\n- **Miền Tài xế (Driver Domain)**: Xây dựng và chịu trách nhiệm về sản phẩm dữ liệu `driver_activity_metrics` cam kết độ trễ dưới 1 phút.\n- **Miền Khách hàng (Passenger Domain)**: Xây dựng sản phẩm dữ liệu `customer_ride_history`.\n- Cả hai miền tự phát triển trên nền tảng Cloud chung (Self-serve Platform) và cam kết đúng Data Contract với nhau. Khi miền Khách hàng cần dữ liệu chuyến đi của Tài xế, họ chỉ cần gọi qua API của sản phẩm dữ liệu mà không cần gửi email yêu cầu đội IT trích xuất."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **So sánh then chốt**: Nếu đề thi hỏi *\"Kiến trúc nào tập trung vào yếu tố phân cấp quyền sở hữu dữ liệu theo miền và chuyển đổi mô hình tổ chức/con người?\"* -> Câu trả lời chính xác là **Data Mesh**."
+          }
+        ],
+        "miniQuiz": [
+          "ch1_q23",
+          "ch1_q24",
+          "ch1_q25",
+          "ch1_q26"
+        ],
+        "relatedQuestionIds": [
+          "ch1_q23",
+          "ch1_q24",
+          "ch1_q25",
+          "ch1_q26",
+          "ch1_q27"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-1-5",
+        "title": "Bài 5: Unified Lakehouse & Kiến trúc Medallion (Huy chương)",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu lý do Unified Lakehouse trở thành tiêu chuẩn vàng của kiến trúc dữ liệu hiện đại",
+              "Nắm vai trò của Open Table Formats (Apache Iceberg, Delta Lake, Apache Hudi)",
+              "Hiểu sâu sắc kiến trúc Medallion qua 3 tầng: Bronze (Raw) -> Silver (Cleaned) -> Gold (Curated)",
+              "Biết cách phân biệt Data Lake, Data Warehouse và Unified Lakehouse"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Tại sao cần Unified Lakehouse?\nTrong thập niên 2010, các doanh nghiệp thường vận hành cấu trúc 2 hệ thống song song:\n1. **Data Lake**: Lưu trữ file dữ liệu thô (JSON, CSV, Log) chi phí rẻ, nhưng thiếu tính toàn vẹn ACID, không hỗ trợ cập nhật/xóa dòng, và dễ biến thành **\"Data Swamp\" (Đầm lầy dữ liệu)** do thiếu quản trị.\n2. **Data Warehouse**: Lưu dữ liệu có cấu trúc phục vụ báo cáo BI với hiệu năng cao, nhưng chi phí lưu trữ cực đắt đỏ và không hỗ trợ dữ liệu phi cấu trúc cho AI/ML.\n\n**Unified Lakehouse** xuất hiện để giải quyết triệt để sự phân đôi này: Nó xây dựng **tính năng quản trị của Data Warehouse trực tiếp trên nền tảng lưu trữ giá rẻ của Data Lake**.\n\n---\n\n### 2. Trái tim của Lakehouse: Open Table Formats\nĐể biến các file lưu trữ tĩnh (như Parquet) thành các bảng cơ sở dữ liệu mạnh mẽ, Lakehouse sử dụng các **Định dạng bảng mở (Open Table Formats)**:\n- **Ba công nghệ dẫn đầu**: **Apache Iceberg**, **Delta Lake**, **Apache Hudi**.\n- **Các tính năng vượt trội mang lại**:\n  - **ACID Transactions**: Đảm bảo các thao tác ghi, đọc, cập nhật diễn ra an toàn, không bao giờ bị lỗi dữ liệu nửa chừng.\n  - **Time Travel (Du hành thời gian)**: Cho phép truy vấn lại trạng thái dữ liệu chính xác tại một thời điểm trong quá khứ hoặc rollback khi pipeline bị lỗi.\n  - **Schema Evolution & Schema Enforcement**: Thêm, sửa, đổi tên cột linh hoạt mà không làm hỏng dữ liệu lịch sử; ngăn chặn nạp dữ liệu sai cấu trúc.\n  - **Partition Evolution**: Thay đổi chiến lược phân vùng bảng theo thời gian mà không cần viết lại toàn bộ dữ liệu cũ.\n\n---\n\n### 3. Kiến trúc Medallion (3 tầng huy chương)\nKiến trúc xử lý dữ liệu chuẩn mực trong Lakehouse được tổ chức thành 3 tầng nâng cao dần chất lượng:\n1. 🥉 **Tầng Bronze (Raw Data - Tầng Đồng)**:\n   - Lưu trữ dữ liệu nguyên bản thu thập từ các nguồn (CDC database logs, REST API, IoT events).\n   - Đặc điểm: Chỉ ghi thêm (Append-only), lưu trữ toàn bộ lịch sử thô, không thực hiện biến đổi dữ liệu, cho phép tái tạo lại toàn bộ hệ thống từ đầu khi cần.\n2. 🥈 **Tầng Silver (Enriched / Conformed Data - Tầng Bạc)**:\n   - Dữ liệu từ tầng Bronze được làm sạch: Khử trùng lặp (Deduplication), kiểm tra tính hợp lệ, sửa lỗi dữ liệu, ép đúng kiểu dữ liệu (Data Type Casting) và giải nén các trường JSON phức tạp.\n   - Thể hiện cái nhìn chuẩn hóa cấp doanh nghiệp (Enterprise View) về các thực thể nghiệp vụ.\n3. 🥇 **Tầng Gold (Curated / Business-level Data - Tầng Vàng)**:\n   - Dữ liệu từ tầng Silver được tổng hợp, biến đổi thành các mô hình phân tích kinh doanh (Star Schema, Kimball Fact và Dimension).\n   - Tối ưu hóa tối đa cho các Dashboard quản trị cấp cao, báo cáo tài chính BI và các tập dữ liệu huấn luyện Machine Learning."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ chu trình dữ liệu trong Medallion Architecture**:\n- **Bronze**: File JSON thô ghi nhận sự kiện khách quét mã thanh toán tại cửa hàng lúc 14:02:15 (`{event_id: 101, raw_payload: \"...\"}`).\n- **Silver**: Bảng `cleansed_transactions` đã tách rõ các cột `transaction_id`, `customer_id`, `amount`, đổi từ chuỗi sang kiểu `DECIMAL(12,2)`, loại bỏ các giao dịch gửi đúp (duplicate).\n- **Gold**: Bảng `monthly_sales_by_store` tính toán tổng doanh số, giá trị đơn hàng trung bình (AOV) của từng cửa hàng theo từng tháng để Ban Giám Đốc mở xem báo cáo."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!NOTE]\n> **Ưu điểm cốt lõi của Medallion**: Tạo ra một pipeline dữ liệu có khả năng kiểm toán (auditable), dễ dàng gỡ lỗi (debug) và phục hồi sự cố bằng cách chỉ cần chạy lại từ tầng Bronze lên."
+          }
+        ],
+        "miniQuiz": [
+          "ch1_q28",
+          "ch1_q29",
+          "ch1_q30",
+          "ch1_q31"
+        ],
+        "relatedQuestionIds": [
+          "ch1_q28",
+          "ch1_q29",
+          "ch1_q30",
+          "ch1_q31",
+          "ch1_q32",
+          "ch1_q33"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-1-6",
+        "title": "Bài 6: So sánh các kiến trúc: Mesh, Fabric hay Lakehouse",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "So sánh có hệ thống giữa Data Fabric, Data Mesh và Unified Lakehouse qua 6 tiêu chí",
+              "Nắm được mô hình kết hợp thực tế (Hybrid Synergy) trong các doanh nghiệp hiện đại",
+              "Biết cách chọn lựa kiến trúc phù hợp cho từng bài toán cụ thể"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bảng đối chiếu toàn diện 3 kiến trúc dữ liệu hiện đại\nKhi xây dựng chiến lược dữ liệu, các chuyên gia thường đặt 3 kiến trúc này lên bàn cân:\n\n| Tiêu chí so sánh | Kiến trúc Data Fabric | Kiến trúc Data Mesh | Kiến trúc Unified Lakehouse |\n| :--- | :--- | :--- | :--- |\n| **Bản chất cốt lõi** | Giải pháp **Công nghệ & Tự động hóa** | Chuyển đổi **Tổ chức & Con người** | Nền tảng **Hạ tầng Lưu trữ & Điện toán** |\n| **Vị trí lưu trữ dữ liệu** | Ảo hóa, dữ liệu ở nguyên tại nguồn (**Zero-copy**) | Dữ liệu do từng miền (Domain) quản lý và phục vụ | Hợp nhất trên Cloud Object Storage duy nhất |\n| **Cơ chế quản trị** | Quản trị tập trung bằng AI & Active Metadata | Quản trị liên bang tự động hóa (Federated Governance) | Quản trị tập trung (Unity Catalog, Apache Polaris) |\n| **Cấu trúc đội ngũ** | Đội Dữ liệu trung tâm quản lý nền tảng chung | Đội Dữ liệu phân tán theo từng phòng ban nghiệp vụ | Cả Data Engineers, Analysts và Data Scientists dùng chung |\n| **Định dạng dữ liệu** | Đa dạng nguồn (RDBMS, NoSQL, APIs, Cloud) | Sản phẩm dữ liệu (Data Products) chuẩn hóa API/SQL | Định dạng bảng mở (**Open Table Formats**: Iceberg, Delta) |\n| **Doanh nghiệp phù hợp** | Nhiều hệ sinh thái rời rạc, không muốn di chuyển dữ liệu | Doanh nghiệp lớn có các phòng ban hoạt động độc lập | Doanh nghiệp cần phân tích Big Data và triển khai AI/ML |\n\n---\n\n### 2. Sự kết hợp tối ưu trong thực tế (Hybrid Architecture)\nBa kiến trúc này **hoàn toàn không loại trừ nhau**, mà có thể kết hợp bổ trợ cho nhau một cách hoàn hảo:\n1. **Tầng nền tảng (Storage & Compute)**: Sử dụng **Unified Lakehouse** (trên AWS S3 / Azure ADLS với Apache Iceberg) để lưu trữ mọi dữ liệu với chi phí rẻ nhất và hỗ trợ giao dịch ACID.\n2. **Tầng tích hợp & Khám phá (Discovery Layer)**: Sử dụng **Data Fabric** với Data Catalog và Active Metadata để tự động quét, gắn nhãn PII và cung cấp công cụ ảo hóa truy vấn dữ liệu nhanh chóng.\n3. **Tầng tổ chức & Vận hành (Operating Model)**: Tổ chức con người theo triết lý **Data Mesh**, giao quyền sở hữu và trách nhiệm chất lượng của từng bảng dữ liệu trên Lakehouse cho từng phòng ban chuyên trách."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ mô hình kết hợp tại một Ngân hàng số**:\n- **Hạ tầng kỹ thuật**: Toàn bộ giao dịch thẻ, tài khoản và lịch sử tín dụng được lưu trên AWS S3 dưới định dạng Apache Iceberg (**Unified Lakehouse**).\n- **Quản lý dữ liệu**: Hệ thống Data Catalog tự động phát hiện số CCCD, tài khoản và che giấu theo quy chuẩn bảo mật (**Data Fabric**).\n- **Phân công đội ngũ**: Khối Quản trị rủi ro tự xây dựng sản phẩm dữ liệu chấm điểm tín dụng (Credit Scoring Product), khối Khách hàng cá nhân tự xây dựng sản phẩm gợi ý mở thẻ tín dụng (**Data Mesh**)."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Mẹo ghi nhớ nhanh cho bài thi**: \n> - Nhắc tới **Ảo hóa, Zero-copy, AI Metadata** -> Nghĩ ngay đến **Data Fabric**.\n> - Nhắc tới **Phân cấp theo miền, Con người, Data as a Product** -> Nghĩ ngay đến **Data Mesh**.\n> - Nhắc tới **Hợp nhất Lake + Warehouse, ACID trên Object Storage, Iceberg/Delta** -> Nghĩ ngay đến **Lakehouse**."
+          }
+        ],
+        "miniQuiz": [
+          "ch1_q34",
+          "ch1_q35",
+          "ch1_q36"
+        ],
+        "relatedQuestionIds": [
+          "ch1_q34",
+          "ch1_q35",
+          "ch1_q36"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-1-7",
+        "title": "Bài 7: Cloud Object Storage (S3, ADLS) - Hạ tầng lưu trữ quy mô lớn",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu cấu trúc dữ liệu phẳng dạng Key - Value của Cloud Object Storage",
+              "Nắm được cam kết độ bền 11 số 9 (99.999999999%)",
+              "Hiểu cơ chế quản lý vòng đời (Lifecycle Policies) và các tầng lưu trữ (Storage Tiering)",
+              "Nắm chắc các cơ chế bảo mật: Mã hóa At-Rest, In-Transit, IAM Policies, Bucket Policies, Versioning và Object Lock"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bản chất của Cloud Object Storage (AWS S3, Azure ADLS, Google Cloud Storage)\nCloud Object Storage là xương sống lưu trữ của mọi Modern Data Warehouse và Data Lake hiện đại:\n- **Cấu trúc lưu trữ phẳng (Flat Structure)**: Không có cây thư mục hay ổ đĩa phân cấp như File System truyền thống (POSIX). Toàn bộ dữ liệu được lưu dưới dạng cặp **Key – Value**.\n- **Mỗi Object bao gồm 3 thành phần**:\n  1. **Payload**: Nội dung file dữ liệu thực tế (Parquet, CSV, ảnh, video).\n  2. **Metadata**: Các thông tin mô tả đi kèm (ngày tạo, kích thước, định dạng, thẻ tag tùy biến).\n  3. **Unique Key**: Định danh duy nhất của đối tượng (các dấu gạch chéo `/` trong đường dẫn chỉ là tiền tố chuỗi - Prefix để giả lập thư mục trên giao diện).\n- **Khả năng mở rộng (Scalability)**: Mở rộng gần như vô hạn, không cần quan tâm đến việc mua thêm ổ cứng hay cấu hình phân vùng đĩa.\n\n---\n\n### 2. Độ bền vượt trội 11 số 9 (99.999999999% Durability)\n- Các nhà cung cấp đám mây lớn (AWS S3, Azure Blob/ADLS) cam kết độ bền dữ liệu đạt **99.999999999%** mỗi năm.\n- **Cơ chế**: Dữ liệu tự động được nhân bản và phân tán qua ít nhất 3 Trung tâm dữ liệu (Availability Zones) cách xa nhau về mặt địa lý. Nếu một trung tâm dữ liệu bị sự cố mất điện hay hỏa hoạn, dữ liệu vẫn an toàn nguyên vẹn.\n\n---\n\n### 3. Quản lý vòng đời dữ liệu (Lifecycle Policies & Storage Tiering)\nNhằm tối ưu hóa chi phí lưu trữ, dữ liệu được tự động di chuyển qua các tầng lưu trữ theo thời gian:\n1. **Hot Tier (S3 Standard)**: Dành cho dữ liệu thường xuyên truy cập, độ trễ truy xuất mili-giây, giá lưu trữ tiêu chuẩn.\n2. **Warm Tier (S3 Standard-Infrequent Access / Azure Cool)**: Dành cho dữ liệu ít truy cập (ví dụ sau 30 ngày), chi phí lưu trữ rẻ hơn ~50%, nhưng có phát sinh phí truy xuất dữ liệu khi đọc.\n3. **Cold Tier (S3 Glacier / Azure Cold)**: Dành cho dữ liệu sao lưu dài hạn (sau 90 ngày), chi phí lưu trữ cực rẻ, thời gian lấy dữ liệu từ vài phút đến vài giờ.\n4. **Deep Archive Tier (S3 Glacier Deep Archive)**: Chi phí lưu trữ rẻ nhất (rẻ hơn 90% so với Standard), thời gian lấy dữ liệu từ 12-48 giờ, chuyên dùng cho lưu trữ tài liệu kế toán, pháp lý bắt buộc 5-10 năm.\n\n---\n\n### 4. Cơ chế an toàn và bảo mật dữ liệu toàn diện\n1. **Mã hóa dữ liệu (Encryption)**:\n   - **Mã hóa At-Rest (Khi lưu trên đĩa)**: Tự động mã hóa bằng thuật toán AES-256 (SSE-S3, SSE-KMS, Azure Storage Encryption).\n   - **Mã hóa In-Transit (Khi di chuyển qua mạng)**: Bắt buộc sử dụng giao thức HTTPS / TLS 1.3.\n2. **Kiểm soát quyền truy cập**:\n   - **IAM Policies (Identity and Access Management)**: Cấp quyền truy cập chi tiết dựa trên danh tính người dùng hoặc vai trò (Roles) trong nội bộ tài khoản đám mây.\n   - **Bucket Policies**: Quy định và kiểm soát quyền truy cập chi tiết cho **toàn bộ Data Container / Bucket từ bên ngoài** (cho phép hoặc chặn truy cập từ địa chỉ IP, dải mạng VPC, hoặc tổ chức đối tác cụ thể).\n3. **Bảo vệ tính toàn vẹn của dữ liệu**:\n   - **Versioning (Lưu phiên bản)**: Lưu lại toàn bộ các bản sửa đổi của file. Nếu bị ghi đè hoặc vô tình xóa nhầm, hoàn toàn có thể khôi phục lại phiên bản cũ ngay lập tức.\n   - **Object Lock (Khóa đối tượng - WORM)**: Triển khai mô hình *Write Once, Read Many* – ngăn chặn tuyệt đối việc sửa đổi hoặc xóa dữ liệu trong một khoảng thời gian quy định nhằm tuân thủ pháp lý tài chính."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ thiết lập chính sách vòng đời thực tế trong Data Warehouse**:\n- Dữ liệu log nạp hàng ngày đổ vào thư mục `raw/` trên S3 Standard.\n- Sau 30 ngày: S3 Lifecycle tự động chuyển toàn bộ file sang S3 Standard-IA để tiết kiệm chi phí lưu trữ.\n- Sau 90 ngày: Chuyển toàn bộ dữ liệu vào S3 Glacier Flexible Retrieval.\n- Sau 7 năm: S3 tự động xóa vĩnh viễn các file log này theo quy định của công ty."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!NOTE]\n> **Câu hỏi thi số 5**: *Bucket Policies có chức năng gì?* \n> -> Đáp án chuẩn: **Quy định và kiểm soát quyền truy cập chi tiết cho toàn bộ Data Container / Bucket từ bên ngoài trên Cloud Object Storage (như AWS S3)**."
+          }
+        ],
+        "miniQuiz": [
+          "ch1_q37",
+          "ch1_q38",
+          "ch1_q39",
+          "ch1_q40"
+        ],
+        "relatedQuestionIds": [
+          "ch1_q37",
+          "ch1_q38",
+          "ch1_q39",
+          "ch1_q40",
+          "ch1_q41",
           "q5"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-1-8",
+        "title": "Bài 8: Nguyên lý tách rời Compute và Storage (Decoupling Architecture)",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "So sánh mô hình Coupled (gắn chặt) truyền thống và Decoupled (tách rời) hiện đại",
+              "Hiểu sâu cơ chế vận hành của các cụm tính toán tạm thời (Ephemeral Virtual Clusters)",
+              "Nắm vững kiến trúc 3 tầng và các tính năng đột phá của Snowflake (Zero-copy Cloning, Data Sharing)",
+              "Hiểu lợi ích kinh tế: chuyển dịch từ CAPEX sang OPEX và phục vụ công việc AI/ML"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Tại sao phải tách rời Compute và Storage?\nTrong các hệ thống phân tích truyền thống (như On-premises RDBMS, cụm máy chủ Hadoop/HDFS):\n- **Mô hình Coupled (Trói buộc)**: CPU, RAM và ổ cứng gắn cứng trên cùng một máy chủ vật lý.\n- **Nghịch lý lãng phí tài nguyên**: Khi dữ liệu phình to cần thêm 50TB lưu trữ, công ty buộc phải mua thêm server có cả CPU và RAM đắt tiền mặc dù không có nhu cầu tăng năng lực tính toán. Ngược lại, vào dịp cuối tháng cần chạy báo cáo nặng, muốn tăng CPU lại phải mua kèm thêm dung lượng đĩa cứng dư thừa.\n\n**Mô hình Decoupled (Tách rời hoàn toàn)** trên đám mây đã giải quyết triệt để vấn đề này:\n- **Storage**: Đặt tại dịch vụ lưu trữ đối tượng đám mây dùng chung (AWS S3, Azure ADLS, Google Cloud Storage) với chi phí rẻ như cho không.\n- **Compute**: Là các cụm máy tính ảo hóa độc lập có thể khởi tạo, mở rộng quy mô, và tắt đi trong nháy mắt.\n- **Khả năng mở rộng độc lập (Independent Scalability)**: Bạn có thể tăng 1000 CPU tính toán mà không cần mua thêm 1GB ổ cứng nào!\n\n---\n\n### 2. Cách thức vận hành của kiến trúc Decoupled\n1. **Lưu trữ trung tâm duy nhất (Single Source of Truth)**: Toàn bộ dữ liệu sạch được lưu trữ tại một nơi trên Cloud Storage dưới các định dạng nén dạng cột (Parquet, ORC, Iceberg).\n2. **Cụm tính toán tạm thời (Ephemeral Clusters)**: Các máy ảo tính toán chỉ được bật lên khi có truy vấn phát sinh và tự động giải phóng (Auto-suspend) khi xong việc.\n3. **Cơ chế Caching cục bộ**: Để khắc phục độ trễ mạng khi đọc dữ liệu từ Storage từ xa về Compute, mỗi cụm máy tính toán được trang bị ổ cứng SSD NVMe tốc độ cao để lưu đệm các khối dữ liệu vừa đọc.\n4. **Predicate Pushdown (Đẩy điều kiện lọc xuống lưu trữ)**: Cụm tính toán chỉ tải về từ ổ đĩa các cột và các dòng thỏa mãn điều kiện `WHERE`, giảm tải tối đa lưu lượng băng thông mạng.\n\n---\n\n### 3. Snowflake – Hình mẫu kinh điển của sự tách rời\nSnowflake là nền tảng tiên phong đưa kiến trúc tách rời trở thành tiêu chuẩn công nghiệp với kiến trúc 3 tầng:\n1. **Database Storage Layer**: Sử dụng Cloud Object Storage để lưu trữ toàn bộ dữ liệu nén, phân vùng tự động (Micro-partitions).\n2. **Query Processing Layer**: Bao gồm vô số các **Virtual Warehouses** độc lập. Mỗi phòng ban (Tài chính, Marketing, Data Science) sở hữu một Virtual Warehouse riêng:\n   - Truy vấn nặng của phòng Tài chính chạy hết công suất cũng **không bao giờ làm chậm hay nghẽn Dashboard của Ban Giám Đốc**.\n   - Có thể nâng cấp kích thước Virtual Warehouse từ Size S lên Size 4XL chỉ trong vòng **1 giây** mà không cần dừng hệ thống.\n3. **Cloud Services Layer**: Lớp điều phối trung tâm quản lý xác thực, phân quyền, tối ưu hóa câu truy vấn (Query Optimization) và quản lý metadata.\n\n**Hai tính năng đột phá của Snowflake dựa trên sự tách rời**:\n- **Zero-copy Cloning**: Cho phép tạo ngay một bản sao môi trường dữ liệu Production để đội phát triển thử nghiệm trong vòng 2 giây mà **không tốn thêm 1 byte dung lượng đĩa nào** (chỉ sao chép metadata, cùng trỏ vào khối dữ liệu gốc).\n- **Secure Data Sharing**: Cho phép chia sẻ trực tiếp dữ liệu cho đối tác bên ngoài bằng cách cấp quyền đọc trực tiếp lên tầng lưu trữ của mình, loại bỏ hoàn toàn việc phải xuất file CSV gửi qua FTP.\n\n---\n\n### 4. Lợi ích kinh tế và vận hành\n- **Tối ưu hóa CAPEX sang OPEX**: Doanh nghiệp không cần phải bỏ hàng triệu USD mua sắm phần cứng dự phòng trước (CAPEX), mà chuyển sang chi trả theo mức sử dụng thực tế (OPEX).\n- **Phục vụ AI/ML linh hoạt**: Khi cần huấn luyện mô hình học sâu (Deep Learning), công ty có thể thuê một cụm máy ảo GPU cực mạnh trong 3 tiếng rồi tắt đi, chi phí chỉ vài chục USD thay vì phải đầu tư cả cụm server AI chuyên dụng."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ kịch bản thực tế**:\nVào đợt mua sắm 11/11, lượng giao dịch tăng gấp 20 lần:\n- Với hệ thống On-premises cũ: Máy chủ bị quá tải, treo toàn bộ hệ thống phân tích.\n- Với **Modern DWH Decoupled**: Hệ thống tự động kích hoạt tính năng **Auto-scaling Multi-cluster Warehouse**, tăng từ 1 cụm lên 5 cụm tính toán để đáp ứng lượng truy vấn của khách hàng. Khi ngày 11/11 kết thúc, hệ thống tự động co về 1 cụm, giúp doanh nghiệp tiết kiệm hàng chục ngàn USD."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Tóm tắt cốt lõi của Chương 1**: Sự tách rời **Compute và Storage** kết hợp với **Cloud Object Storage** và **Open Table Formats** chính là nền móng kỹ thuật giúp các kiến trúc hiện đại (Modern DWH, Data Fabric, Data Mesh, Lakehouse) vận hành hiệu quả và tiết kiệm chi phí."
+          }
+        ],
+        "miniQuiz": [
+          "ch1_q42",
+          "ch1_q43",
+          "ch1_q44",
+          "ch1_q45"
+        ],
+        "relatedQuestionIds": [
+          "ch1_q42",
+          "ch1_q43",
+          "ch1_q44",
+          "ch1_q45",
+          "ch1_q46",
+          "ch1_q47",
+          "q1",
+          "q2"
         ],
         "labIds": []
       }
