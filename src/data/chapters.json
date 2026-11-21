@@ -2413,34 +2413,340 @@
   },
   {
     "id": "ch7",
-    "title": "Chương 7: Dự đoán Chuỗi với Compact Prediction Tree (CPT)",
+    "title": "Chương 7: Quản trị, Bảo mật và Đạo đức dữ liệu",
     "order": 7,
     "objectives": [
-      "Nắm cấu trúc 3 phần của CPT: Prediction Tree, Inverted Index, Lookup Table",
-      "Thực hiện thuật toán dự đoán phần tử tiếp theo cho chuỗi query"
+      "Nắm vững khung quản trị dữ liệu (Data Governance) theo Đạo luật EU AI Act 2026 và 4 cấp độ rủi ro",
+      "Làm chủ luồng quan sát 360° Automated Data Lineage, truy vết nguồn gốc và phân tích tác động (Impact Analysis)",
+      "Thành thạo kỹ thuật bảo mật phân quyền sâu: Row-level Security (RLS) và Column-level Masking (CLM)",
+      "Hiểu nguyên lý Secure Data Sharing: Chia sẻ dữ liệu liên tổ chức không sao chép (Zero-copy Sharing)",
+      "Ứng dụng framework ẩn danh hóa k-Anonymity (Generalization & Suppression) và Differential Privacy (Privacy Budget ε)",
+      "Vận hành AI-driven Data Catalog, Semantic Search, Trust Score và phân biệt Business Glossary vs Technical Metadata",
+      "Kiểm soát đạo đức AI, khử bias 3 giai đoạn (Pre/In/Post-processing) và nguyên tắc Human-in-the-loop",
+      "Thiết lập quy trình kiểm toán tuân thủ tự động liên tục 24/7 (Continuous Auditing: Monitor -> Detect -> Alert -> Report)"
     ],
     "lessons": [
       {
         "id": "les-7-1",
-        "title": "Bài 1: Cấu trúc dữ liệu và giải thuật CPT",
-        "status": "empty",
+        "title": "Bài 1: Khung Quản trị Dữ liệu (Data Governance) theo Đạo luật EU AI Act 2026",
+        "status": "done",
         "sections": [
           {
-            "kind": "lab",
-            "labId": "cpt-lab"
+            "kind": "objectives",
+            "items": [
+              "Nắm vững bối cảnh và mốc thời gian áp dụng toàn diện của EU AI Act từ năm 2026",
+              "Hiểu rõ 3 trụ cột bắt buộc trong Data Governance: Transparency, Human Oversight, Data Quality",
+              "Phân biệt và phân loại chính xác 4 cấp độ rủi ro AI: Unacceptable, High, Limited, Minimal Risk",
+              "Nắm vững 3 nghĩa vụ tuân thủ bắt buộc đối với hệ thống AI rủi ro cao (High Risk)"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bối cảnh pháp lý toàn cầu: Đạo luật EU AI Act 2026\nĐạo luật Trí tuệ Nhân tạo Liên minh Châu Âu (**EU AI Act**) chính thức áp dụng toàn diện từ năm **2026**, đánh dấu bước ngoặt mang tính lịch sử đối với các doanh nghiệp hoạt động trong lĩnh vực Hệ thống Thông tin Quản lý (**MIS**) và Công nghệ Tài chính (**Fintech**).\n- **Yêu cầu cốt lõi**: Bắt buộc doanh nghiệp phải thiết lập hệ sinh thái quản trị dữ liệu (**Data Governance**) nghiêm ngặt xuyên suốt từ khâu nạp dữ liệu (*Ingestion*), qua các tầng biến đổi dữ liệu, cho đến khâu vận hành mô hình học máy.\n- **3 Trụ cột bắt buộc trong Data Governance** (Slide 4):\n  1. **Kiểm soát tính minh bạch (Transparency)**: Người dùng và cơ quan quản lý phải hiểu rõ mô hình AI hoạt động như thế nào, ra quyết định dựa trên dữ liệu gì.\n  2. **Giám sát tối đa yếu tố con người (Human Oversight)**: Con người luôn nắm quyền kiểm soát, giám sát và can thiệp khẩn cấp vào mọi hoạt động của AI.\n  3. **Đảm bảo chất lượng dữ liệu huấn luyện (Data Quality)**: Dữ liệu nạp vào mô hình phải sạch, đại diện, không chứa sai sót hệ thống và kiểm soát định kiến.\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-rose-400 mb-3 text-center\">\n    ⚖️ KHUNG PHÂN CẤP 4 MỨC ĐỘ RỦI RO THEO ĐẠO LUẬT EU AI ACT 2026 (SLIDE 4-6)\n  </div>\n  <svg viewBox=\"0 0 800 270\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Tier 1: Unacceptable Risk -->\n    <path d=\"M 330 20 L 470 20 L 510 75 L 290 75 Z\" fill=\"#ef4444\" fill-opacity=\"0.25\" stroke=\"#ef4444\" stroke-width=\"2\"/>\n    <text x=\"400\" y=\"44\" fill=\"#f87171\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">1. UNACCEPTABLE RISK (CẤM HOÀN TOÀN)</text>\n    <text x=\"400\" y=\"62\" fill=\"#fecaca\" font-size=\"10\" text-anchor=\"middle\">Social Scoring (Chấm điểm công dân), Thao túng tiềm thức</text>\n    <!-- Tier 2: High Risk -->\n    <path d=\"M 285 82 L 515 82 L 565 137 L 235 137 Z\" fill=\"#f97316\" fill-opacity=\"0.2\" stroke=\"#f97316\" stroke-width=\"2\"/>\n    <text x=\"400\" y=\"106\" fill=\"#fb923c\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">2. HIGH RISK (KIỂM SOÁT NGHIÊM NGẶT)</text>\n    <text x=\"400\" y=\"124\" fill=\"#fed7aa\" font-size=\"10\" text-anchor=\"middle\">Fintech Chấm điểm tín dụng, Tuyển dụng nhân sự, Hạ tầng thiết yếu</text>\n    <!-- Tier 3: Limited / Transparent Risk -->\n    <path d=\"M 230 144 L 570 144 L 620 199 L 180 199 Z\" fill=\"#eab308\" fill-opacity=\"0.2\" stroke=\"#eab308\" stroke-width=\"2\"/>\n    <text x=\"400\" y=\"168\" fill=\"#facc15\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">3. LIMITED / TRANSPARENT RISK (DÁN NHÃN MINH BẠCH)</text>\n    <text x=\"400\" y=\"186\" fill=\"#fef08a\" font-size=\"10\" text-anchor=\"middle\">Chatbots, Deepfakes, AI sinh văn bản/hình ảnh tự động</text>\n    <!-- Tier 4: Minimal Risk -->\n    <path d=\"M 175 206 L 625 206 L 680 260 L 120 260 Z\" fill=\"#10b981\" fill-opacity=\"0.2\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <text x=\"400\" y=\"230\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">4. MINIMAL RISK (TỰ DO VẬN HÀNH)</text>\n    <text x=\"400\" y=\"248\" fill=\"#a7f3d0\" font-size=\"10\" text-anchor=\"middle\">Bộ lọc Spam email, AI gợi ý trong trò chơi điện tử</text>\n    <!-- Side obligations for High Risk -->\n    <rect x=\"15\" y=\"85\" width=\"200\" height=\"90\" rx=\"10\" fill=\"#1e293b\" stroke=\"#f97316\" stroke-width=\"1.5\" stroke-dasharray=\"3,3\"/>\n    <text x=\"115\" y=\"105\" fill=\"#f97316\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">3 NGHĨA VỤ HIGH-RISK:</text>\n    <text x=\"115\" y=\"123\" fill=\"#cbd5e1\" font-size=\"9.5\" text-anchor=\"middle\">• 1. Data Quality &amp; Bias Free</text>\n    <text x=\"115\" y=\"141\" fill=\"#cbd5e1\" font-size=\"9.5\" text-anchor=\"middle\">• 2. Technical Documentation</text>\n    <text x=\"115\" y=\"159\" fill=\"#cbd5e1\" font-size=\"9.5\" text-anchor=\"middle\">• 3. Automated Traceability</text>\n    <!-- Side Governance Pillars -->\n    <rect x=\"585\" y=\"85\" width=\"200\" height=\"90\" rx=\"10\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"1.5\" stroke-dasharray=\"3,3\"/>\n    <text x=\"685\" y=\"105\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">3 TRỤ CỘT GOVERNANCE:</text>\n    <text x=\"685\" y=\"123\" fill=\"#cbd5e1\" font-size=\"9.5\" text-anchor=\"middle\">• Transparency (Minh bạch)</text>\n    <text x=\"685\" y=\"141\" fill=\"#cbd5e1\" font-size=\"9.5\" text-anchor=\"middle\">• Human Oversight (Giám sát)</text>\n    <text x=\"685\" y=\"159\" fill=\"#cbd5e1\" font-size=\"9.5\" text-anchor=\"middle\">• Training Data Quality</text>\n  </svg>\n</div>\n\n---\n\n### 2. Bốn cấp độ rủi ro trong chủ thể dữ liệu AI (Slide 5)\n1. **Unacceptable Risk (Rủi ro không thể chấp nhận - CẤM HOÀN TOÀN)**:\n   - Các hệ thống vi phạm trực tiếp quyền cơ bản của con người: Hệ thống chấm điểm công dân xã hội (**Social Scoring**), AI thao túng hành vi người dùng dưới ngưỡng nhận thức.\n2. **High Risk (Rủi ro cao - KIỂM SOÁT NGHIÊM NGẶT)**:\n   - Các hệ thống ảnh hưởng trực tiếp đến sinh kế và an toàn công dân: AI chấm điểm tín dụng trong Fintech (**Credit Scoring**), AI sàng lọc hồ sơ tuyển dụng nhân sự, AI quản trị hạ tầng thiết yếu (giao thông, y tế, điện lực).\n3. **Transparent / Limited Risk (Rủi ro giới hạn - YÊU CẦU DÁN NHÃN)**:\n   - Các hệ thống tương tác trực tiếp hoặc giả lập con người: **Chatbots**, hệ thống tạo ảnh/video **Deepfake**, công cụ tạo sinh nội dung. Bắt buộc dán nhãn công khai để người dùng nhận biết họ đang làm việc với AI.\n4. **Minimal Risk (Rủi ro tối thiểu - TỰ DO VẬN HÀNH)**:\n   - Các ứng dụng AI phổ thông: Bộ lọc email rác (Spam Filter), AI điều khiển nhân vật trong trò chơi điện tử (Video Games)."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Ví dụ thực tế: Tình huống ngân hàng áp dụng AI duyệt khoản vay tín dụng\nMột ngân hàng thương mại triển khai mô hình học máy để tự động chấm điểm hồ sơ tín dụng (Credit Scoring) của khách hàng vay tiêu dùng.\n- **Phân loại rủi ro**: Thuộc nhóm **High Risk** theo Đạo luật AI Act.\n- **Các nghĩa vụ ngân hàng bắt buộc phải thực thi (Slide 6)**:\n  1. **Data Quality**: Dữ liệu huấn luyện lịch sử 5 năm qua phải được làm sạch, kiểm tra không có thiên kiến phân biệt vùng miền hay giới tính.\n  2. **Technical Documentation**: Lưu trữ hồ sơ thiết kế kiến trúc Pipeline, mã nguồn dbt/SQL biến đổi đặc trưng, và các siêu tham số mô hình.\n  3. **Traceability**: Toàn bộ nhật ký truy vấn và chấm điểm tín dụng phải được lưu trữ tự động trên Cloud Data Warehouse để phục vụ thanh tra ngân hàng trung ương bất cứ lúc nào."
+          },
+          {
+            "kind": "note",
+            "markdown": "### ⚠️ Mẹo thi & Điểm cốt lõi cần nhớ\n- **AI Act áp dụng toàn diện từ 2026** (tránh nhầm với 2024 hay 2025).\n- **Fintech chấm điểm tín dụng** là **High Risk**, KHÔNG PHẢI Unacceptable Risk.\n- **Chấm điểm công dân (Social Scoring)** là **Unacceptable Risk** và bị cấm tuyệt đối.\n- 3 trụ cột Governance: **Transparency**, **Human Oversight**, **Data Quality**."
           }
         ],
         "miniQuiz": [
-          "q32",
-          "q33"
+          "ch7_q03"
         ],
         "relatedQuestionIds": [
-          "q32",
-          "q33"
+          "ch7_q01",
+          "ch7_q02",
+          "ch7_q03",
+          "ch7_q04",
+          "ch7_q05"
         ],
-        "labIds": [
-          "cpt-lab"
-        ]
+        "labIds": []
+      },
+      {
+        "id": "les-7-2",
+        "title": "Bài 2: Automated Data Lineage: Truy vết nguồn gốc dữ liệu 360 độ",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Định nghĩa Automated Data Lineage và vai trò xuyên suốt kiến trúc Medallion",
+              "Hiểu rõ luồng quan sát 360 độ: Data Source -> Transformation -> Data Quality -> AI Consumption",
+              "Làm chủ cơ chế Impact Analysis (Phân tích tác động) khi Schema tầng Bronze thay đổi",
+              "Ứng dụng Lineage để tối ưu hóa Root-Cause Analysis, giảm 90% thời gian rà soát lỗi"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bản chất và Định nghĩa của Automated Data Lineage (Slide 7)\n- **Định nghĩa**: **Automated Data Lineage** là khả năng quan sát và ghi nhận toàn diện luồng đi (*Flow*) của dữ liệu từ nguồn phát sinh ban đầu, qua các bước biến đổi (*Transformations*) cho đến khi được mô hình AI tiêu thụ.\n- **Tích hợp với kiến trúc Medallion**:\n  - **Bronze Layer (Raw)**: Dữ liệu thô từ CRM/ERP được nạp vào, ghi nhận cấu trúc Metadata ban đầu.\n  - **Silver Layer (Cleansed)**: Trích xuất logic biến đổi từ các câu lệnh SQL trong **dbt** hoặc Apache Spark.\n  - **Gold Layer (Curated & Features)**: Dữ liệu đã tổng hợp, sẵn sàng kết nối với Feature Store và mô hình Machine Learning.\n- **Câu hỏi vàng mà Lineage trả lời**: *\"Mô hình AI lấy dữ liệu từ đâu, và dữ liệu đó bị biến đổi bởi câu lệnh SQL nào?\"*\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-sky-400 mb-3 text-center\">\n    🔄 LUỒNG QUAN SÁT 360° AUTOMATED DATA LINEAGE & IMPACT ANALYSIS (SLIDE 7-9)\n  </div>\n  <svg viewBox=\"0 0 820 230\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Stage 1: Data Sources -->\n    <rect x=\"15\" y=\"30\" width=\"135\" height=\"110\" rx=\"12\" fill=\"#1e293b\" stroke=\"#64748b\" stroke-width=\"1.5\"/>\n    <text x=\"82\" y=\"55\" fill=\"#94a3b8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">1. DATA SOURCES</text>\n    <text x=\"82\" y=\"78\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">CRM, ERP</text>\n    <text x=\"82\" y=\"98\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">Web Logs / API</text>\n    <text x=\"82\" y=\"118\" fill=\"#38bdf8\" font-size=\"9\" text-anchor=\"middle\">Metadata Extract</text>\n    <!-- Arrow 1 -->\n    <line x1=\"150\" y1=\"85\" x2=\"190\" y2=\"85\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Stage 2: Bronze Layer -->\n    <rect x=\"195\" y=\"30\" width=\"135\" height=\"110\" rx=\"12\" fill=\"#1e293b\" stroke=\"#cd7f32\" stroke-width=\"1.5\"/>\n    <text x=\"262\" y=\"55\" fill=\"#cd7f32\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">2. BRONZE LAYER</text>\n    <text x=\"262\" y=\"78\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">Dữ liệu thô (Raw)</text>\n    <text x=\"262\" y=\"98\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">Append-only Ingest</text>\n    <text x=\"262\" y=\"118\" fill=\"#e2e8f0\" font-size=\"9\" text-anchor=\"middle\">Schema Check</text>\n    <!-- Arrow 2 -->\n    <line x1=\"330\" y1=\"85\" x2=\"370\" y2=\"85\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Stage 3: Silver Layer -->\n    <rect x=\"375\" y=\"30\" width=\"135\" height=\"110\" rx=\"12\" fill=\"#1e293b\" stroke=\"#cbd5e1\" stroke-width=\"1.5\"/>\n    <text x=\"442\" y=\"55\" fill=\"#cbd5e1\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">3. SILVER LAYER</text>\n    <text x=\"442\" y=\"78\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">Làm sạch &amp; Chuẩn hóa</text>\n    <text x=\"442\" y=\"98\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">SQL dbt / Spark</text>\n    <text x=\"442\" y=\"118\" fill=\"#10b981\" font-size=\"9\" text-anchor=\"middle\">Data Quality Test</text>\n    <!-- Arrow 3 -->\n    <line x1=\"510\" y1=\"85\" x2=\"550\" y2=\"85\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Stage 4: Gold & AI -->\n    <rect x=\"555\" y=\"30\" width=\"135\" height=\"110\" rx=\"12\" fill=\"#1e293b\" stroke=\"#eab308\" stroke-width=\"1.5\"/>\n    <text x=\"622\" y=\"55\" fill=\"#eab308\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">4. GOLD LAYER</text>\n    <text x=\"622\" y=\"78\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">Feature Store</text>\n    <text x=\"622\" y=\"98\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">Aggregate Metrics</text>\n    <text x=\"622\" y=\"118\" fill=\"#facc15\" font-size=\"9\" text-anchor=\"middle\">Business Ready</text>\n    <!-- Arrow 4 -->\n    <line x1=\"690\" y1=\"85\" x2=\"720\" y2=\"85\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Consumer: AI Model -->\n    <rect x=\"725\" y=\"30\" width=\"85\" height=\"110\" rx=\"12\" fill=\"#312e81\" stroke=\"#818cf8\" stroke-width=\"2\"/>\n    <text x=\"767\" y=\"65\" fill=\"#a5b4fc\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">AI MODEL</text>\n    <text x=\"767\" y=\"90\" fill=\"#ffffff\" font-size=\"10\" text-anchor=\"middle\">Scoring</text>\n    <text x=\"767\" y=\"110\" fill=\"#ffffff\" font-size=\"10\" text-anchor=\"middle\">Predict</text>\n    <!-- Backward Lineage: Impact Analysis Warning -->\n    <path d=\"M 262 145 L 262 195 L 767 195 L 767 145\" fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"1.5\" stroke-dasharray=\"4,4\"/>\n    <rect x=\"420\" y=\"180\" width=\"200\" height=\"26\" rx=\"6\" fill=\"#881337\" stroke=\"#f43f5e\" stroke-width=\"1\"/>\n    <text x=\"520\" y=\"197\" fill=\"#fecdd3\" font-size=\"9.5\" font-weight=\"bold\" text-anchor=\"middle\">⚠️ IMPACT ANALYSIS (Cảnh báo gãy vỡ tự động)</text>\n  </svg>\n</div>\n\n---\n\n### 2. Luồng quan sát 360 độ trong Data Pipeline (Slide 8)\nMột Pipeline dữ liệu hiện đại phải có 4 mắt xích giám sát chặt chẽ:\n1. **Data Source**: Ghi nhận Metadata từ CRM, ERP, Web Logs, API đối tác.\n2. **Transformation**: Trích xuất mã SQL từ các công cụ biên dịch (như dbt, Snowpark, Spark SQL) để xem logic làm sạch.\n3. **Data Quality Check**: Tự động ghi nhận kết quả các bài kiểm thử dữ liệu (đúng định dạng, không Null, không trùng lặp khóa chính).\n4. **AI Consumption**: Kết nối trực tiếp đặc trưng dữ liệu với kết quả dự báo của mô hình Machine Learning."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Ví dụ thực tế: Tối ưu hóa Root-Cause Analysis bằng Impact Analysis (Slide 9)\nGiả sử một kỹ sư cơ sở dữ liệu nguồn thay đổi kiểu dữ liệu cột `customer_income` ở tầng Bronze từ `FLOAT` sang `VARCHAR`.\n- **Nếu không có Automated Lineage**: Pipeline chạy ngầm, mô hình AI ở tầng Gold đọc nhầm dữ liệu dạng text, dự báo sai hàng loạt điểm tín dụng, mất 1 tuần họp rà soát thủ công mã nguồn.\n- **Khi có Automated Lineage (Impact Analysis)**:\n  - Hệ thống phát hiện sự thay đổi cấu trúc bảng ở tầng Bronze.\n  - Lập tức gửi cảnh báo đỏ: *'Bảng Bronze.Customers thay đổi Schema -> Bảng Silver.Clean_Customers và Model Gold.Credit_Risk_v2 sẽ bị ảnh hưởng gãy vỡ!'*.\n  - **Hiệu quả**: Giảm **90%** thời gian rà soát mã nguồn thủ công, bảo vệ niềm tin dữ liệu (**Data Trust**)."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo làm bài thi\n- Automated Lineage theo dõi dữ liệu tự động từ **Bronze -> Silver -> Gold -> AI Consumption**.\n- **Impact Analysis** là cơ chế cảnh báo xuôi chiều về những model/dashboard hạ nguồn bị ảnh hưởng khi bảng thượng nguồn đổi cấu trúc.\n- Giúp giảm **90%** thời gian rà soát thủ công khi xảy ra lỗi."
+          }
+        ],
+        "miniQuiz": [
+          "ch7_q07"
+        ],
+        "relatedQuestionIds": [
+          "ch7_q06",
+          "ch7_q07",
+          "ch7_q08",
+          "ch7_q09",
+          "ch7_q10"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-7-3",
+        "title": "Bài 3: Fine-grained Security: Row-level Security (RLS) & Column-level Masking (CLM)",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu sâu cơ chế Row-level Security (RLS) dựa trên User Context",
+              "Thành thạo cơ chế Column-level Masking (CLM) bảo vệ dữ liệu nhạy cảm PII",
+              "Phân tích sự đánh đổi (Trade-off) giữa bảo mật và hiệu năng tốc độ truy vấn",
+              "Nắm vững bài học cho ngành MIS: Bảo mật không được phép đánh đổi bằng hiệu năng thời gian thực"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Row-level Security (RLS - Bảo mật cấp dòng) (Slide 10)\n- **Cơ chế**: Tự động áp dụng bộ lọc điều kiện ẩn (*Predicate Filter*) dựa trên danh tính người truy cập (**User Context** hoặc **Current Role**).\n- **Nguyên lý hoạt động**: Cùng một câu lệnh SQL `SELECT * FROM sales`, mỗi nhân viên chạy sẽ nhận về tập kết quả khác nhau tùy theo thẩm quyền.\n- **Ví dụ**: Nhân viên chi nhánh Hà Nội chỉ xem được đơn hàng của Miền Bắc; Giám đốc điều hành có Role Admin sẽ xem được toàn bộ 63 tỉnh thành.\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3 text-center\">\n    🛡️ FINE-GRAINED SECURITY: ROW-LEVEL SECURITY (RLS) vs COLUMN-LEVEL MASKING (CLM) (SLIDE 10)\n  </div>\n  <svg viewBox=\"0 0 820 250\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Panel 1: RLS -->\n    <rect x=\"15\" y=\"15\" width=\"385\" height=\"220\" rx=\"14\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"1.5\"/>\n    <text x=\"207\" y=\"40\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">ROW-LEVEL SECURITY (RLS) - BẢO MẬT CẤP DÒNG</text>\n    <text x=\"207\" y=\"60\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">Bộ lọc động dựa trên User Context (CURRENT_ROLE / SESSION)</text>\n    <!-- Table RLS -->\n    <rect x=\"35\" y=\"75\" width=\"345\" height=\"140\" rx=\"8\" fill=\"#1e293b\"/>\n    <rect x=\"35\" y=\"75\" width=\"345\" height=\"30\" fill=\"#334155\" rx=\"8\"/>\n    <text x=\"80\" y=\"95\" fill=\"#f8fafc\" font-size=\"10\" font-weight=\"bold\">ID</text>\n    <text x=\"150\" y=\"95\" fill=\"#f8fafc\" font-size=\"10\" font-weight=\"bold\">Khách hàng</text>\n    <text x=\"250\" y=\"95\" fill=\"#f8fafc\" font-size=\"10\" font-weight=\"bold\">Khu vực</text>\n    <text x=\"330\" y=\"95\" fill=\"#f8fafc\" font-size=\"10\" font-weight=\"bold\">Doanh thu</text>\n    <!-- Row 1: North -->\n    <rect x=\"40\" y=\"110\" width=\"335\" height=\"24\" fill=\"#064e3b\" rx=\"4\"/>\n    <text x=\"80\" y=\"126\" fill=\"#a7f3d0\" font-size=\"9.5\">101</text><text x=\"150\" y=\"126\" fill=\"#a7f3d0\" font-size=\"9.5\">Công ty A</text><text x=\"250\" y=\"126\" fill=\"#a7f3d0\" font-size=\"9.5\">Miền Bắc</text><text x=\"330\" y=\"126\" fill=\"#a7f3d0\" font-size=\"9.5\">500M</text>\n    <!-- Row 2: South (Blocked for North User) -->\n    <rect x=\"40\" y=\"140\" width=\"335\" height=\"24\" fill=\"#7f1d1d\" fill-opacity=\"0.3\" rx=\"4\"/>\n    <text x=\"80\" y=\"156\" fill=\"#64748b\" font-size=\"9.5\">102</text><text x=\"150\" y=\"156\" fill=\"#64748b\" font-size=\"9.5\">Công ty B</text><text x=\"250\" y=\"156\" fill=\"#ef4444\" font-size=\"9.5\">Miền Nam (Bị ẩn)</text><text x=\"330\" y=\"156\" fill=\"#64748b\" font-size=\"9.5\">---</text>\n    <text x=\"207\" y=\"195\" fill=\"#10b981\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">👉 Nhân viên Miền Bắc chỉ xem được dòng Miền Bắc</text>\n    <!-- Panel 2: CLM -->\n    <rect x=\"420\" y=\"15\" width=\"385\" height=\"220\" rx=\"14\" fill=\"#0f172a\" stroke=\"#38bdf8\" stroke-width=\"1.5\"/>\n    <text x=\"612\" y=\"40\" fill=\"#38bdf8\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">COLUMN-LEVEL MASKING (CLM) - CHE GIẤU CẤP CỘT</text>\n    <text x=\"612\" y=\"60\" fill=\"#94a3b8\" font-size=\"10\" text-anchor=\"middle\">Ẩn hoặc làm mờ dữ liệu PII mà không đổi cấu trúc bảng</text>\n    <!-- Table CLM -->\n    <rect x=\"440\" y=\"75\" width=\"345\" height=\"140\" rx=\"8\" fill=\"#1e293b\"/>\n    <rect x=\"440\" y=\"75\" width=\"345\" height=\"30\" fill=\"#334155\" rx=\"8\"/>\n    <text x=\"480\" y=\"95\" fill=\"#f8fafc\" font-size=\"10\" font-weight=\"bold\">ID</text>\n    <text x=\"550\" y=\"95\" fill=\"#f8fafc\" font-size=\"10\" font-weight=\"bold\">Tên</text>\n    <text x=\"640\" y=\"95\" fill=\"#f8fafc\" font-size=\"10\" font-weight=\"bold\">Số điện thoại (PII)</text>\n    <text x=\"745\" y=\"95\" fill=\"#f8fafc\" font-size=\"10\" font-weight=\"bold\">Role</text>\n    <!-- Row Analyst -->\n    <rect x=\"445\" y=\"110\" width=\"335\" height=\"24\" fill=\"#0284c7\" fill-opacity=\"0.2\" rx=\"4\"/>\n    <text x=\"480\" y=\"126\" fill=\"#e2e8f0\" font-size=\"9.5\">01</text><text x=\"550\" y=\"126\" fill=\"#e2e8f0\" font-size=\"9.5\">Nguyễn Văn A</text><text x=\"640\" y=\"126\" fill=\"#38bdf8\" font-size=\"9.5\" font-weight=\"bold\">091xxxx888</text><text x=\"745\" y=\"126\" fill=\"#94a3b8\" font-size=\"9\">Analyst</text>\n    <!-- Row Admin -->\n    <rect x=\"445\" y=\"140\" width=\"335\" height=\"24\" fill=\"#0284c7\" fill-opacity=\"0.35\" rx=\"4\"/>\n    <text x=\"480\" y=\"156\" fill=\"#e2e8f0\" font-size=\"9.5\">02</text><text x=\"550\" y=\"156\" fill=\"#e2e8f0\" font-size=\"9.5\">Trần Thị B</text><text x=\"640\" y=\"156\" fill=\"#10b981\" font-size=\"9.5\" font-weight=\"bold\">0987654321</text><text x=\"745\" y=\"156\" fill=\"#34d399\" font-size=\"9\">Admin</text>\n    <text x=\"612\" y=\"195\" fill=\"#38bdf8\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">👉 Cùng câu lệnh SQL, số PII tự động che theo quyền</text>\n  </svg>\n</div>\n\n---\n\n### 2. Column-level Masking (CLM - Che giấu cấp cột) (Slide 10, câu 37 đề cương)\n- **Cơ chế**: Ẩn hoặc mã hóa một phần dữ liệu định danh cá nhân (**Personally Identifiable Information - PII**) dựa trên chính sách phân quyền mà **không làm thay đổi cấu trúc bảng hay kiểu dữ liệu**.\n- **Đặc điểm**:\n  - Cột dữ liệu vẫn tồn tại, ứng dụng và câu lệnh SQL không bị lỗi cú pháp.\n  - Người dùng không có quyền giải mã sẽ chỉ nhìn thấy dữ liệu ở dạng làm mờ:\n    - Số điện thoại: `091xxxx888`\n    - Số thẻ tín dụng: `xxxx-xxxx-xxxx-1234`\n    - Email: `n*****@gmail.com`\n\n---\n\n### 3. Sự đánh đổi giữa Bảo mật và Hiệu năng thời gian (Slide 11-12)\n- **Thực trạng**: Khi áp dụng mã hóa trên các bảng dữ liệu lớn (**Large Tabular Data**), chi phí tính toán CPU cho việc mã hóa/giải mã khiến độ trễ truy vấn tăng cao đột biến.\n- **Nghiên cứu khoa học (TS. Nguyễn Thôn Dã trích dẫn - Slide 12)**: *'Enhancing the Time Performance of Encrypting and Decrypting Large Tabular Data'* (2021) đề xuất các giải pháp kỹ thuật tối ưu hóa thuật toán mã hóa để giữ vững hiệu năng.\n- **Bài học cốt lõi cho MIS**: Bảo mật dữ liệu không được phép đánh đổi bằng hiệu năng vận hành thời gian thực của hệ thống thông tin doanh nghiệp."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Ví dụ câu lệnh SQL minh họa RLS & CLM\n#### 1. Minh họa Row-level Security (RLS):\n```sql\n-- Tạo chính sách chỉ cho phép nhân viên xem doanh thu vùng mình phụ trách\nCREATE ROW ACCESS POLICY region_filter_policy \nAS (region_val VARCHAR) RETURNS BOOLEAN ->\n  CURRENT_ROLE() = 'ADMIN' \n  OR region_val = CURRENT_USER_REGION();\n\n-- Gắn chính sách vào bảng sales\nALTER TABLE sales ADD ROW ACCESS POLICY region_filter_policy ON (region);\n```\n\n#### 2. Minh họa Column-level Masking (CLM):\n```sql\n-- Tạo hàm che số thẻ tín dụng cho các vai trò thông thường\nCREATE MASKING POLICY mask_credit_card AS (val STRING) RETURNS STRING ->\n  CASE \n    WHEN CURRENT_ROLE() IN ('FINANCE_DIRECTOR', 'AUDITOR') THEN val\n    ELSE CONCAT('xxxx-xxxx-xxxx-', RIGHT(val, 4))\n  END;\n\n-- Áp dụng lên cột card_number\nALTER TABLE customer_payments MODIFY COLUMN card_number SET MASKING POLICY mask_credit_card;\n```"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo làm bài thi\n- **RLS**: Lọc theo dòng dựa trên **User Context** (Ai ở vùng nào xem dòng vùng đó).\n- **CLM**: Che giấu giá trị trong cột PII mà **không đổi cấu trúc bảng** (`091xxxx888`).\n- Mã hóa dữ liệu bảng lớn bị rủi ro làm giảm hiệu năng (độ trễ cao)."
+          }
+        ],
+        "miniQuiz": [
+          "ch7_q12"
+        ],
+        "relatedQuestionIds": [
+          "ch7_q11",
+          "ch7_q12",
+          "ch7_q13",
+          "ch7_q14",
+          "ch7_q45",
+          "ch7_q46"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-7-4",
+        "title": "Bài 4: Secure Data Sharing: Chia sẻ dữ liệu liên tổ chức với kiến trúc Zero-Copy",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Phân tích nhược điểm chí mạng của mô hình chia sẻ dữ liệu truyền thống qua ETL/FTP",
+              "Hiểu nguyên lý hoạt động của Zero-Copy Data Sharing trên Snowflake và Google BigQuery",
+              "Làm chủ triết lý quản trị: Dữ liệu tăng giá trị khi chia sẻ, nhưng rủi ro nhất khi bị nhân bản",
+              "Nắm vững cơ chế thu hồi quyền tối cao (Revoke Access tức thì) giải quyết bài toán mất kiểm soát"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Hạn chế của mô hình chia sẻ truyền thống qua ETL / FTP (Slide 13)\n- **Cơ chế cũ**: Xuất dữ liệu ra file (CSV, Parquet Dump), tải lên FTP server hoặc gửi qua mạng cho đối tác. Đối tác sau đó nạp file vào kho dữ liệu riêng của họ.\n- **3 Nhược điểm chí mạng**:\n  1. **Nhân đôi chi phí hạ tầng**: Dữ liệu bị sao chép nhiều bản sao vật lý, tốn gấp đôi dung lượng lưu trữ và băng thông.\n  2. **Độ trễ cao (Batch/Schedule)**: Dữ liệu chia sẻ bị chậm trễ theo lịch chạy định kỳ, đối tác luôn phải phân tích dữ liệu cũ.\n  3. **Nguy cơ rò rỉ dữ liệu cực cao**: Một khi file dữ liệu đã gửi ra ngoài, doanh nghiệp hoàn toàn mất quyền kiểm soát và không thể thu hồi.\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 text-center\">\n    ⚡ SO SÁNH CHIA SẺ DỮ LIỆU: TRADITIONAL ETL vs ZERO-COPY DATA SHARING (SLIDE 13-15)\n  </div>\n  <svg viewBox=\"0 0 820 270\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Panel 1: Traditional ETL -->\n    <rect x=\"15\" y=\"15\" width=\"385\" height=\"240\" rx=\"14\" fill=\"#1e293b\" stroke=\"#f43f5e\" stroke-width=\"1.5\" stroke-dasharray=\"4,4\"/>\n    <text x=\"207\" y=\"42\" fill=\"#f43f5e\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">MÔ HÌNH TRUYỀN THỐNG (ETL / FTP DUMP)</text>\n    <rect x=\"35\" y=\"65\" width=\"100\" height=\"60\" rx=\"8\" fill=\"#334155\" stroke=\"#94a3b8\"/>\n    <text x=\"85\" y=\"92\" fill=\"#ffffff\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">DWH GỐC</text>\n    <text x=\"85\" y=\"108\" fill=\"#cbd5e1\" font-size=\"9\" text-anchor=\"middle\">10 TB Data</text>\n    <line x1=\"135\" y1=\"95\" x2=\"175\" y2=\"95\" stroke=\"#f43f5e\" stroke-width=\"2\"/>\n    <rect x=\"175\" y=\"75\" width=\"70\" height=\"40\" rx=\"6\" fill=\"#881337\"/>\n    <text x=\"210\" y=\"99\" fill=\"#fecdd3\" font-size=\"9\" font-weight=\"bold\" text-anchor=\"middle\">CSV DUMP</text>\n    <line x1=\"245\" y1=\"95\" x2=\"285\" y2=\"95\" stroke=\"#f43f5e\" stroke-width=\"2\"/>\n    <rect x=\"285\" y=\"65\" width=\"100\" height=\"60\" rx=\"8\" fill=\"#334155\" stroke=\"#f43f5e\"/>\n    <text x=\"335\" y=\"92\" fill=\"#fecaca\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">DWH BẢN SAO</text>\n    <text x=\"335\" y=\"108\" fill=\"#cbd5e1\" font-size=\"9\" text-anchor=\"middle\">Duplicate 10 TB</text>\n    <rect x=\"35\" y=\"145\" width=\"350\" height=\"95\" rx=\"8\" fill=\"#0f172a\"/>\n    <text x=\"45\" y=\"168\" fill=\"#f87171\" font-size=\"10\">❌ Nhân đôi chi phí lưu trữ &amp; băng thông</text>\n    <text x=\"45\" y=\"190\" fill=\"#f87171\" font-size=\"10\">❌ Dữ liệu bị trễ (Batch schedule, không real-time)</text>\n    <text x=\"45\" y=\"212\" fill=\"#f87171\" font-size=\"10\">❌ Mất kiểm soát sau chia sẻ, nguy cơ rò rỉ rất cao</text>\n    <!-- Panel 2: Zero-Copy Sharing -->\n    <rect x=\"420\" y=\"15\" width=\"385\" height=\"240\" rx=\"14\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <text x=\"612\" y=\"42\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">ZERO-COPY DATA SHARING (SNOWFLAKE / BIGQUERY)</text>\n    <rect x=\"440\" y=\"65\" width=\"130\" height=\"70\" rx=\"10\" fill=\"#065f46\" stroke=\"#34d399\" stroke-width=\"1.5\"/>\n    <text x=\"505\" y=\"92\" fill=\"#ffffff\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">KHO DỮ LIỆU GỐC</text>\n    <text x=\"505\" y=\"108\" fill=\"#a7f3d0\" font-size=\"9\" text-anchor=\"middle\">Single Source of Truth</text>\n    <text x=\"505\" y=\"124\" fill=\"#ffffff\" font-size=\"8.5\" text-anchor=\"middle\">Zero Data Movement</text>\n    <line x1=\"570\" y1=\"85\" x2=\"630\" y2=\"75\" stroke=\"#34d399\" stroke-width=\"2\"/>\n    <line x1=\"570\" y1=\"115\" x2=\"630\" y2=\"125\" stroke=\"#34d399\" stroke-width=\"2\"/>\n    <rect x=\"630\" y=\"60\" width=\"160\" height=\"32\" rx=\"6\" fill=\"#0f172a\" stroke=\"#34d399\"/>\n    <text x=\"710\" y=\"80\" fill=\"#6ee7b7\" font-size=\"9.5\" font-weight=\"bold\" text-anchor=\"middle\">Đối tác A: Xem trực tiếp (Live)</text>\n    <rect x=\"630\" y=\"110\" width=\"160\" height=\"32\" rx=\"6\" fill=\"#0f172a\" stroke=\"#34d399\"/>\n    <text x=\"710\" y=\"130\" fill=\"#6ee7b7\" font-size=\"9.5\" font-weight=\"bold\" text-anchor=\"middle\">Đối tác B: Phân tích tại chỗ</text>\n    <rect x=\"440\" y=\"155\" width=\"350\" height=\"85\" rx=\"8\" fill=\"#0f172a\"/>\n    <text x=\"450\" y=\"178\" fill=\"#34d399\" font-size=\"10\">✅ 0 byte sao chép, tối ưu 100% dung lượng</text>\n    <text x=\"450\" y=\"198\" fill=\"#34d399\" font-size=\"10\">✅ Cập nhật Real-time (Truy vấn dữ liệu mới nhất)</text>\n    <text x=\"450\" y=\"218\" fill=\"#34d399\" font-size=\"10\">✅ Thu hồi quyền truy cập tức thì (1 Click Revoke)</text>\n  </svg>\n</div>\n\n---\n\n### 2. Kiến trúc Zero-Copy Data Sharing hiện đại (Slide 13-14)\n- **Nguyên lý hoạt động**: Cho phép nhiều hệ thống hoặc tổ chức cùng truy cập, truy vấn và phân tích dữ liệu tại **một nguồn lưu trữ duy nhất thông qua tầng Metadata**.\n- **Cơ chế**:\n  - Bên chia sẻ (*Data Provider*) cấp quyền trực tiếp vào vùng dữ liệu được chỉ định trên hạ tầng Cloud.\n  - Phía đối tác (*Data Consumer*) chỉ việc chạy câu lệnh SQL xem trực tiếp dữ liệu tại chỗ.\n  - **Không có bất kỳ byte dữ liệu nào bị sao chép hay dịch chuyển vật lý**.\n- **Triết lý quản trị dữ liệu** (Slide 14):\n  > *\"Dữ liệu là tài sản duy nhất tăng giá trị khi được chia sẻ đúng cách, nhưng rủi ro nhất khi bị nhân bản hàng loạt.\"*\n- **Quyền kiểm soát tối cao**: Khi dừng hợp tác, chỉ cần thực hiện lệnh `REVOKE ACCESS` trên Cloud. Phía đối tác lập tức không còn nhìn thấy bất kỳ dữ liệu nào, xóa bỏ hoàn toàn rủi ro lưu lạc bản sao."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Bảng so sánh toàn diện: ETL truyền thống vs Zero-Copy Sharing (Slide 15)\n\n| Tiêu chí so sánh | ETL Truyền thống (Traditional ETL) | Secure Data Sharing (Zero-copy) |\n| :--- | :--- | :--- |\n| **Độ trễ (Thời gian)** | **Bị trễ** theo chu kỳ Batch (ngày/tuần/tháng) | **Thời gian thực (Live Real-time)** tức thì |\n| **Bảo mật & Quản trị** | **Rủi ro lộ lọt cao** từ các file bản sao lưu lạc | **Kiểm soát quyền tập trung** bằng chính sách IAM trên Cloud |\n| **Chi phí hạ tầng** | **Tốn gấp đôi tài nguyên** (nhân bản lưu trữ và tính toán) | **Tối ưu hóa** (Dùng chung không gian lưu trữ gốc, 0 byte sao chép) |\n| **Khả năng thu hồi** | Hầu như không thể thu hồi sau khi gửi file | **Thu hồi tức thì (Instant Revoke)** chỉ với 1 click |"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo ghi nhớ cho sinh viên\n- Zero-copy Sharing: **0 byte** dữ liệu bị copy.\n- Dừng hợp tác chỉ cần **Revoke access** trên Cloud là đối tác mất quyền ngay lập tức.\n- Giúp dữ liệu cập nhật theo **thời gian thực (Live)** thay vì bị trễ như ETL truyền thống."
+          }
+        ],
+        "miniQuiz": [
+          "ch7_q16"
+        ],
+        "relatedQuestionIds": [
+          "ch7_q15",
+          "ch7_q16",
+          "ch7_q17",
+          "ch7_q18",
+          "ch7_q19",
+          "ch7_q48"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-7-5",
+        "title": "Bài 5: Kỹ thuật k-Anonymity: Khái quát hóa & Triệt tiêu dữ liệu nhạy cảm",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Định nghĩa chuẩn của thuộc tính k-Anonymity trong cơ sở dữ liệu",
+              "Nhận diện chính xác nhóm thuộc tính bán định danh (Quasi-identifiers)",
+              "Thành thạo 2 kỹ thuật xử lý: Generalization (Khái quát hóa) và Suppression (Ức chế)",
+              "Thực hành giải bài toán tính mức độ k-Anonymity trên bảng dữ liệu cụ thể"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Định nghĩa chuẩn của k-Anonymity (Slide 17)\n- **Định nghĩa**: Một tập dữ liệu đạt thuộc tính **k-Anonymity** nếu mỗi cá nhân trong bảng **không thể bị phân biệt với ít nhất $k - 1$ cá nhân khác** cũng nằm trong bảng đó.\n- Nói cách khác, mỗi nhóm tương đương (*Equivalence Class*) có cùng các thuộc tính bán định danh phải có kích thước tối thiểu là **$k$ cá nhân**.\n\n---\n\n### 2. Khái niệm Quasi-identifiers (Thuộc tính bán định danh) (Slide 17)\n- **Direct Identifiers (Định danh trực tiếp)**: Họ tên, Số CMND/CCCD, Số hộ chiếu. Các cột này bắt buộc phải xóa hoặc băm mã trước khi phân tích.\n- **Quasi-identifiers (Bán định danh)**: Các cột đơn lẻ trông có vẻ vô hại (ví dụ: *Tuổi, Giới tính, Mã bưu chính ZIP code, Nghề nghiệp*).\n- **Rủi ro Re-identification**: Mặc dù từng cột không định danh được ai, nhưng khi kết hợp bộ [Nam, 28 tuổi, ZIP 700000, Kỹ sư phần mềm], kẻ tấn công có thể tra cứu chéo với danh bạ công khai để **tái định danh chính xác cá nhân đó**.\n\n---\n\n### 3. Hai kỹ thuật xử lý cốt lõi trong k-Anonymity (Slide 17)\n1. **Generalization (Khái quát hóa)**:\n   - Biến giá trị cụ thể thành một khoảng giá trị rộng hơn hoặc cấp bậc cao hơn.\n   - Ví dụ: 23 tuổi $\\to$ nhóm `[20 - 30]` tuổi; Mã bưu chính `70001` $\\to$ `700xx`.\n2. **Suppression (Ức chế / Triệt tiêu)**:\n   - Xóa hẳn giá trị ô hoặc xóa nguyên một dòng dữ liệu của những cá nhân quá dị biệt (*Outliers*) không thể gom đủ nhóm $k$ người.\n   - Ví dụ: Cả cơ sở dữ liệu chỉ có 1 bệnh nhân 98 tuổi mắc bệnh lạ, việc giữ lại dòng này sẽ làm lộ danh tính dù có khái quát hóa, nên giải pháp là xóa bỏ hoàn toàn dòng đó khỏi tập công bố."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Bài toán thực hành tính mức k-Anonymity\nXét bảng dữ liệu y tế sau khi áp dụng Generalization:\n\n| ID | Giới tính (Quasi) | Nhóm Tuổi (Quasi) | Mã ZIP (Quasi) | Chẩn đoán bệnh |\n| :--- | :--- | :--- | :--- | :--- |\n| 1 | Nam | [20 - 30] | 700xx | Cảm cúm |\n| 2 | Nam | [20 - 30] | 700xx | Viêm phế quản |\n| 3 | Nam | [20 - 30] | 700xx | Đau dạ dày |\n| 4 | Nữ | [30 - 40] | 800xx | Tiểu đường |\n| 5 | Nữ | [30 - 40] | 800xx | Huyết áp |\n\n#### Phân tích các nhóm tương đương:\n- **Nhóm 1**: {Nam, [20-30], 700xx} $\\implies$ có **3** cá nhân (ID 1, 2, 3).\n- **Nhóm 2**: {Nữ, [30-40], 800xx} $\\implies$ có **2** cá nhân (ID 4, 5).\n- **Kích thước nhóm nhỏ nhất**: $\\min(3, 2) = \\mathbf{2}$.\n- **Kết luận**: Bảng dữ liệu này đạt chuẩn **2-Anonymity** ($k = 2$). Bất kỳ ai trong bảng cũng không thể bị phân biệt với ít nhất $2 - 1 = 1$ người khác."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Lưu ý quan trọng\n- Mức $k$ được quyết định bởi **kích thước của nhóm nhỏ nhất**.\n- Nếu có 1 dòng độc nhất không giống ai ($k=1$), bảng dữ liệu đó **không đạt chuẩn ẩn danh** và bắt buộc phải dùng **Suppression** để loại bỏ."
+          }
+        ],
+        "miniQuiz": [
+          "ch7_q24"
+        ],
+        "relatedQuestionIds": [
+          "ch7_q24",
+          "ch7_q25",
+          "ch7_q26",
+          "ch7_q43",
+          "ch7_q44"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-7-6",
+        "title": "Bài 6: Differential Privacy & Đánh đổi Privacy Loss vs Data Utility",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững triết lý cốt lõi của Differential Privacy (Cynthia Dwork)",
+              "Hiểu cơ chế bơm nhiễu chủ động (Laplace/Gaussian Noise) vào truy vấn tổng hợp",
+              "Làm chủ tham số Ngân sách riêng tư Epsilon (ε) và quy luật cộng dồn ngân sách",
+              "Phân tích đồ thị đánh đổi giữa Privacy Loss và Data Utility để tìm Optimal Balance"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Triết lý của Differential Privacy (Slide 16)\n- **Triết lý nền tảng**: Kết quả phân tích thống kê của hệ thống AI sẽ **gần như không thay đổi dù có hay không có dữ liệu của một cá nhân cụ thể**.\n- **Ý nghĩa**: Kẻ tấn công dù có biết toàn bộ thông tin của mọi người khác trong xã hội cũng hoàn toàn không thể 'dịch ngược' báo cáo để xác định dữ liệu của bạn có nằm trong tập khảo sát hay không.\n- **Cơ chế bơm nhiễu chủ động (Adding Noise)**:\n  - Thay vì trả về kết quả truy vấn chính xác tuyệt đối, thuật toán chủ động trộn thêm các sai số ngẫu nhiên được kiểm soát toán học (như nhiễu **Laplace** hoặc **Gaussian**).\n  - Kết quả trả về vẫn bảo toàn các đặc trưng thống kê vĩ mô (trung bình, phương sai, tỷ lệ) của toàn quần thể, nhưng xóa nhòa dấu vết vi mô của từng cá nhân.\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-purple-400 mb-3 text-center\">\n    📉 ĐỒ THỊ MỐI QUAN HỆ ĐÁNH ĐỔI GIỮA PRIVACY LOSS VÀ DATA UTILITY (SLIDE 18-19)\n  </div>\n  <svg viewBox=\"0 0 800 280\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Axes -->\n    <line x1=\"80\" y1=\"230\" x2=\"740\" y2=\"230\" stroke=\"#64748b\" stroke-width=\"2\"/>\n    <line x1=\"80\" y1=\"230\" x2=\"80\" y2=\"30\" stroke=\"#64748b\" stroke-width=\"2\"/>\n    <text x=\"410\" y=\"265\" fill=\"#cbd5e1\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Ngân sách riêng tư Epsilon (ε) &amp; Tổn thất quyền riêng tư (Privacy Loss) ➔</text>\n    <text x=\"25\" y=\"130\" fill=\"#cbd5e1\" font-size=\"11\" font-weight=\"bold\" transform=\"rotate(-90 25 130)\" text-anchor=\"middle\">Tính hữu dụng dữ liệu (Data Utility) ➔</text>\n    <!-- Curve 1: Utility -->\n    <path d=\"M 80 215 Q 240 180, 400 120 T 720 50\" fill=\"none\" stroke=\"#10b981\" stroke-width=\"3\"/>\n    <text x=\"720\" y=\"42\" fill=\"#34d399\" font-size=\"10.5\" font-weight=\"bold\" text-anchor=\"end\">Đường độ chính xác (Data Utility)</text>\n    <!-- Curve 2: Privacy Guarantee -->\n    <path d=\"M 80 50 Q 240 70, 400 120 T 720 215\" fill=\"none\" stroke=\"#f43f5e\" stroke-width=\"3\"/>\n    <text x=\"720\" y=\"210\" fill=\"#f87171\" font-size=\"10.5\" font-weight=\"bold\" text-anchor=\"end\">Mức độ an toàn thông tin (Privacy Guarantee)</text>\n    <!-- Intersection -->\n    <circle cx=\"400\" cy=\"120\" r=\"8\" fill=\"#eab308\" stroke=\"#ffffff\" stroke-width=\"2\"/>\n    <line x1=\"400\" y1=\"120\" x2=\"400\" y2=\"230\" stroke=\"#eab308\" stroke-width=\"1.5\" stroke-dasharray=\"3,3\"/>\n    <text x=\"400\" y=\"245\" fill=\"#facc15\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">Điểm cân bằng tối ưu (ε*)</text>\n    <rect x=\"420\" y=\"90\" width=\"260\" height=\"55\" rx=\"8\" fill=\"#1e293b\" stroke=\"#eab308\" stroke-width=\"1.5\"/>\n    <text x=\"550\" y=\"112\" fill=\"#facc15\" font-size=\"10.5\" font-weight=\"bold\" text-anchor=\"middle\">🎯 OPTIMAL BALANCE POINT</text>\n    <text x=\"550\" y=\"132\" fill=\"#e2e8f0\" font-size=\"9\" text-anchor=\"middle\">Vừa tuân thủ pháp luật, vừa đủ chính xác cho AI</text>\n    <rect x=\"90\" y=\"45\" width=\"150\" height=\"45\" rx=\"6\" fill=\"#881337\" fill-opacity=\"0.3\" stroke=\"#f43f5e\"/>\n    <text x=\"165\" y=\"63\" fill=\"#fecdd3\" font-size=\"9.5\" font-weight=\"bold\" text-anchor=\"middle\">BẢO MẬT QUÁ MỨC</text>\n    <text x=\"165\" y=\"79\" fill=\"#cbd5e1\" font-size=\"8.5\" text-anchor=\"middle\">Quá nhiều nhiễu, AI dự báo sai</text>\n  </svg>\n</div>\n\n---\n\n### 2. Ngân sách Quyền riêng tư (Privacy Budget - mức Epsilon $\\epsilon$) (Slide 16, 19)\n- Tham số $\\epsilon$ (Epsilon) định lượng mức độ tổn thất quyền riêng tư cho phép:\n  - **Khi $\\epsilon \\to 0$ (Epsilon rất nhỏ)**: Thuật toán bơm lượng nhiễu cực lớn. Quyền riêng tư được bảo vệ ở mức tối đa, nhưng dữ liệu bị mờ nhiều, tính hữu dụng (**Data Utility**) giảm mạnh.\n  - **Khi $\\epsilon$ lớn**: Lượng nhiễu rất nhỏ. Dữ liệu sắc nét, độ chính xác cao nhưng rủi ro tổn hại riêng tư (**Privacy Loss**) tăng cao.\n- **Nguyên lý cộng dồn ngân sách (Composition Theorem)**:\n  - Mỗi câu truy vấn của người phân tích sẽ tiêu tốn một lượng ngân sách $\\epsilon_i$.\n  - Tổng ngân sách tiêu hao: $\\sum \\epsilon_i \\le \\epsilon_{total}$. Khi cạn ngân sách, hệ thống sẽ từ chối trả lời để ngăn chặn các đòn tấn công thăm dò lặp lại."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Bài toán tính toán ngân sách riêng tư Epsilon\nMột tổ chức nghiên cứu y tế cấp cho các nhà khoa học một ngân sách riêng tư ban đầu là $\\epsilon_{total} = 1.0$ trên kho dữ liệu bệnh nhân.\n- Mỗi câu truy vấn thống kê (ví dụ: đếm số bệnh nhân tiểu đường theo độ tuổi) tiêu tốn một khoản ngân sách là $\\epsilon_i = 0.25$.\n- **Hỏi**: Nhà khoa học có thể thực hiện tối đa bao nhiêu câu truy vấn hợp lệ?\n  $$\\text{Số truy vấn tối đa} = \\frac{\\epsilon_{total}}{\\epsilon_i} = \\frac{1.0}{0.25} = \\mathbf{4} \\text{ truy vấn}$$\n- **Khi hết 4 câu truy vấn**: Hệ thống tự động khóa quyền truy vấn tiếp theo để đảm bảo kẻ xấu không thể kết hợp nhiều câu trả lời để suy ngược danh tính bệnh nhân."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Nhiệm vụ của nhà Quản trị Dữ liệu (Slide 19)\n- Không có hệ thống nào vừa an toàn tuyệt đối ($\\epsilon = 0$) vừa có dữ liệu chính xác 100%.\n- Nhiệm vụ cốt lõi là tìm ra **Điểm cân bằng tối ưu (Optimal Balance Point $\\epsilon^*$)** để vừa đáp ứng quy định pháp lý, vừa giữ đủ độ chính xác cho mô hình AI hoạt động hiệu quả."
+          }
+        ],
+        "miniQuiz": [
+          "ch7_q22"
+        ],
+        "relatedQuestionIds": [
+          "ch7_q20",
+          "ch7_q21",
+          "ch7_q22",
+          "ch7_q23",
+          "ch7_q27",
+          "ch7_q47"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-7-7",
+        "title": "Bài 7: Quản lý AI-Driven Data Catalog, Semantic Search & Business Glossary",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu rõ nguy cơ biến Data Lake thành Data Swamp khi dữ liệu mở rộng thiếu kiểm soát",
+              "Nắm vững tính năng AI tự động quét và gắn nhãn bảo mật cho các thuộc tính PII",
+              "Làm chủ 3 thành phần cốt lõi: Semantic Search, Data Lineage Integration, Trust Score",
+              "Phân biệt rạch ròi giữa Business Glossary (Governance) và Technical Metadata (Data Engineer)"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Thực trạng Data Swamp và Giải pháp AI-driven Data Catalog (Slide 20)\n- **Thực trạng**: Khi kho dữ liệu mở rộng theo cấp số nhân, hàng chục nghìn bảng dữ liệu được tạo ra nhưng không ai biết bảng nào chứa dữ liệu sạch, bảng nào là dữ liệu rác, biến Data Lake thành **Data Swamp (Đầm lầy dữ liệu)**.\n- **Giải pháp**: Triển khai **AI-driven Data Catalog** tự động quét toàn bộ hạ tầng, thu thập metadata, phân loại và lập chỉ mục thông minh.\n- **Tính năng tự động nhận diện PII**: AI tự động quét qua các cột mới tạo, sử dụng mô hình NLP nhận diện cột chứa email, số CMND/CCCD, số thẻ tín dụng để tự động gắn nhãn phân quyền bảo mật (CLM/RLS).\n\n---\n\n### 2. Ba thành phần cốt lõi của AI Data Catalog (Slide 21)\n1. **Semantic Search (Tìm kiếm ngữ nghĩa bằng ngôn ngữ tự nhiên)**:\n   - Cho phép người dùng nghiệp vụ dùng câu hỏi tự nhiên để tìm bảng dữ liệu.\n   - Ví dụ: Gõ *'Tìm bảng chứa doanh thu khách hàng doanh nghiệp 2 năm trước'* $\\implies$ AI tự động phân tích ngữ nghĩa và định vị chính xác bảng `gold_b2b_revenue_2024`.\n2. **Data Lineage Integration (Tích hợp sơ đồ nguồn gốc)**:\n   - Nhúng trực tiếp bản đồ quan hệ upstream/downstream vào trang chi tiết của từng tài sản dữ liệu.\n3. **Trust Score (Chỉ số điểm tin cậy dữ liệu)**:\n   - Chấm điểm uy tín của bảng dữ liệu dựa trên tần suất sử dụng thực tế và lịch sử vượt qua các bài kiểm định chất lượng tự động (Quality Checks).\n\n---\n\n### 3. Phân biệt Business Glossary và Technical Metadata (Slide 22)\n\n| Tiêu chí | Business Glossary (Từ điển Nghiệp vụ) | Technical Metadata (Siêu dữ liệu Kỹ thuật) |\n| :--- | :--- | :--- |\n| **Đơn vị quản lý** | **Governance Layer** / Chuyên viên nghiệp vụ | **Data Engineer Layer** / Quản trị viên hệ thống |\n| **Mục đích cốt lõi** | Thống nhất khái niệm kinh doanh chung cho toàn công ty | Quản lý cấu trúc lưu trữ và quy trình vận hành kỹ thuật |\n| **Nội dung lưu trữ** | Định nghĩa thuật ngữ (ví dụ: Churn = không giao dịch > 90 ngày) | Kiểu dữ liệu (INT64, FLOAT), Schema, Tần suất cập nhật (Freshness), Technical Owner |"
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Ví dụ thực tế: Thống nhất khái niệm Churn trong ngân hàng\n- **Nếu không có Business Glossary**:\n  - Phòng Marketing định nghĩa: Churn là khách không mở ứng dụng trong 30 ngày.\n  - Phòng Rủi ro tín dụng định nghĩa: Churn là khách không phát sinh giao dịch thẻ trong 90 ngày.\n  - Ban Giám đốc nhận được 2 báo cáo với 2 con số tỷ lệ rời bỏ hoàn toàn chênh lệch, gây mất niềm tin.\n- **Khi chuẩn hóa Business Glossary**: Governance Layer chốt định nghĩa duy nhất: *'Khách hàng Churn là khách không có giao dịch tài chính > 90 ngày'*. Mọi Data Engineer khi viết câu lệnh SQL đều phải tuân theo định nghĩa chuẩn này."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo làm bài thi\n- **Semantic Search**: Tìm kiếm bằng **ngôn ngữ tự nhiên**, không cần nhớ chính xác tên cột hay tên bảng.\n- **Trust Score**: Đánh giá dựa trên **tần suất dùng** và **lịch sử kiểm định chất lượng**.\n- **Business Glossary** do **Governance** định nghĩa; **Technical Metadata** do **Data Engineer** quản lý."
+          }
+        ],
+        "miniQuiz": [
+          "ch7_q32"
+        ],
+        "relatedQuestionIds": [
+          "ch7_q28",
+          "ch7_q29",
+          "ch7_q30",
+          "ch7_q31",
+          "ch7_q32"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-7-8",
+        "title": "Bài 8: Đạo đức AI, Khử Bias (Pre/In/Post) & Giám sát Tuân thủ Liên tục (Continuous Auditing)",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu rõ bản chất của Bias trong AI bắt nguồn từ dữ liệu lịch sử con người",
+              "Thành thạo 3 kỹ thuật khử bias: Pre-processing, In-processing và Post-processing",
+              "Nắm vững nguyên tắc Human-in-the-loop (HITL) và Explainable AI (XAI)",
+              "Làm chủ 4 bước vận hành Continuous Auditing: Monitor -> Detect -> Alert -> Report"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bản chất của Bias trong AI và 3 chốt chặn khử Bias (Slide 23-24)\n- **Bản chất**: AI không tự sinh ra định kiến; định kiến nằm trong dữ liệu lịch sử con người thu thập được. Nếu dữ liệu quá khứ có phân biệt đối xử, AI sẽ học hành vi đó và khuếch đại nó ở quy mô lớn hơn.\n- **3 Kỹ thuật kiểm soát và khử bias**:\n  1. **Pre-processing (Tiền xử lý)**: Tác động trực tiếp vào tập dữ liệu Gold trước khi huấn luyện bằng các kỹ thuật lấy mẫu lại (**Resampling**), tổng hợp dữ liệu nhân tạo (SMOTE) hoặc gán trọng số (**Re-weighting**) để cân bằng tỷ lệ các nhóm đối tượng.\n  2. **In-processing (Trong khi huấn luyện)**: Can thiệp trực tiếp vào thuật toán bằng cách đưa các ràng buộc công bằng (**Fairness Constraints**) hoặc hàm phạt vào hàm mất mát (**Loss Function**).\n  3. **Post-processing (Hậu xử lý)**: Điều chỉnh lại ngưỡng quyết định (**Classification Threshold**) tối ưu riêng cho từng nhóm đối tượng thiểu số ở đầu ra của mô hình.\n\n---\n\n### 2. Giám sát của con người (Human-in-the-loop) & Explainable AI (Slide 25)\n- **Human-in-the-loop (HITL)**: AI chỉ đóng vai trò hỗ trợ ra quyết định (Decision Support System). Những quyết định quan trọng ảnh hưởng đến quyền lợi công dân (từ chối vay vốn, bác đơn bảo hiểm) bắt buộc phải có sự thẩm định và phê duyệt cuối cùng của con người.\n- **Explainable AI (XAI)**: Mô hình không được là một chiếc hộp đen (**Black-box**). Hệ thống phải giải trình được lý do vì sao đưa ra quyết định đó (sử dụng SHAP, LIME).\n\n---\n\n### 3. Tự động Auditing và Báo cáo tuân thủ (Slide 26-28)\n- **Continuous Auditing (Kiểm toán liên tục 24/7)**: Thay thế việc kiểm toán định kỳ thủ công tốn kém bằng hệ thống AI giám sát liên tục theo thời gian thực.\n- **Quy trình 4 bước vận hành tự động (Slide 27)**:\n  1. **Monitor**: Theo dõi liên tục từng câu lệnh truy vấn dữ liệu nhạy cảm real-time.\n  2. **Detect**: AI dùng thuật toán **Anomaly Detection** phát hiện hành vi bất thường (ví dụ: tài khoản nhân viên tải dữ liệu hàng loạt vào lúc 2 giờ đêm).\n  3. **Alert**: Kích hoạt báo động đỏ, tự động ngắt quyền truy cập (**Auto-revoke**).\n  4. **Report**: Tự động kết xuất báo cáo tuân thủ (**Compliance Report**) gửi cơ quan quản lý.\n- **3 Thành phần kỹ thuật trong báo cáo tuân thủ (Slide 28)**:\n  - **Data Audit Trail**: Sổ cái bất biến (**Immutable Log**) lưu lại mọi thao tác đọc/ghi phục vụ điều tra pháp lý.\n  - **Bias Reporting Dashboard**: Đo lường định kỳ các chỉ số công bằng (Fairness Metrics).\n  - **Privacy Audit Trail**: Theo dõi mức độ hao hụt ngân sách riêng tư ($\\epsilon$ budget loss) theo thời gian."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Tình huống thực tế: Phát hiện rò rỉ dữ liệu lúc 2 giờ đêm\nMột nhân viên chăm sóc khách hàng bình thường chỉ xem 20 hồ sơ/ngày trong giờ hành chính (8h - 17h).\n- **Lúc 02:15 sáng**: Tài khoản này đăng nhập từ địa chỉ IP lạ và gửi câu lệnh `SELECT * FROM customer_pii_vault LIMIT 100000;`.\n- **Hệ thống Continuous Auditing xử lý trong vài giây**:\n  1. **Monitor**: Ghi nhận câu truy vấn truy cập vào bảng nhạy cảm PII.\n  2. **Detect**: Mô hình Anomaly Detection phát hiện độ lệch chuẩn cực lớn về thời gian truy cập và khối lượng dữ liệu truy xuất.\n  3. **Alert**: Hệ thống lập tức hủy phiên làm việc, khóa tài khoản tạm thời và gửi cảnh báo khẩn cấp cho Giám đốc An ninh Thông tin (CISO).\n  4. **Report**: Lưu sự kiện vào Data Audit Trail bất biến và xuất báo cáo sự cố tuân thủ theo chuẩn AI Act."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo thi & Điểm chốt chương 7\n- 3 bước khử bias: **Pre** (dữ liệu) $\\to$ **In** (hàm Loss) $\\to$ **Post** (ngưỡng threshold).\n- 4 bước Continuous Audit: **Monitor $\\to$ Detect $\\to$ Alert $\\to$ Report**.\n- Báo cáo tuân thủ gồm: **Data Audit Trail** (sổ cái bất biến), **Bias Dashboard**, **Privacy Audit Trail**."
+          }
+        ],
+        "miniQuiz": [
+          "ch7_q39"
+        ],
+        "relatedQuestionIds": [
+          "ch7_q33",
+          "ch7_q34",
+          "ch7_q35",
+          "ch7_q36",
+          "ch7_q37",
+          "ch7_q38",
+          "ch7_q39",
+          "ch7_q40",
+          "ch7_q41",
+          "ch7_q42",
+          "ch7_q49",
+          "ch7_q50"
+        ],
+        "labIds": []
       }
     ]
   },

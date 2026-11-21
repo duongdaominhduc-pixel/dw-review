@@ -1,0 +1,702 @@
+[
+  {
+    "id": "ch7_q01",
+    "number": "C7.1",
+    "chapterId": "ch7",
+    "topic": "ai-act",
+    "type": "theory",
+    "prompt": "Đạo luật Quản trị Trí tuệ Nhân tạo (EU AI Act) chính thức được áp dụng toàn diện từ năm nào và mục tiêu cốt lõi của nó là gì? (Slide 4)",
+    "answer": "Áp dụng toàn diện từ năm 2026; mục tiêu là phân cấp các hệ thống AI thành 4 mức độ rủi ro nhằm bảo vệ người dùng và thiết lập khung quản trị dữ liệu nghiêm ngặt.",
+    "explanation": "Theo Slide 4: Bối cảnh đạo luật AI Act chính thức áp dụng toàn diện từ năm 2026, phân cấp các hệ thống AI thành 4 mức độ rủi ro. Các doanh nghiệp thuộc khối MIS & Fintech bắt buộc phải thiết lập hệ thống quản trị dữ liệu (Data Governance) nghiêm ngặt từ khâu nạp dữ liệu (Ingestion) đến khâu vận hành.",
+    "eli5": "Giống như luật giao thông toàn cầu cho AI từ năm 2026: Phân loại xe cộ theo mức độ nguy hiểm để bắt buộc doanh nghiệp tài chính/công nghệ phải kiểm soát dữ liệu nạp vào xe từ lúc sản xuất đến khi lăn bánh.",
+    "commonMistakes": [
+      "Nhầm lẫn năm áp dụng toàn diện (2026) với năm ban hành dự thảo ban đầu (2021)."
+    ]
+  },
+  {
+    "id": "ch7_q02",
+    "number": "C7.2",
+    "chapterId": "ch7",
+    "topic": "ai-act",
+    "type": "theory",
+    "prompt": "Theo Slide 4, ba trụ cột bắt buộc trong hệ thống Data Governance theo tiêu chuẩn AI Act gồm những yếu tố nào?",
+    "answer": "1. Kiểm soát tính minh bạch (Transparency); 2. Giám sát tối đa yếu tố con người (Human Oversight); 3. Đảm bảo chất lượng dữ liệu huấn luyện (Data Quality).",
+    "explanation": "Slide 4 nêu rõ 3 trụ cột bắt buộc của Data Governance theo AI Act: Transparency (tính minh bạch, giải trình được), Human Oversight (luôn có sự can thiệp và kiểm soát của con người), và Data Quality (dữ liệu sạch, không thiên lệch, đại diện cho thực tế).",
+    "eli5": "3 cái kiềng ba chân: Dữ liệu phải sạch và đúng (Data Quality), người dùng phải hiểu AI làm gì (Transparency), và luôn phải có con người nắm quyền phanh khẩn cấp (Human Oversight).",
+    "commonMistakes": [
+      "Thiếu yếu tố giám sát của con người (Human Oversight) hoặc nhầm sang các tiêu chí bảo mật mạng thông thường."
+    ]
+  },
+  {
+    "id": "ch7_q03",
+    "number": "C7.3",
+    "chapterId": "ch7",
+    "topic": "ai-act",
+    "type": "theory",
+    "prompt": "Trình bày 4 cấp độ rủi ro của các hệ thống AI được quy định trong Đạo luật AI Act và nêu ví dụ tiêu biểu cho mỗi cấp độ (Slide 5).",
+    "answer": "1. Unacceptable Risk (Cấm hoàn toàn: Chấm điểm công dân, thao túng hành vi nhận thức); 2. High Risk (Kiểm soát nghiêm ngặt: Fintech chấm điểm tín dụng, tuyển dụng nhân sự); 3. Transparent/Limited Risk (Dán nhãn rõ ràng: Chatbots, Deepfake); 4. Minimal Risk (Tự do vận hành: Bộ lọc Spam, AI trong game).",
+    "explanation": "Theo Slide 5: Unacceptable Risk bị cấm tuyệt đối; High Risk yêu cầu kiểm toán và lưu vết nghiêm ngặt; Limited Risk phải công khai cho người dùng biết họ đang tương tác với AI; Minimal Risk hầu như không bị ràng buộc pháp lý.",
+    "eli5": "Cực nguy hiểm thì cấm tiệt (chấm điểm công dân); Nguy cơ cao thì thanh tra gắt gao (chấm điểm vay tiền); Rủi ro vừa phải dán mác cảnh báo (Chatbot/Deepfake); Vô hại thì thả lỏng (lọc rác email).",
+    "commonMistakes": [
+      "Xếp hệ thống đánh giá điểm tín dụng Fintech vào nhóm rủi ro không thể chấp nhận (thực tế là nhóm High Risk)."
+    ]
+  },
+  {
+    "id": "ch7_q04",
+    "number": "C7.4",
+    "chapterId": "ch7",
+    "topic": "ai-act",
+    "type": "theory",
+    "prompt": "Tại sao hệ thống AI chấm điểm công dân xã hội (Social Scoring) lại bị xếp vào nhóm 'Unacceptable Risk' (Rủi ro không thể chấp nhận) theo AI Act? (Slide 5)",
+    "answer": "Vì nó vi phạm nghiêm trọng quyền con người, thao túng hành vi và phân biệt đối xử bất công trên diện rộng dựa trên giám sát xã hội.",
+    "explanation": "Slide 5 nêu ví dụ về Unacceptable Risk: Chấm điểm công dân xã hội, AI thao túng hành vi dưới ngưỡng nhận thức. Những hệ thống này đe dọa trực tiếp nền tảng tự do và quyền bình đẳng của công dân nên bị cấm hoàn toàn.",
+    "eli5": "Nếu để máy móc theo dõi từng hành động hàng ngày để phạt hoặc cấm đi máy bay/tàu hỏa thì xã hội sẽ biến thành nhà tù công nghệ số, vi phạm quyền con người tối thượng.",
+    "commonMistakes": [
+      "Cho rằng các hệ thống này vẫn được phép hoạt động nếu có sự đồng ý của người dân."
+    ]
+  },
+  {
+    "id": "ch7_q05",
+    "number": "C7.5",
+    "chapterId": "ch7",
+    "topic": "ai-act",
+    "type": "theory",
+    "prompt": "Đối với các hệ thống AI thuộc nhóm 'High Risk' (Rủi ro cao), doanh nghiệp phải đáp ứng 3 nghĩa vụ tuân thủ nào? (Slide 6)",
+    "answer": "1. Data Quality (dữ liệu huấn luyện/kiểm thử phải đại diện, không lỗi hệ thống, kiểm soát bias); 2. Technical Documentation (lưu trữ toàn bộ kiến trúc & data flow để thanh tra); 3. Traceability (tự động ghi log theo dõi & kiểm toán toàn bộ vòng đời).",
+    "explanation": "Slide 6 quy định 3 nghĩa vụ bắt buộc cho High-Risk AI: Data Quality (chất lượng dữ liệu), Technical Documentation (tài liệu kỹ thuật sẵn sàng thanh tra bất cứ lúc nào), Traceability (khả năng truy vết và ghi log tự động toàn bộ vòng đời vận hành).",
+    "eli5": "3 nghĩa vụ: Dữ liệu nạp vào phải sạch không thiên vị, hồ sơ bản vẽ kiến trúc phải lưu đầy đủ để trình cảnh sát thanh tra, và mọi thao tác của hệ thống phải được camera hộp đen ghi lại từng giây.",
+    "commonMistakes": [
+      "Nghĩ rằng chỉ cần mô hình có độ chính xác cao (Accuracy) là đủ mà không cần lưu trữ Technical Documentation và Traceability."
+    ]
+  },
+  {
+    "id": "ch7_q06",
+    "number": "C7.6",
+    "chapterId": "ch7",
+    "topic": "lineage",
+    "type": "theory",
+    "prompt": "Định nghĩa Automated Data Lineage và vai trò của nó trong kiến trúc Medallion (Slide 7)?",
+    "answer": "Là khả năng quan sát và ghi nhận toàn diện luồng dữ liệu từ nguồn gốc ban đầu qua các bước biến đổi đến mô hình AI cuối cùng; theo dõi dữ liệu tự động từ Bronze -> Silver -> Gold.",
+    "explanation": "Slide 7 định nghĩa: Automated Data Lineage là khả năng quan sát và ghi nhận toàn diện flow của data từ nguồn gốc ban đầu, đi qua các bước biến đổi (Transformations) cho đến mô hình AI cuối cùng. Trong kiến trúc Medallion, nó tự động theo dõi từ Bronze Layer (thô) qua Silver Layer (làm sạch) đến Gold Layer (tính toán đặc trưng).",
+    "eli5": "Giống như giấy khai sinh và hộ chiếu của dữ liệu: Biết rõ dữ liệu sinh ra từ đâu (CRM/ERP), đi qua những trạm biến đổi nào (SQL dbt), và đang phục vụ cho mô hình AI nào.",
+    "commonMistakes": [
+      "Nhầm Data Lineage với Data Profiling hoặc chỉ coi Lineage là sơ đồ vẽ tay tĩnh thay vì tự động truy vết."
+    ]
+  },
+  {
+    "id": "ch7_q07",
+    "number": "C7.7",
+    "chapterId": "ch7",
+    "topic": "lineage",
+    "type": "theory",
+    "prompt": "Giá trị cốt lõi nhất mà Automated Data Lineage mang lại cho kiểm toán viên và kỹ sư dữ liệu là gì? (Slide 7)",
+    "answer": "Giúp trả lời chính xác câu hỏi: 'Mô hình AI lấy dữ liệu từ đâu, và dữ liệu đó bị biến đổi bởi câu lệnh SQL nào?'.",
+    "explanation": "Theo Slide 7: Giá trị cốt lõi giúp kiểm toán viên và kỹ sư dữ liệu hiểu rõ nguồn gốc xuất xứ của từng trường đặc trưng và câu lệnh SQL cụ thể chịu trách nhiệm cho các biến đổi đó.",
+    "eli5": "Khi mô hình AI đưa ra quyết định sai, Lineage giúp chỉ mặt đặt tên ngay lập tức: Dữ liệu này lấy từ bảng nào và bị dòng lệnh SQL nào làm sai lệch.",
+    "commonMistakes": [
+      "Nghĩ rằng Lineage chỉ dùng để vẽ đồ thị cho đẹp mắt chứ không có giá trị truy cứu trách nhiệm pháp lý."
+    ]
+  },
+  {
+    "id": "ch7_q08",
+    "number": "C7.8",
+    "chapterId": "ch7",
+    "topic": "lineage",
+    "type": "theory",
+    "prompt": "Trình bày 4 mắt xích trong luồng quan sát 360 độ (360-degree observability) của một Data Pipeline hiện đại (Slide 8).",
+    "answer": "1. Data Source (ghi nhận metadata CRM, ERP, Web Logs); 2. Transformation (trích xuất mã SQL từ dbt hoặc Spark); 3. Data Quality Check (kiểm tra định dạng, non-null, trùng lặp); 4. AI Consumption (kết nối trực tiếp feature với kết quả dự báo ML).",
+    "explanation": "Slide 8 liệt kê 4 mắt xích: Data Source -> Transformation -> Data Quality Check -> AI Consumption, tạo thành chuỗi mắt xích khép kín từ lúc dữ liệu phát sinh đến lúc mô hình tiêu thụ.",
+    "eli5": "Chuỗi cung ứng 4 bước: Thu hoạch nguyên liệu thô (Source) -> Chế biến nấu nướng bằng SQL (Transformation) -> Kiểm tra an toàn thực phẩm (Data Quality Check) -> Bày lên đĩa cho AI ăn (AI Consumption).",
+    "commonMistakes": [
+      "Bỏ sót bước kiểm tra chất lượng (Data Quality Check) trước khi đưa vào mô hình AI."
+    ]
+  },
+  {
+    "id": "ch7_q09",
+    "number": "C7.9",
+    "chapterId": "ch7",
+    "topic": "lineage",
+    "type": "theory",
+    "prompt": "Khái niệm 'Impact Analysis' (Phân tích tác động) trong Automated Data Lineage hoạt động như thế nào khi một bảng ở tầng Bronze thay đổi cấu trúc? (Slide 9)",
+    "answer": "Hệ thống tự động phân tích đồ thị phụ thuộc và cảnh báo trước cho các mô hình AI hoặc dashboard ở tầng Gold sẽ bị ảnh hưởng hoặc gãy vỡ.",
+    "explanation": "Theo Slide 9: Khi một bảng ở tầng Bronze thay đổi schema, Impact Analysis sẽ tự động cảnh báo các model AI ở tầng Gold sẽ bị ảnh hưởng, giúp giảm 90% thời gian rà soát mã nguồn thủ công khi có sự cố.",
+    "eli5": "Nếu ai đó sửa một cột ở tầng móng nhà (Bronze), hệ thống sẽ báo động ngay cho những người ở tầng thượng (Gold/AI) biết trước để không bị sập sàn.",
+    "commonMistakes": [
+      "Cho rằng Impact Analysis chỉ phân tích dữ liệu trong quá khứ thay vì cảnh báo rủi ro về phía các đối tượng hạ nguồn (Downstream)."
+    ]
+  },
+  {
+    "id": "ch7_q10",
+    "number": "C7.10",
+    "chapterId": "ch7",
+    "topic": "lineage",
+    "type": "theory",
+    "prompt": "Automated Lineage giúp tối ưu hóa Root-Cause Analysis (Phân tích nguyên nhân gốc rễ) như thế nào theo Slide 9?",
+    "answer": "Giúp giảm tới 90% thời gian rà soát mã nguồn thủ công và củng cố Data Trust bằng cách chứng minh tính nguyên bản và độ sạch của dữ liệu.",
+    "explanation": "Slide 9 nhấn mạnh: Tự động hóa lineage giảm 90% thời gian rà soát mã nguồn thủ công khi mô hình trả về kết quả sai lệch, đồng thời chứng minh được nguồn gốc dữ liệu sạch trước khi học máy.",
+    "eli5": "Thay vì mất cả tuần đọc từng dòng code tìm lỗi, kỹ sư chỉ mất vài phút nhìn vào sơ đồ vết để thấy ngay lỗi bắt nguồn từ đâu.",
+    "commonMistakes": [
+      "Nghĩ rằng Lineage tự sửa code (Lineage chỉ định vị nguyên nhân gốc rễ để con người hoặc pipeline khắc phục)."
+    ]
+  },
+  {
+    "id": "ch7_q11",
+    "number": "C7.11",
+    "chapterId": "ch7",
+    "topic": "security",
+    "type": "theory",
+    "prompt": "Cơ chế hoạt động của Row-level Security (RLS - Bảo mật cấp dòng) là gì? Nêu ví dụ thực tế trong doanh nghiệp (Slide 10).",
+    "answer": "Là bộ lọc động dựa trên danh tính người truy cập (User Context); ví dụ nhân viên vùng A chỉ xem được dữ liệu khách hàng vùng A, cấp quản lý được xem toàn bộ.",
+    "explanation": "Slide 10 giải thích: RLS áp dụng bộ lọc điều kiện ẩn (Predicate filter) dựa vào User Context / Role của người chạy truy vấn. Cùng một câu lệnh `SELECT * FROM sales`, mỗi người dùng chỉ nhận về các dòng thuộc thẩm quyền của mình.",
+    "eli5": "Cùng mở một cuốn sổ bán hàng nhưng kính mắt của nhân viên Miền Bắc chỉ cho thấy các dòng Miền Bắc, còn kính của Giám đốc thì đọc được toàn bộ cuốn sổ.",
+    "commonMistakes": [
+      "Nhầm lẫn RLS (lọc dòng) với CLM (che cột)."
+    ]
+  },
+  {
+    "id": "ch7_q12",
+    "number": "C7.12",
+    "chapterId": "ch7",
+    "topic": "security",
+    "type": "theory",
+    "prompt": "Cơ chế hoạt động của Column-level Masking (CLM - Che giấu cấp cột) là gì và mục tiêu của nó đối với dữ liệu PII? (Slide 10, câu 37 đề cương)",
+    "answer": "Ẩn hoặc mã hóa một phần dữ liệu định danh cá nhân (PII) theo chính sách phân quyền mà không làm thay đổi cấu trúc bảng; ví dụ số điện thoại hiển thị 091xxxx888.",
+    "explanation": "Theo Slide 10: CLM bảo vệ dữ liệu nhạy cảm (Personally Identifiable Information - PII) như số điện thoại, số thẻ tín dụng, CCCD bằng cách thay thế các ký tự nhạy cảm bằng dấu 'x' hoặc mã băm đối với các vai trò không có quyền xem dữ liệu thô.",
+    "eli5": "Dù nhân viên chăm sóc khách hàng hay kỹ sư dữ liệu xem bảng thông tin thì số thẻ ngân hàng vẫn chỉ hiện dạng `****-****-****-1234`, chỉ Giám đốc duyệt thanh toán mới thấy số thật.",
+    "commonMistakes": [
+      "Nghĩ rằng CLM xóa hẳn cột khỏi bảng (thực tế cấu trúc bảng và kiểu dữ liệu vẫn giữ nguyên, chỉ giá trị hiển thị bị che phủ)."
+    ]
+  },
+  {
+    "id": "ch7_q13",
+    "number": "C7.13",
+    "chapterId": "ch7",
+    "topic": "security",
+    "type": "theory",
+    "prompt": "Trình bày sự đánh đổi (Trade-Off) giữa bảo mật dữ liệu và hiệu năng tốc độ khi mã hóa các bảng dữ liệu lớn (Slide 11).",
+    "answer": "Khi áp dụng các thuật toán mã hóa trên các bảng dữ liệu lớn (Large Tabular Data), hệ thống thường bị chậm do độ trễ mã hóa/giải mã cao.",
+    "explanation": "Slide 11 chỉ rõ: Khi mã hóa các bảng dữ liệu lớn, độ trễ truy vấn tăng cao. Bài học cho sinh viên ngành Hệ thống Thông tin Quản lý (MIS): Bảo mật dữ liệu không được phép đánh đổi bằng hiệu năng vận hành thời gian thực của hệ thống.",
+    "eli5": "Khóa càng nhiều ổ khóa dày cộm thì nhà càng an toàn, nhưng mỗi lần mở cửa lấy hàng sẽ mất cả tiếng đồng hồ khiến khách hàng phát bực bỏ đi.",
+    "commonMistakes": [
+      "Cho rằng việc mã hóa dữ liệu bảng lớn không ảnh hưởng gì tới tốc độ truy vấn của hệ thống."
+    ]
+  },
+  {
+    "id": "ch7_q14",
+    "number": "C7.14",
+    "chapterId": "ch7",
+    "topic": "security",
+    "type": "theory",
+    "prompt": "Bài báo nghiên cứu khoa học được TS. Nguyễn Thôn Dã trích dẫn ở Slide 12 giải quyết vấn đề gì?",
+    "answer": "Tối ưu hóa hiệu năng thời gian (Time Performance) của quá trình mã hóa và giải mã cấu trúc dữ liệu dạng bảng quy mô lớn (Large Tabular Data).",
+    "explanation": "Slide 12 dẫn nguồn: 'Enhancing the Time Performance of Encrypting and Decrypting Large Tabular Data' (DOI: 10.1080/08839514.2021.1991661) - nghiên cứu về các thuật toán tối ưu tốc độ xử lý mã hóa dữ liệu lớn cho Big Data Storage.",
+    "eli5": "Nghiên cứu cách chế tạo loại khóa siêu tốc: Vẫn an toàn tuyệt đối nhưng mở khóa trong chớp mắt để hệ thống Big Data không bị giật lag.",
+    "commonMistakes": [
+      "Nghĩ bài báo nói về học máy thay vì tối ưu thời gian mã hóa/giải mã dữ liệu dạng bảng."
+    ]
+  },
+  {
+    "id": "ch7_q15",
+    "number": "C7.15",
+    "chapterId": "ch7",
+    "topic": "sharing",
+    "type": "theory",
+    "prompt": "Hai nhược điểm chí mạng của mô hình chia sẻ dữ liệu truyền thống qua ETL/FTP là gì? (Slide 13)",
+    "answer": "1. Tốn dung lượng lưu trữ do phải nhân bản sao chép file ra ngoài; 2. Nguy cơ lộ lọt bí mật dữ liệu từ các bản sao lưu lạc là rất cao.",
+    "explanation": "Theo Slide 13: Mô hình ETL/FTP truyền thống xuất dữ liệu ra các file (CSV, Dump) gửi cho đối tác. Điều này vừa nhân bản chi phí lưu trữ, vừa mất kiểm soát sau khi file đã ra khỏi hệ thống nội bộ.",
+    "eli5": "Giống như photocopy tài liệu mật gửi đi khắp nơi: Vừa tốn tiền giấy mực, vừa không thể thu hồi khi người cầm bản sao lỡ đánh rơi.",
+    "commonMistakes": [
+      "Cho rằng FTP là giao thức bảo mật hiện đại không có nguy cơ rò rỉ dữ liệu."
+    ]
+  },
+  {
+    "id": "ch7_q16",
+    "number": "C7.16",
+    "chapterId": "ch7",
+    "topic": "sharing",
+    "type": "theory",
+    "prompt": "Kiến trúc Zero-Copy Data Sharing (trên Snowflake, BigQuery) hoạt động theo nguyên lý nào? (Slide 13)",
+    "answer": "Cho phép nhiều hệ thống hoặc người dùng cùng truy cập, truy vấn và phân tích tại một nguồn dữ liệu duy nhất thông qua metadata mà không sao chép bất kỳ byte dữ liệu nào.",
+    "explanation": "Slide 13 nêu rõ: Zero-copy Data Sharing cấp quyền trực tiếp vào vùng dữ liệu chỉ định trên hạ tầng Cloud. Đối tác xem và phân tích dữ liệu tại chỗ thông qua tầng Metadata, không có sự dịch chuyển hay nhân bản vật lý của dữ liệu.",
+    "eli5": "Thay vì gửi bản sao, doanh nghiệp cấp cho đối tác một chiếc 'kính viễn vọng số' để họ nhìn trực tiếp vào kho dữ liệu gốc với phạm vi được chỉ định.",
+    "commonMistakes": [
+      "Nghĩ rằng Zero-copy vẫn tạo ra file nén tạm thời (thực tế 0 byte dữ liệu được copy)."
+    ]
+  },
+  {
+    "id": "ch7_q17",
+    "number": "C7.17",
+    "chapterId": "ch7",
+    "topic": "sharing",
+    "type": "theory",
+    "prompt": "Triết lý quản trị dữ liệu được nhấn mạnh ở Slide 14 là gì?",
+    "answer": "'Dữ liệu là tài sản duy nhất tăng giá trị khi được chia sẻ đúng cách, nhưng rủi ro nhất khi bị nhân bản hàng loạt.'",
+    "explanation": "Slide 14 nêu bật triết lý: Dữ liệu chia sẻ đúng cách giúp tạo ra giá trị liên kết đa chiều, nhưng việc nhân bản dữ liệu tạo ra nguy cơ rò rỉ và mất kiểm soát tuân thủ.",
+    "eli5": "Dữ liệu càng được nhiều bên khai thác chung thì càng sinh ra nhiều tiền, nhưng càng nhân bản ra nhiều bản copy thì càng dễ mất nhà.",
+    "commonMistakes": [
+      "Nói ngược lại là 'Dữ liệu càng nhân bản càng an toàn'."
+    ]
+  },
+  {
+    "id": "ch7_q18",
+    "number": "C7.18",
+    "chapterId": "ch7",
+    "topic": "sharing",
+    "type": "theory",
+    "prompt": "Khi một tổ chức muốn dừng hợp tác với đối tác trong mô hình Zero-Copy Data Sharing, họ thực hiện việc thu hồi dữ liệu như thế nào? (Slide 14)",
+    "answer": "Chỉ cần thực hiện lệnh 'Revoke access' trên Cloud; ngay lập tức đối tác sẽ không còn nhìn thấy bất kỳ byte dữ liệu nào.",
+    "explanation": "Slide 14 nhấn mạnh: Quyền kiểm soát tối cao nằm ở bên chia sẻ. Khi ngắt quyền (Revoke access) trên IAM, phía đối tác lập tức mất quyền truy cập vào dữ liệu gốc, giải quyết triệt để vấn đề mất kiểm soát dữ liệu sau chia sẻ.",
+    "eli5": "Chỉ cần một click bấm 'Hủy quyền', màn hình đối tác lập tức trống trơn vì trước đó họ không hề có bất kỳ bản sao vật lý nào trên máy của họ.",
+    "commonMistakes": [
+      "Nghĩ rằng phải sang cơ sở đối tác để yêu cầu họ xóa ổ cứng."
+    ]
+  },
+  {
+    "id": "ch7_q19",
+    "number": "C7.19",
+    "chapterId": "ch7",
+    "topic": "sharing",
+    "type": "theory",
+    "prompt": "So sánh ETL truyền thống và Secure Data Sharing (Zero-copy) theo 3 tiêu chí: Độ trễ, Bảo mật & Quản trị, Chi phí hạ tầng (Slide 15).",
+    "answer": "1. Độ trễ: ETL bị trễ (Batch/Schedule) vs Zero-copy thời gian thực (Live); 2. Bảo mật: ETL rủi ro lộ lọt cao vs Zero-copy kiểm soát tập trung qua IAM; 3. Chi phí: ETL tốn gấp đôi tài nguyên vs Zero-copy tối ưu dùng chung storage gốc.",
+    "explanation": "Slide 15 cung cấp bảng đối sánh toàn diện: ETL truyền thống vừa chậm (theo lịch batch), vừa tốn chi phí nhân đôi storage/compute, vừa tiềm ẩn rủi ro file trôi nổi; trong khi Zero-copy đạt realtime, kiểm soát IAM tập trung và chi phí tối ưu.",
+    "eli5": "ETL là xe chở hàng gửi bưu điện (chậm, tốn tiền xăng, dễ rơi đồ); Zero-copy là xem livestream màn hình gốc (tức thì, miễn phí bản sao, tắt live là hết xem).",
+    "commonMistakes": [
+      "Nghĩ rằng Zero-copy có độ trễ lớn hơn ETL truyền thống."
+    ]
+  },
+  {
+    "id": "ch7_q20",
+    "number": "C7.20",
+    "chapterId": "ch7",
+    "topic": "privacy",
+    "type": "theory",
+    "prompt": "Triết lý cốt lõi của kỹ thuật Vi sai Quyền riêng tư (Differential Privacy) trong khai thác dữ liệu là gì? (Slide 16)",
+    "answer": "Kết quả phân tích của AI sẽ gần như không thay đổi dù có hay không có dữ liệu của một cá nhân cụ thể, khiến hackers không thể dịch ngược báo cáo để định danh bất kỳ ai.",
+    "explanation": "Theo Slide 16: Differential Privacy đảm bảo rằng sự hiện diện hay vắng mặt của bất kỳ một cá nhân nào trong bộ dữ liệu cũng không làm thay đổi đáng kể phân phối xác suất của kết quả truy vấn, vô hiệu hóa các cuộc tấn công tái định danh (Re-identification attacks).",
+    "eli5": "Dù có bạn hay không có bạn trong danh sách, kết quả thống kê của lớp học vẫn như cũ; do đó kẻ xấu có đọc báo cáo cũng không thể biết bạn có tham gia khảo sát hay không.",
+    "commonMistakes": [
+      "Nghĩ rằng Differential Privacy chỉ là xóa tên và số CMND của người dùng."
+    ]
+  },
+  {
+    "id": "ch7_q21",
+    "number": "C7.21",
+    "chapterId": "ch7",
+    "topic": "privacy",
+    "type": "theory",
+    "prompt": "Cơ chế bơm 'nhiễu' chủ động (Adding Noise) trong Differential Privacy hoạt động như thế nào? (Slide 16)",
+    "answer": "Thay vì trả về kết quả thô chính xác tuyệt đối, thuật toán chủ động trộn thêm các sai số ngẫu nhiên (nhiễu Laplace/Gaussian) để hòa lẫn thông tin cá nhân vào cộng đồng.",
+    "explanation": "Slide 16 nêu: Thuật toán bơm một lượng nhiễu ngẫu nhiên được kiểm soát toán học vào kết quả tổng hợp. Người phân tích vẫn nắm được xu hướng tổng thể nhưng không thể suy diễn giá trị chính xác của từng cá nhân đơn lẻ.",
+    "eli5": "Giống như làm mờ nhẹ khuôn mặt trong đám đông: Nhìn từ xa vẫn biết đó là bức ảnh chụp lễ hội, nhưng soi kính lúp thì không thể nhận diện được nốt ruồi của ai.",
+    "commonMistakes": [
+      "Tưởng rằng bơm nhiễu làm hỏng dữ liệu và vô giá trị cho việc phân tích thống kê."
+    ]
+  },
+  {
+    "id": "ch7_q22",
+    "number": "C7.22",
+    "chapterId": "ch7",
+    "topic": "privacy",
+    "type": "theory",
+    "prompt": "Ý nghĩa của tham số Ngân sách Quyền riêng tư (Privacy Budget - mức Epsilon $\\epsilon$) trong Differential Privacy là gì? (Slide 16)",
+    "answer": "Đo lường và kiểm soát sự đánh đổi giữa mức độ an toàn thông tin (Privacy) và giá trị phân tích kinh doanh (Data Utility).",
+    "explanation": "Theo Slide 16: Epsilon ($\\epsilon$) là thước đo toán học giới hạn lượng thông tin rò rỉ. Mỗi câu truy vấn vào cơ sở dữ liệu sẽ tiêu tốn một phần ngân sách Epsilon của hệ thống.",
+    "eli5": "Epsilon như một bình oxy bảo mật: Mỗi lần bạn hỏi cơ sở dữ liệu một câu, bạn hít mất một tí oxy. Khi bình cạn, hệ thống sẽ từ chối trả lời để bảo vệ bí mật người dùng.",
+    "commonMistakes": [
+      "Nhầm lẫn rằng Epsilon càng lớn thì dữ liệu càng an toàn."
+    ]
+  },
+  {
+    "id": "ch7_q23",
+    "number": "C7.23",
+    "chapterId": "ch7",
+    "topic": "privacy",
+    "type": "theory",
+    "prompt": "Quy luật đánh đổi (Trade-Off) khi điều chỉnh giá trị Epsilon ($\\epsilon$) diễn ra như thế nào? (Slide 16, 19)",
+    "answer": "Đưa $\\epsilon$ xuống thấp giúp bảo mật tối đa nhưng giảm độ chính xác của dữ liệu; ngược lại, đưa $\\epsilon$ lên cao giúp báo cáo chính xác hơn nhưng tăng rủi ro lộ danh tính.",
+    "explanation": "Slide 16 & 19: Khi $\\epsilon \\to 0$, lượng nhiễu bơm vào rất lớn, quyền riêng tư đạt mức cao nhất nhưng tính hữu dụng (Data Utility) giảm mạnh. Khi $\\epsilon$ lớn, lượng nhiễu ít, dữ liệu rõ nét nhưng rủi ro tổn hại riêng tư (Privacy Loss) tăng cao.",
+    "eli5": "Kéo rèm thật dày thì kẻ trộm không nhìn trộm được gì nhưng phòng sẽ tối om; mở toang rèm thì sáng sủa đọc sách tốt nhưng người ngoài đường nhìn thấy hết.",
+    "commonMistakes": [
+      "Nghĩ rằng có thể đạt được đồng thời 100% bảo mật tuyệt đối và 100% độ chính xác dữ liệu gốc."
+    ]
+  },
+  {
+    "id": "ch7_q24",
+    "number": "C7.24",
+    "chapterId": "ch7",
+    "topic": "anonymization",
+    "type": "theory",
+    "prompt": "Định nghĩa chuẩn của thuộc tính k-Anonymity trong quản trị cơ sở dữ liệu (Slide 17)?",
+    "answer": "Một tập dữ liệu đạt k-anonymity nếu mỗi cá nhân trong bảng không thể bị phân biệt với ít nhất k - 1 cá nhân khác cũng nằm trong bảng đó.",
+    "explanation": "Slide 17 định nghĩa: Mỗi nhóm bản ghi có cùng tập thuộc tính định danh tương đối (Quasi-identifiers) phải chứa ít nhất $k$ cá nhân, tức là bất kỳ ai cũng có tối thiểu $k-1$ người 'song sinh' trong nhóm.",
+    "eli5": "Trong phòng có 1 người áo đỏ thì chỉ tay là bắt được ngay ($k=1$). Nhưng nếu có ít nhất 5 người cùng mặc áo đỏ, cùng độ tuổi ($k=5$), kẻ xấu không biết chắc ai là người cần tìm.",
+    "commonMistakes": [
+      "Nhầm lẫn điều kiện là 'ít nhất k cá nhân khác' thay vì 'ít nhất k-1 cá nhân khác' (tổng nhóm là k)."
+    ]
+  },
+  {
+    "id": "ch7_q25",
+    "number": "C7.25",
+    "chapterId": "ch7",
+    "topic": "anonymization",
+    "type": "theory",
+    "prompt": "Khái niệm 'Quasi-identifiers' (Thuộc tính bán định danh) là gì? Nêu ví dụ (Slide 17).",
+    "answer": "Là nhóm các cột đơn lẻ không nhạy cảm (Tuổi, Giới tính, Mã bưu chính) nhưng khi kết hợp lại có thể giúp kẻ tấn công tái định danh (Re-identification) danh tính cá nhân.",
+    "explanation": "Theo Slide 17: Bản thân 'Giới tính: Nam' hay 'Tuổi: 25' không định danh được ai. Nhưng khi ghép [Nam, 25 tuổi, Mã bưu chính 700000, Nghề nghiệp: Bác sĩ], tập giao này chỉ còn lại đúng 1 người duy nhất trong thực tế.",
+    "eli5": "Nói 'sinh viên UEL' thì có cả vạn người, nhưng nói 'sinh viên UEL, quê Cà Mau, sinh ngày 29/02' thì tìm ra đích danh ngay bạn đó.",
+    "commonMistakes": [
+      "Đồng nhất Quasi-identifiers với Direct Identifiers (như Họ tên, Số CMND/CCCD)."
+    ]
+  },
+  {
+    "id": "ch7_q26",
+    "number": "C7.26",
+    "chapterId": "ch7",
+    "topic": "anonymization",
+    "type": "theory",
+    "prompt": "Phân biệt hai kỹ thuật xử lý chính trong k-Anonymity: Generalization và Suppression (Slide 17).",
+    "answer": "Generalization là biến giá trị cụ thể thành khoảng (ví dụ 23 tuổi -> nhóm 20-30 tuổi); Suppression là xóa hẳn dòng hoặc cột của những cá nhân quá dị biệt để tránh bị lộ.",
+    "explanation": "Slide 17: Generalization (khái quát hóa) làm giảm độ mịn của dữ liệu; Suppression (triệt tiêu) loại bỏ hoàn toàn các điểm dị biệt (outliers) không thể gom nhóm với ai.",
+    "eli5": "Generalization là thay vì khai số nhà cụ thể thì chỉ khai tên Quận; Suppression là nếu cả huyện chỉ có 1 người cao 2m2 thì xóa luôn dòng của người đó để không bị nhận ra.",
+    "commonMistakes": [
+      "Nghĩ rằng Generalization là xóa dữ liệu (Generalization chỉ làm mờ/gom nhóm)."
+    ]
+  },
+  {
+    "id": "ch7_q27",
+    "number": "C7.27",
+    "chapterId": "ch7",
+    "topic": "privacy",
+    "type": "theory",
+    "prompt": "Nhiệm vụ trọng tâm của nhà quản trị dữ liệu khi nhìn vào đồ thị đánh đổi giữa Privacy Loss và Data Utility là gì? (Slide 18, 19)",
+    "answer": "Tìm ra điểm cân bằng tối ưu (Optimal Balance) để vừa tuân thủ pháp luật bảo mật, vừa giữ đủ độ chính xác cho các thuật toán Data Science phát huy tác dụng.",
+    "explanation": "Slide 19 kết luận: Bảo mật quá mức làm mất giá trị dữ liệu; thiếu bảo mật sẽ vi phạm pháp luật. Nhà quản trị phải tìm điểm giao thoa tối ưu trên đường cong giữa Privacy Loss và Utility.",
+    "eli5": "Tìm nhiệt độ nước tắm vừa vặn: Nóng quá thì bỏng da (mất tính năng dữ liệu), mà lạnh quá thì cảm lạnh (bị phạt vì lộ dữ liệu).",
+    "commonMistakes": [
+      "Cho rằng nhà quản trị luôn phải ưu tiên 100% cho bảo mật mà không quan tâm đến bài toán nghiệp vụ."
+    ]
+  },
+  {
+    "id": "ch7_q28",
+    "number": "C7.28",
+    "chapterId": "ch7",
+    "topic": "catalog",
+    "type": "theory",
+    "prompt": "Hiện tượng 'Data Swamp' (Đầm lầy dữ liệu) trong doanh nghiệp xuất hiện do nguyên nhân gì và giải pháp khắc phục là gì? (Slide 20)",
+    "answer": "Dữ liệu mở rộng quá nhanh nhưng thiếu kiểm soát khiến Data Lake bị biến chất thành đầm lầy ô nhiễm, không ai biết dữ liệu sạch nằm ở đâu; giải pháp là triển khai AI-driven Data Catalog.",
+    "explanation": "Theo Slide 20: Doanh nghiệp nạp dữ liệu ồ ạt mà không có cataloging khiến Data Lake trở thành Data Swamp. Giải pháp là ứng dụng AI-driven Data Catalog tự động thu thập và phân loại Metadata.",
+    "eli5": "Hồ nước trong lành (Data Lake) nếu ai cũng vứt rác không dọn dẹp sẽ thành vũng bùn ô nhiễm (Data Swamp); AI Catalog như robot dọn rác và gắn biển chỉ dẫn tự động.",
+    "commonMistakes": [
+      "Nghĩ rằng giải pháp khắc phục Data Swamp là xóa bỏ Data Lake và quay về Excel."
+    ]
+  },
+  {
+    "id": "ch7_q29",
+    "number": "C7.29",
+    "chapterId": "ch7",
+    "topic": "catalog",
+    "type": "theory",
+    "prompt": "Tính năng tự động nhận diện dữ liệu nhạy cảm PII của AI-driven Data Catalog hoạt động như thế nào? (Slide 20)",
+    "answer": "AI tự động quét qua các thuộc tính mới được tạo ra, nhận diện cột chứa email, số thẻ tín dụng, CCCD để tự động gắn nhãn và áp đặt chính sách phân quyền bảo mật.",
+    "explanation": "Slide 20 nêu rõ: Khi kỹ sư tạo bảng mới, AI Catalog dùng mô hình NLP/Regex tự động quét dữ liệu mẫu để phát hiện PII và tự động kích hoạt chính sách CLM/RLS mà không cần con người cấu hình thủ công.",
+    "eli5": "Như cổng an ninh quét tia X tại sân bay: Bất kể ai xách vali mới vào kho, máy tự động phát hiện hàng cấm (PII) và khóa niêm phong lại ngay lập tức.",
+    "commonMistakes": [
+      "Nghĩ rằng kỹ sư dữ liệu phải ngồi gắn nhãn PII thủ công bằng tay cho hàng nghìn bảng."
+    ]
+  },
+  {
+    "id": "ch7_q30",
+    "number": "C7.30",
+    "chapterId": "ch7",
+    "topic": "catalog",
+    "type": "theory",
+    "prompt": "Trình bày 3 thành phần cốt lõi của một hệ thống AI Data Catalog hiện đại (Slide 21).",
+    "answer": "1. Semantic Search (Tìm kiếm ngữ nghĩa bằng ngôn ngữ tự nhiên); 2. Data Lineage Integration (Tích hợp sơ đồ truy vết); 3. Trust Score (Chấm điểm tin cậy dữ liệu tự động).",
+    "explanation": "Theo Slide 21: Ba thành phần cốt lõi gồm Semantic Search (truy vấn tìm kiếm tự nhiên), Data Lineage Integration (nhúng sơ đồ nguồn gốc), và Trust Score (đo lường độ tin cậy dựa trên tần suất dùng và lịch sử kiểm định).",
+    "eli5": "3 vũ khí: Google tìm kiếm bằng lời nói (Semantic Search), cây gia phả dữ liệu (Lineage), và sao đánh giá uy tín như Shopee (Trust Score).",
+    "commonMistakes": [
+      "Nhầm lẫn Semantic Search (tìm theo ý nghĩa ngữ nghĩa) với tìm kiếm từ khóa SQL cứng (Keyword Search)."
+    ]
+  },
+  {
+    "id": "ch7_q31",
+    "number": "C7.31",
+    "chapterId": "ch7",
+    "topic": "catalog",
+    "type": "theory",
+    "prompt": "Chỉ số 'Trust Score' (Điểm tin cậy dữ liệu) trong AI Data Catalog được tính toán dựa trên các yếu tố nào? (Slide 21)",
+    "answer": "Dựa trên tần suất sử dụng thực tế của bảng và lịch sử kiểm định chất lượng tự động (kết quả pass/fail của các bài test dữ liệu).",
+    "explanation": "Slide 21 giải thích: Một bảng dữ liệu được nhiều bộ phận tin dùng và vượt qua liên tục các bài test dữ liệu (không null, đúng schema) sẽ có Trust Score cao, giúp các nhà phân tích an tâm sử dụng.",
+    "eli5": "Như điểm tín nhiệm của một gian hàng: Càng nhiều người mua và không bị đánh giá 1 sao về chất lượng thì gian hàng đó càng được cấp tích xanh uy tín.",
+    "commonMistakes": [
+      "Nghĩ rằng Trust Score do Giám đốc tự cho điểm bằng cảm tính."
+    ]
+  },
+  {
+    "id": "ch7_q32",
+    "number": "C7.32",
+    "chapterId": "ch7",
+    "topic": "metadata",
+    "type": "theory",
+    "prompt": "Phân biệt Business Glossary và Technical Metadata theo đơn vị quản lý, mục đích và nội dung lưu trữ (Slide 22).",
+    "answer": "Business Glossary do Governance Layer định nghĩa để thống nhất khái niệm kinh doanh (ví dụ định nghĩa Churn); Technical Metadata do Data Engineer Layer quản lý lưu trữ kiểu dữ liệu, schema, freshness, owner.",
+    "explanation": "Slide 22 phân định rạch ròi: Business Glossary là từ điển thuật ngữ nghiệp vụ chung cho toàn doanh nghiệp; Technical Metadata là thông số kỹ thuật (INT64, FLOAT64, bảng cha-con, lịch cập nhật) phục vụ kỹ thuật vận hành.",
+    "eli5": "Business Glossary là luật kinh doanh giải thích 'Thế nào là khách hàng VIP'; Technical Metadata là thông số kỹ thuật báo cáo 'Cột VIP_FLAG là kiểu BOOLEAN, nạp lúc 5h sáng'.",
+    "commonMistakes": [
+      "Gộp chung hai khái niệm thành một hoặc nghĩ rằng Data Engineer là người quyết định định nghĩa kinh doanh trong Business Glossary."
+    ]
+  },
+  {
+    "id": "ch7_q33",
+    "number": "C7.33",
+    "chapterId": "ch7",
+    "topic": "ethics",
+    "type": "theory",
+    "prompt": "Bản chất nguồn gốc của 'Bias' (Định kiến) trong các mô hình Trí tuệ Nhân tạo là gì? (Slide 23)",
+    "answer": "AI không tự sinh ra định kiến; định kiến nằm trong dữ liệu lịch sử của con người thu thập được; nếu dữ liệu quá khứ có phân biệt đối xử, AI sẽ học hành vi đó và khuếch đại nó ở quy mô lớn hơn.",
+    "explanation": "Slide 23 chỉ rõ: Bản chất của Bias bắt nguồn từ dữ liệu lịch sử con người. AI phản chiếu và khuếch đại sự thiên vị có sẵn trong dữ liệu quá khứ, ví dụ như từ chối cho vay đối với một nhóm người vì lịch sử thiếu tính đại diện.",
+    "eli5": "AI như một chiếc gương soi: Nếu mặt người dính lọ nghẹ thì gương phản chiếu đúng vết lọ nghẹ đó; AI không tự bịa ra định kiến mà học từ thói quen cũ của con người.",
+    "commonMistakes": [
+      "Cho rằng thuật toán máy tính tự có cảm xúc ghét bỏ một nhóm đối tượng cụ thể."
+    ]
+  },
+  {
+    "id": "ch7_q34",
+    "number": "C7.34",
+    "chapterId": "ch7",
+    "topic": "ethics",
+    "type": "theory",
+    "prompt": "Trình bày 3 kỹ thuật kiểm soát và khử bias trong vòng đời mô hình AI: Pre-processing, In-processing và Post-processing (Slide 24).",
+    "answer": "Pre-processing tác động vào dữ liệu trước khi học (Resampling/Re-weighting); In-processing thêm Fairness Constraints vào hàm Loss khi huấn luyện; Post-processing điều chỉnh ngưỡng quyết định riêng cho nhóm thiểu số ở đầu ra.",
+    "explanation": "Slide 24 hệ thống hóa 3 chốt chặn khử bias: 1. Tiền xử lý (Pre-processing trên tầng Gold); 2. Trong xử lý (In-processing can thiệp thuật toán/Loss Function); 3. Hậu xử lý (Post-processing điều chỉnh Threshold đầu ra).",
+    "eli5": "Chữa bệnh thiên vị 3 giai đoạn: Lọc sạch nguyên liệu trước khi nấu (Pre) -> Nêm thêm gia vị công bằng lúc đang nấu (In) -> Nếm lại và chia đều phần ăn cho từng người lúc dọn bàn (Post).",
+    "commonMistakes": [
+      "Nghĩ rằng khử bias chỉ có thể làm được ở khâu chuẩn bị dữ liệu (Pre-processing)."
+    ]
+  },
+  {
+    "id": "ch7_q35",
+    "number": "C7.35",
+    "chapterId": "ch7",
+    "topic": "ethics",
+    "type": "theory",
+    "prompt": "Kỹ thuật 'In-processing' khử bias bằng cách can thiệp vào thành phần nào của thuật toán học máy? (Slide 24)",
+    "answer": "Thêm trực tiếp các ràng buộc công bằng (Fairness Constraints) hoặc hàm phạt vào hàm mất mát (Loss Function) trong quá trình tối ưu hóa.",
+    "explanation": "Theo Slide 24: In-processing thay đổi quá trình tối ưu của mô hình. Hàm mất mát không chỉ tối ưu hóa Accuracy mà còn phạt nặng mô hình nếu tỷ lệ chấp nhận giữa các nhóm đối tượng chênh lệch vượt ngưỡng cho phép.",
+    "eli5": "Quy định luật thi đấu: Vận động viên không chỉ cần chạy nhanh nhất (Accuracy cao) mà nếu có hành vi xô đẩy đối thủ yếu hơn thì sẽ bị trừ điểm ngay trong lúc thi (Fairness Constraint).",
+    "commonMistakes": [
+      "Nhầm lẫn In-processing với việc điều chỉnh ngưỡng phân loại sau khi mô hình đã học xong."
+    ]
+  },
+  {
+    "id": "ch7_q36",
+    "number": "C7.36",
+    "chapterId": "ch7",
+    "topic": "ethics",
+    "type": "theory",
+    "prompt": "Nguyên tắc cốt lõi của cơ chế giám sát 'Human-in-the-loop' (HITL) được nêu ở Slide 25 là gì?",
+    "answer": "AI chỉ đóng vai trò hỗ trợ ra quyết định (Decision Support System); quyết định cuối cùng ảnh hưởng đến quyền lợi công dân bắt buộc phải có sự phê duyệt của con người.",
+    "explanation": "Slide 25 nêu rõ nguyên tắc: Trong các quyết định quan trọng (như bác đơn vay vốn, từ chối hồ sơ năng lực, chẩn đoán y tế), AI không được tự ý quyết định hoàn toàn mà phải chuyển cho con người thẩm định lần cuối.",
+    "eli5": "AI như trợ lý tham mưu soạn sẵn tờ trình, còn Giám đốc bằng xương bằng thịt mới là người cầm bút ký duyệt quyết định cuối cùng.",
+    "commonMistakes": [
+      "Cho rằng Human-in-the-loop là con người phải ngồi gõ từng dòng lệnh cho AI chạy."
+    ]
+  },
+  {
+    "id": "ch7_q37",
+    "number": "C7.37",
+    "chapterId": "ch7",
+    "topic": "ethics",
+    "type": "theory",
+    "prompt": "Yêu cầu của 'Explainable AI' (XAI - Trí tuệ Nhân tạo có thể giải thích được) đối với hệ thống DWH và mô hình học máy là gì? (Slide 25)",
+    "answer": "Mô hình AI không được phép là một chiếc hộp đen (Black-box) bí ẩn; hệ thống phải giải trình được lý do của sự kiện và quyết định theo ngữ cảnh cụ thể.",
+    "explanation": "Slide 25 nhấn mạnh: Các mô hình ứng dụng trong các lĩnh vực rủi ro cao phải minh bạch các đặc trưng đóng góp vào quyết định (Feature Importance, SHAP values) để người dùng hiểu vì sao họ bị từ chối.",
+    "eli5": "Nếu từ chối cho khách hàng vay tiền, ngân hàng phải giải thích được là do điểm lịch sử trả nợ chậm chứ không được trả lời chung chung là 'Do máy tính bảo thế'.",
+    "commonMistakes": [
+      "Nghĩ rằng các mô hình Deep Learning phức tạp được miễn trừ yêu cầu giải trình."
+    ]
+  },
+  {
+    "id": "ch7_q38",
+    "number": "C7.38",
+    "chapterId": "ch7",
+    "topic": "audit",
+    "type": "theory",
+    "prompt": "So sánh mô hình Kiểm toán dữ liệu truyền thống (Traditional Audit) và Kiểm toán liên tục (Continuous Auditing) ở Slide 26.",
+    "answer": "Kiểm toán truyền thống làm định kỳ theo quý/năm bởi con người, chậm trễ, tốn kém và dễ sót lỗi; Continuous Auditing ứng dụng AI theo dõi tự động 24/7 theo thời gian thực, ngăn chặn vi phạm tức thì và tối ưu chi phí.",
+    "explanation": "Slide 26 phân tích: Kiểm toán truyền thống có độ trễ lớn, phát hiện sự cố khi hậu quả đã rồi. Continuous Auditing giám sát liên tục 24/7, phát hiện bất thường ngay tại thời điểm xảy ra truy vấn.",
+    "eli5": "Kiểm toán cũ giống như thanh tra ghé thăm kiểm tra sổ sách mỗi năm 1 lần; Continuous Auditing giống như lắp camera AI giám sát thông minh cả ngày lẫn đêm.",
+    "commonMistakes": [
+      "Nghĩ rằng Continuous Auditing làm tăng chi phí vận hành hơn so với kiểm toán truyền thống (thực tế giúp giảm phần lớn chi phí vận hành thủ công)."
+    ]
+  },
+  {
+    "id": "ch7_q39",
+    "number": "C7.39",
+    "chapterId": "ch7",
+    "topic": "audit",
+    "type": "theory",
+    "prompt": "Trình bày 4 bước vận hành của một hệ thống Audit tuân thủ dữ liệu tự động (Slide 27).",
+    "answer": "1. Monitor (theo dõi liên tục truy vấn real-time); 2. Detect (AI chạy thuật toán Anomaly Detection phát hiện bất thường); 3. Alert (báo động và tự động khóa quyền truy cập); 4. Report (kết xuất báo cáo tuân thủ theo AI Act).",
+    "explanation": "Theo Slide 27: Quy trình 4 bước tự động hóa gồm Monitor -> Detect -> Alert -> Report giúp bảo vệ hệ thống trước các mối đe dọa nội gián hoặc tấn công rò rỉ dữ liệu.",
+    "eli5": "Quy trình an ninh: Quan sát liên tục (Monitor) -> Bắt quả tang hành vi lạ (Detect) -> Hú còi và khóa cửa giam lại (Alert) -> Lập biên bản gửi công an (Report).",
+    "commonMistakes": [
+      "Thiếu bước Detect bằng thuật toán phát hiện bất thường (Anomaly Detection)."
+    ]
+  },
+  {
+    "id": "ch7_q40",
+    "number": "C7.40",
+    "chapterId": "ch7",
+    "topic": "audit",
+    "type": "theory",
+    "prompt": "Nêu một tình huống thực tế về hành vi truy cập dữ liệu bất thường mà bước 'Detect' của hệ thống Audit sẽ phát hiện (Slide 27).",
+    "answer": "Tài khoản của một nhân viên có hành vi bất thường là tải hàng loạt dữ liệu nhạy cảm của khách hàng vào lúc 2 giờ đêm.",
+    "explanation": "Slide 27 đưa ra ví dụ cụ thể: Thuật toán Anomaly Detection nhận diện hành vi tải dữ liệu hàng loạt vào khung giờ không phải giờ làm việc (2 giờ đêm), lập tức kích hoạt báo động và ngắt quyền truy cập.",
+    "eli5": "Bình thường nhân viên chỉ xem 5 hồ sơ/ngày vào giờ hành chính, bỗng dưng 2h sáng tải về 100.000 số thẻ tín dụng thì chắc chắn là tài khoản bị hack hoặc nhân viên chuẩn bị bán dữ liệu.",
+    "commonMistakes": [
+      "Cho rằng việc đăng nhập ban đêm là bình thường nếu người dùng có mật khẩu đúng."
+    ]
+  },
+  {
+    "id": "ch7_q41",
+    "number": "C7.41",
+    "chapterId": "ch7",
+    "topic": "compliance",
+    "type": "theory",
+    "prompt": "Trình bày 3 thành phần kỹ thuật cốt lõi trong một Báo cáo tuân thủ dữ liệu (Compliance Report) theo chuẩn AI Act (Slide 28).",
+    "answer": "1. Data Audit Trail (sổ cái bất biến ghi nhận mọi thao tác dữ liệu); 2. Bias Reporting Dashboard (báo cáo định kỳ các chỉ số công bằng); 3. Privacy Audit Trail (theo dõi mức độ hao hụt ngân sách Epsilon).",
+    "explanation": "Slide 28 liệt kê 3 thành phần kỹ thuật bắt buộc: Data Audit Trail (truy vết điều tra tư pháp), Bias Reporting Dashboard (đo lường Fairness Metrics), và Privacy Audit Trail (quản lý rò rỉ Epsilon theo thời gian).",
+    "eli5": "3 cuốn sổ nộp cho cơ quan quản lý: Nhật ký ghi ai đã sờ vào dữ liệu (Data Trail), Bảng điểm chứng minh mô hình không kỳ thị ai (Bias Dashboard), và Đồng hồ đo bình oxy bảo mật đã dùng hết bao nhiêu (Privacy Trail).",
+    "commonMistakes": [
+      "Nghĩ rằng báo cáo tuân thủ chỉ là bản mô tả bằng chữ mà không có số liệu kỹ thuật."
+    ]
+  },
+  {
+    "id": "ch7_q42",
+    "number": "C7.42",
+    "chapterId": "ch7",
+    "topic": "compliance",
+    "type": "theory",
+    "prompt": "Khái niệm 'Immutable Log' (Sổ cái lưu trữ bất biến) trong Data Audit Trail có ý nghĩa gì đối với công tác điều tra tư pháp? (Slide 28)",
+    "answer": "Đảm bảo nhật ký truy cập không thể bị bất kỳ ai chỉnh sửa, xóa bỏ hay làm sai lệch (kể cả quản trị viên hệ thống), phục vụ điều tra chứng cứ pháp lý khi có sự cố rò rỉ.",
+    "explanation": "Theo Slide 28: Tính bất biến (Immutability) đảm bảo tính toàn vẹn của bằng chứng kỹ thuật. Mọi hành vi tạo, sửa, xóa, xem dữ liệu đều được ghi nhận vĩnh viễn và có giá trị trước tòa án.",
+    "eli5": "Giống như khắc chữ lên bia đá kim cương: Một khi đã ghi nhật ký thì Giám đốc hay kỹ sư trưởng cũng không tài nào bôi xóa hay sửa đổi được.",
+    "commonMistakes": [
+      "Nghĩ rằng quản trị viên cơ sở dữ liệu có quyền sửa đổi nội dung của sổ cái Audit Trail."
+    ]
+  },
+  {
+    "id": "ch7_q43",
+    "number": "C7.43",
+    "chapterId": "ch7",
+    "topic": "anonymization",
+    "type": "calculation",
+    "prompt": "Cho một bảng dữ liệu gồm 6 bản ghi với bộ Quasi-identifiers [Tuổi, Mã ZIP]: (25, 70000), (25, 70000), (32, 70000), (32, 70000), (45, 80000), (45, 80000). Bảng dữ liệu này đạt mức k-Anonymity bằng bao nhiêu?",
+    "answer": "Bảng dữ liệu đạt k-Anonymity với k = 2.",
+    "explanation": "Các nhóm tương đương có cùng bộ giá trị Quasi-identifiers gồm: Nhóm 1: {(25, 70000), (25, 70000)} có kích thước 2. Nhóm 2: {(32, 70000), (32, 70000)} có kích thước 2. Nhóm 3: {(45, 80000), (45, 80000)} có kích thước 2. Kích thước nhóm nhỏ nhất là 2, do đó bảng đạt thuộc tính 2-anonymity (k = 2).",
+    "eli5": "Mỗi nhóm người giống hệt nhau về Tuổi và Mã ZIP đều có ít nhất 2 người, nên kẻ xấu không thể phân biệt rạch ròi ai với ai trong nhóm 2 người đó.",
+    "commonMistakes": [
+      "Lấy tổng số bản ghi (6) hoặc số lượng nhóm (3) làm giá trị k."
+    ]
+  },
+  {
+    "id": "ch7_q44",
+    "number": "C7.44",
+    "chapterId": "ch7",
+    "topic": "anonymization",
+    "type": "calculation",
+    "prompt": "Trong một bảng dữ liệu bệnh nhân, nếu có 1 bản ghi duy nhất có độ tuổi là 98 trong khi tất cả các bệnh nhân khác dưới 60 tuổi. Kỹ thuật Suppression sẽ xử lý bản ghi này như thế nào để đảm bảo k-Anonymity (k >= 5)?",
+    "answer": "Kỹ thuật Suppression sẽ loại bỏ hoàn toàn bản ghi của bệnh nhân 98 tuổi khỏi bộ dữ liệu công khai.",
+    "explanation": "Theo Slide 17: Suppression xóa hẳn dòng dữ liệu của những cá nhân quá dị biệt (outlier) không thể gom nhóm với đủ k - 1 cá nhân khác, nhằm triệt tiêu nguy cơ nhận diện danh tính độc nhất.",
+    "eli5": "Vì cả viện chỉ có đúng 1 cụ 98 tuổi nên giữ lại sẽ bị lộ ngay lập tức; cách tốt nhất là xóa tên cụ khỏi báo cáo thống kê chung.",
+    "commonMistakes": [
+      "Sửa tuổi của cụ thành một số ngẫu nhiên (đó là kỹ thuật thêm nhiễu chứ không phải Suppression)."
+    ]
+  },
+  {
+    "id": "ch7_q45",
+    "number": "C7.45",
+    "chapterId": "ch7",
+    "topic": "security",
+    "type": "formula",
+    "prompt": "Viết câu lệnh SQL minh họa chính sách Row-level Security (RLS) trên bảng `sales` sao cho người dùng chỉ xem được các đơn hàng thuộc khu vực phụ trách của mình.",
+    "answer": "SELECT * FROM sales WHERE region = CURRENT_USER_REGION(); (hoặc cấu hình CREATE POLICY rls_sales ON sales USING (region = SESSION_USER()))",
+    "explanation": "Cơ chế RLS tự động chèn thêm điều kiện lọc WHERE ẩn dựa trên User Context hiện tại của phiên làm việc, đảm bảo người dùng không thể truy cập trái phép vào các dòng dữ liệu ngoài phạm vi.",
+    "eli5": "Câu lệnh tự động gài thêm điều kiện: 'Chỉ lấy những dòng mà khu vực trùng với khu vực của người đang bấm nút xem'.",
+    "commonMistakes": [
+      "Viết câu lệnh WHERE cứng với tên khu vực cụ thể thay vì dùng hàm định danh động của người dùng."
+    ]
+  },
+  {
+    "id": "ch7_q46",
+    "number": "C7.46",
+    "chapterId": "ch7",
+    "topic": "security",
+    "type": "formula",
+    "prompt": "Viết biểu thức SQL Masking Function minh họa Column-level Masking (CLM) cho cột số điện thoại `phone` để hiển thị 3 số đầu và 3 số cuối (ví dụ '091xxxx888').",
+    "answer": "CONCAT(SUBSTR(phone, 1, 3), 'xxxx', SUBSTR(phone, -3))",
+    "explanation": "Biểu thức CLM trích xuất 3 ký tự đầu `SUBSTR(phone, 1, 3)`, ghép với chuỗi 'xxxx' và 3 ký tự cuối `SUBSTR(phone, -3)` để che giấu các số ở giữa, bảo vệ dữ liệu PII mà vẫn giữ định dạng trực quan.",
+    "eli5": "Cắt 3 số đầu, gắn 4 chữ x vào giữa, rồi gắn 3 số đuôi vào để ai nhìn vào cũng biết là số điện thoại nhưng không gọi trộm được.",
+    "commonMistakes": [
+      "Dùng hàm HASH làm biến mất hoàn toàn dạng số điện thoại khiến người xem không nhận biết được định dạng."
+    ]
+  },
+  {
+    "id": "ch7_q47",
+    "number": "C7.47",
+    "chapterId": "ch7",
+    "topic": "privacy",
+    "type": "formula",
+    "prompt": "Trong Differential Privacy, nếu ngân sách ban đầu là $\\epsilon_{total} = 1.0$ và mỗi câu truy vấn tiêu tốn $\\epsilon_i = 0.2$, thì hệ thống có thể phục vụ tối đa bao nhiêu truy vấn trước khi cạn kiệt ngân sách?",
+    "answer": "Hệ thống có thể phục vụ tối đa 5 truy vấn.",
+    "explanation": "Nguyên lý cộng dồn ngân sách riêng tư (Composition Theorem): Tổng mức độ hao hụt quyền riêng tư qua $k$ câu truy vấn độc lập là $\\sum_{i=1}^k \\epsilon_i \\le \\epsilon_{total}$. Với $\\epsilon_{total} = 1.0$ và mỗi truy vấn tiêu hao $0.2$, số truy vấn tối đa là $1.0 / 0.2 = 5$.",
+    "eli5": "Bạn có 1 triệu đồng trong tài khoản bảo mật; mỗi lần tra cứu thông tin mất 200 nghìn thì bạn chỉ được tra đúng 5 lần là hết tiền.",
+    "commonMistakes": [
+      "Nghĩ rằng ngân sách Epsilon không bị tiêu hao sau mỗi lần truy vấn."
+    ]
+  },
+  {
+    "id": "ch7_q48",
+    "number": "C7.48",
+    "chapterId": "ch7",
+    "topic": "catalog",
+    "type": "theory",
+    "prompt": "Sự khác biệt căn bản giữa việc chia sẻ dữ liệu qua Data Clean Rooms (phòng sạch dữ liệu) và sao chép trực tiếp dữ liệu thô là gì?",
+    "answer": "Data Clean Rooms cho phép hai bên hợp nhất và truy vấn đối chiếu dữ liệu với nhau nhưng không bên nào được nhìn thấy hoặc tải về dữ liệu thô của bên kia.",
+    "explanation": "Data Clean Rooms ứng dụng Zero-copy Sharing kết hợp Differential Privacy và CLM: Hai doanh nghiệp (ví dụ Ngân hàng và Sàn TMĐT) có thể phân tích hành vi khách hàng chung mà không bao giờ làm lộ thông tin cá nhân của khách hàng cho đối tác.",
+    "eli5": "Như phòng tiếp khách có vách kính mờ: Hai bên cùng thảo luận và nhìn vào kết quả phân tích trên bảng điện tử ở giữa, nhưng không ai được bước sang phòng của người kia để lục hồ sơ gốc.",
+    "commonMistakes": [
+      "Nghĩ Data Clean Rooms là phòng khử trùng vật lý cho các máy chủ."
+    ]
+  },
+  {
+    "id": "ch7_q49",
+    "number": "C7.49",
+    "chapterId": "ch7",
+    "topic": "ethics",
+    "type": "theory",
+    "prompt": "Tại sao việc chỉ loại bỏ cột 'Giới tính' hoặc 'Chủng tộc' khỏi tập dữ liệu huấn luyện vẫn KHÔNG thể khử hoàn toàn bias cho mô hình AI?",
+    "answer": "Vì mô hình AI có thể học lại các đặc trưng này gián tiếp thông qua các biến thay thế (Proxy Variables) tương quan cao như Mã bưu chính, Chi tiêu mua sắm, Sở thích cá nhân.",
+    "explanation": "Hiện tượng Proxy Variables (biến đại diện): Dù xóa cột chủng tộc, mô hình vẫn nhận biết được chủng tộc thông qua khu vực cư trú (ZIP code) hoặc thói quen tiêu dùng. Muốn khử bias phải dùng các kỹ thuật Pre/In/Post-processing có đo lường Fairness Metrics.",
+    "eli5": "Dù không nói tên giới tính nhưng nhìn vào lịch sử mua son môi, váy đầm hay phụ kiện thì máy tính vẫn suy đoán chính xác giới tính của bạn qua các manh mối gián tiếp.",
+    "commonMistakes": [
+      "Cho rằng chỉ cần xóa nhãn nhạy cảm (Drop sensitive columns) là mô hình đã hoàn toàn công bằng."
+    ]
+  },
+  {
+    "id": "ch7_q50",
+    "number": "C7.50",
+    "chapterId": "ch7",
+    "topic": "compliance",
+    "type": "theory",
+    "prompt": "Tóm tắt vai trò chiến lược của môn học 'Nhà kho dữ liệu và Tích hợp' đối với sinh viên ngành Hệ thống Thông tin Quản lý (MIS) và Fintech trong kỷ nguyên AI?",
+    "answer": "Trang bị tư duy kiến trúc hiện đại (Modern Lakehouse, In-Database ML, Zero-copy Sharing) song hành cùng năng lực quản trị dữ liệu chuẩn mực (Data Governance, AI Act, Security & Ethics), biến dữ liệu thành tài sản tin cậy cho doanh nghiệp.",
+    "explanation": "Theo đúc kết từ TS. Nguyễn Thôn Dã qua toàn bộ 7 chương: Kỹ sư và chuyên viên MIS không chỉ dừng lại ở việc lưu trữ báo cáo quá khứ (DWH cũ) mà phải làm chủ dòng chảy dữ liệu tự động, tối ưu hiệu năng tại chỗ, bảo mật phân quyền sâu và tuân thủ các chuẩn mực đạo đức AI toàn cầu.",
+    "eli5": "Học cách xây dựng kho nhiên liệu sạch, an toàn và có kiểm định chuẩn quốc tế để cỗ xe tên lửa AI của doanh nghiệp bay cao mà không bao giờ bị nổ tung.",
+    "commonMistakes": [
+      "Coi môn học chỉ là viết các câu lệnh SELECT SQL đơn thuần."
+    ]
+  }
+]
