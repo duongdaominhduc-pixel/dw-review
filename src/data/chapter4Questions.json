@@ -1,0 +1,752 @@
+[
+  {
+    "id": "ch4_q01",
+    "number": "C4.1",
+    "chapterId": "ch4",
+    "topic": "data-quality",
+    "type": "theory",
+    "prompt": "Tính chính xác (Accuracy) và Tính đầy đủ (Completeness) trong đánh giá chất lượng dữ liệu được định nghĩa như thế nào?",
+    "answer": "Accuracy là mức độ dữ liệu mô tả đúng thực thể và phản ánh sự thật khách quan (sai lệch thường do lỗi nhập liệu hoặc lỗi hệ thống); Completeness là tỷ lệ dữ liệu không bị khuyết thiếu (không bị NULL/Missing values), là yếu tố sống còn cho các mô hình định lượng.",
+    "explanation": "Một tập dữ liệu dù có khối lượng hàng tỷ dòng nhưng nếu tên khách hàng bị gõ sai, số CMND thiếu chữ số (Accuracy kém) hoặc 40% hồ sơ không có thông tin thu nhập (Completeness kém) thì không thể sử dụng để huấn luyện mô hình dự báo.",
+    "eli5": "Accuracy giống như việc bắn bia trúng hồng tâm; Completeness giống như việc bạn đi thi và trả lời đầy đủ 10/10 câu hỏi, không bỏ trống câu nào.",
+    "commonMistakes": [
+      "Nhầm lẫn giữa Accuracy (dữ liệu đúng sự thật) và Completeness (dữ liệu không bị để trống)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q02",
+    "number": "C4.2",
+    "chapterId": "ch4",
+    "topic": "data-quality",
+    "type": "theory",
+    "prompt": "Phân biệt Tính nhất quán (Consistency) và Tính kịp thời (Timeliness) trong đa chiều chất lượng dữ liệu?",
+    "answer": "Consistency là sự đồng bộ về logic, định dạng và đơn vị đo giữa các nguồn dữ liệu khác nhau; Timeliness là độ trễ của dữ liệu phản ánh mức độ kịp thời của thông tin so với các biến động thực tế trên thị trường.",
+    "explanation": "Nếu nguồn A lưu ngày theo dạng `DD/MM/YYYY` còn nguồn B lưu `MM/DD/YYYY` (xung đột Consistency); nếu giá chứng khoán bị chậm 15 phút so với sàn giao dịch thì nhà đầu tư không thể ra lệnh kịp thời (thiếu Timeliness).",
+    "eli5": "Consistency giống như hai người cùng nói một thứ tiếng và dùng chung đơn vị tiền tệ; Timeliness giống như chiếc đồng hồ báo thức reo đúng 6h sáng chứ không reo lúc 8h sáng.",
+    "commonMistakes": [
+      "Cho rằng dữ liệu chính xác 100% thì tự động có tính kịp thời (dữ liệu đúng nhưng nhận muộn 1 tháng thì giá trị bằng 0)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q03",
+    "number": "C4.3",
+    "chapterId": "ch4",
+    "topic": "data-quality",
+    "type": "theory",
+    "prompt": "Nguyên lý nền tảng 'Garbage In, Garbage Out' trong khoa học dữ liệu khẳng định điều gì?",
+    "answer": "Chất lượng dữ liệu là nền tảng cốt lõi của mọi tri thức; nếu dữ liệu đầu vào bị sai lệch hoặc kém chất lượng, mọi mô hình phân tích hay AI dù phức tạp đến đâu cũng sẽ tạo ra các kết luận và tri thức sai lệch.",
+    "explanation": "Tiền xử lý dữ liệu (Data Preprocessing) chiếm tới 70-80% thời gian của một dự án phân tích dữ liệu, vì đây là khâu quyết định độ tin cậy của toàn bộ hệ thống phân tích ra quyết định.",
+    "eli5": "Nấu ăn bằng nguyên liệu ôi thiu thì dù có thuê đầu bếp 5 sao dùng gia vị đắt tiền đến mấy thì món ăn nấu ra vẫn độc hại và không thể ăn được.",
+    "commonMistakes": [
+      "Kỳ vọng rằng thuật toán Deep Learning tinh vi có thể tự động bù đắp và sửa chữa được nguồn dữ liệu sai lệch hoàn toàn."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q04",
+    "number": "C4.4",
+    "chapterId": "ch4",
+    "topic": "data-quality",
+    "type": "theory",
+    "prompt": "Kỹ thuật Kiểm tra Schema (Schema Checking) và Xác thực chéo (Cross-field Validation) hoạt động ra sao?",
+    "answer": "Kiểm tra Schema sử dụng Metadata để xác thực tính đồng nhất của kiểu dữ liệu trên toàn kho; Cross-field Validation áp dụng các quy tắc logic nghiệp vụ liên thuộc tính (ví dụ: Ngày tất toán nợ phải lớn hơn hoặc bằng Ngày giải ngân).",
+    "explanation": "Cross-field validation bắt các lỗi logic ngầm: một khách hàng có 'Tuổi = 5' nhưng nghề nghiệp lại là 'Kỹ sư trưởng', hoặc 'Trạng thái hôn nhân = Chưa kết hôn' nhưng 'Số con = 3'.",
+    "eli5": "Kiểm tra chéo giống như việc đối chiếu sổ hộ khẩu: ngày sinh của con không thể trước ngày sinh của bố mẹ được.",
+    "commonMistakes": [
+      "Chỉ kiểm tra kiểu dữ liệu của từng cột độc lập mà bỏ qua mối quan hệ logic giữa các cột với nhau."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q05",
+    "number": "C4.5",
+    "chapterId": "ch4",
+    "topic": "data-quality",
+    "type": "theory",
+    "prompt": "Trong bài toán Chấm điểm tín dụng (Credit Scoring), vấn đề chất lượng dữ liệu kém gây ra hậu quả gì?",
+    "answer": "Làm mô hình chấm điểm tự động đưa ra kết quả sai lệch, dẫn đến rủi ro cấp tín dụng nhầm cho người có nguy cơ nợ xấu cao, hoặc từ chối oan các khách hàng tiềm năng tốt.",
+    "explanation": "Khi dữ liệu thiếu thông tin thu nhập (Completeness) và lệch định dạng ngày tất toán (Consistency), điểm tín dụng FICO hoặc điểm nội bộ sẽ bị méo mó, trực tiếp gây thất thoát tài chính cho ngân hàng.",
+    "eli5": "Giống như bác sĩ chẩn đoán nhầm bệnh vì máy xét nghiệm máu đưa ra kết quả sai: người khỏe mạnh thì bị kê đơn thuốc độc, người ốm nặng lại bị cho về nhà.",
+    "commonMistakes": [
+      "Cho rằng mô hình chấm điểm tín dụng chỉ cần xem lịch sử trả nợ gần nhất mà không cần chuẩn hóa dữ liệu."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q06",
+    "number": "C4.6",
+    "chapterId": "ch4",
+    "topic": "data-quality",
+    "type": "theory",
+    "prompt": "Giải pháp hiện đại tại tầng Silver trong Lakehouse để khắc phục lỗi thiếu và lệch dữ liệu là gì?",
+    "answer": "Sử dụng công cụ dbt để chuẩn hóa định dạng ngày tháng và kiểu dữ liệu, đồng thời ứng dụng các thuật toán Machine Learning / Deep Learning để ước lượng và điền khuyết giá trị bị thiếu (Data Imputation).",
+    "explanation": "Thay vì xóa bỏ các dòng có giá trị NULL làm mất lượng lớn dữ liệu, ta dùng KNN Imputer, MICE hoặc mô hình hồi quy để suy luận giá trị hợp lý nhất tại tầng Silver.",
+    "eli5": "Giống như việc phục chế một bức tranh cổ bị rách một góc: thay vì vứt cả bức tranh, họa sĩ dùng chuyên môn khéo léo vẽ dặm lại phần bị rách cho đồng bộ.",
+    "commonMistakes": [
+      "Luôn chọn giải pháp xóa bỏ toàn bộ dòng chứa giá trị NULL (gây mất mát dữ liệu nghiêm trọng)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q07",
+    "number": "C4.7",
+    "chapterId": "ch4",
+    "topic": "noise-outlier",
+    "type": "theory",
+    "prompt": "Khái niệm Nhiễu (Noise) trong dữ liệu là gì và hai kỹ thuật chính để xử lý làm mượt nhiễu là gì?",
+    "answer": "Noise là các sai số ngẫu nhiên hoặc biến động không mong muốn làm che khuất tín hiệu thực tế của dữ liệu; hai kỹ thuật chính là Binning (chia khoảng và thay bằng trung bình/biên) và Regression (hồi quy khớp hàm toán học).",
+    "explanation": "Ví dụ tín hiệu cảm biến nhiệt độ bị rung lắc nhỏ do sóng điện từ xung quanh. Bằng cách dùng Binning hoặc Regression, các rung lắc ngẫu nhiên bị triệt tiêu, để lộ xu hướng tăng giảm nhiệt độ thực sự.",
+    "eli5": "Noise giống như tiếng rè rè của chiếc đài radio: kỹ thuật lọc nhiễu giống như bạn vặn núm chỉnh sóng cho tiếng hát của ca sĩ trở nên trong trẻo, rõ ràng.",
+    "commonMistakes": [
+      "Đồng nhất Noise (nhiễu ngẫu nhiên nhỏ) với Outlier (giá trị ngoại lai đột biến xa)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q08",
+    "number": "C4.8",
+    "chapterId": "ch4",
+    "topic": "noise-outlier",
+    "type": "theory",
+    "prompt": "Phương pháp Z-Score nhận diện điểm dữ liệu ngoại lai (Outlier) dựa trên quy tắc ngưỡng nào?",
+    "answer": "Nhận diện dựa trên số lần độ lệch chuẩn so với giá trị trung bình; các điểm dữ liệu có giá trị tuyệt đối |Z| > 3 (nằm ngoài khoảng 3 lần độ lệch chuẩn) được coi là Outlier tiềm năng.",
+    "explanation": "Theo quy tắc phân phối chuẩn (Empirical Rule 68-95-99.7), 99.73% dữ liệu bình thường sẽ nằm trong khoảng [mu - 3*sigma, mu + 3*sigma]. Điểm nào vượt ra ngoài khoảng này có xác suất xuất hiện cực thấp (< 0.27%), thường là điểm bất thường.",
+    "eli5": "Nếu chiều cao trung bình của nam giới là 1m70 với độ lệch chuẩn 5cm: một người cao trên 1m85 hoặc dưới 1m55 đã là hiếm, còn một người cao 2m20 (|Z| > 3) chắc chắn là trường hợp ngoại lai đột biến.",
+    "commonMistakes": [
+      "Nghĩ rằng ngưỡng Z-Score cho Outlier là |Z| > 1 hoặc |Z| > 2."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q09",
+    "number": "C4.9",
+    "chapterId": "ch4",
+    "topic": "noise-outlier",
+    "type": "theory",
+    "prompt": "Phương pháp Khoảng tứ phân vị (IQR) xác định ranh giới ngưỡng ngoại lai (Outlier) theo công thức nào?",
+    "answer": "IQR = Q3 - Q1 (với Q1 là phân vị 25%, Q3 là phân vị 75%); Ngưỡng Outlier nằm ngoài khoảng [Q1 - 1.5 * IQR, Q3 + 1.5 * IQR].",
+    "explanation": "Điểm nào nhỏ hơn `Q1 - 1.5 * IQR` được coi là ngoại lai dưới; điểm nào lớn hơn `Q3 + 1.5 * IQR` được coi là ngoại lai trên. Phương pháp IQR dựa trên trung vị (Median) nên rất bền vững (Robust), không bị méo mó bởi các giá trị cực đoan như Z-Score.",
+    "eli5": "Tưởng tượng cắt bỏ 25% người thấp nhất và 25% người cao nhất, ta lấy khoảng giữa (IQR). Bất kỳ ai vượt quá ranh giới 1.5 lần độ rộng khoảng giữa này đều là người đặc biệt khác thường.",
+    "commonMistakes": [
+      "Nhầm hệ số 1.5 thành hệ số 2.0 hoặc 3.0 trong công thức IQR tiêu chuẩn của Tukey."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q10",
+    "number": "C4.10",
+    "chapterId": "ch4",
+    "topic": "noise-outlier",
+    "type": "theory",
+    "prompt": "Trong hệ thống Phát hiện gian lận thẻ tín dụng, việc kết hợp xử lý nhiễu và phát hiện ngoại lai diễn ra như thế nào?",
+    "answer": "Dùng đường Moving Average để làm mượt các biến động chi tiêu nhỏ hàng ngày của chủ thẻ (lọc nhiễu); sau đó áp dụng Z-Score để bắt các giao dịch đột biến bất thường (như quẹt thẻ ở nước ngoài gấp 50 lần mức bình thường với Z > 5) để tự động khóa thẻ xác minh.",
+    "explanation": "Hành vi mua sắm hàng ngày (hôm ăn phở 50k, hôm mua sắm 200k) là nhiễu tự nhiên. Nhưng một giao dịch mua vàng 200 triệu lúc nửa đêm ở nước ngoài là một Outlier cực đoan cần phải kích hoạt còi báo động ngay lập tức.",
+    "eli5": "Biết rằng sóng biển luôn dập dềnh nhẹ (nhiễu), nhưng khi thấy một ngọn sóng thần cao 30 mét (ngoại lai) ập đến thì hệ thống báo động sơ tán ngay lập tức.",
+    "commonMistakes": [
+      "Coi mọi biến động chi tiêu nhỏ hàng ngày của khách hàng đều là hành vi gian lận."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q11",
+    "number": "C4.11",
+    "chapterId": "ch4",
+    "topic": "data-integration",
+    "type": "theory",
+    "prompt": "Khái niệm Entity Resolution (Nhận diện bản thể) và Metadata Resolution trong tích hợp dữ liệu là gì?",
+    "answer": "Entity Resolution là kỹ thuật xác định các bản ghi từ nhiều nguồn dữ liệu khác nhau cùng mô tả một thực thể duy nhất trong thế giới thực; Metadata Resolution là việc đối chiếu các thuộc tính khác tên nhưng có cùng ý nghĩa ngữ nghĩa (như cust_id và client_code).",
+    "explanation": "Trong hệ thống CRM có 'Nguyen Van A', trong hệ thống Ngân hàng có 'A. Nguyen Van' cùng số điện thoại. Entity Resolution nhận diện đây chính là một người để gộp lại.",
+    "eli5": "Giống như việc nhận ra 'Anh Ba', 'Bác Ba thợ mộc' và 'Ông Nguyễn Văn Ba' đều chỉ cùng một người hàng xóm sống ở đầu ngõ.",
+    "commonMistakes": [
+      "Cho rằng chỉ cần tên cột khác nhau là hai thực thể hoàn toàn khác nhau."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q12",
+    "number": "C4.12",
+    "chapterId": "ch4",
+    "topic": "data-integration",
+    "type": "theory",
+    "prompt": "Công thức và ý nghĩa của Độ đo tương đồng Jaccard (Jaccard Similarity) là gì?",
+    "answer": "Công thức: J(A, B) = |A ∩ B| / |A ∪ B| (Số phần tử giao chia cho số phần tử hợp); Giá trị nằm trong khoảng [0, 1], giá trị càng gần 1 thì mức độ tương đồng giữa hai tập hợp thuộc tính càng cao.",
+    "explanation": "Độ đo Jaccard được dùng phổ biến để so sánh mức độ trùng khớp giữa hai tập thuộc tính, bộ từ khóa hoặc tập kỹ năng. Nếu A và B giống hệt nhau thì J(A,B) = 1; nếu không có phần tử chung nào thì J(A,B) = 0.",
+    "eli5": "Lấy số món đồ mà cả hai bạn cùng có chia cho tổng tất cả các món đồ mà hai bạn sở hữu: càng trùng nhiều đồ thì hai bạn càng có sở thích giống nhau.",
+    "commonMistakes": [
+      "Lấy giao chia cho tích (|A ∩ B| / (|A| * |B|)) - đó không phải là công thức Jaccard."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q13",
+    "number": "C4.13",
+    "chapterId": "ch4",
+    "topic": "data-integration",
+    "type": "theory",
+    "prompt": "Cho tập hợp kỹ năng của ứng viên A = {Python, SQL, Tableau, Power BI} và ứng viên B = {Python, SQL, Excel, R}. Tính hệ số Jaccard J(A, B)?",
+    "answer": "Giao |A ∩ B| = |{Python, SQL}| = 2; Hợp |A ∪ B| = |{Python, SQL, Tableau, Power BI, Excel, R}| = 6; Hệ số J(A, B) = 2 / 6 = 1/3 ≈ 0.333 (33.3%).",
+    "explanation": "Hai ứng viên có 2 kỹ năng chung trên tổng số 6 kỹ năng khác biệt của cả hai, mức độ tương đồng kỹ năng đạt 33.3%.",
+    "eli5": "Trong 6 món kỹ năng bày trên bàn, hai người chỉ giống nhau đúng 2 món, chiếm 1/3.",
+    "commonMistakes": [
+      "Đếm sai số phần tử của tập hợp hợp (nhầm thành 4 + 4 = 8 do không khử trùng lặp Python và SQL)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q14",
+    "number": "C4.14",
+    "chapterId": "ch4",
+    "topic": "data-integration",
+    "type": "theory",
+    "prompt": "Khái niệm Golden Record trong Deduplication là gì và hai quy tắc chính để xử lý xung đột giá trị (Conflict Handling) là gì?",
+    "answer": "Golden Record là bản ghi duy nhất, chuẩn mực và đầy đủ nhất đại diện cho thực thể sau khi đã loại bỏ bản ghi trùng lặp; Hai quy tắc xử lý xung đột là: 1. Áp dụng trọng số tin cậy nguồn (Source Authority); 2. Lấy giá trị có mốc thời gian mới nhất (Latest Timestamp).",
+    "explanation": "Nếu nguồn Core Banking ghi ngày sinh 1990 còn Web Form ghi 1995, hệ thống ưu tiên nguồn Core Banking vì có độ tin cậy pháp lý cao hơn (Source Authority).",
+    "eli5": "Golden Record giống như tấm thẻ căn cước công dân gắn chip chính thức: gom mọi thông tin bảo hiểm, bằng lái xe, hộ khẩu về một nơi chuẩn xác duy nhất.",
+    "commonMistakes": [
+      "Giữ lại ngẫu nhiên một trong hai giá trị khi có xung đột mà không có quy tắc ưu tiên rõ ràng."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q15",
+    "number": "C4.15",
+    "chapterId": "ch4",
+    "topic": "data-integration",
+    "type": "theory",
+    "prompt": "Trong bài toán sáp nhập doanh nghiệp (M&A), thuật toán Fuzzy Matching giải quyết vấn đề gì khi hợp nhất khách hàng?",
+    "answer": "Xác định tỷ lệ trùng khớp gần đúng giữa các chuỗi ký tự bị viết sai chính tả, viết tắt hoặc lệch dấu (ví dụ: 'Nguyen Van A' vs 'Nguyễn Văn A') để liên kết chính xác hồ sơ khách hàng 360 độ mà không bỏ sót.",
+    "explanation": "Fuzzy matching sử dụng các thuật toán như Levenshtein Distance, Jaro-Winkler để tính khoảng cách chỉnh sửa giữa 2 chuỗi văn bản.",
+    "eli5": "Giống như công cụ Google tìm kiếm: dù bạn gõ nhầm chữ 'nguyn van a', Google vẫn tự động hiểu và gợi ý đúng 'Nguyễn Văn A'.",
+    "commonMistakes": [
+      "Chỉ dùng phép so sánh bằng chính xác tuyệt đối (`stringA == stringB`), dẫn đến việc bỏ sót 90% khách hàng trùng lặp do gõ lệch dấu."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q16",
+    "number": "C4.16",
+    "chapterId": "ch4",
+    "topic": "smoothing-aggregation",
+    "type": "theory",
+    "prompt": "Bản chất của phương pháp Simple Moving Average (SMA - Trung bình trượt đơn giản) là gì?",
+    "answer": "Tính trung bình cộng của k giá trị gần nhất trong một cửa sổ trượt thời gian liên tục nhằm khử bỏ các biến động ngẫu nhiên ngắn hạn và làm nổi bật xu hướng dài hạn của dữ liệu.",
+    "explanation": "Trong phân tích chuỗi thời gian (giá cổ phiếu, doanh số hàng ngày), số liệu tăng giảm thất thường theo từng ngày. Đường SMA làm mượt đường cong, giúp nhận diện rõ xu thế đi lên hay đi xuống.",
+    "eli5": "Thay vì nhìn điểm số từng bài kiểm tra miệng hôm nay 6 điểm mai 9 điểm, mẹ bạn tính điểm trung bình của 3 bài gần nhất để xem học lực bạn đang tiến bộ hay thụt lùi.",
+    "commonMistakes": [
+      "Nghĩ rằng SMA tính trung bình cộng của toàn bộ lịch sử từ đầu đến cuối (SMA chỉ tính trong cửa sổ k điểm gần nhất)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q17",
+    "number": "C4.17",
+    "chapterId": "ch4",
+    "topic": "smoothing-aggregation",
+    "type": "theory",
+    "prompt": "Cho chuỗi giá vàng trong 5 ngày liên tiếp: Ngày 1: 80, Ngày 2: 86, Ngày 3: 82, Ngày 4: 84, Ngày 5: 88. Với cửa sổ k = 3, tính SMA tại Ngày 3, Ngày 4 và Ngày 5?",
+    "answer": "SMA Ngày 3: (80 + 86 + 82) / 3 = 82.7 triệu; SMA Ngày 4: (86 + 82 + 84) / 3 = 84.0 triệu; SMA Ngày 5: (82 + 84 + 88) / 3 = 84.7 triệu.",
+    "explanation": "Cửa sổ k = 3 trượt dần: Ngày 3 lấy [N1, N2, N3]; Ngày 4 lấy [N2, N3, N4]; Ngày 5 lấy [N3, N4, N5].",
+    "eli5": "Mỗi ngày mới đến, bạn thêm giá của ngày hôm đó vào và bỏ giá của ngày xa nhất ra khỏi cửa sổ rồi chia cho 3.",
+    "commonMistakes": [
+      "Tính SMA ngày 4 bằng cách lấy cả 4 ngày cộng lại chia 4 (quên mất kích thước cửa sổ cố định k = 3)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q18",
+    "number": "C4.18",
+    "chapterId": "ch4",
+    "topic": "smoothing-aggregation",
+    "type": "theory",
+    "prompt": "Data Aggregation (Tập hợp dữ liệu) và Data Cubes hỗ trợ người dùng phân tích OLAP thông qua các thao tác nào?",
+    "answer": "Kết hợp các bản ghi chi tiết thành các bản tóm tắt cấp cao; sử dụng cấu trúc khối đa chiều (Data Cubes) để thực hiện các thao tác Roll-up (tổng hợp lên cấp cao hơn) và Drill-down (đi sâu vào chi tiết).",
+    "explanation": "Data Cube tính toán sẵn các phép tổng hợp theo mọi chiều phân tích (Sản phẩm x Cửa hàng x Thời gian), cho phép người dùng lật khối, xoay khối và lấy số liệu báo cáo trong tích tắc.",
+    "eli5": "Giống như khối Rubik đa chiều: bạn xoay mặt nào cũng nhìn thấy tổng doanh thu theo từng góc nhìn khác nhau mà không cần tính toán lại từ đầu.",
+    "commonMistakes": [
+      "Nhầm lẫn giữa Roll-up (đi lên cấp tổng quát hơn) và Drill-down (đi sâu vào chi tiết hơn)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q19",
+    "number": "C4.19",
+    "chapterId": "ch4",
+    "topic": "smoothing-aggregation",
+    "type": "theory",
+    "prompt": "Tín hiệu Golden Cross trong phân tích kỹ thuật tài chính được xác định dựa trên hai đường Moving Average nào?",
+    "answer": "Được xác định khi đường trung bình động ngắn hạn (như MA-50 ngày) cắt lên phía trên đường trung bình động dài hạn (như MA-200 ngày), báo hiệu một xu hướng tăng giá mạnh mẽ (Bullish).",
+    "explanation": "Việc làm mượt hàng triệu lệnh khớp chi tiết thành nến giá giờ/ngày và tính các đường MA giúp nhà đầu tư loại bỏ hoàn toàn các biến động nhiễu trong phiên giao dịch để ra quyết định đầu tư an toàn.",
+    "eli5": "Giống như chiếc xe bắt đầu tăng tốc: tốc độ của 50 mét vừa qua vượt hẳn vận tốc trung bình của cả quãng đường dài 200 mét, báo hiệu xe đang bứt phá mạnh.",
+    "commonMistakes": [
+      "Nhầm Golden Cross (cắt lên - báo hiệu tăng giá) với Death Cross (cắt xuống - báo hiệu giảm giá)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q20",
+    "number": "C4.20",
+    "chapterId": "ch4",
+    "topic": "data-reduction",
+    "type": "theory",
+    "prompt": "Phương pháp Phân tích thành phần chính (PCA - Principal Component Analysis) là gì và mang lại lợi ích gì?",
+    "answer": "Là phép biến đổi tuyến tính tìm các trục tọa độ mới trực giao (các thành phần chính) giữ lại tối đa phương sai của tập dữ liệu; giúp loại bỏ thuộc tính dư thừa, giải quyết lời nguyền số chiều (Curse of Dimensionality) và tăng tốc độ huấn luyện mô hình AI.",
+    "explanation": "PCA chiếu dữ liệu từ không gian nhiều chiều xuống không gian ít chiều hơn. Các thành phần chính là các vector riêng (eigenvectors) ứng với các trị riêng (eigenvalues) lớn nhất của ma trận hiệp phương sai (Covariance Matrix).",
+    "eli5": "Giống như việc chụp bóng của một vật thể 3D lên bức tường 2D: chọn góc chiếu đèn sao cho cái bóng trên tường thể hiện rõ ràng và đầy đủ đường nét nhất của vật thể.",
+    "commonMistakes": [
+      "Nghĩ rằng PCA chỉ đơn giản là chọn ra một vài cột cũ và xóa bỏ các cột còn lại (PCA tạo ra các trục biến số MỚI là tổ hợp tuyến tính của các biến cũ)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q21",
+    "number": "C4.21",
+    "chapterId": "ch4",
+    "topic": "data-reduction",
+    "type": "theory",
+    "prompt": "Liệt kê 4 kỹ thuật Giảm số lượng bản ghi (Numerosity Reduction) phổ biến trong khai phá dữ liệu?",
+    "answer": "1. Regression Models (thay thế dữ liệu bằng tham số mô hình toán học); 2. Sampling (lấy mẫu phân tầng Stratified Sampling); 3. Histograms (lưu phân phối tần suất thay vì từng điểm dữ liệu); 4. Clustering (thay thế nhóm điểm tương đồng bằng giá trị Centroid đại diện).",
+    "explanation": "Khi dữ liệu có hàng tỷ bản ghi, việc chạy thuật toán trên toàn bộ là bất khả thi. Numerosity reduction thu nhỏ kích thước dữ liệu nhưng vẫn bảo toàn đầy đủ các đặc tính thống kê cốt lõi.",
+    "eli5": "Thay vì mang cả bao tải 1.000 hạt gạo đi kiểm tra chất lượng, người kiểm định chỉ bốc ngẫu nhiên 50 hạt đại diện (Sampling) để đo đạc.",
+    "commonMistakes": [
+      "Nhầm lẫn giữa Giảm số chiều (bớt cột/thuộc tính) và Giảm số lượng (bớt dòng/bản ghi)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q22",
+    "number": "C4.22",
+    "chapterId": "ch4",
+    "topic": "data-reduction",
+    "type": "theory",
+    "prompt": "Trong bài toán quản trị rủi ro danh mục 1.000 cổ phiếu, việc kết hợp PCA và lấy mẫu phân tầng mang lại hiệu quả gì?",
+    "answer": "PCA rút gọn 1.000 biến cổ phiếu xuống còn 10 thành phần chính đại diện cho các yếu tố vĩ mô; lấy mẫu phân tầng chọn lọc các kịch bản thị trường tiêu biểu; giúp mô hình tính toán Value-at-Risk (VaR) chạy nhanh hơn 100 lần mà vẫn bảo đảm độ tin cậy.",
+    "explanation": "Tính ma trận hiệp phương sai cho 1.000 mã cổ phiếu đòi hỏi tính toán hàng triệu phép toán. Rút gọn xuống 10 thành phần chính giảm khối lượng tính toán theo hàm mũ.",
+    "eli5": "Thay vì theo dõi nhịp thở của 1.000 người riêng lẻ trong đoàn quân, vị tướng chỉ cần quan sát hiệu lệnh của 10 viên sĩ quan chỉ huy chỉ đạo toàn quân.",
+    "commonMistakes": [
+      "Cho rằng giảm số chiều bằng PCA sẽ làm mất hoàn toàn độ tin cậy của mô hình tài chính."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q23",
+    "number": "C4.23",
+    "chapterId": "ch4",
+    "topic": "discretization",
+    "type": "theory",
+    "prompt": "Mục tiêu của kỹ thuật Rời rạc hóa (Discretization) trong tiền xử lý dữ liệu là gì?",
+    "answer": "Chia một thuộc tính liên tục (Continuous attribute) thành các khoảng giá trị rời rạc hoặc các nhãn định danh để giảm số lượng giá trị phân biệt và hỗ trợ các thuật toán khai phá dữ liệu (như Decision Tree, Apriori).",
+    "explanation": "Thuộc tính 'Thu nhập' có vô số giá trị liên tục (từ 5.123.456đ đến 99.876.543đ). Rời rạc hóa gộp thành 3 nhóm: 'Thấp', 'Trung bình', 'Cao' giúp thuật toán dễ dàng tìm ra quy luật mẫu.",
+    "eli5": "Thay vì gọi tên nhiệt độ chính xác từng phần mười độ (36.7 độ, 37.2 độ), ta phân loại đơn giản: 'Mát', 'Ấm', 'Nóng'.",
+    "commonMistakes": [
+      "Nghĩ rằng rời rạc hóa chỉ áp dụng được cho các biến phân loại định danh có sẵn."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q24",
+    "number": "C4.24",
+    "chapterId": "ch4",
+    "topic": "discretization",
+    "type": "theory",
+    "prompt": "Phân biệt nguyên lý giữa Equal-width Binning và Equal-frequency Binning?",
+    "answer": "Equal-width Binning chia dải giá trị [min, max] thành N khoảng có ĐỘ RỘNG BẰNG NHAU (Width = (Max - Min) / N); Equal-frequency Binning chia dữ liệu sao cho MỖI BIN CHỨA SỐ LƯỢNG BẢN GHI BẰNG NHAU, rất tốt cho dữ liệu bị lệch (Skewed).",
+    "explanation": "Nếu dữ liệu có ngoại lai cực lớn, Equal-width sẽ tạo ra nhiều bin bị rỗng không có bản ghi nào. Equal-frequency khắc phục bằng cách dàn đều số lượng dòng vào mỗi bin.",
+    "eli5": "Equal-width giống như chia một đoạn dây 1 mét thành 5 đoạn đều nhau mỗi đoạn 20cm; Equal-frequency giống như chia 100 học sinh vào 5 lớp sao cho mỗi lớp có đúng 20 học sinh.",
+    "commonMistakes": [
+      "Nhầm lẫn định nghĩa: nghĩ rằng Equal-frequency chia khoảng cách giá trị bằng nhau."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q25",
+    "number": "C4.25",
+    "chapterId": "ch4",
+    "topic": "discretization",
+    "type": "theory",
+    "prompt": "Ngân hàng muốn chia khách hàng thành N = 3 nhóm theo hạn mức thẻ tín dụng bằng Equal-width Binning. Biết Min = 10 triệu, Max = 70 triệu. Xác định độ rộng Width và các khoảng nhóm?",
+    "answer": "Độ rộng Width = (70 - 10) / 3 = 20 triệu; Nhóm 1: [10 - 30 triệu]; Nhóm 2: (30 - 50 triệu]; Nhóm 3: (50 - 70 triệu].",
+    "explanation": "Khoảng 1: từ min (10) đến 10 + 20 = 30; Khoảng 2: từ 30 đến 30 + 20 = 50; Khoảng 3: từ 50 đến 50 + 20 = 70.",
+    "eli5": "Lấy đoạn đường dài 60km (từ cây số 10 đến 70) chia làm 3 chặng bằng nhau, mỗi chặng dài 20km.",
+    "commonMistakes": [
+      "Lấy 70 chia 3 = 23.3 (quên trừ giá trị Min = 10 ở tử số)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q26",
+    "number": "C4.26",
+    "chapterId": "ch4",
+    "topic": "discretization",
+    "type": "theory",
+    "prompt": "Khái niệm Phân cấp khái niệm (Concept Hierarchy) là gì và hỗ trợ Multi-level Mining như thế nào?",
+    "answer": "Tổ chức các thuộc tính theo tầng bậc thứ bậc từ cụ thể đến tổng quát (ví dụ: Thành phố -> Tỉnh -> Vùng miền -> Quốc gia); cho phép khai phá các luật kết hợp và tri thức ở nhiều mức độ trừu tượng khác nhau thông qua thao tác Drill-down và Roll-up.",
+    "explanation": "Ở cấp chi tiết, ta có thể không thấy luật mua hàng giữa 'Bút bi Thiên Long 0.5mm' và 'Vở kẻ ngang 200 trang'. Nhưng khi Roll-up lên cấp khái niệm cao hơn, ta phát hiện luật mạnh: 'Văn phòng phẩm' luôn đi kèm với 'Đồ dùng học tập'.",
+    "eli5": "Giống như cây thư mục trên máy tính: Ổ đĩa C -> Thư mục Trường học -> Môn Nhà kho dữ liệu -> Bài tập 1. Đi từ bao quát vào chi tiết.",
+    "commonMistakes": [
+      "Nghĩ rằng phân cấp khái niệm chỉ áp dụng được cho dữ liệu địa lý."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q27",
+    "number": "C4.27",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "theory",
+    "prompt": "Bản chất và công thức của phương pháp chuẩn hóa Min-Max Normalization là gì?",
+    "answer": "Ánh xạ tuyến tính giá trị gốc v về một khoảng giá trị cố định mới [new_min, new_max], thông thường là khoảng [0, 1]; Công thức: v' = ((v - min) / (max - min)) * (new_max - new_min) + new_min.",
+    "explanation": "Min-Max bảo toàn tuyệt đối tỷ lệ khoảng cách giữa các giá trị ban đầu. Tuy nhiên, nếu sau này xuất hiện giá trị mới vượt ngoài khoảng [min, max], phương pháp này sẽ gặp lỗi 'Out-of-bounds'.",
+    "eli5": "Giống như việc thang điểm 10 quy đổi sang thang điểm 1: học sinh được 5 điểm sẽ tương ứng với 0.5; 10 điểm tương ứng với 1.0.",
+    "commonMistakes": [
+      "Đảo lộn vị trí tử số và mẫu số trong công thức tính tỷ lệ khoảng cách."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q28",
+    "number": "C4.28",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "theory",
+    "prompt": "Một thuộc tính Thu nhập có Min = 10 triệu, Max = 110 triệu. Hãy chuẩn hóa thu nhập 60 triệu về khoảng [0, 1] bằng Min-Max Normalization?",
+    "answer": "v' = (60 - 10) / (110 - 10) * (1 - 0) + 0 = 50 / 100 = 0.5.",
+    "explanation": "Giá trị 60 nằm chính giữa khoảng [10, 110], do đó khi co về khoảng [0, 1] giá trị chuẩn hóa chính xác là 0.5.",
+    "eli5": "60 triệu là điểm chính giữa của chặng từ 10 đến 110 triệu, nên trên thang đo từ 0 đến 1 nó nằm đúng ở mốc 0.5.",
+    "commonMistakes": [
+      "Quên trừ Min ở tử số, lấy 60 / 100 = 0.6."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q29",
+    "number": "C4.29",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "theory",
+    "prompt": "Phương pháp Decimal Scaling (Chuẩn hóa tỉ lệ thập phân) hoạt động theo nguyên lý nào?",
+    "answer": "Chuẩn hóa bằng cách di chuyển dấu thập phân của các giá trị thuộc tính dựa trên giá trị tuyệt đối lớn nhất; Công thức: v' = v / 10^j, với j là số nguyên nhỏ nhất sao cho Max(|v'|) < 1.",
+    "explanation": "Phương pháp này giữ nguyên các chữ số có nghĩa và chỉ dời dấu phẩy sang trái j chữ số để toàn bộ các giá trị đều rơi vào khoảng (-1, 1).",
+    "eli5": "Nếu số to nhất là 850, bạn chia cho 1.000 (10^3) để biến thành 0.85; số mũ j ở đây bằng 3.",
+    "commonMistakes": [
+      "Chọn j sao cho giá trị lớn nhất vượt quá 1 (ví dụ 850 chia 100 = 8.5 là sai quy tắc)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q30",
+    "number": "C4.30",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "theory",
+    "prompt": "Một cột số dư ngân hàng có giá trị dao động từ -750.000 đến 3.500.000 VNĐ. Xác định số mũ j nhỏ nhất để chuẩn hóa bằng Decimal Scaling?",
+    "answer": "Giá trị tuyệt đối lớn nhất là Max(|-750.000|, |3.500.000|) = 3.500.000; Ta có 10^6 = 1.000.000 < 3.500.000 < 10^7 = 10.000.000; Do đó số mũ nguyên nhỏ nhất là j = 7 (khi đó 3.500.000 / 10^7 = 0.35 < 1).",
+    "explanation": "Nếu chọn j = 6 thì 3.500.000 / 10^6 = 3.5 > 1 (vi phạm điều kiện Max(|v'|) < 1). Bắt buộc phải chọn j = 7.",
+    "eli5": "Số 3.500.000 có 7 chữ số, do đó phải chia cho 10 triệu (10^7) thì mới thu được số thập phân 0.35 nhỏ hơn 1.",
+    "commonMistakes": [
+      "Chọn j = 6 vì chỉ nhìn vào 6 chữ số 0 ở đuôi."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q31",
+    "number": "C4.31",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "theory",
+    "prompt": "Bản chất, công thức và đặc tính của Z-Score Normalization (Chuẩn hóa điểm số Z) là gì?",
+    "answer": "Chuẩn hóa dựa trên giá trị trung bình mu và độ lệch chuẩn sigma; Công thức: z = (v - mu) / sigma; Dữ liệu sau chuẩn hóa có giá trị trung bình mới mu = 0 và độ lệch chuẩn mới sigma = 1.",
+    "explanation": "Z-Score thể hiện giá trị v cách giá trị trung bình bao nhiêu độ lệch chuẩn. Nếu z > 0 nghĩa là giá trị cao hơn trung bình; z < 0 nghĩa là thấp hơn trung bình.",
+    "eli5": "Điểm z cho biết bạn đang đứng ở đâu so với mặt bằng chung của cả lớp: z = 0 nghĩa là bạn đạt điểm đúng mức trung bình của lớp.",
+    "commonMistakes": [
+      "Nghĩ rằng Z-Score co dữ liệu về khoảng [0, 1] (Z-score có thể nhận giá trị âm và dương không giới hạn)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q32",
+    "number": "C4.32",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "theory",
+    "prompt": "Z-Score Normalization vượt trội hơn Min-Max Normalization trong những trường hợp thực tế nào?",
+    "answer": "Cực kỳ hiệu quả khi tập dữ liệu chứa nhiều giá trị ngoại lai (Outliers) hoặc khi không biết trước giá trị nhỏ nhất (Min) và lớn nhất (Max) của dữ liệu nguồn.",
+    "explanation": "Khi có Outlier cực lớn, Min-Max sẽ nén 99% dữ liệu bình thường lại thành một dải cực hẹp sát số 0. Z-Score không bị phụ thuộc vào giá trị min/max đơn lẻ nên không làm mất thông tin phân phối.",
+    "eli5": "Nếu lớp có một tỷ phú có 1.000 tỷ, chuẩn hóa Min-Max sẽ khiến tất cả học sinh còn lại trông như có 0 đồng; Z-Score giúp phân biệt rõ bạn có 1 triệu hay 10 triệu so với mức trung bình.",
+    "commonMistakes": [
+      "Áp dụng Min-Max cho tập dữ liệu có ngoại lai cực đoan."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q33",
+    "number": "C4.33",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "theory",
+    "prompt": "Tại sao việc chuẩn hóa dữ liệu lại bắt buộc trước khi đưa vào các thuật toán AI dựa trên khoảng cách (KNN, K-Means, SVM)?",
+    "answer": "Để các thuộc tính có đơn vị đo lớn (như Thu nhập hàng chục triệu) không áp đảo, lấn át hoàn toàn các thuộc tính có đơn vị nhỏ (như Lãi suất 0.05 hoặc Tuổi 30) khi tính toán khoảng cách Euclidean.",
+    "explanation": "Khoảng cách Euclidean $d = \\sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$. Nếu $x$ chênh lệch 10.000.000 còn $y$ chênh lệch 5, khoảng cách $d$ sẽ chỉ phụ thuộc hoàn toàn vào $x$, mô hình xem như vứt bỏ thuộc tính $y$.",
+    "eli5": "Cân đo sức mạnh giữa con voi (hàng tấn) và con kiến (vài miligram): nếu không chuẩn hóa về cùng thang đo phần trăm thì con voi luôn thắng áp đảo mọi tiêu chí.",
+    "commonMistakes": [
+      "Ném trực tiếp dữ liệu thô chưa chuẩn hóa vào thuật toán K-Means clustering."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q34",
+    "number": "C4.34",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "theory",
+    "prompt": "Phân biệt giữa Feature Construction (Xây dựng đặc trưng) và Feature Selection (Lựa chọn đặc trưng)?",
+    "answer": "Feature Construction là việc tạo ra các thuộc tính MỚI từ các thuộc tính cũ nhằm làm nổi bật tín hiệu nghiệp vụ (ví dụ: BMI = Cân nặng/Chiều cao^2, DTI = Nợ/Thu nhập); Feature Selection là việc chọn lọc và GIỮ LẠI tập con các thuộc tính có sức mạnh dự báo tốt nhất dựa trên các độ đo như Information Gain.",
+    "explanation": "Cả hai khâu đều dựa trên tri thức miền nghiệp vụ (Domain Knowledge). Tạo đúng đặc trưng quyết định 90% thành công của mô hình phân tích.",
+    "eli5": "Feature Construction giống như pha bột mì và trứng thành chiếc bánh; Feature Selection giống như chọn ra 3 chiếc bánh ngon nhất trên bàn để dự thi.",
+    "commonMistakes": [
+      "Nhầm lẫn giữa việc tạo biến mới (Construction) và lọc bớt biến cũ (Selection)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q35",
+    "number": "C4.35",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "formula",
+    "prompt": "Nêu công thức toán học và ý nghĩa của độ đo Entropy Info(D) trong lý thuyết thông tin?",
+    "answer": "Công thức: Info(D) = - \\sum_{i=1}^m p_i \\log_2(p_i); Ý nghĩa: Đo lường mức độ hỗn loạn (impurity), mức độ không chắc chắn hoặc lượng thông tin kỳ vọng trung bình cần thiết để xác định nhãn lớp của một bộ dữ liệu trong tập D.",
+    "explanation": "Nếu tập dữ liệu hoàn toàn đồng nhất (100% Yes hoặc 100% No), Entropy = 0 (độ tinh khiết cực đại, không hỗn loạn). Nếu tập dữ liệu chia đều 50% Yes và 50% No, Entropy = 1.0 (độ hỗn loạn cực đại).",
+    "eli5": "Entropy giống như độ bừa bộn của căn phòng: phòng dọn sạch sẽ tinh tươm thì Entropy = 0; đồ đạc ném lung tung xáo trộn thì Entropy lên mức cao nhất.",
+    "commonMistakes": [
+      "Quên dấu trừ (-) ở trước dấu tổng xích-ma trong công thức tính Entropy."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q36",
+    "number": "C4.36",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "calculation",
+    "prompt": "Giả sử một tập dữ liệu D gồm 8 khách hàng vay vốn, trong đó có 4 khách hàng được duyệt vay (Yes) và 4 khách hàng bị từ chối (No). Tính Entropy Info(D)?",
+    "answer": "p_Yes = 4/8 = 0.5; p_No = 4/8 = 0.5; Info(D) = - (0.5 * log2(0.5) + 0.5 * log2(0.5)) = - (0.5 * (-1) + 0.5 * (-1)) = 1.0.",
+    "explanation": "Vì tỷ lệ hai lớp Yes và No cân bằng tuyệt đối 50-50, độ không chắc chắn đạt mức tối đa, do đó giá trị Entropy bằng đúng 1 bit.",
+    "eli5": "Tung đồng xu sấp ngửa với xác suất 50/50: bạn hoàn toàn không đoán trước được kết quả, mức độ bất định đạt 100%.",
+    "commonMistakes": [
+      "Tính nhầm log2(0.5) thành giá trị dương (lưu ý: log2(0.5) = -1)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q37",
+    "number": "C4.37",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "formula",
+    "prompt": "Công thức tính Entropy có điều kiện Info_A(D) sau khi phân hoạch theo thuộc tính A là gì?",
+    "answer": "Info_A(D) = \\sum_{j=1}^v (|D_j| / |D|) * Info(D_j); trong đó |D_j| / |D| đóng vai trò là trọng số xác suất của tập con thứ j, v là số giá trị phân biệt của thuộc tính A.",
+    "explanation": "Info_A(D) đo lượng thông tin kỳ vọng còn lại cần thiết để phân loại sau khi đã biết giá trị của thuộc tính A. Giá trị Info_A(D) càng nhỏ chứng tỏ phép phân hoạch theo A càng làm tăng độ tinh khiết của dữ liệu.",
+    "eli5": "Lấy trung bình có trọng số độ bừa bộn của các ngăn tủ sau khi đã phân loại quần áo theo màu sắc.",
+    "commonMistakes": [
+      "Quên nhân với trọng số tỷ lệ (|D_j| / |D|) của từng phân vùng con."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q38",
+    "number": "C4.38",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "formula",
+    "prompt": "Công thức tính Độ thu nhận thông tin (Information Gain) và tiêu chuẩn chọn thuộc tính phân nhánh trong cây quyết định là gì?",
+    "answer": "Công thức: Gain(A) = Info(D) - Info_A(D); Tiêu chuẩn: Chọn thuộc tính có Information Gain LỚN NHẤT (Gain max) để làm nút phân tách (Split attribute).",
+    "explanation": "Gain(A) đo lường mức độ giảm độ hỗn loạn (độ bừa bộn) thu được nhờ việc biết thuộc tính A. Gain càng lớn nghĩa là thuộc tính đó mang lại càng nhiều thông tin hữu ích nhất để phân loại.",
+    "eli5": "Gain giống như phần thưởng bạn nhận được sau khi dọn dẹp: phân loại theo tiêu chí nào làm căn phòng gọn gàng sạch sẽ nhất thì chọn tiêu chí đó trước.",
+    "commonMistakes": [
+      "Chọn thuộc tính có Information Gain nhỏ nhất (ngược lại: phải chọn Gain lớn nhất)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q39",
+    "number": "C4.39",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "calculation",
+    "prompt": "Trong ví dụ thẩm định vay vốn (Slide 4), ta tính được Gain(Income) ≈ 0.06128, Gain(Credit History) ≈ 0.5488, Gain(Loan Amount) ≈ 0.1887. Thuộc tính nào được chọn làm nút gốc của cây quyết định?",
+    "answer": "Thuộc tính Credit History (Lịch sử tín dụng) được chọn làm nút gốc (Root node) vì có Information Gain lớn nhất (Gain ≈ 0.5488).",
+    "explanation": "So sánh 3 độ đo Gain: 0.5488 > 0.1887 > 0.06128. Thuộc tính Lịch sử tín dụng cung cấp khả năng phân biệt khách hàng trả nợ tốt và xấu mạnh mẽ nhất.",
+    "eli5": "Trong 3 câu hỏi để biết một người có uy tín trả nợ hay không, câu hỏi 'Trước đây anh có từng quỵt nợ ai không?' mang lại câu trả lời rõ ràng và đáng tin cậy nhất.",
+    "commonMistakes": [
+      "Chọn thuộc tính Thu nhập (Income) theo trực giác cảm tính thay vì dựa trên con số tính toán Information Gain thực tế."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q40",
+    "number": "C4.40",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "theory",
+    "prompt": "Các mô hình ngôn ngữ lớn (LLM như Gemini) hỗ trợ trích xuất đặc trưng (AI Feature Extraction) từ dữ liệu phi cấu trúc như thế nào?",
+    "answer": "Phân tích văn bản thô (lịch sử chat, review, ghi chú cuộc gọi) để trích xuất ra các cột số đại diện cho Sắc thái cảm xúc (Sentiment: lo lắng, giận dữ, hài lòng), Chủ đề (Topic), và tạo các Vector Embeddings trong không gian đa chiều.",
+    "explanation": "Dữ liệu phi cấu trúc (tin nhắn chat của khách hàng) trước đây không thể đưa vào bảng toán học. Nhờ LLM trích xuất thành điểm cảm xúc và vector tương đồng, kho dữ liệu có thể đưa thẳng vào các mô hình dự báo rủi ro.",
+    "eli5": "Giống như người trợ lý thông minh đọc hàng nghìn bức thư phản ánh của người dân và tóm tắt lại cho bạn biết: có bao nhiêu người giận dữ, bao nhiêu người hài lòng và họ quan tâm đến chủ đề gì.",
+    "commonMistakes": [
+      "Cho rằng các mô hình Machine Learning định lượng chỉ có thể học từ các cột số có sẵn trong database."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q41",
+    "number": "C4.41",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "theory",
+    "prompt": "Trong bài toán Dự báo nợ xấu (Slide 4 Page 38), sự kết hợp giữa đặc trưng tài chính truyền thống và đặc trưng trích xuất bằng AI diễn ra như thế nào?",
+    "answer": "Kết hợp các đặc trưng định lượng truyền thống (tỷ lệ nợ trên thu nhập DTI, tỷ lệ dùng hạn mức thẻ) với các đặc trưng cảm xúc trích xuất bằng AI từ lịch sử chat (sắc thái 'lo lắng' hoặc 'giận dữ') để dán nhãn cảnh báo 'Rủi ro cao' sớm cho khách hàng có nguy cơ vỡ nợ.",
+    "explanation": "Khách hàng có tỷ lệ nợ tăng cao kết hợp với việc liên tục gửi tin nhắn lo lắng về việc chậm lương là tín hiệu sớm báo hiệu khả năng vỡ nợ cao gấp 5 lần người bình thường.",
+    "eli5": "Vừa nhìn vào sổ nợ tiền bạc, vừa lắng nghe giọng điệu lo lắng của người vay để biết chắc chắn người này đang gặp khó khăn thực sự.",
+    "commonMistakes": [
+      "Bỏ qua dữ liệu tương tác phi cấu trúc và chỉ dựa đơn thuần vào các con số tài chính tĩnh."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q42",
+    "number": "C4.42",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "theory",
+    "prompt": "Tại sao trong công thức tính Entropy hàm logarit cơ số 2 (log2) lại được sử dụng thay vì logarit tự nhiên (ln) hay thập phân (log10)?",
+    "answer": "Vì trong lý thuyết thông tin của Claude Shannon, thông tin được số hóa và mã hóa dưới dạng các chữ số nhị phân (Bits); hàm log2 phản ánh chính xác số lượng bit thông tin tối thiểu cần thiết để mã hóa thông điệp.",
+    "explanation": "Đơn vị đo lường của Entropy tính theo log cơ số 2 là Bit. Nếu dùng log cơ số e thì đơn vị là Nat; dùng log cơ số 10 thì đơn vị là Dit/Hartley.",
+    "eli5": "Máy tính vận hành bằng mã nhị phân 0 và 1 (2 trạng thái), nên dùng cơ số 2 để đếm xem cần bao nhiêu bit 0 và 1 để lưu trữ dữ liệu đó.",
+    "commonMistakes": [
+      "Bấm máy tính nhầm nút log tự nhiên (ln) hoặc log thập phân (log) khi tính Entropy."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q43",
+    "number": "C4.43",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "calculation",
+    "prompt": "Một mẫu thu nhập có Min = 5 triệu, Max = 85 triệu. Hãy chuẩn hóa thu nhập 45 triệu về khoảng [0, 1] bằng Min-Max Normalization?",
+    "answer": "v' = (45 - 5) / (85 - 5) * (1 - 0) + 0 = 40 / 80 = 0.5.",
+    "explanation": "Tử số: 45 - 5 = 40. Mẫu số: 85 - 5 = 80. Tỷ lệ: 40 / 80 = 0.5.",
+    "eli5": "Khoảng cách từ 5 đến 85 là 80; điểm 45 nằm cách mốc xuất phát 40 đơn vị, tức là đi được đúng một nửa quãng đường (0.5).",
+    "commonMistakes": [
+      "Lấy 45 chia trực tiếp cho 85 ra 0.529 (quên trừ Min = 5 ở cả tử và mẫu)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q44",
+    "number": "C4.44",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "calculation",
+    "prompt": "Cho tập dữ liệu D có 10 mẫu với 6 mẫu Good và 4 mẫu Bad. Tính Entropy Info(D)?",
+    "answer": "p_Good = 6/10 = 0.6; p_Bad = 4/10 = 0.4; Info(D) = - (0.6 * log2(0.6) + 0.4 * log2(0.4)) ≈ - (0.6 * (-0.737) + 0.4 * (-1.322)) = 0.4422 + 0.5288 = 0.971.",
+    "explanation": "Đây chính là câu hỏi số 16 trong đề cương ôn tập: Entropy của tập 6 Good và 4 Bad bằng 0.971.",
+    "eli5": "Tập dữ liệu gần như cân bằng (6/4), độ hỗn loạn rất cao xấp xỉ 1 (cụ thể là 0.971 bit).",
+    "commonMistakes": [
+      "Tính nhầm giá trị log2 hoặc quên đổi dấu âm thành dương."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q45",
+    "number": "C4.45",
+    "chapterId": "ch4",
+    "topic": "data-reduction",
+    "type": "theory",
+    "prompt": "Hiện tượng 'Curse of Dimensionality' (Lời nguyền số chiều) gây ra những khó khăn gì cho mô hình học máy?",
+    "answer": "Khi số lượng thuộc tính tăng cao, không gian dữ liệu trở nên cực kỳ thưa thớt (Sparse), khoảng cách giữa các điểm dữ liệu trở nên gần như bằng nhau, làm các thuật toán phân lớp bị mất phương hướng và đòi hỏi khối lượng dữ liệu khổng lồ theo hàm mũ để huấn luyện.",
+    "explanation": "Trong không gian 1.000 chiều, mọi điểm dữ liệu đều cách xa nhau, khiến khái niệm 'gần gũi' của KNN hay K-Means bị vô hiệu hóa.",
+    "eli5": "Tìm một người bạn trên một con đường thẳng 1km (1D) rất dễ; tìm trong một cánh đồng 1km2 (2D) khó hơn; tìm trong một không gian vũ trụ 1.000 chiều thì dường như mọi người đều mất hút trong biển không gian trống rỗng.",
+    "commonMistakes": [
+      "Nghĩ rằng càng nhiều thuộc tính thì mô hình học máy luôn càng chính xác."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q46",
+    "number": "C4.46",
+    "chapterId": "ch4",
+    "topic": "noise-outlier",
+    "type": "theory",
+    "prompt": "Kỹ thuật Binning làm mượt dữ liệu (Smoothing by Bin Means / Bin Boundaries) hoạt động như thế nào?",
+    "answer": "Dữ liệu sau khi sắp xếp được chia vào các thùng (Bins); với Smoothing by Bin Means: thay thế tất cả giá trị trong bin bằng giá trị TRUNG BÌNH của bin đó; với Smoothing by Bin Boundaries: thay thế mỗi giá trị bằng GIÁ TRỊ BIÊN (min hoặc max của bin) gần nó nhất.",
+    "explanation": "Ví dụ bin có [4, 8, 15] -> Bin Means thay thành [9, 9, 9]; Bin Boundaries thay thành [4, 4, 15] (8 gần 4 hơn 15).",
+    "eli5": "Làm phẳng mặt đường gồ ghề bằng cách san phẳng các hòn đá nhỏ về cùng một độ cao trung bình.",
+    "commonMistakes": [
+      "Nhầm lẫn giữa làm mượt theo giá trị trung bình (Means) và làm mượt theo biên (Boundaries)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q47",
+    "number": "C4.47",
+    "chapterId": "ch4",
+    "topic": "smoothing-aggregation",
+    "type": "calculation",
+    "prompt": "Theo dõi giá dầu trong 6 ngày liên tiếp: Ngày 1: 70, Ngày 2: 74, Ngày 3: 72, Ngày 4: 78, Ngày 5: 80, Ngày 6: 76. Tính SMA với cửa sổ k = 3 tại Ngày 6?",
+    "answer": "SMA Ngày 6 = (Giá N4 + Giá N5 + Giá N6) / 3 = (78 + 80 + 76) / 3 = 234 / 3 = 78.0.",
+    "explanation": "Cửa sổ k = 3 tại Ngày 6 lấy 3 ngày gần nhất là Ngày 4 (78), Ngày 5 (80) và Ngày 6 (76). Tổng = 234, chia 3 = 78.",
+    "eli5": "Lấy điểm 3 ngày gần nhất 78, 80, 76 cộng lại chia 3 ra đúng 78.",
+    "commonMistakes": [
+      "Lấy Ngày 1, 2, 3 để tính cho Ngày 6."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q48",
+    "number": "C4.48",
+    "chapterId": "ch4",
+    "topic": "data-integration",
+    "type": "theory",
+    "prompt": "Kỹ thuật Clustering (Phân cụm) được ứng dụng trong Deduplication nhằm mục đích gì?",
+    "answer": "Nhóm các bản ghi có đặc điểm tương đồng lại với nhau trước khi thực hiện các phép so sánh chi tiết, giúp tránh việc phải so sánh cặp đôi toàn bộ (All-pairs comparison O(N^2)), nâng cao hiệu năng xử lý dữ liệu lớn.",
+    "explanation": "Nếu có 1 triệu bản ghi, so sánh từng cặp sẽ tốn 1.000 tỷ phép tính. Bằng cách phân cụm sơ bộ theo Tỉnh thành hoặc Năm sinh, ta chỉ so sánh các bản ghi trong cùng một cụm, giảm 99.9% thời gian chạy.",
+    "eli5": "Trước khi tìm hai người trùng tên họ, ta phân loại hồ sơ theo từng tỉnh: người ở Hà Nội chỉ so với người ở Hà Nội, không cần đem so với người ở Cà Mau.",
+    "commonMistakes": [
+      "Chạy thuật toán so sánh cặp đôi vét cạn trên toàn bộ bảng dữ liệu hàng triệu dòng làm treo máy tính."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q49",
+    "number": "C4.49",
+    "chapterId": "ch4",
+    "topic": "normalization",
+    "type": "calculation",
+    "prompt": "Một thuộc tính có giá trị lớn nhất là 98.760 và nhỏ nhất là -450. Hãy xác định giá trị sau chuẩn hóa của v = 45.000 bằng Decimal Scaling?",
+    "answer": "Giá trị tuyệt đối lớn nhất là Max(|98.760|, |-450|) = 98.760; Ta có 10^4 = 10.000 < 98.760 < 10^5 = 100.000 => j = 5; Giá trị chuẩn hóa v' = 45.000 / 10^5 = 0.45.",
+    "explanation": "Vì 98.760 có 5 chữ số, ta cần chia cho 10^5 để số lớn nhất trở thành 0.9876 < 1. Khi đó 45.000 chia 10^5 bằng 0.45.",
+    "eli5": "Số to nhất là gần 100 nghìn, chia cho 100 nghìn thì 45 nghìn thành 0.45.",
+    "commonMistakes": [
+      "Chọn j = 4 dẫn đến 98.760 / 10^4 = 9.876 > 1."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch4_q50",
+    "number": "C4.50",
+    "chapterId": "ch4",
+    "topic": "entropy-feature",
+    "type": "theory",
+    "prompt": "Vector Embeddings trong không gian đa chiều hỗ trợ việc khai phá tri thức (Knowledge Discovery) như thế nào?",
+    "answer": "Biểu diễn các thực thể rời rạc (từ ngữ, khách hàng, sản phẩm) thành các vector số thực liên tục trong không gian đa chiều, cho phép tính toán mức độ tương đồng ngữ nghĩa bằng khoảng cách Cosine hoặc Euclidean và thực hiện các phép toán vector.",
+    "explanation": "Trong không gian vector embedding, hai khách hàng có hành vi tương tự nhau sẽ có hai vector nằm sát cạnh nhau. Điều này cho phép xây dựng hệ thống gợi ý sản phẩm, tìm kiếm ngữ nghĩa và phát hiện gian lận cực kỳ chuẩn xác.",
+    "eli5": "Gán cho mỗi người một tọa độ GPS trong không gian sở thích: hai người có sở thích càng giống nhau thì khoảng cách giữa hai tọa độ càng gần nhau.",
+    "commonMistakes": [
+      "Coi vector embedding chỉ là một mã ID định danh ngẫu nhiên không có ý nghĩa hình học."
+    ],
+    "needsSlideCheck": false
+  }
+]

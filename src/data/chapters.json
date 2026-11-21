@@ -1113,75 +1113,374 @@
   },
   {
     "id": "ch4",
-    "title": "Chương 4: Tiền xử lý Dữ liệu (Preprocessing)",
+    "title": "Chương 4: Tiền xử lý dữ liệu học thuật (Slide 4)",
     "order": 4,
     "objectives": [
-      "Tính toán Entropy, Info_A và Information Gain",
-      "Áp dụng các phương pháp chuẩn hóa: Min-Max, Z-Score, Decimal Scaling",
-      "Kỹ thuật rời rạc hóa (Binning): Equal-width, Equal-frequency",
-      "Khái niệm giảm chiều dữ liệu PCA",
-      "Tính toán trung bình trượt đơn giản SMA cho chuỗi thời gian"
+      "Nắm vững 4 chiều chất lượng dữ liệu: Chính xác, Đầy đủ, Nhất quán và Kịp thời (Accuracy, Completeness, Consistency, Timeliness)",
+      "Thành thạo kỹ thuật làm sạch dữ liệu: Xử lý Noise bằng Binning/Regression và phát hiện Outliers qua Z-Score (|Z| > 3) và IQR",
+      "Hiểu sâu về Data Integration: Entity Resolution, Độ đo Jaccard, Deduplication tạo Golden Record và Fuzzy Matching trong M&A",
+      "Thành thạo Transformation: Làm mượt bằng Simple Moving Average (SMA), Data Aggregation và cấu trúc Data Cubes (Roll-up, Drill-down)",
+      "Nắm vững kỹ thuật giảm số chiều bằng PCA (Principal Component Analysis) và giảm số lượng bản ghi (Numerosity Reduction)",
+      "Thành thạo Discretization (Rời rạc hóa): Equal-width Binning, Equal-frequency Binning và xây dựng Concept Hierarchy",
+      "Nắm vững và tính toán thành thạo 3 phương pháp Normalization: Min-Max, Z-score và Decimal Scaling",
+      "Hiểu sâu Feature Engineering: Tính toán Entropy, Information Gain, lựa chọn thuộc tính phân nhánh và AI Embeddings"
     ],
     "lessons": [
       {
         "id": "les-4-1",
-        "title": "Bài 1: Đo lường Entropy và Độ lợi thông tin (InfoGain)",
-        "status": "empty",
+        "title": "Bài 1: Đa chiều chất lượng dữ liệu: Chính xác, Đầy đủ, Nhất quán và Kịp thời",
+        "status": "done",
         "sections": [
           {
-            "kind": "lab",
-            "labId": "entropy-lab"
+            "kind": "objectives",
+            "items": [
+              "Nắm vững định nghĩa của 4 chiều chất lượng dữ liệu: Accuracy, Completeness, Consistency, Timeliness",
+              "Hiểu nguyên lý nền tảng 'Garbage In, Garbage Out' trong khoa học dữ liệu",
+              "Thành thạo kỹ thuật kiểm tra Schema và xác thực chéo (Cross-field Validation)",
+              "Phân tích ví dụ thực tế về bài toán chấm điểm tín dụng (Credit Scoring)"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bốn chiều kích chất lượng dữ liệu cốt lõi\nChất lượng dữ liệu là nền tảng sống còn của mọi hệ thống thông tin và mô hình trí tuệ nhân tạo. Bốn chiều kích đo lường chuẩn mực:\n- **Accuracy (Tính chính xác)**: Mức độ dữ liệu mô tả trung thực và đúng đắn thực thể khách quan trong thế giới thực. Dữ liệu sai lệch thường xuất phát từ lỗi nhập liệu thủ công của con người hoặc lỗi truyền thông tin của hệ thống.\n- **Completeness (Tính đầy đủ)**: Tỷ lệ các trường thông tin không bị khuyết thiếu (không chứa giá trị `NULL` hoặc `Missing`). Đây là yếu tố quyết định sự thành bại của các mô hình học máy định lượng.\n- **Consistency (Tính nhất quán)**: Sự đồng bộ về quy tắc logic, định dạng dữ liệu (ví dụ: ngày tháng chuẩn ISO `YYYY-MM-DD`) và đơn vị đo lường (tránh xung đột giữa USD và VND, giữa Km và Dặm) giữa các nguồn dữ liệu khác nhau.\n- **Timeliness (Tính kịp thời)**: Độ tươi mới và độ trễ của dữ liệu. Dữ liệu dù chính xác đến mấy nhưng nếu bị trễ hạn thì mọi tín hiệu cảnh báo thị trường đều trở nên vô nghĩa.\n\n---\n\n### 2. Nguyên lý 'Garbage In, Garbage Out' (Rác vào thì Rác ra)\n- **Chất lượng dữ liệu quyết định chất lượng tri thức**: Mọi thuật toán phân tích, học sâu hay khai phá dữ liệu dù tinh vi đến đâu cũng chỉ phản ánh đúng bản chất dữ liệu đầu vào. Dữ liệu sai lệch chắc chắn sẽ sinh ra các quyết định kinh doanh sai lầm gây hậu quả nghiêm trọng.\n- **Tỷ trọng công việc**: Trong các dự án Data Science thực tế, khâu tiền xử lý dữ liệu (Data Preprocessing) luôn chiếm từ **70% đến 80%** tổng thời gian và nỗ lực kỹ thuật của toàn đội ngũ.\n\n---\n\n### 3. Kiểm tra Schema và Cross-field Validation\n- **Kiểm tra Schema (Schema Checking)**: Sử dụng Metadata để tự động xác thực tính đồng nhất của cấu trúc bảng, kiểu dữ liệu và độ dài trường trên toàn bộ kho dữ liệu.\n- **Xác thực chéo liên thuộc tính (Cross-field Validation)**: Áp dụng các quy tắc logic nghiệp vụ ràng buộc giữa nhiều cột với nhau trong cùng một bản ghi:\n  - *Ví dụ 1*: `Ngày giải ngân` bắt buộc phải nhỏ hơn hoặc bằng `Ngày tất toán nợ`.\n  - *Ví dụ 2*: Nếu `Tuổi < 18` thì thuộc tính `Nghề nghiệp` không thể là 'Giám đốc tài chính'."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ thực tế: Bài toán Chấm điểm tín dụng Ngân hàng**:\n- **Bối cảnh**: Ngân hàng tích hợp dữ liệu từ hệ thống Thẻ tín dụng và hệ thống Khoản vay thế chấp để xây dựng mô hình AI tự động duyệt hạn mức vay.\n- **Vấn đề chất lượng**:\n  - 30% hồ sơ khách hàng thiếu thông tin thu nhập hàng tháng (*Lỗi Completeness*).\n  - Ngày thanh toán nợ ở hệ thống thẻ lưu dạng `MM/DD/YYYY`, ở hệ thống vay lưu dạng `DD/MM/YYYY` (*Lỗi Consistency*).\n- **Hậu quả**: Mô hình AI hiểu nhầm khách hàng trả nợ trễ hạn thành đúng hạn và ngược lại, dẫn đến nguy cơ bùng nổ nợ xấu hoặc từ chối oan khách hàng VIP.\n- **Giải pháp**: Sử dụng công cụ **dbt** tại tầng Silver để chuẩn hóa định dạng ngày tháng và dùng thuật toán **MICE / KNN Imputer** để điền khuyết thu nhập một cách khoa học."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Ghi nhớ nhanh 4 chiều chất lượng dữ liệu**:\n> - **A**ccuracy (Chính xác)\n> - **C**ompleteness (Đầy đủ)\n> - **C**onsistency (Nhất quán)\n> - **T**imeliness (Kịp thời)"
           }
         ],
         "miniQuiz": [
-          "q16",
-          "q19",
-          "q20"
+          "ch4_q01",
+          "ch4_q02",
+          "ch4_q03",
+          "ch4_q04"
         ],
         "relatedQuestionIds": [
-          "q16",
-          "q19",
-          "q20"
+          "ch4_q01",
+          "ch4_q02",
+          "ch4_q03",
+          "ch4_q04",
+          "ch4_q05",
+          "ch4_q06"
         ],
-        "labIds": [
-          "entropy-lab"
-        ]
+        "labIds": []
       },
       {
         "id": "les-4-2",
-        "title": "Bài 2: Chuẩn hóa dữ liệu và Rời rạc hóa (Binning)",
-        "status": "empty",
-        "sections": [],
+        "title": "Bài 2: Kỹ thuật làm sạch dữ liệu: Xử lý Noise và Outliers (Z-score, IQR)",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu bản chất của Nhiễu (Noise) và hai kỹ thuật làm mượt: Binning và Regression",
+              "Nắm vững phương pháp phát hiện Outliers bằng quy tắc Z-Score (|Z| > 3)",
+              "Thành thạo công thức phát hiện Outliers bằng Khoảng tứ phân vị (IQR)",
+              "Phân tích ví dụ phát hiện gian lận thẻ tín dụng trong thời gian thực"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bản chất của Nhiễu (Noise) và Kỹ thuật làm mượt\n- **Noise là gì?**: Là các sai số ngẫu nhiên hoặc các dao động nhỏ không mong muốn xuất hiện trong quá trình đo lường hoặc thu thập, làm che khuất tín hiệu thực tế của dữ liệu.\n- **Kỹ thuật Binning**: Sắp xếp dữ liệu và chia vào các khoảng (thùng - bins), sau đó thay thế các giá trị bằng:\n  - *Smoothing by Bin Means*: Thay thế tất cả giá trị trong bin bằng giá trị trung bình cộng của bin đó.\n  - *Smoothing by Bin Boundaries*: Thay thế mỗi giá trị bằng giá trị biên (Min hoặc Max) gần nó nhất.\n- **Kỹ thuật Regression (Hồi quy)**: Khớp dữ liệu vào các hàm toán học (như hồi quy tuyến tính) để lọc bỏ thành phần ngẫu nhiên, chỉ giữ lại xu thế biến thiên chính.\n\n---\n\n### 2. Phát hiện Ngoại lai bằng Z-Score (|Z| > 3)\n- **Nguyên lý**: Đo lường khoảng cách từ một điểm dữ liệu $v$ đến giá trị trung bình $\\mu$ theo đơn vị độ lệch chuẩn $\\sigma$:\n  $$Z = \\frac{v - \\mu}{\\sigma}$$\n- **Quy tắc phân phối chuẩn**: Khoảng $[\\mu - 3\\sigma, \\mu + 3\\sigma]$ bao trùm tới **99.73%** toàn bộ dữ liệu bình thường.\n- **Ngưỡng ngoại lai (Outlier Threshold)**: Điểm dữ liệu nào có $|Z| > 3$ (nằm cách trung bình hơn 3 lần độ lệch chuẩn) được coi là Outlier tiềm năng cần phải kiểm tra hoặc xử lý.\n\n---\n\n### 3. Phát hiện Ngoại lai bằng Khoảng tứ phân vị (IQR)\nPhương pháp IQR (Interquartile Range) không phụ thuộc vào giả định phân phối chuẩn và cực kỳ bền vững trước các giá trị cực đoan:\n- **Công thức IQR**:\n  $$IQR = Q3 - Q1$$\n  *(Trong đó $Q1$ là phân vị 25%, $Q3$ là phân vị 75% của tập dữ liệu đã sắp xếp)*.\n- **Hàng rào xác định Outlier (Tukey's Fences)**: Điểm dữ liệu được coi là ngoại lai nếu nằm ngoài khoảng an toàn:\n  $$[Q1 - 1.5 \\times IQR, \\quad Q3 + 1.5 \\times IQR]$$\n  - *Ngoại lai dưới*: Giá trị $< Q1 - 1.5 \\times IQR$.\n  - *Ngoại lai trên*: Giá trị $> Q3 + 1.5 \\times IQR$."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ thực tế: Phát hiện gian lận Thẻ tín dụng**:\n- **Khách hàng**: Anh Minh có mức chi tiêu ăn uống trung bình mỗi ngày $\\mu = 100.000$ VNĐ, độ lệch chuẩn $\\sigma = 30.000$ VNĐ.\n- **Giao dịch bình thường**: Một bữa ăn 150.000 VNĐ có $Z = (150.000 - 100.000) / 30.000 = +1.67 < 3$ -> Bình thường.\n- **Giao dịch bất thường (Outlier)**: Lúc 2h sáng phát sinh giao dịch quẹt thẻ tại sòng bạc nước ngoài trị giá 50.000.000 VNĐ:\n  $$Z = \\frac{50.000.000 - 100.000}{30.000} = +1663.33 \\quad (\\gg 3)$$\n-> Hệ thống nhận diện đây là Outlier cực đoan, lập tức kích hoạt cảnh báo gian lận và tạm khóa thẻ để bảo vệ tiền của khách hàng!"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Hai quy tắc phát hiện Outlier cần nhớ khi thi**:\n> 1. Phương pháp **Z-Score**: Điểm ngoại lai khi **$|Z| > 3$**.\n> 2. Phương pháp **IQR**: Điểm ngoại lai khi nằm ngoài khoảng **$[Q1 - 1.5 \\times IQR, \\ Q3 + 1.5 \\times IQR]$**."
+          }
+        ],
         "miniQuiz": [
-          "q17",
-          "q18",
-          "q21",
-          "q22",
-          "q23",
-          "q24"
+          "ch4_q07",
+          "ch4_q08",
+          "ch4_q09",
+          "ch4_q10"
         ],
         "relatedQuestionIds": [
-          "q17",
+          "ch4_q07",
+          "ch4_q08",
+          "ch4_q09",
+          "ch4_q10",
+          "ch4_q46"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-4-3",
+        "title": "Bài 3: Data Integration: Xung đột thực thể, Độ đo Jaccard và Deduplication",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu bản chất Entity Resolution và Metadata Resolution trong tích hợp dữ liệu",
+              "Nắm vững công thức và ý nghĩa của Độ đo tương đồng Jaccard",
+              "Thành thạo kỹ thuật Deduplication tạo Golden Record duy nhất",
+              "Hiểu các quy tắc xử lý xung đột (Source Authority, Timestamp) và Fuzzy Matching trong M&A"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Giải quyết xung đột thực thể (Entity Resolution)\nKhi tích hợp dữ liệu từ nhiều nguồn khác nhau (SQL nội bộ, Web API, tệp Excel đối tác):\n- **Entity Resolution (Nhận diện bản thể)**: Xác định xem các bản ghi có tên gọi hoặc cấu trúc hơi khác nhau từ nhiều nguồn có cùng mô tả một thực thể duy nhất trong thế giới thực hay không.\n- **Metadata Resolution**: Đối chiếu và ánh xạ các thuộc tính khác tên nhưng có cùng ý nghĩa nghiệp vụ (ví dụ: cột `client_id` ở hệ thống CRM tương ứng với `cust_code` ở hệ thống ERP).\n\n---\n\n### 2. Độ đo tương đồng Jaccard (Jaccard Similarity)\nĐộ đo Jaccard được sử dụng rộng rãi để đo lường mức độ tương đồng giữa hai tập hợp thuộc tính:\n- **Công thức Jaccard**:\n  $$J(A, B) = \\frac{|A \\cap B|}{|A \\cup B|}$$\n  *(Số lượng phần tử trong tập giao chia cho số lượng phần tử trong tập hợp)*.\n- **Phạm vi giá trị**: Luôn nằm trong khoảng $[0, 1]$.\n  - $J(A, B) = 1$: Hai tập hợp giống hệt nhau 100%.\n  - $J(A, B) = 0$: Hai tập hợp hoàn toàn độc lập, không có phần tử chung nào.\n  - Giá trị càng tiến gần về 1 thì mức độ tương đồng giữa hai thực thể càng cao.\n\n---\n\n### 3. Khử trùng lặp (Deduplication) và Xử lý xung đột\n- **Khử trùng lặp (Deduplication)**: Loại bỏ các bản ghi trùng lặp sau khi tích hợp để tạo ra **Golden Record (Bản ghi vàng)** duy nhất, đáng tin cậy cho từng thực thể.\n- **Xử lý xung đột giá trị (Conflict Handling)**: Khi hai nguồn cung cấp thông tin mâu thuẫn nhau cho cùng một trường dữ liệu (ví dụ: Nguồn A ghi số điện thoại X, Nguồn B ghi số Y):\n  1. *Quy tắc mức độ tin cậy nguồn (Source Authority)*: Ưu tiên lấy giá trị từ hệ thống có độ tin cậy và thẩm quyền cao hơn (ví dụ: ưu tiên Core Banking hơn Web Form).\n  2. *Quy tắc thời gian mới nhất (Latest Timestamp)*: Lấy giá trị có mốc thời gian cập nhật gần nhất.\n- **Tối ưu hóa bằng Clustering**: Gom nhóm sơ bộ các bản ghi tương đồng lại trước khi thực hiện so sánh cặp đôi, tránh độ phức tạp tính toán $O(N^2)$ trên Big Data."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ tính toán độ đo Jaccard (Slide 4 Page 11)**:\nSo sánh bộ kỹ năng của hai ứng viên Data Analyst:\n- Tập kỹ năng của Ứng viên A: $A = \\{\\text{Python, SQL, Tableau, Power BI}\\} \\implies |A| = 4$\n- Tập kỹ năng của Ứng viên B: $B = \\{\\text{Python, SQL, Excel, R}\\} \\implies |B| = 4$\n\n**Các bước tính toán**:\n1. Tập giao (kỹ năng chung): $A \\cap B = \\{\\text{Python, SQL}\\} \\implies |A \\cap B| = 2$\n2. Tập hợp (toàn bộ kỹ năng không trùng): $A \\cup B = \\{\\text{Python, SQL, Tableau, Power BI, Excel, R}\\} \\implies |A \\cup B| = 6$\n3. Tính hệ số Jaccard:\n   $$J(A, B) = \\frac{2}{6} = \\frac{1}{3} \\approx 0.3333 \\quad (33.33\\%)$$\n-> Hai ứng viên có mức độ tương đồng kỹ năng là 33.3%."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Lưu ý khi tính Jaccard**: Tuyệt đối không lấy $|A| + |B| = 8$ ở mẫu số. Mẫu số bắt buộc phải là **số phần tử của tập hợp $|A \\cup B|$** (đã loại trừ các phần tử trùng lặp)."
+          }
+        ],
+        "miniQuiz": [
+          "ch4_q11",
+          "ch4_q12",
+          "ch4_q13",
+          "ch4_q14"
+        ],
+        "relatedQuestionIds": [
+          "ch4_q11",
+          "ch4_q12",
+          "ch4_q13",
+          "ch4_q14",
+          "ch4_q15",
+          "ch4_q48"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-4-4",
+        "title": "Bài 4: Transformation: Làm mượt bằng Moving Average và Tập hợp Data Cubes",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững định nghĩa và công thức tính Simple Moving Average (SMA)",
+              "Thành thạo bài toán tính SMA với kích thước cửa sổ trượt k ngày",
+              "Hiểu nguyên lý Data Aggregation và các phép toán OLAP trên Data Cubes (Roll-up, Drill-down)",
+              "Phân tích ứng dụng của đường trung bình động trong phân tích kỹ thuật (Golden Cross)"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Làm mượt bằng Simple Moving Average (SMA)\n- **Khái niệm SMA**: Là trung bình cộng của $k$ giá trị dữ liệu gần nhất trong một chuỗi thời gian liên tục nhằm khử các dao động ngẫu nhiên ngắn hạn và làm rõ xu hướng dài hạn.\n- **Công thức SMA**:\n  $$SMA_n = \\frac{1}{k} \\sum_{i=n-k+1}^{n} p_i$$\n  - $p_i$: Giá trị của dữ liệu (thường là giá đóng cửa hoặc doanh số) tại thời điểm $i$.\n  - $n$: Mốc thời gian hiện tại cần tính.\n  - $k$: Kích thước của cửa sổ trượt (số kỳ gần nhất được lấy để tính trung bình).\n\n---\n\n### 2. Tập hợp dữ liệu (Data Aggregation) & Data Cubes\n- **Data Aggregation**: Quá trình gộp nhiều bản ghi chi tiết thành các bản tóm tắt cấp cao (ví dụ: gom giao dịch từng phút thành doanh thu ngày, gom doanh thu ngày thành doanh thu tháng).\n- **Data Cubes (Khối dữ liệu đa chiều trong OLAP)**: Lưu trữ sẵn các số đo đã được tính toán tổng hợp theo mọi tổ hợp chiều phân tích.\n- **Các thao tác đa chiều cốt lõi**:\n  - **Roll-up (Thu gọn / Đi lên)**: Tổng hợp dữ liệu lên mức độ trừu tượng cao hơn (ví dụ: từ Doanh thu cấp Tỉnh -> Doanh thu cấp Vùng miền).\n  - **Drill-down (Chi tiết hóa / Đi xuống)**: Đi sâu từ số liệu tổng quan vào các tầng chi tiết hơn để tìm nguyên nhân gốc rễ (ví dụ: từ Doanh số Quý -> Doanh số từng Tháng -> từng Ngày).\n- **Tối ưu hóa tại tầng Gold**: Các khối dữ liệu tổng hợp được đặt tại tầng Gold để đảm bảo thời gian phản hồi dưới 1 giây cho các Dashboard báo cáo."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ tính toán SMA giá vàng trong 5 ngày với k = 3 (Slide 4 Page 15)**:\nTheo dõi giá vàng trong 5 ngày liên tiếp:\n- Ngày 1: 80 triệu\n- Ngày 2: 86 triệu\n- Ngày 3: 82 triệu\n- Ngày 4: 84 triệu\n- Ngày 5: 88 triệu\n\n**Tính toán**:\n- **SMA Ngày 3**: Trung bình 3 ngày [N1, N2, N3]:\n  $$\\frac{80 + 86 + 82}{3} = \\frac{248}{3} \\approx 82.67 \\text{ triệu}$$\n- **SMA Ngày 4**: Trung bình 3 ngày [N2, N3, N4]:\n  $$\\frac{86 + 82 + 84}{3} = \\frac{252}{3} = 84.00 \\text{ triệu}$$\n- **SMA Ngày 5**: Trung bình 3 ngày [N3, N4, N5]:\n  $$\\frac{82 + 84 + 88}{3} = \\frac{254}{3} \\approx 84.67 \\text{ triệu}$$"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Điểm thi cốt lõi**: Bài toán tính SMA luôn bắt đầu tính được từ ngày thứ $k$. Với $k = 3$, ngày 1 và ngày 2 chưa có đủ 3 mốc dữ liệu nên không có giá trị SMA."
+          }
+        ],
+        "miniQuiz": [
+          "ch4_q16",
+          "ch4_q17",
+          "ch4_q18",
+          "ch4_q19"
+        ],
+        "relatedQuestionIds": [
+          "ch4_q16",
+          "ch4_q17",
+          "ch4_q18",
+          "ch4_q19",
+          "ch4_q47",
+          "q26"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-4-5",
+        "title": "Bài 5: Data Reduction: Giảm số chiều bằng PCA và Giảm số lượng Numerosity",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu mục tiêu của Dimensionality Reduction và Lời nguyền số chiều (Curse of Dimensionality)",
+              "Nắm vững nguyên lý toán học của Phân tích thành phần chính (PCA)",
+              "Nắm được 4 kỹ thuật Giảm số lượng bản ghi (Numerosity Reduction)",
+              "Phân tích ví dụ quản trị rủi ro danh mục 1.000 cổ phiếu bằng PCA"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Giảm số chiều bằng PCA (Principal Component Analysis)\n- **Mục tiêu**: Loại bỏ các thuộc tính dư thừa hoặc có tương quan cao nhằm rút gọn số lượng biến mà vẫn giữ lại tối đa thông tin phương sai của tập dữ liệu ban đầu.\n- **Bản chất toán học**: PCA là một phép biến đổi tuyến tính tìm ra hệ trục tọa độ trực giao mới (các thành phần chính - Principal Components). Các trục này chính là các **vector riêng (eigenvectors)** ứng với các **trị riêng (eigenvalues)** lớn nhất của ma trận hiệp phương sai (Covariance Matrix).\n- **Thứ tự quan trọng**:\n  - Thành phần chính 1 ($PC_1$): Giữ tỷ lệ phương sai lớn nhất của dữ liệu.\n  - Thành phần chính 2 ($PC_2$): Vuông góc (trực giao) với $PC_1$ và giữ phương sai lớn thứ nhì.\n- **Lợi ích**: Giải quyết triệt để **Lời nguyền số chiều (Curse of Dimensionality)**, nén dữ liệu hiệu quả và tăng tốc độ huấn luyện cho các mô hình học máy.\n\n---\n\n### 2. Giảm số lượng bản ghi (Numerosity Reduction)\nThay thế tập dữ liệu khổng lồ bằng các biểu diễn thay thế nhỏ hơn nhiều lần nhưng vẫn giữ nguyên tính chất thống kê:\n1. **Regression Models (Mô hình hồi quy)**: Thay vì lưu hàng triệu điểm tọa độ, ta chỉ lưu các tham số hệ số của đường cong hồi quy ($y = ax + b$).\n2. **Sampling (Lấy mẫu đại diện)**: Sử dụng kỹ thuật lấy mẫu phân tầng (Stratified Sampling) để chọn ra một tập con có cùng phân phối tỷ lệ giữa các nhóm.\n3. **Histograms (Biểu đồ tần suất)**: Chia dữ liệu vào các giỏ tần suất để lưu trữ mật độ xuất hiện thay vì lưu từng giá trị chi tiết.\n4. **Clustering (Phân cụm)**: Nhóm các điểm dữ liệu tương đồng lại và chỉ lưu tọa độ điểm trọng tâm (Centroid) đại diện cho cả cụm."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ thực tế: Quản trị rủi ro danh mục đầu tư**:\n- **Bài toán**: Ngân hàng quản lý danh mục đầu tư gồm **1.000 mã cổ phiếu** và cần tính toán giá trị rủi ro Value-at-Risk (VaR) hàng ngày.\n- **Vấn đề**: Tính ma trận hiệp phương sai cho 1.000 cổ phiếu đòi hỏi tính toán gần 500.000 hệ số tương quan, máy chủ tính toán mất 6 tiếng mới xong.\n- **Giải pháp**:\n  - Áp dụng **PCA**: Rút gọn 1.000 biến cổ phiếu xuống còn **10 thành phần chính** (đại diện cho các yếu tố vĩ mô như lãi suất, lạm phát, tăng trưởng GDP), giữ lại hơn 95% phương sai.\n  - Áp dụng **Lấy mẫu phân tầng**: Chọn 500 kịch bản thị trường tiêu biểu thay vì chạy 100.000 kịch bản ngẫu nhiên.\n- **Kết quả**: Thời gian chạy mô hình VaR giảm từ 6 tiếng xuống còn **3.5 phút** (nhanh hơn 100 lần) mà vẫn đảm bảo độ tin cậy tuyệt đối."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Khái niệm thi cốt lõi**:\n> - **PCA (Principal Component Analysis)**: Là phép biến đổi tuyến tính tìm các trục tọa độ mới (thành phần chính) trực giao với nhau nhằm giữ lại phương sai lớn nhất của dữ liệu (Câu 25 đề cương)."
+          }
+        ],
+        "miniQuiz": [
+          "ch4_q20",
+          "ch4_q21",
+          "ch4_q22",
+          "ch4_q45"
+        ],
+        "relatedQuestionIds": [
+          "ch4_q20",
+          "ch4_q21",
+          "ch4_q22",
+          "ch4_q45",
+          "q25"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-4-6",
+        "title": "Bài 6: Discretization (Rời rạc hóa) và Phân cấp khái niệm (Concept Hierarchy)",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững định nghĩa và mục tiêu của kỹ thuật Discretization",
+              "Phân biệt và tính toán thành thạo Equal-width Binning và Equal-frequency Binning",
+              "Hiểu cách xây dựng và ứng dụng Concept Hierarchy trong Multi-level Mining",
+              "Phân tích ví dụ phân khúc khách hàng ngân hàng"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Kỹ thuật Rời rạc hóa (Discretization)\n- **Khái niệm**: Là quá trình chuyển đổi một thuộc tính liên tục (Continuous) có vô số giá trị thành một tập hữu hạn các khoảng giá trị rời rạc hoặc các nhãn định danh có thứ tự.\n- **Mục tiêu**: Giảm số lượng giá trị phân biệt, làm mượt dữ liệu và đáp ứng yêu cầu đầu vào của các thuật toán khai phá dữ liệu như cây quyết định (Decision Tree) hay luật kết hợp (Association Rules).\n\n---\n\n### 2. Hai phương pháp Binning rời rạc hóa cốt lõi\n1. **Equal-width Binning (Chia theo độ rộng bằng nhau)**:\n   - Chia toàn bộ dải giá trị $[Min, Max]$ thành $N$ khoảng có độ rộng bằng nhau:\n     $$Width = \\frac{Max - Min}{N}$$\n   - *Ưu điểm*: Đơn giản, trực quan, dễ diễn giải nghiệp vụ.\n   - *Nhược điểm*: Nhạy cảm với Outliers; nếu dữ liệu bị lệch (Skewed), một số bin sẽ chứa rất nhiều dữ liệu trong khi các bin khác bị rỗng.\n2. **Equal-frequency Binning (Chia theo tần số bằng nhau)**:\n   - Chia dữ liệu sao cho **mỗi bin chứa số lượng bản ghi bằng nhau** (bằng $Total\\_Records / N$).\n   - *Ưu điểm*: Rất bền vững trước dữ liệu phân phối lệch, đảm bảo mọi khoảng đều có đủ dữ liệu để mô hình học tập.\n\n---\n\n### 3. Phân cấp khái niệm (Concept Hierarchy)\n- **Bản chất**: Tổ chức các thuộc tính theo cấu trúc cây thứ bậc từ cụ thể (chi tiết) đến tổng quát (trừu tượng):\n  - *Ví dụ về Thời gian*: `Ngày` -> `Tuần` -> `Tháng` -> `Quý` -> `Năm`.\n  - *Ví dụ về Địa lý*: `Số nhà` -> `Phường/Xã` -> `Quận/Huyện` -> `Tỉnh/Thành phố` -> `Quốc gia`.\n- **Hỗ trợ Multi-level Mining**: Cho phép phát hiện tri thức ở nhiều mức độ khác nhau. Nếu ở mức độ cụ thể dữ liệu quá thưa thớt, thuật toán tự động nâng lên mức độ khái niệm cao hơn để tìm ra các quy luật có ý nghĩa thống kê."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ minh họa Equal-width Binning (Slide 4 Page 22)**:\nNgân hàng X muốn chia khách hàng thành $N = 3$ nhóm (Thấp, Trung bình, Cao) dựa trên hạn mức thẻ tín dụng:\n- Hạn mức thấp nhất: $Min = 10$ triệu đồng.\n- Hạn mức cao nhất: $Max = 70$ triệu đồng.\n- Số lượng nhóm: $N = 3$.\n\n**Các bước tính toán**:\n1. Tính độ rộng mỗi nhóm:\n   $$Width = \\frac{70 - 10}{3} = \\frac{60}{3} = 20 \\text{ triệu}$$\n2. Xác định các khoảng giá trị:\n   - **Nhóm 1 (Hạn mức Thấp)**: Từ $10$ đến $(10 + 20) \\implies [10 - 30 \\text{ triệu}]$\n   - **Nhóm 2 (Hạn mức Trung bình)**: Từ $30$ đến $(30 + 20) \\implies (30 - 50 \\text{ triệu}]$\n   - **Nhóm 3 (Hạn mức Cao)**: Từ $50$ đến $(50 + 20) \\implies (50 - 70 \\text{ triệu}]$"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Điểm thi trọng tâm**:\n> - **Equal-frequency Binning**: Mỗi bin chứa **số lượng bản ghi bằng nhau** (Câu 23 đề cương).\n> - **Discretization**: Chia thuộc tính liên tục thành các khoảng giá trị hoặc nhãn định danh (Câu 24 đề cương).\n> - **Bài toán tính Width**: Luôn nhớ công thức $Width = (Max - Min) / N$ (Câu 18 đề cương)."
+          }
+        ],
+        "miniQuiz": [
+          "ch4_q23",
+          "ch4_q24",
+          "ch4_q25",
+          "ch4_q26"
+        ],
+        "relatedQuestionIds": [
+          "ch4_q23",
+          "ch4_q24",
+          "ch4_q25",
+          "ch4_q26",
           "q18",
-          "q21",
-          "q22",
           "q23",
           "q24"
         ],
         "labIds": []
       },
       {
-        "id": "les-4-3",
-        "title": "Bài 3: Phân tích thành phần chính (PCA) và Chuỗi thời gian (SMA)",
-        "status": "empty",
-        "sections": [],
+        "id": "les-4-7",
+        "title": "Bài 7: Normalization: Min-Max, Z-score và Decimal Scaling",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Thành thạo công thức và tính toán Min-Max Normalization về khoảng [0, 1]",
+              "Hiểu nguyên lý và tìm số mũ j trong chuẩn hóa Decimal Scaling",
+              "Thành thạo công thức và tính chất của chuẩn hóa Z-Score",
+              "Hiểu lý do bắt buộc phải chuẩn hóa trước khi đưa vào các thuật toán AI dựa trên khoảng cách"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Min-Max Normalization\n- **Nguyên lý**: Ánh xạ tuyến tính dải giá trị gốc $[min_A, max_A]$ về một dải giá trị mới $[new\\_min_A, new\\_max_A]$, thông thường là $[0, 1]$:\n  $$v' = \\frac{v - min_A}{max_A - min_A} (new\\_max_A - new\\_min_A) + new\\_min_A$$\n- Khi quy về khoảng $[0, 1]$, công thức rút gọn thành:\n  $$v' = \\frac{v - min_A}{max_A - min_A}$$\n- *Ưu điểm*: Bảo toàn hoàn hảo tỷ lệ khoảng cách ban đầu.\n\n---\n\n### 2. Decimal Scaling (Chuẩn hóa tỉ lệ thập phân)\n- **Nguyên lý**: Di chuyển dấu thập phân của các giá trị sao cho giá trị tuyệt đối lớn nhất nhỏ hơn 1:\n  $$v' = \\frac{v}{10^j}$$\n  *(Trong đó $j$ là số nguyên nhỏ nhất thỏa mãn $\\max(|v'|) < 1$)*.\n- **Cách tìm $j$**: Tìm lũy thừa của 10 nhỏ nhất mà lớn hơn giá trị tuyệt đối cực đại $\\max(|v|)$.\n\n---\n\n### 3. Z-Score Normalization (Zero-mean Normalization)\n- **Nguyên lý**: Chuẩn hóa dựa trên giá trị trung bình $\\mu$ và độ lệch chuẩn $\\sigma$:\n  $$v' = \\frac{v - \\mu}{\\sigma}$$\n- **Đặc tính chuẩn tắc**: Dữ liệu sau khi chuẩn hóa Z-Score luôn có:\n  - Giá trị trung bình mới: $\\mu_{mới} = 0$.\n  - Độ lệch chuẩn mới: $\\sigma_{mới} = 1$.\n- **Ưu điểm vượt trội**: Rất bền vững khi tập dữ liệu có nhiều ngoại lai (Outliers) hoặc khi không biết trước giới hạn Min/Max của dữ liệu trong tương lai."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ 1: Tính Min-Max Normalization (Slide 4 Page 26)**:\n- Dữ liệu thu nhập: $Min = 10$ triệu, $Max = 110$ triệu. Co về khoảng $[0, 1]$.\n- Với mức thu nhập $v = 60$ triệu:\n  $$v' = \\frac{60 - 10}{110 - 10} = \\frac{50}{100} = 0.5$$\n\n**Ví dụ 2: Tìm j trong Decimal Scaling (Slide 4 Page 27)**:\n- Dữ liệu số dư tài khoản: từ $-750.000$ đến $+3.500.000$ VNĐ.\n- Giá trị tuyệt đối lớn nhất: $\\max(|-750.000|, |3.500.000|) = 3.500.000$.\n- So sánh với lũy thừa 10:\n  - $10^6 = 1.000.000 < 3.500.000$ (Chưa đủ).\n  - $10^7 = 10.000.000 > 3.500.000$ (Thỏa mãn).\n- $\\implies$ Số mũ nhỏ nhất là **$j = 7$**. Khi đó $3.500.000 / 10^7 = 0.35 < 1$."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Ba câu hỏi thi tính toán chắc chắn gặp**:\n> 1. **Z-Score Normalization**: Dữ liệu sau chuẩn hóa có **$\\mu = 0$ và $\\sigma = 1$** (Câu 21 đề cương).\n> 2. **Decimal Scaling**: Di chuyển dấu thập phân theo công thức **$v' = v / 10^j$** (Câu 22 đề cương).\n> 3. **Min-Max tính toán**: Thu nhập min 5tr, max 85tr, thu nhập 45tr ra **0.5** (Câu 17 đề cương)."
+          }
+        ],
         "miniQuiz": [
-          "q25",
-          "q26"
+          "ch4_q27",
+          "ch4_q28",
+          "ch4_q29",
+          "ch4_q31"
         ],
         "relatedQuestionIds": [
-          "q25",
-          "q26"
+          "ch4_q27",
+          "ch4_q28",
+          "ch4_q29",
+          "ch4_q30",
+          "ch4_q31",
+          "ch4_q32",
+          "ch4_q33",
+          "ch4_q43",
+          "ch4_q49",
+          "q17",
+          "q21",
+          "q22"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-4-8",
+        "title": "Bài 8: Feature Engineering: Khai phá Entropy, Information Gain và AI Trích xuất",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Phân biệt Feature Construction và Feature Selection",
+              "Nắm vững công thức toán học và tính toán Entropy của tập dữ liệu",
+              "Thành thạo công thức Entropy có điều kiện và Information Gain",
+              "Hiểu quy tắc lựa chọn thuộc tính phân tách trong Cây quyết định (Decision Tree)",
+              "Nắm vững kỹ thuật trích xuất đặc trưng bằng AI (AI-based Feature Extraction và Embeddings)"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Khái niệm Entropy trong Lý thuyết thông tin\nEntropy (ký hiệu $Info(D)$) xuất phát từ công trình của Claude Shannon, là thước đo mức độ hỗn loạn (Impurity), mức độ không chắc chắn hoặc lượng thông tin kỳ vọng cần thiết để xác định nhãn lớp của một bộ dữ liệu trong tập $D$:\n- **Công thức Entropy**:\n  $$Info(D) = - \\sum_{i=1}^{m} p_i \\log_2(p_i)$$\n  *(Trong đó $p_i = |C_{i, D}| / |D|$ là xác suất một bản ghi thuộc về lớp $C_i$, $m$ là số lượng lớp)*.\n- **Ý nghĩa độ lớn của Entropy**:\n  - **$Info(D) = 0$**: Tập dữ liệu hoàn toàn thuần khiết (100% bản ghi thuộc cùng một lớp duy nhất).\n  - **$Info(D) = 1.0$ (với 2 lớp)**: Tập dữ liệu đạt mức độ hỗn loạn tối đa (tỷ lệ các lớp chia đều 50% - 50%).\n  - Entropy càng nhỏ chứng tỏ độ tinh khiết của dữ liệu càng cao.\n\n---\n\n### 2. Entropy có điều kiện và Information Gain\n1. **Entropy có điều kiện theo thuộc tính A ($Info_A(D)$)**:\n   - Đo lường lượng thông tin kỳ vọng còn lại cần thiết sau khi đã phân hoạch tập $D$ theo $v$ nhánh giá trị của thuộc tính $A$:\n     $$Info_A(D) = \\sum_{j=1}^{v} \\frac{|D_j|}{|D|} \\times Info(D_j)$$\n2. **Độ thu nhận thông tin (Information Gain)**:\n   - Đo lường mức độ giảm độ hỗn loạn thu được nhờ việc phân tách theo thuộc tính $A$:\n     $$Gain(A) = Info(D) - Info_A(D)$$\n- **Quy tắc phân nhánh cây quyết định**: Luôn chọn thuộc tính có **Information Gain LỚN NHẤT (Gain max)** để làm nút phân nhánh (Split attribute), vì thuộc tính này giúp phân loại dữ liệu hiệu quả và rõ ràng nhất.\n\n---\n\n### 3. Trích xuất đặc trưng bằng Trí tuệ nhân tạo (AI Feature Extraction)\n- **Khai phá dữ liệu phi cấu trúc**: Dữ liệu phản hồi của khách hàng, email, lịch sử trò chuyện (Chat logs) chứa nhiều tri thức tiềm ẩn nhưng không thể đưa trực tiếp vào bảng số học.\n- **AI-based Extraction**: Sử dụng các mô hình ngôn ngữ lớn (như Gemini) để tự động phân tích và sinh ra các đặc trưng có cấu trúc:\n  - *Sentiment*: Đo lường sắc thái cảm xúc (Tích cực, Tiêu cực, Lo lắng, Giận dữ).\n  - *Topic Modeling*: Nhận diện chủ đề quan tâm của khách hàng.\n  - *Vector Embeddings*: Chuyển đổi văn bản thành các vector số thực trong không gian đa chiều để đo lường khoảng cách tương đồng ngữ nghĩa."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ tính toán toàn diện Cây quyết định (Slide 4 Pages 31-36)**:\nTập dữ liệu $D$ gồm 8 khách hàng vay vốn: 4 khách hàng được duyệt (**Yes**), 4 khách hàng bị từ chối (**No**).\n\n**Bước 1: Tính Entropy gốc $Info(D)$**:\n$$Info(D) = - \\left( \\frac{4}{8} \\log_2 \\frac{4}{8} + \\frac{4}{8} \\log_2 \\frac{4}{8} \\right) = - (0.5 \\times (-1) + 0.5 \\times (-1)) = 1.0$$\n\n**Bước 2: Tính Information Gain cho từng thuộc tính**:\n1. **Thuộc tính Income (Thu nhập)**:\n   - Cao (3 mẫu: 2 Yes, 1 No) $\\implies Info(Cao) \\approx 0.9183$\n   - TB (2 mẫu: 1 Yes, 1 No) $\\implies Info(TB) = 1.0$\n   - Thấp (3 mẫu: 1 Yes, 2 No) $\\implies Info(Thấp) \\approx 0.9183$\n   - $Info_{Income}(D) = \\frac{3}{8}(0.9183) + \\frac{2}{8}(1.0) + \\frac{3}{8}(0.9183) \\approx 0.93872$\n   - $\\implies Gain(Income) = 1.0 - 0.93872 \\approx \\mathbf{0.06128}$\n2. **Thuộc tính Credit History (Lịch sử tín dụng)**:\n   - Tính được: $Info_{Credit\\_History}(D) \\approx 0.4512$\n   - $\\implies Gain(Credit\\_History) = 1.0 - 0.4512 = \\mathbf{0.5488}$\n3. **Thuộc tính Loan Amount (Khoản vay)**:\n   - Tính được: $Info_{Loan\\_Amount}(D) \\approx 0.8113$\n   - $\\implies Gain(Loan\\_Amount) = 1.0 - 0.8113 = \\mathbf{0.1887}$\n\n**Kết luận**: Chọn thuộc tính **Credit History** làm nút gốc (Root node) của cây quyết định vì có $Gain = 0.5488$ lớn nhất!"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Điểm thi cốt lõi**:\n> - Công thức **$Info(D)$**: Entropy của tập dữ liệu (Câu 20 đề cương).\n> - Công thức **$Info_A(D)$**: Entropy kỳ vọng sau khi phân tách theo thuộc tính A (Câu 19 đề cương).\n> - Bài toán tính **Entropy của tập 6 Good, 4 Bad**: kết quả bằng **0.971** (Câu 16 đề cương)."
+          }
+        ],
+        "miniQuiz": [
+          "ch4_q34",
+          "ch4_q35",
+          "ch4_q37",
+          "ch4_q38"
+        ],
+        "relatedQuestionIds": [
+          "ch4_q34",
+          "ch4_q35",
+          "ch4_q36",
+          "ch4_q37",
+          "ch4_q38",
+          "ch4_q39",
+          "ch4_q40",
+          "ch4_q41",
+          "ch4_q42",
+          "ch4_q44",
+          "ch4_q50",
+          "q16",
+          "q19",
+          "q20"
         ],
         "labIds": []
       }
