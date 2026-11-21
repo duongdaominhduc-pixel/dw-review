@@ -3,6 +3,7 @@ import questionsData from '../../data/questions.json';
 import chaptersData from '../../data/chapters.json';
 import chapter1QuestionsData from '../../data/chapter1Questions.json';
 import chapter2QuestionsData from '../../data/chapter2Questions.json';
+import chapter3QuestionsData from '../../data/chapter3Questions.json';
 import { Question, Chapter } from '../../types';
 
 describe('Data Schema Validation', () => {
@@ -62,19 +63,27 @@ describe('Data Schema Validation', () => {
     expect(ch2!.lessons.every(l => l.status === 'done')).toBe(true);
     expect(ch2!.lessons.every(l => l.sections.length > 0)).toBe(true);
 
+    // Chapter 3 has all 8 fully completed lessons
+    const ch3 = chapters.find(c => c.id === 'ch3');
+    expect(ch3).toBeDefined();
+    expect(ch3!.lessons.length).toBe(8);
+    expect(ch3!.lessons.every(l => l.status === 'done')).toBe(true);
+    expect(ch3!.lessons.every(l => l.sections.length > 0)).toBe(true);
+
     // Lessons in other chapters have empty status as specified
-    const otherChapterLessons = chapters.filter(c => c.id !== 'ch1' && c.id !== 'ch2').flatMap(c => c.lessons);
+    const otherChapterLessons = chapters.filter(c => !['ch1', 'ch2', 'ch3'].includes(c.id)).flatMap(c => c.lessons);
     expect(otherChapterLessons.every(l => l.status === 'empty')).toBe(true);
   });
 
-  it('validates Chapter 1 and Chapter 2 slide questions', () => {
+  it('validates Chapter 1, 2, 3 slide questions', () => {
     expect(chapter1QuestionsData.length).toBe(47);
     expect(chapter2QuestionsData.length).toBe(50);
+    expect(chapter3QuestionsData.length).toBe(50);
 
-    for (const q of chapter2QuestionsData as Question[]) {
+    for (const q of chapter3QuestionsData as Question[]) {
       expect(q.id).toBeDefined();
       expect(q.number).toBeDefined();
-      expect(q.chapterId).toBe('ch2');
+      expect(q.chapterId).toBe('ch3');
       expect(q.prompt).toBeTruthy();
       expect(q.answer).toBeTruthy();
       expect(q.explanation).toBeTruthy();

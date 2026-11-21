@@ -1,0 +1,753 @@
+[
+  {
+    "id": "ch3_q01",
+    "number": "C3.1",
+    "chapterId": "ch3",
+    "topic": "etl-to-elt",
+    "type": "theory",
+    "prompt": "Quy trình ETL truyền thống bộc lộ những hạn chế cốt tử nào khi đối mặt với dữ liệu quy mô lớn trong kỷ nguyên Big Data?",
+    "answer": "Cấu trúc cứng nhắc (phải định nghĩa luồng biến đổi trước khi nạp), phụ thuộc phần cứng máy chủ trung gian đắt đỏ, tạo nút thắt cổ chai gây độ trễ cao, chi phí bảo trì lớn và rất khó mở rộng quy mô linh hoạt.",
+    "explanation": "Trong mô hình ETL truyền thống, dữ liệu bắt buộc phải đi qua máy chủ ETL riêng biệt để làm sạch và biến đổi trước khi nạp vào kho. Khi dữ liệu tăng vọt, máy chủ này bị quá tải, gây nghẽn toàn bộ đường ống và nếu nguồn đổi cấu trúc thì toàn bộ logic trung gian phải viết lại.",
+    "eli5": "Giống như việc xe chở cát từ bãi phải ghé qua một trạm lọc cát thủ công chật hẹp trước khi chở vào công trường: hàng dài xe tải nối đuôi nhau chờ đợi gây tắc nghẽn cả tuyến đường.",
+    "commonMistakes": [
+      "Cho rằng ETL truyền thống tối ưu hiệu năng hơn ELT trên đám mây.",
+      "Nghĩ rằng máy chủ ETL trung gian có khả năng mở rộng vô hạn."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q02",
+    "number": "C3.2",
+    "chapterId": "ch3",
+    "topic": "etl-to-elt",
+    "type": "theory",
+    "prompt": "Bản chất của quy trình Cloud-Native ELT (Extract - Load - Transform) là gì?",
+    "answer": "Trích xuất dữ liệu từ nguồn và nạp thẳng dữ liệu thô (Raw Data) vào Data Lake/Warehouse trước, sau đó mới thực hiện các biến đổi dữ liệu trực tiếp bên trong kho (In-place Transform) nhờ điện toán đám mây.",
+    "explanation": "Thay vì biến đổi trên máy chủ trung gian, ELT đảo ngược thứ tự: Load trước rồi mới Transform. Nhờ tầng lưu trữ Cloud giá rẻ, dữ liệu thô được lưu nguyên vẹn, sau đó kho dữ liệu sử dụng sức mạnh tính toán MPP song song để chạy các câu lệnh SQL biến đổi dữ liệu tại chỗ.",
+    "eli5": "Chở thẳng nguyên liệu về kho bãi rộng lớn của nhà máy rồi dùng máy móc hiện đại tại chỗ để sơ chế và chế biến, thay vì phải sơ chế lắt nhắt dọc đường vận chuyển.",
+    "commonMistakes": [
+      "Nghĩ rằng ELT bỏ qua bước biến đổi (Transform) dữ liệu (thực chất bước Transform chuyển vào thực thi ngay trong kho dữ liệu)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q03",
+    "number": "C3.3",
+    "chapterId": "ch3",
+    "topic": "etl-to-elt",
+    "type": "theory",
+    "prompt": "Khái niệm In-place Transform trong mô hình ELT mang lại lợi ích kỹ thuật gì?",
+    "answer": "Tận dụng trực tiếp sức mạnh xử lý song song phân tán (Cloud Computing/MPP) của chính kho dữ liệu để thực thi các câu lệnh biến đổi SQL với tốc độ cực nhanh mà không cần di chuyển dữ liệu ra ngoài.",
+    "explanation": "Dữ liệu được xử lý ngay tại nơi nó được lưu trữ, tránh lãng phí thời gian và băng thông mạng truyền tải giữa máy chủ xử lý và máy chủ lưu trữ.",
+    "eli5": "Nấu ăn ngay trong căn bếp hiện đại đầy đủ bếp từ lò nướng công nghiệp, thay vì mang nguyên liệu ra vỉa hè nấu rồi lại bưng vào nhà.",
+    "commonMistakes": [
+      "Nghĩ rằng In-place Transform đòi hỏi phải cài thêm phần mềm trung gian bên ngoài kho dữ liệu."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q04",
+    "number": "C3.4",
+    "chapterId": "ch3",
+    "topic": "etl-to-elt",
+    "type": "theory",
+    "prompt": "Cơ chế Schema-on-read trong mô hình ELT khác biệt như thế nào so với Schema-on-write của ETL truyền thống?",
+    "answer": "Schema-on-write bắt buộc phải định nghĩa cấu trúc bảng nghiêm ngặt trước khi nạp; trong khi Schema-on-read cho phép nạp dữ liệu thô vào trước và chỉ định nghĩa cấu trúc tại thời điểm người dùng thực hiện truy vấn.",
+    "explanation": "Schema-on-read mang lại sự linh hoạt tối đa: nếu nguồn dữ liệu thay đổi cấu trúc hoặc xuất hiện trường mới, dữ liệu vẫn được nạp thành công vào kho mà không làm đứt gãy luồng xử lý.",
+    "eli5": "Schema-on-write giống như việc đo ni đóng giày trước khi mua; Schema-on-read giống như mua đôi tất co giãn đa năng: chân cỡ nào xỏ vào cũng vừa.",
+    "commonMistakes": [
+      "Cho rằng Schema-on-read không cần quan tâm đến kiểu dữ liệu khi phân tích."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q05",
+    "number": "C3.5",
+    "chapterId": "ch3",
+    "topic": "etl-to-elt",
+    "type": "theory",
+    "prompt": "Tại sao mô hình ELT lại tăng cường tính bảo mật dữ liệu hơn so với mô hình ETL truyền thống?",
+    "answer": "Vì dữ liệu được truyền thẳng từ nguồn vào kho được mã hóa, không phải trung chuyển và lưu trữ tạm thời trên các máy chủ ETL trung gian không an toàn.",
+    "explanation": "Mỗi máy chủ trung gian là một bề mặt tấn công tiềm ẩn (Attack Surface). Việc loại bỏ máy chủ ETL giúp dữ liệu luôn nằm trong phạm vi ranh giới kiểm soát bảo mật và mã hóa nghiêm ngặt của nền tảng Cloud DWH.",
+    "eli5": "Gửi tiền chuyển khoản trực tiếp từ ngân hàng A sang ngân hàng B, an toàn hơn nhiều so với việc đưa tiền mặt cho một người shipper trung gian cầm đi giao.",
+    "commonMistakes": [
+      "Nghĩ rằng máy chủ ETL trung gian luôn có tính bảo mật cao hơn kho dữ liệu đám mây."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q06",
+    "number": "C3.6",
+    "chapterId": "ch3",
+    "topic": "etl-to-elt",
+    "type": "theory",
+    "prompt": "Kiến trúc Medallion (Bronze -> Silver -> Gold) hỗ trợ quy trình ELT hiện đại như thế nào khi phát hiện lỗi dữ liệu?",
+    "answer": "Cho phép chạy lại (re-run / re-process) toàn bộ pipeline từ lớp Bronze thô nguyên bản mà không làm mất mát dữ liệu nguồn, đồng thời cung cấp khả năng truy vết nguồn gốc (Data Lineage) minh bạch.",
+    "explanation": "Vì lớp Bronze lưu trữ dữ liệu thô bất biến (Immutable Raw Data), nếu công thức tính toán ở tầng Silver hoặc Gold bị sai, kỹ sư dữ liệu chỉ cần sửa mã code và kích hoạt chạy lại từ Bronze mà không cần xin lại dữ liệu từ hệ thống nguồn.",
+    "eli5": "Giống như lưu giữ cuốn sổ nhật ký gốc: nếu bản tóm tắt báo cáo có viết nhầm, bạn chỉ việc mở lại sổ nhật ký gốc để chép lại cho đúng.",
+    "commonMistakes": [
+      "Xóa sạch dữ liệu tầng Bronze sau khi đã nạp lên Silver (làm mất khả năng tái xử lý khi có sự cố)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q07",
+    "number": "C3.7",
+    "chapterId": "ch3",
+    "topic": "cdc",
+    "type": "theory",
+    "prompt": "Khái niệm Change Data Capture (CDC) được định nghĩa là gì và quản lý những thao tác cơ sở dữ liệu nào?",
+    "answer": "Là tập hợp các mẫu thiết kế và kỹ thuật phần mềm nhằm nhận diện và nắm bắt tức thì các thay đổi dữ liệu từ hệ thống nguồn; quản lý toàn bộ các thao tác INSERT (thêm), UPDATE (sửa) và DELETE (xóa).",
+    "explanation": "Thay vì mỗi ngày phải sao chép toàn bộ bảng dữ liệu hàng trăm triệu dòng (Full Dump), CDC chỉ trích xuất đúng những dòng mới được thêm, sửa hoặc xóa kể từ lần đồng bộ trước.",
+    "eli5": "Giống như chức năng 'Track Changes' trong Word: chỉ ghi nhận đúng những từ ngữ bạn vừa gõ thêm, sửa lại hoặc gạch bỏ, không cần đọc lại cả cuốn sách.",
+    "commonMistakes": [
+      "Nghĩ rằng CDC chỉ theo dõi được thao tác INSERT mà không xử lý được thao tác DELETE."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q08",
+    "number": "C3.8",
+    "chapterId": "ch3",
+    "topic": "cdc",
+    "type": "theory",
+    "prompt": "Nguyên lý hoạt động cốt lõi của kỹ thuật Log-based CDC là gì?",
+    "answer": "Đọc và phân tích trực tiếp từ tệp nhật ký giao dịch (Transaction Logs / Redo Logs / Write-Ahead Logs - WAL) của hệ quản trị CSDL thay vì chạy các câu lệnh truy vấn quét bảng.",
+    "explanation": "Mọi CSDL quan hệ (PostgreSQL, MySQL, Oracle) đều ghi nhận mọi thay đổi vào tệp log giao dịch trước khi ghi xuống đĩa. Log-based CDC đọc thẳng tệp log này từ hệ điều hành, biến các dòng nhật ký thành luồng sự kiện (Event Stream).",
+    "eli5": "Đọc cuốn nhật ký hành trình của tài xế ghi lại từng hành động rẽ trái, rẽ phải, thay vì phải chạy theo xe chụp ảnh để đoán tài xế đang đi đâu.",
+    "commonMistakes": [
+      "Nhầm Log-based CDC với việc viết câu lệnh SQL SELECT định kỳ trên bảng cơ sở dữ liệu."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q09",
+    "number": "C3.9",
+    "chapterId": "ch3",
+    "topic": "cdc",
+    "type": "theory",
+    "prompt": "Tại sao Log-based CDC lại vượt trội hơn hẳn Query-based CDC trong việc xử lý các bản ghi bị xóa (Hard Delete)?",
+    "answer": "Vì Log-based CDC ghi nhận sự kiện xóa (DELETE) tức thì từ nhật ký giao dịch; trong khi Query-based CDC không thể phát hiện bản ghi đã bị xóa mất khỏi bảng nếu không có bảng lưu vết riêng.",
+    "explanation": "Trong Query-based CDC, câu lệnh `SELECT * FROM tbl WHERE updated_at > last_sync` chỉ thấy các dòng còn tồn tại. Dòng nào đã bị xóa cứng (Hard Delete) sẽ biến mất hoàn toàn, hệ thống kho dữ liệu không có cách nào biết để xóa theo.",
+    "eli5": "Nếu ai đó lén xé mất một trang sách, người kiểm tra danh sách hiện tại (Query-based) sẽ không thấy dấu vết; nhưng máy quay giám sát ghi hình hành động xé sách (Log-based) sẽ bắt quả tang ngay lập tức.",
+    "commonMistakes": [
+      "Cho rằng Query-based CDC tự động nhận diện được thao tác Hard Delete một cách dễ dàng."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q10",
+    "number": "C3.10",
+    "chapterId": "ch3",
+    "topic": "cdc",
+    "type": "theory",
+    "prompt": "Về mặt tải hệ thống và độ trễ (Latency), Log-based CDC và Query-based CDC khác nhau như thế nào?",
+    "answer": "Log-based CDC gây tải hệ thống cực kỳ nhẹ và đạt độ trễ thời gian thực (Real-time mili-giây); trong khi Query-based CDC gây nặng tải do quét bảng liên tục và bị độ trễ theo chu kỳ lập lịch (Batch hàng phút/giờ).",
+    "explanation": "Query-based CDC chạy `SELECT` liên tục làm nghẽn CPU/RAM của CSDL nguồn giao dịch OLTP. Log-based CDC chỉ đọc file log tuần tự ngầm bên dưới, gần như không làm suy giảm hiệu năng của ứng dụng đang chạy.",
+    "eli5": "Log-based giống như mắc một ống hút phụ cực nhỏ để đo dòng nước; Query-based giống như mỗi phút lại thò gàu vào múc cạn bể nước lên để đếm.",
+    "commonMistakes": [
+      "Nghĩ rằng Query-based CDC có thể đạt được độ trễ thời gian thực mili-giây mà không làm sập CSDL nguồn."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q11",
+    "number": "C3.11",
+    "chapterId": "ch3",
+    "topic": "cdc",
+    "type": "theory",
+    "prompt": "Liệt kê 5 ứng dụng thực tiễn điển hình của kiến trúc Change Data Capture (CDC)?",
+    "answer": "1. Đồng bộ dữ liệu phân tán trong Microservices; 2. Cung cấp dữ liệu liên tục cho Live Dashboards; 3. Chuyển đổi dữ liệu lên Cloud không gián đoạn (Zero-downtime Migration); 4. Lưu vết kiểm toán (Audit Trails); 5. Phát hiện gian lận thời gian thực (Fraud Detection).",
+    "explanation": "CDC là xương sống cho các hệ thống hiện đại: ngân hàng dùng CDC để phát hiện giao dịch đáng ngờ trong 0.1 giây, doanh nghiệp dùng CDC để chuyển database từ on-premise lên Cloud mà hệ thống bán hàng vẫn hoạt động bình thường không phải ngưng nghỉ.",
+    "eli5": "Nhờ CDC, dòng tiền vừa rút khỏi cây ATM thì lập tức tin nhắn báo số dư ting ting trên điện thoại, đồng thời Dashboard giám đốc cũng cập nhật ngay con số mới.",
+    "commonMistakes": [
+      "Nghĩ rằng CDC chỉ dùng cho các bài toán sao lưu dữ liệu ban đêm (Batch Backup)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q12",
+    "number": "C3.12",
+    "chapterId": "ch3",
+    "topic": "cdc",
+    "type": "theory",
+    "prompt": "Debezium là gì và hoạt động dựa trên nền tảng công nghệ nào trong hệ sinh thái CDC?",
+    "answer": "Là nền tảng mã nguồn mở hàng đầu cho Change Data Capture, hoạt động dựa trên cơ sở kết nối của Apache Kafka Connect để chuyển các biến động CSDL thành các Kafka Topics.",
+    "explanation": "Debezium kết nối trực tiếp vào MySQL binlog, Postgres WAL, MongoDB oplog... để ghi nhận mọi thao tác DML và đẩy thành các sự kiện JSON/Avro vào Kafka để các hệ thống downstream tiêu thụ.",
+    "eli5": "Debezium giống như một phóng viên túc trực tại tòa soạn CSDL: hễ có tin tức gì mới là gửi ngay bài báo vào đường dây thông tấn xã Kafka để phát đi toàn cầu.",
+    "commonMistakes": [
+      "Nhầm Debezium là một hệ quản trị cơ sở dữ liệu thay thế PostgreSQL."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q13",
+    "number": "C3.13",
+    "chapterId": "ch3",
+    "topic": "zero-etl",
+    "type": "theory",
+    "prompt": "Bản chất và định nghĩa của phương thức tích hợp Zero-ETL Integration là gì?",
+    "answer": "Là phương thức tích hợp dữ liệu trực tiếp từ nguồn giao dịch sang kho phân tích đích mà không cần lập trình hay bảo trì các đường ống dẫn dữ liệu (Data Pipelines) trung gian.",
+    "explanation": "Trong Zero-ETL, nhà cung cấp nền tảng Cloud (như AWS giữa Aurora và Redshift, hoặc Google giữa Spanner và BigQuery) tự động kết nối ngầm ở tầng lưu trữ. Người dùng chỉ cần bật cấu hình, dữ liệu giao dịch tự động xuất hiện tại kho dữ liệu để phân tích.",
+    "eli5": "Giống như cắm ống nước trực tiếp từ nhà máy nước vào vòi nhà bạn: vặn vòi là có nước, không cần phải tự chế đường ống hay máy bơm lọc trung gian.",
+    "commonMistakes": [
+      "Nghĩ rằng Zero-ETL yêu cầu kỹ sư phải viết hàng nghìn dòng code Python để đồng bộ."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q14",
+    "number": "C3.14",
+    "chapterId": "ch3",
+    "topic": "zero-etl",
+    "type": "theory",
+    "prompt": "Storage Mirroring trong kiến trúc Zero-ETL đảm nhận chức năng cốt lõi nào?",
+    "answer": "Kỹ thuật nhân bản dữ liệu tự động và liên tục ở tầng hệ thống vật lý (Storage layer) giữa cơ sở dữ liệu nguồn và kho phân tích đích.",
+    "explanation": "Thay vì đọc dữ liệu qua tầng mạng và câu lệnh SQL, cơ chế Storage Mirroring sao chép trực tiếp các khối dữ liệu vật lý ở tầng lưu trữ đám mây, giúp đạt tốc độ siêu nhanh và giảm tải tối đa cho máy chủ CSDL.",
+    "eli5": "Giống như chiếc gương thần phản chiếu: bất kỳ vật thể nào đặt trước gương đều xuất hiện ngay lập tức trong gương mà không cần ai vẽ lại bức tranh.",
+    "commonMistakes": [
+      "Nghĩ rằng Storage Mirroring là câu lệnh SELECT INTO chạy định kỳ bằng SQL."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q15",
+    "number": "C3.15",
+    "chapterId": "ch3",
+    "topic": "zero-etl",
+    "type": "theory",
+    "prompt": "Nêu 5 công nghệ và động lực cốt lõi cấu thành nên giải pháp Zero-ETL hiện đại?",
+    "answer": "1. Proprietary Connectors (liên kết tối ưu sâu bởi Cloud platform); 2. Metadata Sharing (chia sẻ siêu dữ liệu ở cấp lưu trữ); 3. Storage Mirroring (nhân bản dữ liệu tầng vật lý); 4. Serverless Scaling (tự co giãn năng lực đồng bộ); 5. Unified Control Plane (quản lý tập trung trên một bảng điều khiển).",
+    "explanation": "Sự kết hợp của 5 công nghệ này giúp Zero-ETL vận hành hoàn toàn tự động, đạt SLA cao và giải phóng hoàn toàn gánh nặng vận hành hạ tầng cho đội ngũ kỹ sư.",
+    "eli5": "Một chiếc xe tự lái hoàn chỉnh nhờ cảm biến siêu nhạy, bản đồ chia sẻ thời gian thực, động cơ tự động và hệ thống lái tập trung thông minh.",
+    "commonMistakes": [
+      "Cho rằng Zero-ETL chỉ là một công cụ mã nguồn mở thông thường chạy trên máy chủ cá nhân."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q16",
+    "number": "C3.16",
+    "chapterId": "ch3",
+    "topic": "zero-etl",
+    "type": "theory",
+    "prompt": "Mô hình Zero-ETL mang lại lợi ích kinh tế và vận hành lớn nhất nào cho doanh nghiệp?",
+    "answer": "Rút ngắn tối đa Time-to-Insight, tối ưu hóa tổng chi phí sở hữu (TCO) nhờ giảm chi phí nhân sự kỹ thuật bảo trì pipeline, và giải phóng Data Engineer tập trung vào giải quyết bài toán nghiệp vụ.",
+    "explanation": "Trước đây 70% thời gian của kỹ sư dữ liệu là ngồi 'nối ống nước' và sửa lỗi pipeline hỏng. Với Zero-ETL, đường ống đã có sẵn, kỹ sư chỉ việc tập trung vào mô hình hóa dữ liệu và phân tích giá trị kinh doanh.",
+    "eli5": "Thay vì mất cả ngày đào mương dẫn nước về ruộng, bạn chỉ cần mở van nước thủy lợi có sẵn để dành thời gian chăm sóc cây trồng cho ra nhiều trái.",
+    "commonMistakes": [
+      "Nghĩ rằng Zero-ETL sẽ làm mất việc của kỹ sư dữ liệu (thực tế nâng tầm họ lên làm bài toán giá trị cao hơn)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q17",
+    "number": "C3.17",
+    "chapterId": "ch3",
+    "topic": "zero-etl",
+    "type": "theory",
+    "prompt": "Những hạn chế và trường hợp KHÔNG nên áp dụng mô hình Zero-ETL là gì?",
+    "answer": "Không phù hợp khi dữ liệu nguồn bẩn cần làm sạch và biến đổi nghiệp vụ phức tạp; nguy cơ bị khóa chặt vào một nhà cung cấp (Vendor Lock-in); chi phí ẩn phát sinh khi đồng bộ lượng dữ liệu quá lớn; và rất khó triển khai cho hệ thống máy chủ On-premise.",
+    "explanation": "Zero-ETL chỉ đơn thuần là đồng bộ dữ liệu nguyên bản từ A sang B mà không làm sạch. Nếu nguồn dữ liệu chứa lỗi hoặc cần logic tính toán đặc thù xuyên suốt nhiều hệ thống, Zero-ETL không thể thay thế được các công cụ biến đổi như dbt.",
+    "eli5": "Nếu nguồn nước sông bị đục ngầu và ô nhiễm, việc cắm ống dẫn thẳng vào nhà (Zero-ETL) sẽ mang nước bẩn vào nhà tắm; bắt buộc phải có hệ thống lọc sạch (ETL/ELT) trước khi dùng.",
+    "commonMistakes": [
+      "Nghĩ rằng Zero-ETL có thể tự động làm sạch và giải quyết mọi vấn đề dữ liệu bẩn của doanh nghiệp."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q18",
+    "number": "C3.18",
+    "chapterId": "ch3",
+    "topic": "orchestration",
+    "type": "theory",
+    "prompt": "Vai trò của Orchestration (Công cụ điều phối) trong hệ sinh thái Data Pipeline là gì?",
+    "answer": "Đóng vai trò là 'nhạc trưởng' kiểm soát dòng chảy công việc: đảm bảo các tác vụ thực thi đúng trình tự logic và điều kiện, tự động thử lại (Retry) khi gặp lỗi, gửi cảnh báo và lưu vết kiểm toán lịch sử thực thi.",
+    "explanation": "Một hệ thống dữ liệu có hàng trăm tác vụ nạp, làm sạch, tính toán và xuất báo cáo. Orchestration điều khiển chính xác khi nào tác vụ A chạy xong thì tác vụ B mới được phép bắt đầu.",
+    "eli5": "Giống như người nhạc trưởng điều khiển dàn nhạc giao hưởng: ra hiệu cho đàn vĩ cầm chơi xong thì kèn đồng mới nổi lên, không để các nhạc cụ chơi đè lên nhau gây loạn xạ.",
+    "commonMistakes": [
+      "Nhầm Orchestration với các công cụ lập lịch đơn giản như Cron job (Cron job không quản lý được sự phụ thuộc giữa các tác vụ)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q19",
+    "number": "C3.19",
+    "chapterId": "ch3",
+    "topic": "orchestration",
+    "type": "theory",
+    "prompt": "Ý nghĩa của hai đặc tính 'Directed' (Có hướng) và 'Acyclic' (Không chu trình) trong mô hình DAG là gì?",
+    "answer": "'Directed' nghĩa là dòng chảy công việc luôn đi theo một chiều xác định từ đầu vào đến đầu ra; 'Acyclic' nghĩa là loại bỏ hoàn toàn các vòng lặp khép kín, ngăn chặn nguy cơ vòng lặp vô hạn gây treo hệ thống.",
+    "explanation": "DAG (Directed Acyclic Graph) là mô hình toán học bắt buộc của mọi công cụ điều phối (Airflow, Dagster). Dữ liệu chỉ chảy xuôi từ Bronze -> Silver -> Gold, không bao giờ có chuyện Gold lại quay vòng ngược về làm đầu vào cho chính nó trong cùng một chu kỳ.",
+    "eli5": "Giống như một dòng sông chảy xuôi từ đỉnh núi ra biển lớn (Directed) và không bao giờ tự chảy ngược vòng lại tạo thành xoáy nước vô tận (Acyclic).",
+    "commonMistakes": [
+      "Thiết kế pipeline có vòng lặp phụ thuộc vòng tròn (Task A chờ Task B, Task B lại chờ Task A dẫn đến Deadlock)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q20",
+    "number": "C3.20",
+    "chapterId": "ch3",
+    "topic": "orchestration",
+    "type": "theory",
+    "prompt": "Mô hình DAG tối ưu hóa hiệu năng thực thi pipeline thông qua cơ chế nào?",
+    "answer": "Tự động nhận diện và phân bổ các tác vụ độc lập về dữ liệu để thực thi song song (Parallel Processing), đồng thời quản lý chặt chẽ sự phụ thuộc để chỉ chạy các tác vụ hạ nguồn khi tác vụ thượng nguồn đã thành công.",
+    "explanation": "Ví dụ: Tác vụ nạp dữ liệu Khách hàng và tác vụ nạp dữ liệu Sản phẩm không phụ thuộc nhau sẽ được DAG kích hoạt chạy song song cùng lúc. Tác vụ tính toán Doanh số tổng hợp (cần cả hai) sẽ tự động chờ đến khi cả hai tác vụ kia hoàn tất.",
+    "eli5": "Hai đầu bếp cùng lúc thái thịt và nhặt rau (song song); khi cả hai làm xong thì đầu bếp trưởng mới bắt đầu xào nấu (phụ thuộc).",
+    "commonMistakes": [
+      "Bắt tất cả các tác vụ phải chạy tuần tự nối đuôi nhau một cách máy móc làm kéo dài thời gian xử lý."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q21",
+    "number": "C3.21",
+    "chapterId": "ch3",
+    "topic": "orchestration",
+    "type": "theory",
+    "prompt": "Sự chuyển dịch tư duy từ Task-centric sang Asset-centric trong điều phối dữ liệu hiện đại là gì?",
+    "answer": "Task-centric (như Apache Airflow) tập trung vào giám sát các tác vụ câu lệnh đang chạy; trong khi Asset-centric (như Dagster) tập trung vào quản lý tài sản dữ liệu nào được sinh ra (bảng, file, chỉ số), theo dõi nguồn gốc và trạng thái dữ liệu.",
+    "explanation": "Người làm kinh doanh không quan tâm câu lệnh Python số 5 chạy pass hay fail; họ quan tâm bảng `daily_revenue` đã có dữ liệu mới chưa và chất lượng có tốt không. Tư duy Asset-centric biến dữ liệu thành tài sản được kiểm soát trực tiếp.",
+    "eli5": "Task-centric giống như quản lý việc 'bật máy may'; Asset-centric tập trung vào việc 'chiếc áo may ra có đẹp và đủ tiêu chuẩn hay không'.",
+    "commonMistakes": [
+      "Chỉ theo dõi mã trạng thái (Exit code 0/1) của câu lệnh mà không kiểm tra xem dữ liệu đầu ra có bị rỗng hay sai lệch không."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q22",
+    "number": "C3.22",
+    "chapterId": "ch3",
+    "topic": "orchestration",
+    "type": "theory",
+    "prompt": "Apache Airflow có những đặc tính và vị thế nổi bật nào trong ngành công nghiệp dữ liệu?",
+    "answer": "Là tiêu chuẩn công nghiệp cực kỳ phổ biến, định nghĩa pipeline hoàn toàn bằng mã nguồn Python (Code-as-Configuration), sở hữu hệ sinh thái hàng nghìn thư viện kết nối (Providers) đa dạng và cộng đồng hỗ trợ khổng lồ.",
+    "explanation": "Airflow do Airbnb khởi xướng và là dự án tốt nghiệp của Apache. Hầu hết mọi nền tảng Cloud (AWS MWAA, Google Cloud Composer, Astronomer) đều cung cấp dịch vụ quản lý Airflow hoàn chỉnh.",
+    "eli5": "Airflow giống như hệ điều hành Windows trong thế giới điều phối dữ liệu: ở đâu cũng thấy dùng và có driver kết nối với hầu như mọi thiết bị trên đời.",
+    "commonMistakes": [
+      "Nghĩ rằng Airflow là công cụ kéo thả đồ họa không cần viết code (Airflow viết 100% bằng code Python)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q23",
+    "number": "C3.23",
+    "chapterId": "ch3",
+    "topic": "batch-streaming",
+    "type": "theory",
+    "prompt": "So sánh 4 tiêu chí cốt lõi giữa xử lý dữ liệu dạng Lô (Batch) và Luồng (Streaming)?",
+    "answer": "1. Định nghĩa: Batch gom lô lớn xử lý theo chu kỳ định sẵn, Streaming tiếp nhận xử lý liên tục sự kiện ngay khi phát sinh; 2. Chi phí: Batch tiết kiệm chi phí chạy tập trung, Streaming tốn kém hơn do máy chủ chạy 24/7; 3. Kỹ thuật: Batch đơn giản dễ khắc phục, Streaming phức tạp đòi hỏi chịu lỗi khắt khe; 4. SLA: Batch chấp nhận độ trễ cao, Streaming bắt buộc cho độ trễ cực thấp.",
+    "explanation": "Không phải bài toán nào cũng cần Streaming. Báo cáo doanh thu tháng chỉ cần chạy Batch ban đêm; trong khi phát hiện gian lận thẻ tín dụng hoặc cảnh báo nhịp tim bắt buộc phải dùng Streaming thời gian thực.",
+    "eli5": "Batch giống như việc gom quần áo đầy máy giặt rồi mới bấm giặt một mẻ; Streaming giống như chiếc máy rửa bát công nghiệp tại nhà hàng: đĩa bẩn vừa đưa vào là được rửa sạch ngay lập tức.",
+    "commonMistakes": [
+      "Áp dụng Streaming cho mọi bài toán một cách lãng phí dù nghiệp vụ chỉ cần xem báo cáo mỗi tuần một lần."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q24",
+    "number": "C3.24",
+    "chapterId": "ch3",
+    "topic": "batch-streaming",
+    "type": "theory",
+    "prompt": "Bản chất và cơ chế hoạt động của Snowpipe trong nền tảng Snowflake là gì?",
+    "answer": "Là dịch vụ nạp dữ liệu Serverless liên tục theo cơ chế Micro-batch; tự động kích hoạt nạp dữ liệu vào kho ngay khi có tệp mới xuất hiện trên Cloud Storage thông qua thông báo từ hàng đợi tin nhắn (AWS SQS, Event Grid).",
+    "explanation": "Người dùng không cần bật Virtual Warehouse đắt tiền chạy chờ sẵn. Khi có file JSON/CSV đẩy lên S3, S3 gửi tín hiệu qua SQS báo cho Snowpipe, Snowpipe tự cấp phát tài nguyên nạp file vào bảng trong vài giây rồi tự tắt, chi phí tính theo đúng dung lượng nạp thực tế.",
+    "eli5": "Giống như chiếc hòm thư thông minh: hễ bác đưa thư nhét một lá thư vào khe là cảm biến tự động chuyển lá thư thẳng vào bàn làm việc của bạn.",
+    "commonMistakes": [
+      "Cho rằng Snowpipe yêu cầu người dùng phải duy trì cụm máy chủ Virtual Warehouse chạy liên tục 24/7."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q25",
+    "number": "C3.25",
+    "chapterId": "ch3",
+    "topic": "batch-streaming",
+    "type": "theory",
+    "prompt": "Spark Structured Streaming sở hữu những tính năng xử lý vượt trội nào cho dữ liệu luồng?",
+    "answer": "1. Cơ chế Exactly-once (đảm bảo không trùng lặp hay mất dữ liệu); 2. Phép toán cửa sổ thời gian (Windowing); 3. Cơ chế Watermarks xử lý dữ liệu đến trễ; 4. Chịu lỗi phục hồi qua Checkpointing; 5. Unified API dùng chung code cho cả Batch và Streaming.",
+    "explanation": "Spark Structured Streaming coi luồng dữ liệu như một bảng vô tận (Unbounded Table) liên tục thêm dòng mới, cho phép lập trình viên viết câu lệnh SQL hoặc DataFrame giống hệt như khi xử lý dữ liệu tĩnh.",
+    "eli5": "Một cỗ máy tiếp nhận dòng nước chảy xiết: dù nước chảy cuồn cuộn hay có lá cây trôi dạt vào muộn, máy vẫn lọc sạch chính xác từng giọt nước mà không làm tràn bể.",
+    "commonMistakes": [
+      "Nghĩ rằng Spark Structured Streaming phải dùng cú pháp lập trình hoàn toàn khác biệt so với Spark SQL thông thường."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q26",
+    "number": "C3.26",
+    "chapterId": "ch3",
+    "topic": "batch-streaming",
+    "type": "theory",
+    "prompt": "Cơ chế Watermarks trong xử lý dữ liệu luồng (Streaming) giải quyết bài toán hóc búa nào?",
+    "answer": "Cho phép hệ thống xác định giới hạn thời gian chờ đợi để xử lý thông minh các bản ghi dữ liệu bị gửi đến trễ (Late-arriving data) do nghẽn mạng mà không làm treo hay nghẽn luồng xử lý chính.",
+    "explanation": "Nếu khách hàng đi vào vùng mất sóng điện thoại rồi 10 phút sau mới có mạng, dữ liệu phát sinh lúc 12:00 sẽ bị gửi đến lúc 12:10. Watermark cho phép định nghĩa: 'Chờ tối đa 15 phút', nếu dữ liệu đến trong khoảng này vẫn được gộp đúng vào khung giờ 12:00; sau 15 phút sẽ bị hủy hoặc đưa vào luồng riêng.",
+    "eli5": "Giống như xe buýt đợi hành khách đến muộn tối đa 5 phút: ai đến trong 5 phút đó vẫn được lên xe, quá 5 phút xe phải lăn bánh để phục vụ lộ trình chung.",
+    "commonMistakes": [
+      "Nghĩ rằng hệ thống streaming phải chờ đợi vô thời hạn các bản ghi đến trễ."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q27",
+    "number": "C3.27",
+    "chapterId": "ch3",
+    "topic": "batch-streaming",
+    "type": "theory",
+    "prompt": "Tại sao Kiến trúc Kappa ngày càng trở thành xu hướng thay thế cho Kiến trúc Lambda truyền thống?",
+    "answer": "Vì Lambda duy trì song song hai luồng (Batch và Speed) với hai bộ mã nguồn (codebase) riêng biệt gây gánh nặng bảo trì cực lớn và rủi ro vênh số liệu; trong khi Kappa đơn giản hóa chỉ dùng DUY NHẤT một luồng Streaming để xử lý cả dữ liệu thời gian thực lẫn dữ liệu lịch sử.",
+    "explanation": "Trong Lambda, kỹ sư phải viết một logic bằng Spark Batch cho dữ liệu cũ và viết lại logic đó bằng Flink/Storm cho dữ liệu mới. Trong Kappa, toàn bộ dữ liệu được lưu trong log phân tán (như Kafka) và chỉ cần duy nhất một luồng xử lý stream cho cả hai.",
+    "eli5": "Lambda giống như xây hai căn bếp riêng biệt nấu hai thực đơn khác nhau cho cùng một món ăn; Kappa gom lại thành một căn bếp đa năng duy nhất xử lý được mọi yêu cầu.",
+    "commonMistakes": [
+      "Nghĩ rằng kiến trúc Kappa duy trì hai bộ mã nguồn độc lập cho Batch và Streaming."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q28",
+    "number": "C3.28",
+    "chapterId": "ch3",
+    "topic": "dbt-jinja",
+    "type": "theory",
+    "prompt": "Sứ mệnh và triết lý cốt lõi của công cụ dbt (Data Build Tool) trong quy trình ELT là gì?",
+    "answer": "Giúp kỹ sư dữ liệu làm việc theo quy chuẩn bài bản của Kỹ sư phần mềm (Software Engineering Best Practices); áp dụng triết lý SQL-first để biến đổi toàn bộ dữ liệu trong kho bằng các câu lệnh SELECT thuần túy.",
+    "explanation": "dbt chỉ đảm nhận chữ T (Transform) trong ELT. Kỹ sư chỉ cần viết câu lệnh `SELECT`, dbt sẽ tự động quản lý việc tạo bảng (`CREATE TABLE AS SELECT`), tạo view, quản lý sự phụ thuộc và kiểm tra chất lượng dữ liệu.",
+    "eli5": "dbt giống như trợ lý đạo diễn thông minh: bạn chỉ cần viết kịch bản nội dung (câu lệnh SELECT), trợ lý sẽ tự động dựng bối cảnh sân khấu và chỉ đạo diễn viên diễn xuất đúng trình tự.",
+    "commonMistakes": [
+      "Nghĩ rằng dbt có chức năng trích xuất (Extract) dữ liệu từ nguồn và nạp (Load) vào kho (dbt KHÔNG làm ETL, dbt chỉ làm Transform trong kho)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q29",
+    "number": "C3.29",
+    "chapterId": "ch3",
+    "topic": "dbt-jinja",
+    "type": "theory",
+    "prompt": "Jinja là gì và đóng vai trò như thế nào khi kết hợp với Dynamic SQL trong dbt?",
+    "answer": "Là một Templating Engine mạnh mẽ cho phép bổ sung các cấu trúc điều khiển lập trình (vòng lặp for, câu lệnh điều kiện if/else, biến số) vào các câu lệnh SQL tĩnh.",
+    "explanation": "SQL thuần túy là ngôn ngữ khai báo tĩnh, không có vòng lặp hay rẽ nhánh. Jinja giúp viết các mẫu câu lệnh SQL động linh hoạt, tự động sinh mã SQL phức tạp dựa trên cấu hình.",
+    "eli5": "Giống như mẫu thư mời có sẵn chỗ trống: Jinja tự động điền tên từng vị khách và lời xưng hô tương ứng vào lá thư mà không bắt bạn phải gõ lại từng lá thư tay.",
+    "commonMistakes": [
+      "Nhầm Jinja là một hệ quản trị cơ sở dữ liệu hoặc một ngôn ngữ lập trình độc lập thay thế Python."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q30",
+    "number": "C3.30",
+    "chapterId": "ch3",
+    "topic": "dbt-jinja",
+    "type": "theory",
+    "prompt": "Khái niệm Macros trong dbt/Jinja mang lại lợi ích gì cho việc tối ưu mã nguồn?",
+    "answer": "Cho phép đóng gói các đoạn mã SQL thường xuyên lặp lại thành các hàm (Functions) có thể truyền tham số và tái sử dụng ở nhiều nơi theo chuẩn DRY (Don't Repeat Yourself), giúp giảm hơn 50% số dòng code dư thừa.",
+    "explanation": "Ví dụ: Đoạn code chuyển đổi tiền tệ từ USD sang VND kèm làm tròn số xuất hiện ở 20 bảng báo cáo. Thay vì viết lại 20 lần, ta viết 1 Macro `to_vnd(column_name)` và gọi lại ở khắp nơi.",
+    "eli5": "Giống như việc gán một phím tắt trên bàn phím: bấm một nút là chèn ngay cả đoạn văn mẫu quen thuộc thay vì phải gõ lại từ đầu.",
+    "commonMistakes": [
+      "Viết lặp đi lặp lại cùng một đoạn code SQL phức tạp ở hàng chục file model khác nhau."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q31",
+    "number": "C3.31",
+    "chapterId": "ch3",
+    "topic": "dbt-jinja",
+    "type": "theory",
+    "prompt": "Phân biệt hai loại kiểm thử Schema Tests và Singular Tests trong dbt?",
+    "answer": "Schema Tests là các kiểm thử cấu hình sẵn trong file YAML để tự động xác thực các điều kiện cơ bản (not_null, unique, accepted_values, relationships); trong khi Singular Tests là các câu lệnh SQL viết riêng để kiểm tra các quy tắc nghiệp vụ đặc thù.",
+    "explanation": "Schema test chỉ cần khai báo một dòng trong file `.yml`. Singular test là file `.sql` trả về các dòng vi phạm logic nghiệp vụ (ví dụ: `SELECT * FROM orders WHERE ship_date < order_date`). Nếu câu lệnh trả về 0 dòng thì test PASS.",
+    "eli5": "Schema test giống như kiểm tra giấy tờ xem có đủ tên và chứng minh thư không; Singular test giống như kiểm tra xem người này có vi phạm luật giao thông trong quá khứ hay không.",
+    "commonMistakes": [
+      "Cho rằng dbt chỉ kiểm tra được lỗi cú pháp SQL chứ không kiểm tra được chất lượng dữ liệu."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q32",
+    "number": "C3.32",
+    "chapterId": "ch3",
+    "topic": "dbt-jinja",
+    "type": "theory",
+    "prompt": "Khái niệm Data Contracts (Hợp đồng dữ liệu) trong dbt đóng vai trò gì?",
+    "answer": "Thiết lập các ràng buộc bảo đảm nghiêm ngặt về cấu trúc bảng và kiểu dữ liệu giữa đội ngũ cung cấp dữ liệu thượng nguồn và đội ngũ tiêu thụ phân tích hạ nguồn.",
+    "explanation": "Data Contract quy định: Bảng `orders` bắt buộc phải có cột `order_id` kiểu INT, `total` kiểu FLOAT. Nếu phía thượng nguồn vô tình đổi kiểu dữ liệu hoặc xóa cột, pipeline sẽ báo lỗi ngay lập tức để ngăn dữ liệu hỏng tràn vào kho.",
+    "eli5": "Giống như bản hợp đồng mua bán nhà đất: quy định rõ diện tích và vị trí, bên bán không thể tự ý bớt xén diện tích của bên mua.",
+    "commonMistakes": [
+      "Cho phép hệ thống nguồn tùy ý sửa đổi kiểu dữ liệu mà không thông báo cho phía kho phân tích."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q33",
+    "number": "C3.33",
+    "chapterId": "ch3",
+    "topic": "dbt-jinja",
+    "type": "theory",
+    "prompt": "Tính năng Tài liệu hóa tự động (Auto-Docs) và Data Lineage của dbt mang lại giá trị gì?",
+    "answer": "Tự động trích xuất mô tả từ code để sinh trang web tài liệu hoàn chỉnh, đồng thời vẽ bản đồ trực quan thể hiện rõ mối quan hệ đầu vào/đầu ra giữa các bảng, giúp phân tích tác động (Impact Analysis) và tạo dựng niềm tin số liệu.",
+    "explanation": "Khi muốn sửa một bảng ở tầng Silver, kỹ sư nhìn vào đồ thị Lineage là biết ngay có 5 Dashboard nào ở tầng Gold sẽ bị ảnh hưởng, tránh việc sửa code gây chết các báo cáo của ban lãnh đạo.",
+    "eli5": "Giống như cây gia phả của dòng họ: nhìn vào là biết ai sinh ra ai, ai là con của ai một cách rành mạch rõ ràng.",
+    "commonMistakes": [
+      "Phải ngồi viết tài liệu Word thủ công mô tả từng bảng trong database (rất nhanh bị lỗi thời so với code thực tế)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q34",
+    "number": "C3.34",
+    "chapterId": "ch3",
+    "topic": "schema-evolution",
+    "type": "theory",
+    "prompt": "Hiện tượng Schema Drift là gì và gây ra những hậu quả nghiêm trọng nào đối với hệ thống dữ liệu?",
+    "answer": "Là sự thay đổi cấu trúc đột ngột ở dữ liệu nguồn (thêm, xóa cột, đổi kiểu dữ liệu); làm gián đoạn các pipeline hạ nguồn, làm chết các Dashboard báo cáo, gây mất mát dữ liệu ngầm (Silent Loss), tốn thời gian sửa lỗi thủ công và làm hỏng mô hình Machine Learning.",
+    "explanation": "Dữ liệu thực tế luôn biến động. Khi app mobile thêm trường `discount_code`, nếu kho dữ liệu không có cơ chế thích ứng, toàn bộ luồng nạp dữ liệu sẽ bị từ chối hoặc trường này bị bỏ qua không lưu trữ được.",
+    "eli5": "Giống như đường ray xe lửa bị bất ngờ bẻ cong hoặc đổi kích cỡ ray: đoàn tàu đang chạy với tốc độ cao sẽ bị trật bánh ngay lập tức.",
+    "commonMistakes": [
+      "Nghĩ rằng cấu trúc dữ liệu nguồn sẽ luôn giữ nguyên cố định trong nhiều năm."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q35",
+    "number": "C3.35",
+    "chapterId": "ch3",
+    "topic": "schema-evolution",
+    "type": "theory",
+    "prompt": "Hiện tượng 'Silent Loss' (Mất mát dữ liệu ngầm) khi xảy ra Schema Drift nguy hiểm như thế nào?",
+    "answer": "Dữ liệu mới xuất hiện ở nguồn nhưng bị hệ thống nạp âm thầm loại bỏ mà không báo lỗi, dẫn đến việc doanh nghiệp bị thiếu hụt dữ liệu phân tích quan trọng trong thời gian dài mà không hề hay biết.",
+    "explanation": "Nếu pipeline được cấu hình bỏ qua các trường không xác định, khách hàng gửi thông tin khảo sát mới nhưng kho dữ liệu âm thầm vứt bỏ. Khi giám đốc cần số liệu thì dữ liệu của 6 tháng qua đã biến mất hoàn toàn.",
+    "eli5": "Giống như chiếc thùng rác có lỗ thủng nhỏ ở đáy: đồ vật rơi mất từng ngày mà bạn không hề hay biết cho đến khi cần tìm lại thì không thấy đâu.",
+    "commonMistakes": [
+      "Cho rằng chỉ cần pipeline không báo lỗi đỏ (Fail) nghĩa là mọi dữ liệu đều đã được nạp đầy đủ 100%."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q36",
+    "number": "C3.36",
+    "chapterId": "ch3",
+    "topic": "schema-evolution",
+    "type": "theory",
+    "prompt": "Cơ chế Schema Evolution (Tiến hóa lược đồ) giúp kho dữ liệu tự động thích ứng thông qua những giải pháp kỹ thuật nào?",
+    "answer": "Sử dụng kiểu dữ liệu linh hoạt (VARIANT/JSON); tự động nhận diện và mở rộng thêm cột mới (Auto-column addition); tự động nâng cấp kiểu dữ liệu an toàn (Type Coercion); và chủ động gửi cảnh báo khi có thay đổi quan trọng.",
+    "explanation": "Ví dụ trong Snowflake hoặc Delta Lake: khi file nạp vào có thêm 2 cột mới, câu lệnh nạp với tùy chọn Schema Evolution sẽ tự động thực hiện lệnh `ALTER TABLE ADD COLUMN` ngầm mà không cần kỹ sư can thiệp thủ công.",
+    "eli5": "Giống như chiếc tủ quần áo thông minh: khi bạn mua thêm giày dép mới, tủ tự động mở thêm một ngăn kéo vừa vặn để cất đồ mà bạn không cần phải thuê thợ mộc đóng tủ mới.",
+    "commonMistakes": [
+      "Nghĩ rằng mỗi lần nguồn thêm cột thì bắt buộc DBA phải thức đêm chạy lệnh ALTER TABLE bằng tay."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q37",
+    "number": "C3.37",
+    "chapterId": "ch3",
+    "topic": "schema-evolution",
+    "type": "theory",
+    "prompt": "Phân biệt 3 cấp độ tương thích: Backward Compatibility, Forward Compatibility và Full Compatibility?",
+    "answer": "Backward Compatibility: Code xử lý phiên bản mới có thể đọc được dữ liệu cũ; Forward Compatibility: Code phiên bản cũ vẫn có thể đọc được dữ liệu phiên bản mới; Full Compatibility: Tiêu chuẩn cao nhất đáp ứng đồng thời cả tương thích ngược và xuôi.",
+    "explanation": "Trong kiến trúc truyền thông tin (như Kafka Schema Registry hay Avro), việc tuân thủ các quy tắc này đảm bảo các ứng dụng sản xuất dữ liệu (Producers) và tiêu thụ dữ liệu (Consumers) có thể nâng cấp độc lập mà không làm đứt gãy hệ thống.",
+    "eli5": "Backward: Máy nghe đĩa DVD mới vẫn đọc được đĩa CD nhạc cũ; Forward: Đầu đọc đĩa cũ vẫn mở được phần cơ bản của đĩa định dạng mới mà không bị kẹt máy.",
+    "commonMistakes": [
+      "Nhầm lẫn giữa tương thích ngược (Backward) và tương thích xuôi (Forward)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q38",
+    "number": "C3.38",
+    "chapterId": "ch3",
+    "topic": "schema-evolution",
+    "type": "theory",
+    "prompt": "Tính năng Snowflake Evolution (Schema Evolution) hoạt động như thế nào trong quá trình nạp dữ liệu?",
+    "answer": "Kho dữ liệu Snowflake tự động phát hiện các cột mới trong các tệp dữ liệu nạp vào và tự động điều chỉnh cấu trúc bảng (thêm cột tương ứng) ngay trong quá trình thực thi lệnh COPY INTO.",
+    "explanation": "Nếu bảng đích chỉ có 3 cột, nhưng file dữ liệu nạp lên có 5 cột, khi bật tính năng `ENABLE_SCHEMA_EVOLUTION = TRUE`, Snowflake tự động thêm 2 cột mới vào bảng mà câu lệnh COPY vẫn hoàn tất thành công.",
+    "eli5": "Giống như nhân viên xếp hàng vào rổ: thấy có món hàng mới lạ xuất hiện, nhân viên tự động lấy thêm chiếc hộp phụ gắn vào rổ để đựng vừa vặn.",
+    "commonMistakes": [
+      "Cho rằng Snowflake sẽ từ chối nạp file nếu số lượng cột trong file nhiều hơn số cột của bảng hiện tại khi đã bật Schema Evolution."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q39",
+    "number": "C3.39",
+    "chapterId": "ch3",
+    "topic": "schema-evolution",
+    "type": "theory",
+    "prompt": "Các định dạng bảng mở hiện đại (Apache Iceberg, Delta Lake) hỗ trợ Schema Evolution vượt trội như thế nào?",
+    "answer": "Hỗ trợ thêm, xóa, đổi tên và sắp xếp lại các cột trực tiếp thông qua việc cập nhật Metadata mà không cần phải ghi lại toàn bộ bảng dữ liệu vật lý (Zero Data Rewrite).",
+    "explanation": "Ở các hệ thống cũ, đổi tên một cột trong bảng 10 Terabyte đòi hỏi phải đọc toàn bộ bảng và ghi sang bảng mới mất nhiều giờ. Iceberg và Delta Lake chỉ cần cập nhật một file JSON metadata nhỏ trong vài mili-giây.",
+    "eli5": "Đổi tên một phòng ban trong công ty bằng cách thay tấm biển treo trước cửa phòng, thay vì phải đập phá toàn bộ tòa nhà để xây lại từ đầu.",
+    "commonMistakes": [
+      "Nghĩ rằng thay đổi cấu trúc bảng trong Delta Lake/Iceberg đòi hỏi phải viết lại toàn bộ các file dữ liệu Parquet."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q40",
+    "number": "C3.40",
+    "chapterId": "ch3",
+    "topic": "observability",
+    "type": "theory",
+    "prompt": "Khái niệm Data Observability là gì và có sự khác biệt bản chất nào so với Monitoring truyền thống?",
+    "answer": "Là khả năng theo dõi, thấu hiểu toàn diện và dự đoán 'sức khỏe' của hệ sinh thái dữ liệu; Monitoring chỉ báo động hệ thống bị lỗi (What failed), trong khi Observability giải thích nguyên nhân gốc rễ vì sao lỗi và vị trí lỗi (Why and Where it failed).",
+    "explanation": "Monitoring chỉ báo: 'Task A bị fail'. Observability phân tích sâu hơn: 'Bảng Doanh thu hôm nay bị rỗng do file nạp từ nhà cung cấp bị thiếu 80% dung lượng tại bước Ingestion lúc 2h sáng'.",
+    "eli5": "Monitoring giống như chiếc nhiệt kế báo bạn đang bị sốt; Observability giống như bác sĩ thăm khám và chụp X-quang chỉ rõ bạn bị sốt do viêm họng ở ổ nhiễm trùng nào.",
+    "commonMistakes": [
+      "Đồng nhất Data Observability với việc chỉ cài đặt cảnh báo email khi câu lệnh SQL bị lỗi."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q41",
+    "number": "C3.41",
+    "chapterId": "ch3",
+    "topic": "observability",
+    "type": "theory",
+    "prompt": "Khái niệm 'Data Downtime' được định nghĩa là gì và Observability giải quyết nó như thế nào?",
+    "answer": "Là khoảng thời gian mà dữ liệu rơi vào trạng thái không khả dụng, bị trễ, bị thiếu hoặc bị sai lệch số liệu; Observability giúp phát hiện chủ động và rút ngắn thời gian khắc phục (MTTR) từ vài ngày xuống vài phút.",
+    "explanation": "Data Downtime là kẻ thù số một của văn hóa Data-driven. Nếu dữ liệu báo cáo sai trong 3 ngày mà không ai biết, doanh nghiệp có thể đưa ra quyết định sai lầm gây thiệt hại hàng triệu USD.",
+    "eli5": "Giống như thời gian mạng Internet hoặc nguồn điện bị cúp: toàn bộ công việc bị đình trệ cho đến khi được sửa xong.",
+    "commonMistakes": [
+      "Nghĩ rằng Data Downtime chỉ xảy ra khi máy chủ cơ sở dữ liệu bị sập nguồn vật lý."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q42",
+    "number": "C3.42",
+    "chapterId": "ch3",
+    "topic": "observability",
+    "type": "theory",
+    "prompt": "Liệt kê chính xác 5 trụ cột phân tích cốt lõi (5 Pillars) của Data Observability?",
+    "answer": "1. Freshness (Độ tươi mới); 2. Volume (Khối lượng dữ liệu); 3. Distribution (Phân phối dữ liệu); 4. Schema (Lược đồ dữ liệu); 5. Lineage (Nguồn gốc dòng đời dữ liệu).",
+    "explanation": "Đây là 5 tiêu chuẩn vàng để đánh giá dữ liệu có đáng tin cậy hay không: Dữ liệu có mới không? Số lượng dòng có bất thường không? Giá trị số có hợp lý không? Cấu trúc có bị đổi không? Và lỗi bắt nguồn từ đâu?",
+    "eli5": "5 tiêu chí kiểm tra thực phẩm: 1. Có tươi không? 2. Có đủ cân không? 3. Mùi vị có bình thường không? 4. Bao bì có nguyên vẹn không? 5. Nguồn gốc xuất xứ từ nông trại nào?",
+    "commonMistakes": [
+      "Kể thiếu trụ cột Lineage hoặc nhầm lẫn giữa Volume và Distribution."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q43",
+    "number": "C3.43",
+    "chapterId": "ch3",
+    "topic": "observability",
+    "type": "theory",
+    "prompt": "Trụ cột Freshness (Độ tươi mới) trong Data Observability kiểm tra điều gì?",
+    "answer": "Kiểm tra xem dữ liệu có được cập nhật đúng hạn theo các cam kết về thỏa thuận mức dịch vụ (SLA) hay không và đo lường khoảng cách thời gian giữa lần cập nhật gần nhất với hiện tại.",
+    "explanation": "Nếu báo cáo cam kết cập nhật mỗi 6h sáng, nhưng đến 8h sáng bảng vẫn chỉ có dữ liệu của hôm qua, trụ cột Freshness sẽ kích hoạt cảnh báo trễ hạn dữ liệu.",
+    "eli5": "Giống như kiểm tra ngày sản xuất trên hộp sữa: xem hộp sữa có còn mới tinh hôm nay hay đã bị để quên từ tuần trước.",
+    "commonMistakes": [
+      "Cho rằng dữ liệu nạp đúng cấu trúc nghĩa là dữ liệu đã được cập nhật mới nhất."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q44",
+    "number": "C3.44",
+    "chapterId": "ch3",
+    "topic": "observability",
+    "type": "theory",
+    "prompt": "Trụ cột Volume (Khối lượng) và Distribution (Phân phối) giám sát những bất thường nào?",
+    "answer": "Volume kiểm tra số lượng bản ghi nạp vào có đột ngột tăng vọt hoặc giảm mạnh bất thường so với mức trung bình lịch sử; Distribution kiểm tra các tham số thống kê (giá trị âm, tỷ lệ NULL, min/max) có vượt ngưỡng an toàn hay không.",
+    "explanation": "Ví dụ: Mỗi ngày bảng nhận 100.000 đơn hàng, hôm nay chỉ nhận 500 đơn (bất thường Volume). Hoặc cột Tuổi khách hàng tự nhiên xuất hiện giá trị âm hoặc giá trị 999 tuổi (bất thường Distribution).",
+    "eli5": "Volume giống như thấy nhà hàng hôm nay vắng hoe bất thường; Distribution giống như nếm thấy món súp hôm nay mặn chát bất thường.",
+    "commonMistakes": [
+      "Nghĩ rằng nếu bảng có nhận dữ liệu thì khối lượng bao nhiêu cũng được coi là bình thường."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q45",
+    "number": "C3.45",
+    "chapterId": "ch3",
+    "topic": "observability",
+    "type": "theory",
+    "prompt": "Vai trò của trụ cột Lineage trong việc cô lập sự cố dữ liệu là gì?",
+    "answer": "Cho phép truy vết chính xác nguồn phát sinh ra lỗi từ bảng hạ nguồn ngược về tận bảng thượng nguồn hoặc file gốc, giúp kỹ sư khoanh vùng và sửa chữa tức thì mà không phải rà soát mò mẫm.",
+    "explanation": "Khi giám đốc báo số doanh thu trên Dashboard bị sai, nhờ Lineage kỹ sư thấy ngay Dashboard này lấy dữ liệu từ bảng Gold A, bảng Gold A lấy từ Silver B, và Silver B bị sai do file CSV của chi nhánh C gửi lỗi.",
+    "eli5": "Giống như lần theo đường dây điện bị đứt: đi dọc theo dây là tìm thấy ngay vị trí mối nối bị cháy mà không phải đập tung cả bức tường.",
+    "commonMistakes": [
+      "Ngồi đọc từng câu lệnh SQL của hàng trăm file để đoán xem lỗi bắt đầu từ đâu."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q46",
+    "number": "C3.46",
+    "chapterId": "ch3",
+    "topic": "observability",
+    "type": "theory",
+    "prompt": "Ứng dụng Trí tuệ nhân tạo (AI/ML) giúp tối ưu hóa hệ thống cảnh báo Observability như thế nào?",
+    "answer": "Học các mẫu biến thiên bình thường theo tính chu kỳ (mùa vụ, ngày trong tuần) và tự động nhận diện mẫu bất thường (Anomaly Detection), giảm thiểu tối đa tình trạng báo động giả (Alert Fatigue).",
+    "explanation": "Vào ngày Chủ Nhật số đơn hàng thường giảm 50% là bình thường. Cảnh báo tĩnh (Rule-based) sẽ hú còi báo động nhầm. AI nhận diện được tính quy luật của ngày Chủ Nhật nên không báo lỗi, chỉ báo động khi ngày thứ Hai đầu tuần mà số đơn lại tụt dốc.",
+    "eli5": "Giống như chú chó canh nhà thông minh: biết phân biệt người quen đi làm về muộn thì vẫy đuôi, chỉ sủa khi có kẻ trộm thực sự đột nhập.",
+    "commonMistakes": [
+      "Cài đặt các ngưỡng cảnh báo cố định cứng nhắc (Hard thresholds) dẫn đến hàng trăm email rác mỗi ngày làm kỹ sư phớt lờ cảnh báo thật."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q47",
+    "number": "C3.47",
+    "chapterId": "ch3",
+    "topic": "observability",
+    "type": "theory",
+    "prompt": "Giá trị kinh tế lớn nhất mà Data Observability mang lại cho doanh nghiệp là gì?",
+    "answer": "Tiết kiệm đến 80% thời gian rà soát mã nguồn thủ công, rút ngắn thời gian phục hồi sự cố (MTTR) từ vài ngày xuống vài phút, đảm bảo uy tín và niềm tin số liệu cho các quyết định kinh doanh chiến lược.",
+    "explanation": "Niềm tin dữ liệu là vô giá. Nếu nhân viên kinh doanh không tin số liệu trên Dashboard, họ sẽ quay lại dùng bảng tính Excel cá nhân và văn hóa dữ liệu của doanh nghiệp hoàn toàn sụp đổ.",
+    "eli5": "Một hệ thống phanh xe tự động cực kỳ an toàn: tài xế hoàn toàn an tâm đạp ga tăng tốc vì biết chắc xe luôn được kiểm soát an toàn tuyệt đối.",
+    "commonMistakes": [
+      "Coi Data Observability là một khoản chi phí phát sinh không sinh lời thay vì là khoản đầu tư bảo vệ giá trị doanh nghiệp."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q48",
+    "number": "C3.48",
+    "chapterId": "ch3",
+    "topic": "orchestration",
+    "type": "theory",
+    "prompt": "Trong Apache Airflow, khái niệm Operator và Task Instance được phân biệt như thế nào?",
+    "answer": "Operator là khuôn mẫu định nghĩa một loại công việc cụ thể (như PythonOperator, BashOperator, SnowflakeOperator); còn Task Instance là một lần thực thi cụ thể của Operator đó tại một thời điểm xác định trong DAG Run.",
+    "explanation": "Operator giống như Class trong lập trình hướng đối tượng, còn Task Instance giống như một Object được khởi tạo với trạng thái cụ thể (queued, running, success, failed) tại một ngày chạy.",
+    "eli5": "Operator giống như chiếc khuôn đúc bánh; Task Instance là từng chiếc bánh cụ thể được đúc ra từ chiếc khuôn đó vào buổi sáng nay.",
+    "commonMistakes": [
+      "Nhầm lẫn giữa định nghĩa công việc (Operator) và lượt chạy thực tế của công việc đó (Task Instance)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q49",
+    "number": "C3.49",
+    "chapterId": "ch3",
+    "topic": "etl-to-elt",
+    "type": "theory",
+    "prompt": "Lợi thế của việc sử dụng hệ sinh thái SQL phổ biến trong mô hình ELT là gì?",
+    "answer": "Giúp doanh nghiệp tận dụng nguồn nhân lực rộng lớn (Data Analyst, Analytics Engineer), giảm thiểu sự phụ thuộc vào các công cụ kéo thả độc quyền (Proprietary GUI tools) và dễ dàng quản lý mã nguồn qua Git.",
+    "explanation": "Trước đây các công cụ ETL cũ (Informatica, DataStage) đòi hỏi chứng chỉ và chuyên gia rất đắt đỏ. Với ELT và dbt, bất kỳ ai biết SQL đều có thể tham gia xây dựng và kiểm thử pipeline biến đổi dữ liệu.",
+    "eli5": "Dùng ngôn ngữ tiếng Anh phổ thông toàn cầu để giao tiếp thay vì dùng một loại mật mã riêng biệt chỉ có vài người biết giải.",
+    "commonMistakes": [
+      "Nghĩ rằng các công cụ kéo thả độc quyền giúp doanh nghiệp tiết kiệm chi phí hơn mã nguồn mở dùng SQL."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch3_q50",
+    "number": "C3.50",
+    "chapterId": "ch3",
+    "topic": "schema-evolution",
+    "type": "theory",
+    "prompt": "AWS Glue Crawler và Data Catalog đóng vai trò gì trong việc tự động cập nhật thay đổi lược đồ?",
+    "answer": "Tự động quét định kỳ qua các thư mục lưu trữ dữ liệu trên S3, suy luận cấu trúc schema mới nhất và tự động cập nhật các bảng danh mục dữ liệu (Data Catalog) để người dùng có thể truy vấn ngay bằng Athena.",
+    "explanation": "Khi có thư mục dữ liệu mới hoặc file có thêm cột, Glue Crawler tự động nhận diện và cập nhật metadata của bảng trong Data Catalog mà không cần người dùng tự gõ lệnh khai báo.",
+    "eli5": "Giống như robot tự động quét nhà kiêm đếm đồ đạc: hễ trong nhà có món đồ mới là robot tự ghi chú vào sổ kiểm kê tài sản gia đình.",
+    "commonMistakes": [
+      "Nghĩ rằng AWS Glue Crawler chỉ quét được định dạng dữ liệu có cấu trúc CSV."
+    ],
+    "needsSlideCheck": false
+  }
+]

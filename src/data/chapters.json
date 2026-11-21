@@ -740,45 +740,372 @@
   },
   {
     "id": "ch3",
-    "title": "Chương 3: dbt, Jinja, Airflow và Quản lý Pipeline",
+    "title": "Chương 3: Tích hợp dữ liệu và Pipeline tự động (Slide 3)",
     "order": 3,
     "objectives": [
-      "Hiểu triết lý ELT hiện đại và công cụ dbt",
-      "Sử dụng Jinja viết Dynamic SQL và Macros",
-      "Thiết lập Schema Tests trong dbt",
-      "Hiểu cơ chế thích ứng Schema Evolution",
-      "Nắm vững Orchestration với Apache Airflow và Storage Mirroring"
+      "Nắm vững sự chuyển dịch từ ETL truyền thống sang Cloud-Native ELT và kiến trúc Medallion",
+      "Hiểu sâu cơ chế Change Data Capture (CDC), phân tích Log-based vs Query-based CDC và nền tảng Debezium",
+      "Nắm vững bản chất Zero-ETL Integration, kỹ thuật Storage Mirroring, ưu thế và giới hạn áp dụng",
+      "Thành thạo điều phối Pipeline với Đồ thị có hướng không chu trình (DAG), Apache Airflow và Dagster",
+      "Phân biệt Batch Ingestion và Continuous Streaming, Snowpipe Micro-batch, Spark Structured Streaming và kiến trúc Kappa",
+      "Thành thạo công cụ dbt (Data Build Tool), kết hợp Jinja & Dynamic SQL, Macros và kiểm thử chất lượng dữ liệu",
+      "Hiểu hiện tượng Schema Drift và cơ chế Schema Evolution tự động thích ứng trên Snowflake/Iceberg",
+      "Nắm vững 5 trụ cột của Data Observability, quản lý Data Downtime và ứng dụng AI phát hiện bất thường"
     ],
     "lessons": [
       {
         "id": "les-3-1",
-        "title": "Bài 1: dbt, Dynamic SQL với Jinja và Kiểm thử dữ liệu",
-        "status": "empty",
-        "sections": [],
+        "title": "Bài 1: Sự chuyển dịch từ ETL truyền thống sang Cloud-Native ELT",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm được 5 hạn chế cốt tử của quy trình ETL truyền thống",
+              "Hiểu bản chất của Cloud-Native ELT và kỹ thuật In-place Transform",
+              "Phân biệt Schema-on-write và Schema-on-read",
+              "Nắm các lợi ích kinh tế, kỹ thuật và bảo mật của mô hình ELT",
+              "Hiểu cách kiến trúc Medallion hỗ trợ re-run pipeline từ lớp Bronze"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Những hạn chế cốt tử của ETL truyền thống\nTrong kỷ nguyên trước Đám mây (On-premises), quy trình ETL (Extract - Transform - Load) từng thống trị nhưng bộc lộ nhiều điểm nghẽn nghiêm trọng khi dữ liệu bùng nổ:\n- **Cấu trúc cứng nhắc**: Bắt buộc phải định nghĩa toàn bộ luồng biến đổi dữ liệu trước khi nạp vào kho (Schema-on-write).\n- **Phụ thuộc phần cứng trung gian**: Phải đầu tư máy chủ xử lý ETL chuyên dụng rất đắt đỏ (Informatica, DataStage).\n- **Nút thắt cổ chai (Bottlenecks)**: Khi lượng dữ liệu tăng vọt, máy chủ trung gian bị quá tải gây độ trễ xử lý kéo dài nhiều giờ.\n- **Bảo trì tốn kém**: Mỗi khi hệ thống nguồn thay đổi cấu trúc bảng, toàn bộ logic biến đổi trung gian phải viết lại từ đầu.\n- **Khó mở rộng quy mô**: Rất khó khăn và đắt đỏ trong việc mở rộng quy mô (Scale-up) theo tải thực tế.\n\n---\n\n### 2. Sự phát triển mạnh mẽ của Cloud-Native ELT\nMô hình ELT (Extract - Load - Transform) đảo ngược thứ tự các bước, tận dụng sức mạnh vô hạn của điện toán đám mây:\n- **Nạp dữ liệu thô trực tiếp (Load First)**: Toàn bộ dữ liệu thô (Raw Data) được trích xuất từ nguồn và nạp thẳng vào Data Lake/Warehouse trước khi xử lý.\n- **Biến đổi tại chỗ (In-place Transform)**: Sử dụng chính tài nguyên tính toán song song quy mô lớn (Cloud MPP Computing) của kho dữ liệu để chạy các câu lệnh SQL biến đổi dữ liệu ngay tại nơi lưu trữ.\n- **Hỗ trợ Schema-on-read**: Cấu trúc dữ liệu chỉ cần định nghĩa tại thời điểm truy vấn, giúp đường ống nạp dữ liệu không bao giờ bị đứt gãy khi nguồn xuất hiện trường mới.\n- **Tách biệt Storage và Compute**: Lưu trữ dữ liệu thô vô hạn trên Object Storage giá rẻ; cụm tính toán chỉ cấp phát khi cần chạy lệnh biến đổi.\n- **Nguồn nhiên liệu cho AI/ML**: Lưu giữ nguyên vẹn dữ liệu thô hỗ trợ tối đa cho các nhà khoa học dữ liệu khám phá và huấn luyện mô hình học máy.\n\n---\n\n### 3. Lợi ích kinh tế và kỹ thuật của ELT\n- **Tận dụng sức mạnh xử lý song song (MPP)**: Thực thi các câu lệnh SQL với tốc độ cực nhanh trên hàng trăm node tính toán phân tán.\n- **Tối ưu chi phí theo nhu cầu (Pay-as-you-go)**: Chỉ trả tiền cho tài nguyên tính toán thực tế tiêu thụ trong lúc biến đổi dữ liệu.\n- **Tăng cường bảo mật**: Dữ liệu truyền trực tiếp từ nguồn vào kho được mã hóa, không phải trung chuyển và lưu tạm trên các máy chủ ETL trung gian.\n- **Dùng hệ sinh thái SQL phổ biến**: Giảm thiểu sự phụ thuộc vào các công cụ kéo thả độc quyền, tận dụng nguồn nhân lực rộng lớn.\n- **Auto-scaling linh hoạt**: Tự động tăng giảm tài nguyên điện toán tương ứng với khối lượng tải công việc theo thời gian thực.\n\n---\n\n### 4. Kiến trúc Medallion trong hệ thống ELT\nDòng chảy biến đổi dữ liệu trong ELT được phân tầng chuẩn hóa theo 3 lớp chất lượng:\n- **Lớp Bronze**: Lưu trữ toàn bộ dữ liệu thô nguyên bản, chưa qua xử lý, mang tính bất biến (Immutable).\n- **Lớp Silver**: Dữ liệu được làm sạch, chuẩn hóa kiểu, khử trùng lặp và liên kết thành các thực thể nguyên tử tin cậy.\n- **Lớp Gold**: Dữ liệu được tổng hợp theo các chiều kinh doanh (Star Schema / Wide Tables), sẵn sàng phục vụ báo cáo BI.\n- **Khả năng Re-run an toàn**: Nếu phát hiện sai sót logic ở lớp Silver hoặc Gold, kỹ sư có thể dễ dàng chạy lại (re-run) pipeline từ dữ liệu gốc ở lớp Bronze mà không làm mất mát thông tin."
+          },
+          {
+            "kind": "example",
+            "markdown": "**So sánh trực quan giữa ETL và ELT**:\n\n| Tiêu chí | ETL truyền thống | Cloud-Native ELT |\n| :--- | :--- | :--- |\n| **Thứ tự thực hiện** | Trích xuất -> Biến đổi -> Nạp | Trích xuất -> Nạp -> Biến đổi |\n| **Nơi xử lý biến đổi** | Máy chủ ETL trung gian | Trực tiếp trong Cloud Data Warehouse |\n| **Mô hình Schema** | Schema-on-write (nghiêm ngặt) | Schema-on-read (linh hoạt) |\n| **Tốc độ nạp dữ liệu** | Chậm (phải đợi biến đổi xong) | Siêu nhanh (nạp thô trực tiếp) |\n| **Khả năng xử lý dữ liệu lớn** | Dễ nghẽn cổ chai | Mở rộng song song vô hạn (MPP) |\n| **Khắc phục khi đổi logic** | Phải trích xuất lại từ nguồn | Chạy lại từ dữ liệu thô trong kho |"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Điểm thi cốt lõi**: Trong mô hình ELT, bước **Transform** được thực hiện trực tiếp bên trong kho dữ liệu (In-place) bằng ngôn ngữ SQL, tận dụng kiến trúc tách rời Compute/Storage của đám mây."
+          }
+        ],
         "miniQuiz": [
-          "q12",
-          "q13"
+          "ch3_q01",
+          "ch3_q02",
+          "ch3_q04",
+          "ch3_q06"
         ],
         "relatedQuestionIds": [
+          "ch3_q01",
+          "ch3_q02",
+          "ch3_q03",
+          "ch3_q04",
+          "ch3_q05",
+          "ch3_q06",
+          "ch3_q49"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-3-2",
+        "title": "Bài 2: Change Data Capture (CDC) - Đồng bộ dữ liệu thời gian thực",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững định nghĩa và các thao tác CSDL mà CDC quản lý (INSERT, UPDATE, DELETE)",
+              "Hiểu nguyên lý hoạt động của cơ chế Log-based CDC",
+              "Phân tích so sánh toàn diện giữa Log-based CDC và Query-based CDC",
+              "Nắm được 5 ứng dụng thực tiễn điển hình của kiến trúc CDC",
+              "Hiểu vai trò của Debezium và hệ sinh thái công nghệ CDC hiện đại"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Khái niệm và bản chất của cơ chế CDC\nChange Data Capture (CDC) là tập hợp các kỹ thuật nhận diện, nắm bắt và ghi nhận tức thì các thay đổi dữ liệu phát sinh tại hệ thống CSDL nguồn:\n- **Quản lý toàn diện các thao tác DML**: Bắt trọn vẹn cả 3 hành vi biến động dữ liệu: `INSERT` (thêm mới), `UPDATE` (chỉnh sửa) và `DELETE` (xóa bỏ).\n- **Độ trễ mili-giây**: Cho phép đồng bộ các sự kiện thay đổi từ CSDL nguồn về kho dữ liệu gần như ngay lập tức theo thời gian thực (Real-time).\n- **Không xâm lấn (Non-intrusive)**: Gần như không làm ảnh hưởng đến hiệu năng của hệ quản trị CSDL giao dịch (OLTP) đang phục vụ người dùng.\n\n---\n\n### 2. So sánh chuyên sâu: Log-based CDC vs. Query-based CDC\n\n| Tiêu chí so sánh | Log-based CDC | Query-based CDC |\n| :--- | :--- | :--- |\n| **Cơ chế hoạt động** | Đọc trực tiếp từ tệp nhật ký giao dịch (Redo Logs / WAL) của CSDL | Chạy câu lệnh SQL `SELECT ... WHERE updated_at > ...` định kỳ |\n| **Tải hệ thống nguồn** | **Cực kỳ nhẹ**, đọc tuần tự tệp log từ đĩa, không tốn CPU/RAM của DB | **Gây nặng hệ thống**, câu lệnh SELECT quét bảng liên tục làm chậm OLTP |\n| **Xử lý bản ghi bị xóa (Hard Delete)** | **Bắt tức thì và chính xác** vì lệnh DELETE luôn được ghi vào log | **Rất khó phát hiện** vì bản ghi đã biến mất khỏi bảng CSDL |\n| **Độ chính xác số liệu** | Đảm bảo tuyệt đối 100%, không bao giờ bỏ sót sự kiện | Dễ bị sai lệch hoặc bỏ sót nếu dữ liệu thay đổi nhiều lần giữa 2 chu kỳ quét |\n| **Độ trễ (Latency)** | **Chuẩn thời gian thực (Real-time)**, độ trễ tính bằng mili-giây | **Độ trễ theo lô (Batch)**, phụ thuộc vào chu kỳ quét (5 phút, 1 giờ) |\n| **Triển khai & Vận hành** | Cấu hình ban đầu phức tạp, nhưng vận hành cực kỳ ổn định về dài hạn | Dễ viết ban đầu (chỉ cần viết SQL), nhưng khó mở rộng và dễ làm sập nguồn |\n\n---\n\n### 3. Ứng dụng thực tiễn của kiến trúc CDC\n- **Đồng bộ trong kiến trúc Microservices**: Đồng bộ trạng thái dữ liệu nhanh chóng và nhất quán giữa các dịch vụ phân tán độc lập.\n- **Live Dashboards cho Ban lãnh đạo**: Cung cấp số liệu doanh thu, đơn hàng cập nhật liên tục từng giây cho các biểu đồ điều hành trực tiếp.\n- **Chuyển đổi dữ liệu lên Cloud không gián đoạn (Zero-downtime Migration)**: Đồng bộ liên tục dữ liệu từ máy chủ On-premise lên Cloud DWH trong lúc hệ thống kinh doanh vẫn hoạt động bình thường, chuyển đổi hệ thống không mất 1 giây gián đoạn.\n- **Lưu vết kiểm toán (Audit Trails)**: Ghi nhận chi tiết toàn bộ lịch sử ai đã sửa đổi trường gì, lúc mấy giờ để phục vụ kiểm toán bảo mật.\n- **Phát hiện gian lận thời gian thực (Fraud Detection)**: Nhận diện và ngăn chặn các giao dịch quẹt thẻ hoặc chuyển tiền đáng ngờ dựa trên chuỗi hành vi thời gian thực.\n\n---\n\n### 4. Các nền tảng và công cụ hỗ trợ CDC hàng đầu\n- **Debezium**: Nền tảng mã nguồn mở phổ biến nhất, hoạt động trên cơ sở Apache Kafka Connect, biến log CSDL thành các dòng sự kiện trong Kafka Topics.\n- **Fivetran**: Giải pháp SaaS đám mây tự động hóa hoàn toàn luồng CDC từ hơn 300 nguồn dữ liệu khác nhau.\n- **AWS DMS (Database Migration Service)**: Dịch vụ chuyên dụng của Amazon để di chuyển và đồng bộ dữ liệu liên tục lên AWS.\n- **Snowflake Streams**: Tính năng tích hợp sẵn của Snowflake giúp theo dõi và nắm bắt các thay đổi dữ liệu bên trong kho."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ bài toán Log-based CDC trong Ngân hàng**:\nKhi khách hàng rút 5 triệu đồng tại ATM:\n1. Hệ thống Core Banking ghi một dòng nhật ký giao dịch vào tệp Write-Ahead Log (WAL) của PostgreSQL.\n2. **Debezium** đọc tệp WAL ngay lập tức, phát hiện thao tác `UPDATE balance = balance - 5000000`.\n3. Debezium phát sự kiện này vào **Apache Kafka** trong vòng 20 mili-giây.\n4. Hệ thống chống gian lận tiêu thụ sự kiện từ Kafka và kiểm tra vị trí rút tiền; đồng thời kho dữ liệu Snowflake cập nhật số dư của khách hàng ngay lập tức."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Điểm thi cốt lõi**: Log-based CDC **đọc trực tiếp từ tệp nhật ký giao dịch (Redo logs/WAL)** thay vì quét bảng, cho phép bắt được các bản ghi **Hard Delete** và đạt độ trễ **thời gian thực mili-giây** mà không làm nặng hệ thống nguồn."
+          }
+        ],
+        "miniQuiz": [
+          "ch3_q07",
+          "ch3_q08",
+          "ch3_q09",
+          "ch3_q11"
+        ],
+        "relatedQuestionIds": [
+          "ch3_q07",
+          "ch3_q08",
+          "ch3_q09",
+          "ch3_q10",
+          "ch3_q11",
+          "ch3_q12"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-3-3",
+        "title": "Bài 3: Zero-ETL Integration - Tương lai của tích hợp dữ liệu No-Code",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu bản chất và định nghĩa của phương thức Zero-ETL Integration",
+              "Nắm vững 5 công nghệ và động lực cốt lõi cấu thành Zero-ETL (đặc biệt là Storage Mirroring)",
+              "Phân tích lợi ích kinh tế và vận hành của mô hình Zero-ETL",
+              "Nhận diện rõ những hạn chế và trường hợp KHÔNG nên áp dụng Zero-ETL"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Khái niệm và bản chất của Zero-ETL\nZero-ETL Integration là phương thức tích hợp dữ liệu trực tiếp từ cơ sở dữ liệu giao dịch sang kho dữ liệu phân tích mà không cần kỹ sư phải viết code hay bảo trì các pipeline trung gian:\n- **Tự động hóa hoàn toàn**: Hệ thống tự động ánh xạ cấu trúc bảng (Mapping) và đồng bộ liên tục dữ liệu từ nguồn đến đích.\n- **Giải phóng nỗ lực kỹ thuật**: Đội ngũ kỹ sư dữ liệu không còn phải tốn thời gian thiết kế, kiểm thử và trực vận hành các đường ống ETL phức tạp.\n- **Hiển thị dữ liệu tức thì**: Dữ liệu vừa phát sinh ở nguồn giao dịch sẽ xuất hiện tại kho dữ liệu phân tích chỉ sau vài giây.\n- **Tính ổn định cao**: Giảm thiểu tối đa các điểm nghẽn và lỗi hỏng (Failure Points) do đã loại bỏ hoàn toàn các máy chủ xử lý trung gian.\n\n---\n\n### 2. Động lực và 5 công nghệ cốt lõi cấu thành Zero-ETL\n- **Proprietary Connectors**: Các đầu nối tích hợp chuyên dụng được tối ưu hóa sâu ở mức độ nhân hệ thống bởi chính các nhà cung cấp nền tảng Cloud (như AWS Aurora đến Redshift, BigQuery đến Cloud Spanner).\n- **Metadata Sharing**: Cơ chế chia sẻ trực tiếp siêu dữ liệu cấu trúc bảng ở cấp độ lưu trữ mà không cần sao chép định nghĩa lặp lại.\n- **Storage Mirroring (Chức năng cốt lõi)**: Kỹ thuật **nhân bản dữ liệu tự động và liên tục ở tầng hệ thống vật lý (Storage layer)**, giúp dữ liệu được sao chép thẳng giữa các ổ lưu trữ đám mây với tốc độ cực nhanh.\n- **Serverless Scaling**: Hạ tầng tự động co giãn năng lực đồng bộ tương ứng khi khối lượng dữ liệu giao dịch tăng đột biến.\n- **Unified Control Plane**: Giám sát, quản lý và theo dõi toàn bộ luồng tích hợp trên một bảng điều khiển tập trung duy nhất.\n\n---\n\n### 3. Lợi ích kinh tế và vận hành\n- **Rút ngắn Time-to-Insight**: Dữ liệu sẵn sàng cho các báo cáo phân tích ngay sau khi giao dịch phát sinh.\n- **Tối ưu hóa tổng chi phí sở hữu (TCO)**: Tiết kiệm đáng kể chi phí hạ tầng máy chủ trung gian và chi phí nhân sự kỹ thuật bảo trì đường ống.\n- **Tập trung vào giá trị nghiệp vụ**: Kỹ sư dữ liệu chuyển trọng tâm từ việc \"nối ống dẫn nước\" sang mô hình hóa dữ liệu và xây dựng giải pháp phân tích chuyên sâu.\n- **Độ tin cậy được bảo chứng**: Vận hành và cam kết thỏa thuận mức dịch vụ (SLA) trực tiếp bởi các nhà cung cấp Cloud hàng đầu.\n- **Tự chủ hóa dữ liệu (Self-service)**: Người dùng kinh doanh có thể tự kích hoạt luồng đồng bộ chỉ bằng vài cú click chuột trên giao diện.\n\n---\n\n### 4. Những hạn chế và cảnh báo khi dùng Zero-ETL\n- **Không phù hợp với dữ liệu bẩn**: Zero-ETL chỉ sao chép nguyên bản dữ liệu. Nếu dữ liệu nguồn chứa bản ghi rác, lỗi định dạng hoặc cần logic làm sạch phức tạp, Zero-ETL hoàn toàn bất lực.\n- **Nguy cơ khóa chặt nhà cung cấp (Vendor Lock-in)**: Các giải pháp Zero-ETL thường hoạt động nội bộ trong hệ sinh thái của một hãng Cloud duy nhất (ví dụ chỉ kết nối giữa các dịch vụ của AWS).\n- **Chi phí truyền tải dữ liệu**: Có thể phát sinh các chi phí ẩn khi khối lượng dữ liệu đồng bộ liên tục quá lớn.\n- **Rào cản môi trường Hybrid**: Hoạt động xuất sắc giữa các dịch vụ Cloud-to-Cloud nhưng rất khó khăn và hạn chế khi triển khai với các hệ thống máy chủ On-premise cũ kỹ."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ thực tế về Zero-ETL**:\nMột công ty thương mại điện tử sử dụng **Amazon Aurora MySQL** để phục vụ ứng dụng mua sắm và **Amazon Redshift** để làm báo cáo phân tích:\n- Trước đây: Kỹ sư phải viết script Python hoặc cấu hình Glue Job chạy 30 phút một lần để kéo dữ liệu từ Aurora sang Redshift, đường ống thường xuyên bị lỗi khi lượng đơn hàng tăng đột biến.\n- Khi bật **AWS Zero-ETL**: Dữ liệu từ Aurora tự động nhân bản ngầm qua **Storage Mirroring** sang Redshift trong vòng 15 giây mà không cần một dòng code pipeline nào!"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Điểm thi cốt lõi**:\n> - **Storage Mirroring** trong Zero-ETL có chức năng: **Kỹ thuật nhân bản dữ liệu tự động và liên tục ở tầng hệ thống vật lý** (Câu 15 đề cương).\n> - Zero-ETL **không phù hợp** khi dữ liệu nguồn bẩn cần làm sạch và biến đổi nghiệp vụ phức tạp."
+          }
+        ],
+        "miniQuiz": [
+          "ch3_q13",
+          "ch3_q14",
+          "ch3_q15",
+          "ch3_q17"
+        ],
+        "relatedQuestionIds": [
+          "ch3_q13",
+          "ch3_q14",
+          "ch3_q15",
+          "ch3_q16",
+          "ch3_q17",
+          "q15"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-3-4",
+        "title": "Bài 4: Orchestration & Scheduling - Điều phối Pipeline với DAG và Airflow",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu vai trò của Orchestration như một 'Nhạc trưởng điều phối' Data Pipeline",
+              "Nắm vững bản chất và sức mạnh của Đồ thị có hướng không chu trình (DAG)",
+              "Phân tích sự chuyển dịch từ tư duy Task-centric sang Asset-centric (Airflow vs Dagster)",
+              "Nắm vững các đặc tính cốt lõi của Apache Airflow và các công cụ điều phối hiện đại"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Vai trò của Orchestration trong Data Pipeline\nTrong một doanh nghiệp, hàng trăm luồng dữ liệu chạy đồng thời: nạp dữ liệu từ API, giải nén, làm sạch, tính toán doanh thu và gửi thông báo. Công cụ điều phối (Orchestrator) đóng vai trò là \"Nhạc trưởng\":\n- **Kiểm tra logic trình tự**: Đảm bảo các tác vụ thực thi theo đúng thứ tự phụ thuộc và thỏa mãn các điều kiện tiên quyết.\n- **Xử lý sự cố tự động**: Tự động thử lại (Retry) với độ trễ lũy thừa (Exponential Backoff) và gửi cảnh báo khi tác vụ gặp lỗi thất bại.\n- **Trực quan hóa luồng công việc**: Cung cấp giao diện đồ họa tổng thể về toàn bộ dòng chảy dữ liệu (Data Flow) của tổ chức.\n- **Lưu vết kiểm toán (Auditing)**: Ghi nhận chính xác lịch sử thực thi, bao gồm thời gian chạy, thời lượng, log chi tiết và người kích hoạt.\n\n---\n\n### 2. Sức mạnh của Đồ thị có hướng không chu trình (DAG)\nMọi quy trình điều phối dữ liệu hiện đại đều được mô hình hóa dưới dạng DAG (Directed Acyclic Graph):\n- **Directed (Có hướng)**: Dòng chảy công việc luôn diễn ra theo một chiều xác định từ tác vụ thượng nguồn (Upstream) đến tác vụ hạ nguồn (Downstream).\n- **Acyclic (Không chu trình)**: Loại bỏ hoàn toàn các vòng lặp khép kín. Không bao giờ tồn tại trường hợp Task A dẫn đến Task B rồi Task B lại quay vòng ngược về Task A, ngăn chặn hoàn toàn nguy cơ vòng lặp vô hạn gây treo hệ thống.\n- **Quản lý phụ thuộc chặt chẽ**: Quy định rõ lớp dữ liệu Gold chỉ được phép thực thi sau khi lớp Silver đã hoàn tất thành công.\n- **Xử lý song song tự động**: Hệ thống tự động nhận diện các tác vụ độc lập về dữ liệu để phân bổ thực thi đồng thời trên các cụm tính toán.\n- **Tính Module hóa**: Chia nhỏ các đường ống khổng lồ thành các khối logic nhỏ để dễ dàng tái sử dụng và kiểm thử.\n\n---\n\n### 3. Chuyển dịch từ Task-centric sang Asset-centric\n- **Tư duy Task-centric (tiêu biểu: Apache Airflow)**: Tập trung vào việc *điều khiển và giám sát các câu lệnh/tác vụ đang chạy* (Ví dụ: Chạy script A lúc 2h sáng).\n- **Tư duy Asset-centric (tiêu biểu: Dagster)**: Tập trung vào việc *quản lý tài sản dữ liệu nào được sinh ra* (Ví dụ: Bảng dữ liệu Khách hàng cần cập nhật mỗi ngày một lần; hệ thống tự động tìm và chạy các tác vụ cần thiết để sinh ra bảng đó).\n- **Lineage làm trung tâm**: Ưu tiên theo dõi nguồn gốc và trạng thái chất lượng của dữ liệu hơn là chỉ quan tâm câu lệnh có trả về mã 0 (Success) hay không.\n- **Tích hợp CI/CD và Local Testing**: Hỗ trợ môi trường kiểm thử cục bộ mạnh mẽ hơn trước khi đưa mã nguồn lên môi trường sản xuất.\n\n---\n\n### 4. Apache Airflow và các công cụ điều phối hiện đại\n- **Apache Airflow**: Tiêu chuẩn công nghiệp phổ biến nhất toàn cầu, định nghĩa pipeline hoàn toàn bằng code Python (**Code-as-Configuration**), sở hữu hàng nghìn thư viện kết nối (Providers) tới mọi dịch vụ đám mây.\n- **Dagster và Prefect**: Các công cụ thế hệ mới, tối ưu hóa sâu cho lập trình viên Python hiện đại, mạnh về kiểm thử cục bộ và tư duy quản lý tài sản dữ liệu.\n- **Mage.ai**: Nền tảng điều phối tích hợp sâu Trí tuệ nhân tạo (AI) để hỗ trợ tự động sinh mã nguồn pipeline và dự đoán lỗi.\n- **Cloud-Native Workflows**: AWS Step Functions hoặc Google Cloud Workflows dành cho các ứng dụng Serverless hướng sự kiện."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Cấu trúc một DAG trong Apache Airflow**:\n```python\nfrom airflow import DAG\nfrom airflow.operators.bash import BashOperator\nfrom datetime import datetime\n\nwith DAG('daily_sales_pipeline', start_date=datetime(2024, 1, 1), schedule='@daily') as dag:\n    # 2 tác vụ chạy song song\n    extract_orders = BashOperator(task_id='extract_orders', bash_command='python get_orders.py')\n    extract_customers = BashOperator(task_id='extract_customers', bash_command='python get_cust.py')\n    \n    # Tác vụ tổng hợp phụ thuộc cả 2 tác vụ trên\n    transform_gold = BashOperator(task_id='transform_gold', bash_command='dbt run -s gold_sales')\n    \n    # Thiết lập phụ thuộc (DAG structure)\n    [extract_orders, extract_customers] >> transform_gold\n```\nỞ đây: `extract_orders` và `extract_customers` chạy song song cùng lúc; `transform_gold` chỉ bắt đầu khi cả 2 tác vụ trước đã hoàn thành thành công."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Điểm thi cốt lõi**:\n> - **Apache Airflow** có đặc tính: **Tiêu chuẩn công nghiệp cực kỳ phổ biến với hàng nghìn thư viện kết nối đa dạng, định nghĩa pipeline bằng code Python** (Câu 14 đề cương).\n> - **DAG (Directed Acyclic Graph)**: Đồ thị có hướng không chu trình, đảm bảo dòng chảy công việc một chiều và không bao giờ bị vòng lặp vô hạn."
+          }
+        ],
+        "miniQuiz": [
+          "ch3_q18",
+          "ch3_q19",
+          "ch3_q20",
+          "ch3_q22"
+        ],
+        "relatedQuestionIds": [
+          "ch3_q18",
+          "ch3_q19",
+          "ch3_q20",
+          "ch3_q21",
+          "ch3_q22",
+          "ch3_q48",
+          "q14"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-3-5",
+        "title": "Bài 5: Batch Ingestion vs. Continuous Streaming - Snowpipe, Spark & Kappa",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Phân biệt chi tiết 4 tiêu chí giữa xử lý theo Lô (Batch) và Luồng (Streaming)",
+              "Nắm vững cơ chế Serverless Micro-batch của Snowpipe trong Snowflake",
+              "Hiểu 5 tính năng xử lý vượt trội của Spark Structured Streaming (Exactly-once, Watermarks)",
+              "Phân tích sự dịch chuyển từ Kiến trúc Lambda sang Kiến trúc Kappa"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Phân biệt cơ chế xử lý Batch và Streaming\n\n| Tiêu chí so sánh | Xử lý Batch (Theo Lô) | Xử lý Streaming (Theo Luồng) |\n| :--- | :--- | :--- |\n| **Định nghĩa** | Gom khối lượng lớn dữ liệu để xử lý đồng loạt theo chu kỳ định sẵn (hàng đêm, hàng tuần) | Tiếp nhận và xử lý liên tục các sự kiện dữ liệu ngay lập tức khi chúng phát sinh |\n| **Tối ưu chi phí** | **Tiết kiệm chi phí**, tận dụng tối đa hiệu suất máy chủ trong thời gian ngắn rồi tắt | **Tốn kém hơn**, đòi hỏi duy trì tài nguyên hạ tầng điện toán chạy liên tục 24/7 |\n| **Độ phức tạp kỹ thuật** | **Thấp hơn**, dễ triển khai, dễ quản lý và dễ khắc phục lỗi khi có sự cố | **Rất cao**, đòi hỏi hạ tầng mạng mạnh mẽ và cơ chế chịu lỗi (Fault tolerance) khắt khe |\n| **Lựa chọn triển khai (SLA)** | Phù hợp với các hệ thống chấp nhận độ trễ dữ liệu cao (Báo cáo tháng, tính lương) | Bắt buộc đối với các bài toán yêu cầu độ trễ cực thấp (Chống gian lận, gợi ý sản phẩm) |\n\n---\n\n### 2. Ứng dụng Snowpipe và khái niệm Micro-batch\nSnowpipe là cơ chế nạp dữ liệu liên tục mang tính đột phá của nền tảng Snowflake:\n- **Cơ chế kích hoạt hướng sự kiện (Event-driven)**: Tự động nạp dữ liệu vào bảng ngay khi tệp tin mới xuất hiện trên Cloud Storage (Amazon S3, Azure Blob, Google Cloud Storage).\n- **Hoàn toàn Serverless**: Người dùng không cần tạo hay cấu hình máy chủ tính toán; nền tảng tự động cấp phát tài nguyên nạp dữ liệu ngầm.\n- **Khái niệm Micro-batch**: Thay vì chờ đợi gom lô lớn hàng giờ, Snowpipe chia nhỏ dữ liệu thành các lô siêu nhỏ (Micro-batches) để nạp vào kho chỉ sau vài giây.\n- **Tích hợp hàng đợi thông điệp**: Tận dụng dịch vụ message queue (như AWS SQS hoặc Azure Event Grid) để bắt tín hiệu file mới đẩy vào kho.\n- **Tối ưu hóa chi phí nạp**: Chi phí chỉ tính trên dung lượng tệp tin nạp thực tế, cực kỳ tiết kiệm cho các luồng dữ liệu phát sinh rải rác trong ngày.\n\n---\n\n### 3. Sức mạnh xử lý của Spark Structured Streaming\nSpark Structured Streaming cung cấp nền tảng xử lý dữ liệu luồng phân tán mạnh mẽ nhất hiện nay:\n- **Ngữ nghĩa Exactly-once**: Đảm bảo tính toàn vẹn và độ chính xác tuyệt đối, dữ liệu không bao giờ bị xử lý lặp lại hai lần hoặc bị thất thoát khi có sự cố.\n- **Phép toán cửa sổ (Windowing)**: Cho phép tính toán các phép toán tổng hợp (SUM, COUNT) theo từng khung thời gian trượt (ví dụ: tính lượng truy cập mỗi 5 phút).\n- **Cơ chế Watermarks**: Cho phép hệ thống xử lý thông minh các bản ghi bị gửi đến trễ (Late-arriving data) do nghẽn mạng mà không làm gián đoạn luồng chính.\n- **Chịu lỗi qua Checkpointing**: Lưu lại trạng thái xử lý xuống bộ lưu trữ bền bỉ, giúp hệ thống phục hồi ngay tại điểm dừng nếu máy chủ bị mất điện.\n- **Unified API**: Lập trình viên dùng chung một bộ cú pháp câu lệnh (SQL / DataFrames) cho cả bài toán xử lý Batch lẫn Streaming.\n\n---\n\n### 4. Sự dịch chuyển từ Kiến trúc Lambda sang Kappa\n- **Kiến trúc Lambda**: Duy trì song song hai luồng xử lý: luồng Batch (tính toán chính xác trên dữ liệu lịch sử) và luồng Speed/Streaming (tính toán nhanh dữ liệu thời gian thực). Nhược điểm lớn nhất là **gánh nặng bảo trì kỹ thuật cực lớn** vì phải viết, kiểm thử và đồng bộ hai bộ mã nguồn (codebase) khác nhau cho cùng một nghiệp vụ, dễ gây sai lệch số liệu.\n- **Kiến trúc Kappa**: Đơn giản hóa toàn bộ hệ thống bằng cách **chỉ sử dụng DUY NHẤT một luồng Streaming** để xử lý cho cả dữ liệu thời gian thực lẫn dữ liệu lịch sử trong quá khứ. Toàn bộ dữ liệu được lưu dưới dạng nhật ký sự kiện bất biến (Append-only Log như Apache Kafka), giúp đảm bảo tính nhất quán số liệu 100% và chỉ cần bảo trì một bộ codebase duy nhất."
+          },
+          {
+            "kind": "example",
+            "markdown": "**So sánh kiến trúc Lambda và Kappa**:\n- **Lambda Architecture**:\n  - Dữ liệu -> Tách đôi -> [Luồng Batch chạy Hadoop ban đêm] + [Luồng Speed chạy Storm tức thời] -> Gộp lại ở tầng Serving Layer.\n  - Hậu quả: Viết 2 lần code logic nghiệp vụ; số liệu báo cáo thời gian thực đôi khi lệch với báo cáo chốt sổ cuối ngày!\n- **Kappa Architecture**:\n  - Dữ liệu -> Đổ vào Kafka Log -> [1 Luồng Streaming duy nhất chạy Flink/Spark] -> Lưu thẳng vào kho dữ liệu.\n  - Khi cần tính lại lịch sử: Chỉ việc cho luồng Streaming đọc lại từ đầu log Kafka!"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Xu hướng chuyển dịch**: Kiến trúc **Kappa** đang dần thay thế Lambda vì nó loại bỏ việc phải bảo trì 2 bộ codebase riêng biệt, đảm bảo tính nhất quán dữ liệu giữa báo cáo thời gian thực và lịch sử."
+          }
+        ],
+        "miniQuiz": [
+          "ch3_q23",
+          "ch3_q24",
+          "ch3_q25",
+          "ch3_q27"
+        ],
+        "relatedQuestionIds": [
+          "ch3_q23",
+          "ch3_q24",
+          "ch3_q25",
+          "ch3_q26",
+          "ch3_q27"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-3-6",
+        "title": "Bài 6: Biến đổi dữ liệu hiện đại bằng SQL, Jinja và công cụ dbt",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững sứ mệnh và triết lý SQL-first của công cụ dbt (Data Build Tool)",
+              "Hiểu bản chất Jinja Templating Engine và cách kết hợp với Dynamic SQL",
+              "Thành thạo khái niệm Macros để đóng gói và tái sử dụng mã nguồn",
+              "Phân biệt Schema Tests và Singular Tests trong kiểm thử chất lượng dữ liệu",
+              "Nắm được tính năng Data Contracts, Auto-Docs và vẽ đồ thị Data Lineage"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. dbt (Data Build Tool) – Đột phá trong quy trình ELT\ndbt là công cụ tiên phong mang các quy chuẩn phát triển phần mềm chuyên nghiệp (Software Engineering Best Practices) vào công việc biến đổi dữ liệu:\n- **Triết lý SQL-first**: Mọi logic nghiệp vụ phức tạp được biểu diễn bằng các câu lệnh `SELECT` thuần túy, loại bỏ sự phức tạp của các câu lệnh DDL (`CREATE TABLE`, `DROP TABLE`).\n- **Quản lý phiên bản mã nguồn**: Tích hợp chặt chẽ với Git, cho phép các thành viên làm việc nhóm, tạo nhánh (branching), rà soát mã (code review) và theo dõi lịch sử thay đổi.\n- **Module hóa theo chuẩn DRY (Don't Repeat Yourself)**: Chia nhỏ logic biến đổi thành các tệp model độc lập, có thể kế thừa và tham chiếu lẫn nhau qua hàm `ref()`.\n- **Trình biên dịch mạnh mẽ**: dbt tự động biên dịch mã SQL/Jinja thành các câu lệnh SQL tối ưu tương thích với từng loại Data Warehouse đích (Snowflake, BigQuery, Databricks).\n\n---\n\n### 2. Sự kết hợp mạnh mẽ giữa Jinja và Dynamic SQL\nJinja là một ngôn ngữ mẫu (Templating Engine) được nhúng trực tiếp vào trong các tệp SQL của dbt:\n- **Bổ sung cấu trúc điều khiển**: Cho phép sử dụng vòng lặp `{% for %}`, rẽ nhánh điều kiện `{% if/else %}` và khai báo biến số `{% set %}` ngay bên trong câu lệnh SQL tĩnh.\n- **Khái niệm Macros**: Đóng gói các đoạn mã SQL thường xuyên lặp lại thành các hàm (Functions) có thể truyền tham số và gọi lại ở nhiều tệp model khác nhau, giúp giảm thiểu hơn 50% số dòng code dư thừa.\n- **Quản lý môi trường linh hoạt**: Tự động thay đổi tên bảng, database hoặc schema tùy thuộc vào môi trường đang chạy (`Dev`, `Test` hay `Prod`) mà không cần sửa code.\n- **Trừu tượng hóa logic phức tạp**: Ẩn đi sự phức tạp của các câu lệnh JOIN nhiều tầng, các phép biến đổi Pivot ngang dọc phức tạp.\n\n---\n\n### 3. Tích hợp kiểm thử chất lượng dữ liệu (Data Testing)\ndbt biến việc kiểm thử dữ liệu thành quy trình tự động hóa bắt buộc trước khi đưa bảng vào phục vụ báo cáo:\n- **Schema Tests**: Tự động xác thực các điều kiện cơ bản bằng cách khai báo đơn giản trong tệp YAML:\n  - `not_null`: Kiểm tra cột không được phép chứa giá trị rỗng.\n  - `unique`: Kiểm tra giá trị của cột không được trùng lặp (xác thực khóa chính).\n  - `accepted_values`: Kiểm tra giá trị chỉ được nằm trong danh sách cho phép (ví dụ: trạng thái chỉ được là 'Success', 'Pending', 'Failed').\n  - `relationships`: Kiểm tra tính toàn vẹn khóa ngoại giữa bảng Fact và Dimension.\n- **Singular Tests**: Các tệp câu lệnh SQL viết riêng để kiểm tra các quy tắc nghiệp vụ đặc thù (Ví dụ: `SELECT * FROM orders WHERE total_amount < 0`). Nếu câu truy vấn trả về 0 dòng thì test PASS; nếu trả về dòng lỗi thì pipeline dừng lại.\n- **Data Contracts**: Thiết lập các ràng buộc bảo đảm nghiêm ngặt giữa đội ngũ cung cấp dữ liệu và đội ngũ phân tích về kiểu dữ liệu và danh sách cột.\n\n---\n\n### 4. Tài liệu hóa tự động và vẽ đồ thị Data Lineage\n- **Auto-Docs**: Hệ thống tự động trích xuất các dòng mô tả (Descriptions) và Metadata trong mã nguồn để tạo ra một trang Web tài liệu kho dữ liệu hoàn chỉnh chỉ bằng lệnh `dbt docs generate`.\n- **Đồ thị trực quan Data Lineage (DAG)**: Vẽ bản đồ trực quan thể hiện mối quan hệ cha-con (Upstream / Downstream) giữa các bảng và nguồn dữ liệu.\n- **Phân tích tác động (Impact Analysis)**: Kỹ sư dễ dàng nhận biết được những bảng báo cáo hay Dashboard nào sẽ bị ảnh hưởng nếu cập nhật cấu trúc của một bảng dữ liệu gốc."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ sử dụng Jinja và Macro trong dbt**:\nTạo Macro chuyển đổi tiền tệ sang VND trong file `macros/to_vnd.sql`:\n```jinja\n{% macro to_vnd(column_name, exchange_rate=25000) %}\n    ROUND({{ column_name }} * {{ exchange_rate }}, 0)\n{% endmacro %}\n```\nSử dụng Macro này trong model `models/fct_sales.sql`:\n```sql\nSELECT\n    order_id,\n    amount_usd,\n    {{ to_vnd('amount_usd') }} AS amount_vnd\nFROM {{ ref('stg_orders') }}\n```\nKhi chạy `dbt run`, dbt tự động biên dịch thành câu lệnh SQL thuần túy:\n```sql\nSELECT order_id, amount_usd, ROUND(amount_usd * 25000, 0) AS amount_vnd FROM my_db.stg_orders;\n```"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Hai câu hỏi thi trọng tâm**:\n> 1. **Jinja là gì?**: **Templating Engine sử dụng để bổ sung các cấu trúc điều khiển (vòng lặp, điều kiện) vào câu lệnh SQL tĩnh** (Câu 13 đề cương).\n> 2. **Chức năng của Schema Tests trong dbt**: **Tự động xác thực các điều kiện cơ bản như cột rỗng (not_null) hay trùng lặp (unique)** (Câu 12 đề cương)."
+          }
+        ],
+        "miniQuiz": [
+          "ch3_q28",
+          "ch3_q29",
+          "ch3_q30",
+          "ch3_q31"
+        ],
+        "relatedQuestionIds": [
+          "ch3_q28",
+          "ch3_q29",
+          "ch3_q30",
+          "ch3_q31",
+          "ch3_q32",
+          "ch3_q33",
           "q12",
           "q13"
         ],
         "labIds": []
       },
       {
-        "id": "les-3-2",
-        "title": "Bài 2: Điều phối Airflow, Schema Evolution & Mirroring",
-        "status": "empty",
-        "sections": [],
+        "id": "les-3-7",
+        "title": "Bài 7: Schema Evolution - Tự động thích ứng khi nguồn thay đổi lược đồ",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu hiện tượng Schema Drift và hậu quả nghiêm trọng đối với pipeline và AI",
+              "Nắm vững hiểm họa của hiện tượng mất mát dữ liệu ngầm (Silent Loss)",
+              "Thành thạo cơ chế thích ứng tự động linh hoạt (Schema Evolution)",
+              "Phân biệt 3 quy tắc tương thích: Backward, Forward và Full Compatibility",
+              "Nắm vững các công cụ hỗ trợ: Snowflake Evolution, Apache Iceberg và Delta Lake"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Khái niệm và hậu quả của Schema Drift\n- **Schema Drift là gì?**: Là hiện tượng cấu trúc dữ liệu ở hệ thống nguồn bị thay đổi đột ngột mà không báo trước (thêm cột mới, xóa cột cũ, đổi kiểu dữ liệu từ INT sang STRING, đổi tên trường).\n- **Hậu quả nghiêm trọng**:\n  - Làm gãy đứt (Fail) các pipeline xử lý dữ liệu hạ nguồn, khiến Dashboard báo cáo của ban lãnh đạo bị tê liệt.\n  - **Mất mát dữ liệu ngầm (Silent Loss)**: Dữ liệu mới xuất hiện ở nguồn nhưng bị kho dữ liệu loại bỏ ngầm vì bảng không có cột tương ứng, làm mất thông tin kinh doanh quý giá.\n  - Lãng phí nguồn lực: Kỹ sư dữ liệu mất hàng giờ ngồi viết lệnh sửa bảng thủ công.\n  - Làm sập mô hình Machine Learning: Các thuật toán AI dự báo sẽ báo lỗi ngay lập tức nếu vector đặc trưng đầu vào bị thay đổi cấu trúc.\n\n---\n\n### 2. Cơ chế thích ứng tự động (Schema Evolution)\nSchema Evolution là tập hợp các cơ chế giúp kho dữ liệu tự động học và thích nghi với các thay đổi cấu trúc mà không cần dừng hệ thống:\n- **Kiểu dữ liệu linh hoạt**: Sử dụng kiểu `VARIANT` hoặc `JSON` để lưu trữ bao bọc mọi thay đổi cấu trúc chưa lường trước.\n- **Tự động thêm cột (Auto-column addition)**: Hệ thống tự động nhận diện các trường mới xuất hiện trong tệp dữ liệu nạp vào và tự động mở rộng thêm cột tương ứng trong bảng đích.\n- **Nâng cấp kiểu an toàn (Type Coercion)**: Tự động nới lỏng kiểu dữ liệu (ví dụ nâng từ INT lên BIGINT hoặc FLOAT) mà không làm mất mát độ chính xác.\n- **Triển khai an toàn**: Chỉ tự động áp dụng các thay đổi mang tính tương thích, không làm phá vỡ các câu lệnh truy vấn hiện tại.\n- **Cơ chế cảnh báo sớm**: Hệ thống chủ động gửi thông báo qua Slack/Email khi phát hiện có thay đổi cấu trúc quan trọng.\n\n---\n\n### 3. Các quy tắc đảm bảo tính tương thích hệ thống\nTrong việc quản lý biến đổi cấu trúc (như Kafka Schema Registry):\n- **Backward Compatibility (Tương thích ngược)**: Quy tắc bảo đảm mã xử lý phiên bản mới có khả năng đọc và hiểu được cấu trúc dữ liệu phiên bản cũ.\n- **Forward Compatibility (Tương thích xuôi)**: Cấu trúc dữ liệu phiên bản cũ vẫn có thể hoạt động trơn tru với các phiên bản mã xử lý mới.\n- **Full Compatibility (Tương thích toàn diện)**: Tiêu chuẩn cao nhất kết hợp đồng thời cả tương thích ngược và tương thích xuôi để bảo vệ tuyệt đối luồng dữ liệu.\n- **Schema Versioning**: Lưu trữ lịch sử tất cả các phiên bản của cấu trúc bảng, cho phép khôi phục (Rollback) lại trạng thái cũ khi cần thiết.\n\n---\n\n### 4. Các công cụ hiện đại hỗ trợ Schema Evolution\n- **Snowflake Evolution**: Kho dữ liệu Snowflake tự động phát hiện cột mới và tự động điều chỉnh cấu trúc bảng ngay trong quá trình chạy lệnh nạp dữ liệu `COPY INTO` với tùy chọn `ENABLE_SCHEMA_EVOLUTION = TRUE`.\n- **Định dạng bảng mở (Apache Iceberg, Delta Lake)**: Hỗ trợ thêm, xóa, đổi tên cột thông qua việc sửa đổi Metadata mà hoàn toàn không cần phải ghi lại toàn bộ bảng dữ liệu vật lý (Zero Data Rewrite).\n- **Fivetran Auto-sync**: Tự động phát hiện các trường dữ liệu mới ở ứng dụng nguồn (Salesforce, Hubspot) và tự động đồng bộ thêm cột vào kho phân tích.\n- **AWS Glue Crawler**: Tự động quét các thư mục dữ liệu trên S3 và cập nhật cấu trúc schema mới nhất vào Data Catalog."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ Snowflake Schema Evolution trong thực tế**:\nTạo bảng với tính năng tự động tiến hóa:\n```sql\nCREATE TABLE orders_landing (\n    order_id INT,\n    amount FLOAT\n) ENABLE_SCHEMA_EVOLUTION = TRUE;\n```\nKhi nhà cung cấp gửi file JSON mới chứa thêm trường `discount_rate`:\n```sql\nCOPY INTO orders_landing FROM @my_stage/orders_new.json FILE_FORMAT = (TYPE = 'JSON') MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;\n```\nSnowflake tự động thêm cột `discount_rate` vào bảng `orders_landing` mà không báo lỗi!"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Điểm thi cốt lõi**: Đặc tính của **Snowflake Evolution (Schema Evolution)** là: **Kho dữ liệu tự động điều chỉnh cấu trúc bảng ngay trong quá trình chạy lệnh COPY** (Câu 11 đề cương)."
+          }
+        ],
         "miniQuiz": [
-          "q11",
-          "q14",
-          "q15"
+          "ch3_q34",
+          "ch3_q36",
+          "ch3_q37",
+          "ch3_q38"
         ],
         "relatedQuestionIds": [
-          "q11",
-          "q14",
-          "q15"
+          "ch3_q34",
+          "ch3_q35",
+          "ch3_q36",
+          "ch3_q37",
+          "ch3_q38",
+          "ch3_q39",
+          "ch3_q50",
+          "q11"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-3-8",
+        "title": "Bài 8: Data Observability - 5 Trụ cột giám sát sức khỏe dữ liệu và AI Alerts",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu sự khác biệt căn bản giữa Monitoring và Data Observability",
+              "Nắm vững khái niệm Data Downtime và ý nghĩa của việc xây dựng niềm tin dữ liệu",
+              "Thành thạo 5 trụ cột phân tích cốt lõi (5 Pillars) của Data Observability",
+              "Hiểu cách ứng dụng AI/ML trong cảnh báo sự cố thông minh và giảm thiểu Alert Fatigue",
+              "Đánh giá giá trị kinh tế và ROI đạt được từ Observability"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Sự khác biệt bản chất giữa Monitoring và Observability\n- **Monitoring truyền thống (Giám sát thụ động)**: Chỉ báo động khi một tác vụ kỹ thuật bị sụp đổ (Trả lời câu hỏi: *Cái gì bị lỗi? - What failed?* Ví dụ: Báo lỗi lệnh SQL bị gãy).\n- **Data Observability (Quan sát chủ động)**: Là khả năng theo dõi, đo lường và thấu hiểu toàn diện \"sức khỏe\" của toàn bộ hệ sinh thái dữ liệu từ nguồn đến đích (Trả lời câu hỏi: *Tại sao lỗi và lỗi ở vị trí nào? - Why and Where did it fail?*).\n- **Chủ động ngăn chặn**: Phát hiện và cô lập dữ liệu sai lệch trước khi chúng kịp tiếp cận tới các Dashboard của ban lãnh đạo.\n- **Giảm thiểu Data Downtime**: Rút ngắn thời gian bộ dữ liệu rơi vào trạng thái không khả dụng, bị trễ hoặc bị sai sót số liệu.\n- **Xây dựng niềm tin (Trust)**: Yếu tố sống còn để doanh nghiệp tự tin đưa ra các quyết định chiến lược theo hướng dựa trên dữ liệu (Data-driven).\n\n---\n\n### 2. Năm trụ cột phân tích cốt lõi của Data Observability\nĐể đánh giá toàn diện sức khỏe dữ liệu, hệ thống Observability (như Monte Carlo, Acceldata) dựa trên 5 trụ cột phân tích:\n1. **Freshness (Độ tươi mới)**: Dữ liệu có được cập nhật đúng hạn theo cam kết SLA hay không? Lần cuối cùng bảng nhận dữ liệu mới là khi nào?\n2. **Volume (Khối lượng dữ liệu)**: Số lượng bản ghi nạp vào có bị đột ngột tăng vọt hoặc sụt giảm bất thường so với mức trung bình lịch sử?\n3. **Distribution (Phân phối dữ liệu)**: Các tham số thống kê của tập dữ liệu (tỷ lệ giá trị NULL, giá trị trùng lặp, giá trị âm, min/max) có nằm trong ngưỡng an toàn hay không?\n4. **Schema (Lược đồ dữ liệu)**: Cấu trúc bảng có bị thay đổi trái phép, bị đổi kiểu dữ liệu hay vô tình xóa mất thuộc tính quan trọng không?\n5. **Lineage (Nguồn gốc dòng đời)**: Khi phát hiện bản ghi lỗi ở tầng Gold, hệ thống có thể truy vết chính xác nguồn gốc phát sinh lỗi từ bảng nào ở tầng thượng nguồn?\n\n---\n\n### 3. Ứng dụng AI và Quy trình quản lý sự cố thông minh\n- **Cảnh báo dựa trên Học máy (Machine Learning Anomaly Detection)**: Sử dụng các thuật toán AI để học các mẫu biến thiên bình thường theo chu kỳ mùa vụ, tự động phân biệt sự suy giảm bình thường (ví dụ: ngày nghỉ cuối tuần) với sự cố thực sự, giúp giảm thiểu tối đa hiện tượng báo động giả (**Alert Fatigue**).\n- **Chuẩn hóa quy trình quản lý sự cố**: Tự động tạo vé (ticket), theo dõi tiến độ xử lý và chỉ định người chịu trách nhiệm (Incident Management).\n- **Phân cấp mức độ ưu tiên**: Đánh giá mức độ nghiêm trọng dựa trên mức độ quan trọng của các báo cáo hạ nguồn bị ảnh hưởng.\n- **Tích hợp thông báo đa kênh**: Tự động gửi thông báo kèm file log chi tiết tới Slack, Microsoft Teams hoặc PagerDuty của đội ngũ trực ban.\n\n---\n\n### 4. Giá trị kinh tế và ROI đạt được\n- **Tối ưu hóa thời gian kỹ sư**: Tiết kiệm đến 80% thời gian phải ngồi rà soát mã nguồn thủ công để tìm lỗi dữ liệu.\n- **Cải thiện tốc độ phục hồi (MTTR)**: Rút ngắn thời gian trung bình để khắc phục sự cố (Mean Time to Resolution) từ mức vài ngày xuống chỉ còn vài phút.\n- **Đảm bảo uy tín quyết định kinh doanh**: Lãnh đạo doanh nghiệp hoàn toàn an tâm đưa ra các quyết định triệu đô dựa trên nguồn dữ liệu sạch và chính xác."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Tình huống thực tế minh họa 5 trụ cột Observability**:\nVào 7h sáng, hệ thống Observability phát hiện bảng `daily_revenue`:\n1. **Freshness**: Đã cập nhật lúc 6h30 (Đạt SLA).\n2. **Volume**: Chỉ có 1.200 bản ghi nạp vào, trong khi trung bình ngày thường là 150.000 bản ghi -> ⚠️ **Cảnh báo bất thường Volume!**\n3. **Distribution**: Cột `order_total` có giá trị âm -> ⚠️ **Cảnh báo bất thường Distribution!**\n4. **Schema**: Không có cột nào bị xóa (Bình thường).\n5. **Lineage**: Truy vết thấy lỗi bắt nguồn từ cổng thanh toán đối tác bị lỗi cổng API lúc 4h sáng.\n-> Kỹ sư lập tức cô lập dữ liệu lỗi trước khi cuộc họp giao ban lúc 8h sáng diễn ra!"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Nhớ nhanh 5 Trụ cột Data Observability**:\n> - **F**reshness (Độ tươi)\n> - **V**olume (Khối lượng)\n> - **D**istribution (Phân phối giá trị)\n> - **S**chema (Lược đồ cấu trúc)\n> - **L**ineage (Dòng đời truy vết)\n> *(Gợi ý mẹo nhớ: **F-V-D-S-L**)*"
+          }
+        ],
+        "miniQuiz": [
+          "ch3_q40",
+          "ch3_q41",
+          "ch3_q42",
+          "ch3_q45"
+        ],
+        "relatedQuestionIds": [
+          "ch3_q40",
+          "ch3_q41",
+          "ch3_q42",
+          "ch3_q43",
+          "ch3_q44",
+          "ch3_q45",
+          "ch3_q46",
+          "ch3_q47"
         ],
         "labIds": []
       }
