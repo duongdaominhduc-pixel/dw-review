@@ -1,0 +1,702 @@
+[
+  {
+    "id": "ch8_q01",
+    "number": "C8.1",
+    "chapterId": "ch8",
+    "topic": "actionable-analytics",
+    "type": "theory",
+    "prompt": "Trình bày sự khác biệt căn bản giữa Phân tích truyền thống (Descriptive Analytics) và Phân tích hiện đại (Actionable Analytics) theo Slide 4.",
+    "answer": "Phân tích truyền thống (Descriptive) tập trung vào báo cáo quá khứ ('Điều gì đã xảy ra?'), dữ liệu tĩnh, độ trễ cao và phụ thuộc hoàn toàn vào con người để ra quyết định; Phân tích hiện đại (Actionable) ứng dụng AI dự báo (Predict) và đề xuất hành động (Prescribe) ngay tại kho dữ liệu để hành động tức thì.",
+    "explanation": "Theo Slide 4: Phân tích mô tả truyền thống chỉ nhìn về quá khứ và có độ trễ lớn. Phân tích mô tả hành động (Actionable Analytics) ứng dụng AI/ML trực tiếp trong DWH (như BigQuery ML) để đưa ra dự báo và chỉ định hành động cụ thể, biến dữ liệu thành giá trị kinh doanh tức thời.",
+    "eli5": "Phân tích cũ như nhìn vào gương chiếu hậu để đếm xem xe vừa đi qua bao nhiêu ổ gà; Phân tích hiện đại như hệ thống lái xe tự động Tesla: Vừa quét chướng ngại vật phía trước, vừa tự đánh lái tránh ổ gà ngay lập tức.",
+    "commonMistakes": [
+      "Nghĩ rằng Descriptive Analytics và Actionable Analytics chỉ khác nhau ở công cụ trực quan hóa biểu đồ."
+    ]
+  },
+  {
+    "id": "ch8_q02",
+    "number": "C8.2",
+    "chapterId": "ch8",
+    "topic": "unstructured-data",
+    "type": "theory",
+    "prompt": "Khái niệm 'BigQuery Object Tables' là gì và nó giải quyết bài toán phân tích loại dữ liệu nào trong kho dữ liệu hiện đại? (Slide 5)",
+    "answer": "Là tính năng cho phép phân tích trực tiếp dữ liệu phi cấu trúc (Hình ảnh, PDF, Audio, Video) thông qua câu lệnh SQL, tích hợp sâu với Vertex AI mà không cần di chuyển dữ liệu ra ngoài.",
+    "explanation": "Slide 5 nêu rõ: BigQuery Object Tables mở rộng khả năng của DWH sang dữ liệu phi cấu trúc. Doanh nghiệp có thể dùng SQL để truy vấn và gọi các mô hình AI của Vertex AI xử lý hình ảnh, tài liệu PDF, âm thanh ngay tại chỗ.",
+    "eli5": "Trước đây kho dữ liệu chỉ chứa được bảng tính Excel. Với Object Tables, kho dữ liệu chứa được cả file PDF hợp đồng, video camera an ninh, và cho phép viết lệnh SQL để hỏi 'Trong video này có bao nhiêu người?'.",
+    "commonMistakes": [
+      "Cho rằng Object Tables bắt buộc phải xuất dữ liệu sang máy chủ khác mới phân tích được."
+    ]
+  },
+  {
+    "id": "ch8_q03",
+    "number": "C8.3",
+    "chapterId": "ch8",
+    "topic": "unstructured-data",
+    "type": "theory",
+    "prompt": "Theo thống kê ở Slide 5, dữ liệu phi cấu trúc chiếm khoảng bao nhiêu phần trăm tổng dữ liệu tiềm ẩn của một doanh nghiệp?",
+    "answer": "Khoảng 80% tổng dữ liệu tiềm ẩn của doanh nghiệp.",
+    "explanation": "Theo Slide 5: Khoảng 80% dữ liệu doanh nghiệp tồn tại dưới dạng phi cấu trúc (hợp đồng PDF, email, báo cáo kiểm toán, hình ảnh, hóa đơn quét). Việc khai thác trực tiếp dữ liệu này qua Object Tables giúp mở khóa nguồn tri thức khổng lồ chưa từng được khai phá.",
+    "eli5": "Dữ liệu có cấu trúc (bảng số) chỉ là phần nổi của tảng băng chìm (20%), còn 80% phần chìm khổng lồ dưới nước chính là các tài liệu chữ, hóa đơn, hình ảnh và video.",
+    "commonMistakes": [
+      "Nghĩ rằng dữ liệu dạng bảng quan hệ truyền thống chiếm phần lớn (80%) dữ liệu doanh nghiệp."
+    ]
+  },
+  {
+    "id": "ch8_q04",
+    "number": "C8.4",
+    "chapterId": "ch8",
+    "topic": "unstructured-data",
+    "type": "theory",
+    "prompt": "Hai lợi ích cốt lõi của việc phân tích dữ liệu phi cấu trúc trực tiếp trong Warehouse là gì? (Slide 5)",
+    "answer": "1. Bảo mật tập trung và quản trị thống nhất (không cần sao chép dữ liệu ra ngoài); 2. Khai thác triệt để 80% dữ liệu tiềm ẩn của doanh nghiệp mà không cần di chuyển dữ liệu (Zero Data Movement).",
+    "explanation": "Slide 5 nêu 2 lợi ích cốt lõi: Bảo mật tập trung và quản trị thống nhất các chính sách IAM, đồng thời khai thác được 80% dữ liệu phi cấu trúc đang ngủ quên trong hệ thống.",
+    "eli5": "Giữ tài liệu mật nằm yên một chỗ an toàn trong kho và đưa chuyên gia AI vào đọc, thay vì photo gửi hàng nghìn file tài liệu mật ra các công cụ bên ngoài dễ bị lộ.",
+    "commonMistakes": [
+      "Cho rằng phân tích dữ liệu phi cấu trúc trong DWH làm giảm tính bảo mật của kho dữ liệu."
+    ]
+  },
+  {
+    "id": "ch8_q05",
+    "number": "C8.5",
+    "chapterId": "ch8",
+    "topic": "data-mining",
+    "type": "theory",
+    "prompt": "Bài báo nghiên cứu khoa học được TS. Nguyễn Thôn Dã trích dẫn ở Slide 8–9 giải quyết bài toán Data Mining nào?",
+    "answer": "Gom nhóm và dự đoán sự lan truyền thông tin trên mạng xã hội dựa trên cây phân cấp và dự đoán chuỗi ('Grouping and Predicting Information Propagation on Social Networks Based on Hierarchical Trees and Sequence Prediction' - 2024).",
+    "explanation": "Slide 8–9 trích dẫn nghiên cứu khoa học xuất bản năm 2024 (DOI: 10.1177/18758967261457264) ứng dụng cây phân cấp (Hierarchical Trees) và thuật toán dự đoán chuỗi tuần tự (Sequence Prediction) để dự báo luồng lan truyền tin tức trên mạng xã hội.",
+    "eli5": "Nghiên cứu cách thức một thông tin hoặc trào lưu trên mạng xã hội sẽ lây lan từ người này sang người khác theo trình tự thời gian như thế nào.",
+    "commonMistakes": [
+      "Nghĩ bài báo nói về thuật toán mã hóa mật mã học (đó là ở Slide 7)."
+    ]
+  },
+  {
+    "id": "ch8_q06",
+    "number": "C8.6",
+    "chapterId": "ch8",
+    "topic": "vector-search",
+    "type": "theory",
+    "prompt": "Định nghĩa 'Embeddings' trong học máy và kho dữ liệu hiện đại (Slide 10)?",
+    "answer": "Là quá trình chuyển đổi văn bản, hình ảnh hoặc âm thanh thành các chuỗi số (Vector n chiều) mang ý nghĩa ngữ nghĩa để máy tính có thể so sánh độ tương đồng.",
+    "explanation": "Slide 10 định nghĩa: Embeddings nén các đặc trưng ngữ nghĩa của thực thể thành vector số thực. Các từ hoặc câu có ngữ nghĩa gần gũi (ví dụ 'vua' và 'hoàng đế') sẽ có khoảng cách vector rất gần nhau trong không gian đa chiều.",
+    "eli5": "Biến chữ viết và tranh ảnh thành tọa độ GPS số học: Hai câu mang ý nghĩa giống nhau sẽ đứng sát cạnh nhau trên bản đồ tọa độ.",
+    "commonMistakes": [
+      "Nhầm Embeddings với thuật toán nén file ZIP hay mã hóa MD5/SHA256."
+    ]
+  },
+  {
+    "id": "ch8_q07",
+    "number": "C8.7",
+    "chapterId": "ch8",
+    "topic": "vector-search",
+    "type": "theory",
+    "prompt": "Khái niệm 'IVFFLAT' trong Vector Search là gì và nguyên lý hoạt động của nó như thế nào? (Slide 10, câu 36 đề cương)",
+    "answer": "IVFFLAT (Inverted File Flat) là kỹ thuật chỉ mục vector sử dụng thuật toán phân cụm (K-Means) để chia không gian vector thành các cụm (Voronoi cells); khi tìm kiếm chỉ quét các vector trong cụm gần nhất, giúp tìm kiếm hàng triệu bản ghi chỉ trong vài mili-giây.",
+    "explanation": "Theo Slide 10 và câu 36 đề cương: IVFFLAT là chỉ mục tìm kiếm láng giềng gần đúng (Approximate Nearest Neighbors - ANN). Thay vì so sánh vét cạn toàn bộ cơ sở dữ liệu ($O(N)$), IVFFLAT chỉ duyệt các vector thuộc cụm tâm tương đồng, tăng tốc độ truy vấn gấp hàng trăm lần.",
+    "eli5": "Thay vì lục tung từng ngăn kéo trong cả thư viện, IVFFLAT xếp sách vào từng khu vực; khi cần tìm sách lịch sử, thủ thư chỉ cần đi thẳng đến đúng khu vực lịch sử để tìm.",
+    "commonMistakes": [
+      "Cho rằng IVFFLAT là thuật toán tìm kiếm chính xác tuyệt đối 100% bằng cách quét tuần tự từng dòng (Brute-force)."
+    ]
+  },
+  {
+    "id": "ch8_q08",
+    "number": "C8.8",
+    "chapterId": "ch8",
+    "topic": "vector-search",
+    "type": "theory",
+    "prompt": "Sự khác biệt cốt lõi giữa Tìm kiếm ngữ nghĩa (Semantic Match) và Tìm kiếm từ khóa truyền thống (Keyword Match) là gì? (Slide 10)",
+    "answer": "Tìm kiếm từ khóa truyền thống chỉ khớp chính xác các ký tự chữ cái (Exact Match); Tìm kiếm Semantic Match tìm kiếm theo ý nghĩa và ngữ cảnh ngầm ẩn dù không trùng từ khóa.",
+    "explanation": "Theo Slide 10: Semantic Match cho phép tìm kiếm theo ý nghĩa bản chất. Ví dụ người dùng tìm 'điện thoại chụp hình đẹp', hệ thống vẫn trả về các dòng sản phẩm iPhone/Galaxy dù phần mô tả chỉ ghi 'camera 48MP cảm biến sắc nét' mà không chứa từ 'chụp hình đẹp'.",
+    "eli5": "Tìm từ khóa như người máy tra từ điển: Thiếu đúng chữ đó là báo 'Không tìm thấy'; Tìm ngữ nghĩa như nhân viên tư vấn thông minh: Hiểu được bạn muốn gì dù bạn dùng từ đồng nghĩa.",
+    "commonMistakes": [
+      "Nghĩ rằng Semantic Match chỉ là lệnh LIKE '%keyword%' trong SQL."
+    ]
+  },
+  {
+    "id": "ch8_q09",
+    "number": "C8.9",
+    "chapterId": "ch8",
+    "topic": "vector-search",
+    "type": "theory",
+    "prompt": "Hai ứng dụng tiêu biểu của Semantic Search và Vector Index trong doanh nghiệp được nêu ở Slide 10 là gì?",
+    "answer": "1. Hệ thống gợi ý sản phẩm thông minh (Recommendation Systems); 2. Tra cứu tài liệu pháp lý và quy trình nghiệp vụ phức tạp.",
+    "explanation": "Slide 10 chỉ ra 2 ứng dụng thực tế: Gợi ý sản phẩm dựa trên sở thích và hành vi người dùng, và tra cứu chính sách/văn bản pháp lý phức tạp trong khối ngân hàng, bảo hiểm.",
+    "eli5": "Gợi ý đồ ăn ngon đúng gu thực khách, và tìm nhanh điều khoản bồi thường bảo hiểm trong tập tài liệu dày 500 trang.",
+    "commonMistakes": [
+      "Nghĩ rằng Vector Search chỉ dùng để tìm kiếm hình ảnh."
+    ]
+  },
+  {
+    "id": "ch8_q10",
+    "number": "C8.10",
+    "chapterId": "ch8",
+    "topic": "rag",
+    "type": "theory",
+    "prompt": "Khái niệm kiến trúc RAG (Retrieval-Augmented Generation) cho dữ liệu doanh nghiệp là gì? (Slide 11)",
+    "answer": "Là kiến trúc giúp mô hình AI sinh tạo (LLM) trả lời câu hỏi dựa trên kho dữ liệu tin cậy nội bộ của doanh nghiệp thay vì dựa vào kiến thức chung chung hoặc cũ kỹ trên Internet.",
+    "explanation": "Slide 11 định nghĩa: RAG kết hợp sức mạnh truy xuất dữ liệu chính xác của DWH/Vector Search với năng lực tổng hợp ngôn ngữ tự nhiên của LLM, đảm bảo câu trả lời luôn bám sát dữ liệu thực tế của công ty.",
+    "eli5": "RAG giống như việc phát cho AI một cuốn tài liệu mật của công ty và yêu cầu nó: 'Mở đề thi mở này ra và chỉ được dùng số liệu trong cuốn sách này để trả lời'.",
+    "commonMistakes": [
+      "Nhầm RAG với việc huấn luyện lại toàn bộ mô hình nền tảng (Fine-tuning Foundation Model)."
+    ]
+  },
+  {
+    "id": "ch8_q11",
+    "number": "C8.11",
+    "chapterId": "ch8",
+    "topic": "rag",
+    "type": "theory",
+    "prompt": "Trình bày chi tiết 4 bước vận hành chuẩn của kiến trúc RAG trong Kho dữ liệu (Slide 11).",
+    "answer": "1. Ingestion (chuyển tài liệu vào Object Tables); 2. Embedding (băm nhỏ tài liệu thành Chunks và tạo Vector); 3. Retrieval (tìm kiếm ngữ cảnh liên quan nhất qua Vector Search); 4. Generation (LLM tổng hợp và sinh câu trả lời).",
+    "explanation": "Theo Slide 11: Quy trình 4 bước gồm Ingestion -> Embedding -> Retrieval -> Generation. Đây là quy trình chuẩn công nghiệp để đưa dữ liệu DWH vào phục vụ các mô hình ngôn ngữ lớn.",
+    "eli5": "4 bước: Nạp sách vào kho (Ingestion) -> Cắt sách thành từng đoạn ngắn và đánh chỉ mục số (Embedding) -> Khi có câu hỏi thì rút các đoạn trang sách liên quan nhất ra (Retrieval) -> Đọc các trang đó rồi viết câu trả lời hoàn chỉnh (Generation).",
+    "commonMistakes": [
+      "Quên bước băm nhỏ tài liệu (Chunking) mà đưa nguyên văn bản dung lượng lớn vào mô hình."
+    ]
+  },
+  {
+    "id": "ch8_q12",
+    "number": "C8.12",
+    "chapterId": "ch8",
+    "topic": "rag",
+    "type": "theory",
+    "prompt": "Hiện tượng 'Ảo giác của AI' (AI Hallucination) là gì và RAG giải quyết hiện tượng này như thế nào? (Slide 12)",
+    "answer": "Ảo giác là hiện tượng AI tự bịa ra thông tin sai lệch nhưng diễn đạt tự tin; RAG loại bỏ ảo giác bằng cách ép mô hình chỉ được phép dùng dữ liệu nội bộ đã được kiểm chứng để trả lời.",
+    "explanation": "Theo Slide 12: Kiến trúc RAG (Contextual AI) ràng buộc phạm vi câu trả lời của LLM vào các đoạn ngữ cảnh trích xuất từ DWH. Nếu trong dữ liệu nội bộ không có thông tin, mô hình sẽ trả lời 'Không có dữ liệu' thay vì tự bịa số liệu.",
+    "eli5": "Ảo giác là máy tính 'chém gió' bậy bạ; RAG bắt máy tính phải 'nói có sách, mách có chứng', chỉ được trả lời đúng những gì ghi trong văn bản kiểm toán nội bộ.",
+    "commonMistakes": [
+      "Cho rằng bản thân mô hình LLM độc lập có thể tự loại bỏ hoàn toàn ảo giác mà không cần RAG."
+    ]
+  },
+  {
+    "id": "ch8_q13",
+    "number": "C8.13",
+    "chapterId": "ch8",
+    "topic": "rag",
+    "type": "theory",
+    "prompt": "Nêu 3 ứng dụng thực tế tiêu biểu của kiến trúc RAG trong doanh nghiệp được liệt kê ở Slide 12.",
+    "answer": "1. Xây dựng Chatbot nội bộ cho phòng Nhân sự (HR); 2. Tra cứu quy trình vận hành phức tạp (SOPs); 3. Hệ thống hỗ trợ khách hàng đa kênh dựa trên lịch sử giao dịch cá nhân hóa.",
+    "explanation": "Slide 12 nêu rõ 3 ứng dụng: HR Chatbot trả lời chính sách công ty, tra cứu quy trình vận hành nội bộ (SOPs), và chăm sóc khách hàng đa kênh dựa trên lịch sử giao dịch lưu trữ trong DWH.",
+    "eli5": "Hỏi trợ lý ảo về chế độ thai sản nghỉ phép (HR), tra cứu hướng dẫn bảo trì máy bay (SOP), và giải quyết khiếu nại đơn hàng cho khách hàng trong 3 giây.",
+    "commonMistakes": [
+      "Nghĩ rằng RAG chỉ dùng để viết thơ hoặc giải bài tập toán."
+    ]
+  },
+  {
+    "id": "ch8_q14",
+    "number": "C8.14",
+    "chapterId": "ch8",
+    "topic": "generative-bi",
+    "type": "theory",
+    "prompt": "Khái niệm 'Generative BI' (Trí tuệ Doanh nghiệp Tạo sinh) đóng vai trò gì trong việc 'Dân chủ hóa dữ liệu' (Data Democratization)? (Slide 13)",
+    "answer": "Giúp xóa bỏ rào cản kỹ thuật về ngôn ngữ SQL, cho phép người dùng nghiệp vụ kinh doanh đặt câu hỏi trực tiếp bằng ngôn ngữ tự nhiên và giảm hầu hết thời gian tạo báo cáo.",
+    "explanation": "Theo Slide 13: Generative BI mở quyền truy cập dữ liệu cho mọi nhân viên không biết code. Bất kỳ ai cũng có thể 'Chat-with-your-data' để nhận báo cáo và biểu đồ tức thì mà không cần chờ đợi đội ngũ Data Engineer viết SQL.",
+    "eli5": "Trước đây muốn có báo cáo phải nhờ IT viết code mất 3 ngày; nay Giám đốc kinh doanh chỉ cần nhắn tin 'Doanh số tuần này thế nào?' là màn hình tự vẽ biểu đồ ngay lập tức.",
+    "commonMistakes": [
+      "Nghĩ rằng Generative BI sẽ thay thế hoàn toàn kho dữ liệu DWH."
+    ]
+  },
+  {
+    "id": "ch8_q15",
+    "number": "C8.15",
+    "chapterId": "ch8",
+    "topic": "generative-bi",
+    "type": "theory",
+    "prompt": "Công nghệ cốt lõi tạo nên sức mạnh của Generative BI là sự kết hợp giữa hai thành phần nào? (Slide 13)",
+    "answer": "Sự kết hợp liền mạch giữa các công cụ BI trực quan hóa (như Looker, Tableau, Power BI) và các Mô hình Ngôn ngữ Lớn (LLMs như Gemini, ChatGPT).",
+    "explanation": "Slide 13 chỉ rõ: Generative BI là sự giao thoa hoàn hảo giữa nền tảng BI hiện đại (quản lý ngữ nghĩa Semantic Layer, bảng biểu) và LLM (xử lý ngôn ngữ tự nhiên, sinh mã SQL).",
+    "eli5": "Sự kết hợp giữa 'cái miệng thông minh' (LLM hiểu câu hỏi tiếng Việt) và 'bộ não tính toán chuẩn' (Looker/Tableau vẽ biểu đồ số liệu chính xác).",
+    "commonMistakes": [
+      "Cho rằng Generative BI chỉ là một con bot chat độc lập không kết nối với công cụ BI."
+    ]
+  },
+  {
+    "id": "ch8_q16",
+    "number": "C8.16",
+    "chapterId": "ch8",
+    "topic": "generative-bi",
+    "type": "theory",
+    "prompt": "Mô tả 3 bước trong Workflow của Conversational BI (Text-to-SQL) theo Slide 14.",
+    "answer": "1. Natural Query (người dùng đặt câu hỏi bằng ngôn ngữ tự nhiên); 2. Auto-SQL (LLM tự động biên dịch thành câu lệnh SQL chuẩn xác, tối ưu); 3. Instant Insight (hệ thống truy xuất dữ liệu và tự chọn biểu đồ phù hợp nhất để hiển thị).",
+    "explanation": "Theo Slide 14: Quy trình gồm Natural Query -> Auto-SQL -> Instant Insight, biến câu hỏi ngôn ngữ tự nhiên thành truy vấn DWH và trực quan hóa tự động không cần con người can thiệp mã nguồn.",
+    "eli5": "Hỏi bằng lời nói -> Máy tự viết code SQL -> Màn hình tự bung ra biểu đồ cột/đường đẹp mắt.",
+    "commonMistakes": [
+      "Nghĩ rằng người dùng phải tự viết câu lệnh SQL rồi nhờ AI giải thích hộ."
+    ]
+  },
+  {
+    "id": "ch8_q17",
+    "number": "C8.17",
+    "chapterId": "ch8",
+    "topic": "streaming",
+    "type": "theory",
+    "prompt": "Khái niệm 'Streaming Analytics' (Phân tích dữ liệu luồng) là gì và những công nghệ nào được sử dụng để xử lý hàng triệu sự kiện mỗi giây? (Slide 15)",
+    "answer": "Là kỹ thuật xử lý và phân tích dữ liệu liên tục ngay khi nó vừa phát sinh; sử dụng Streaming API kết hợp với các công cụ như Apache Kafka, Google Cloud Dataflow, Pub/Sub.",
+    "explanation": "Slide 15 nêu rõ: Phân tích Streaming xử lý dữ liệu theo thời gian thực (hàng triệu event/giây) giúp doanh nghiệp nắm bắt cơ hội và phản ứng tức thì với các biến động thị trường.",
+    "eli5": "Thay vì gom nước vào xô đợi đầy mới lọc (Batch), Streaming là hệ thống lọc nước trực tiếp ngay trên vòi nước đang chảy xiết (Real-time).",
+    "commonMistakes": [
+      "Nhầm lẫn Streaming Analytics với xử lý theo lô định kỳ theo giờ (Hourly Micro-batching)."
+    ]
+  },
+  {
+    "id": "ch8_q18",
+    "number": "C8.18",
+    "chapterId": "ch8",
+    "topic": "streaming",
+    "type": "theory",
+    "prompt": "Ba ứng dụng cốt lõi của Streaming Analytics được liệt kê ở Slide 15 gồm những gì?",
+    "answer": "1. Phát hiện gian lận thẻ tín dụng (Fraud Detection); 2. Định giá động theo thời gian thực (Dynamic Pricing); 3. Quản trị chuỗi cung ứng và giao vận (Logistics & Supply Chain).",
+    "explanation": "Slide 15 liệt kê 3 ứng dụng then chốt: Chặn giao dịch lừa đảo trong vài mili-giây, điều chỉnh giá cước xe công nghệ theo cung-cầu thời gian thực, và giám sát hành trình phương tiện vận tải.",
+    "eli5": "Khóa thẻ ATM ngay khi phát hiện rút tiền lạ ở nước ngoài; Grab tự tăng giá khi trời mưa lớn; và theo dõi xe container đông lạnh có bị hỏng máy lạnh hay không.",
+    "commonMistakes": [
+      "Cho rằng phát hiện gian lận thẻ tín dụng có thể đợi chạy báo cáo batch cuối ngày."
+    ]
+  },
+  {
+    "id": "ch8_q19",
+    "number": "C8.19",
+    "chapterId": "ch8",
+    "topic": "streaming",
+    "type": "theory",
+    "prompt": "Khái niệm 'Zero Latency' (Độ trễ bằng 0) tại điểm chạm khách hàng hoạt động như thế nào theo Slide 16?",
+    "answer": "Là sự kết hợp giữa hệ thống Pub/Sub và Continuous Queries cho phép doanh nghiệp tự động thực hiện hành động can thiệp ngay ở giây phút dữ liệu vừa phát sinh trên hệ thống.",
+    "explanation": "Slide 16 giải thích: Zero Latency loại bỏ hoàn toàn thời gian chờ đợi. Hành động xử lý được kích hoạt tại đúng thời điểm và ngữ cảnh khách hàng đang tương tác với ứng dụng.",
+    "eli5": "Hành động nhanh như chớp: Khách vừa nhấn nút hủy đơn, hệ thống lập tức xuất hiện voucher giảm giá 20% giữ chân khách lại trong chớp mắt.",
+    "commonMistakes": [
+      "Nghĩ rằng Zero Latency là khái niệm lý thuyết không thể áp dụng trong thực tế nghiệp vụ."
+    ]
+  },
+  {
+    "id": "ch8_q20",
+    "number": "C8.20",
+    "chapterId": "ch8",
+    "topic": "streaming",
+    "type": "theory",
+    "prompt": "Trình bày tình huống thực tế (Case Study) về Zero Latency được nêu ở Slide 16.",
+    "answer": "Hệ thống tự động gửi thông báo khuyến mãi cá nhân hóa vào điện thoại của khách hàng ngay ở giây phút họ vừa rời khỏi giỏ hàng mà chưa chịu thanh toán (Cart Abandonment).",
+    "explanation": "Slide 16 nêu case study kinh điển: Khách hàng bỏ giỏ hàng (Cart Abandonment) được phát hiện bằng Continuous Queries trên luồng event của web; hệ thống gửi push notification ưu đãi tức thì cứu vãn đơn hàng.",
+    "eli5": "Bạn cho đôi giày vào giỏ hàng rồi tắt app đi ngủ; đúng 10 giây sau điện thoại rung lên: 'Bạn ơi, hoàn tất đơn trong 5 phút tới để được freeship nhé!'.",
+    "commonMistakes": [
+      "Để đến ngày hôm sau mới gửi email nhắc giỏ hàng (khi khách đã mua ở sàn khác)."
+    ]
+  },
+  {
+    "id": "ch8_q21",
+    "number": "C8.21",
+    "chapterId": "ch8",
+    "topic": "kafka",
+    "type": "theory",
+    "prompt": "Nguyên lý hoạt động cốt lõi của nền tảng Apache Kafka được trình bày ở Slide 17–19 là gì?",
+    "answer": "Là nền tảng xử lý luồng phân tán dựa trên mô hình Publish-Subscribe; sử dụng cơ chế lưu trữ nhật ký ghi nối tiếp (Commit Log) phân vùng (Partitions) được quản lý bởi các Broker và chia sẻ cho các Consumer Groups.",
+    "explanation": "Theo Slide 17–19: Kafka hoạt động như một hệ thống thần kinh trung ương của dữ liệu doanh nghiệp. Các Producer đẩy thông điệp vào Topics; Topics được chia thành nhiều Partitions để mở rộng quy mô song song trên cụm Kafka Brokers.",
+    "eli5": "Kafka như một bưu điện siêu tốc khổng lồ: Hàng nghìn người gửi thư (Producers) thả thư vào các hòm thư (Topics); bưu điện chia thư thành nhiều băng chuyền (Partitions) để hàng trăm nhân viên (Consumers) đọc cùng lúc không bị tắc nghẽn.",
+    "commonMistakes": [
+      "Coi Kafka chỉ là cơ sở dữ liệu quan hệ lưu trữ vĩnh viễn dạng bảng."
+    ]
+  },
+  {
+    "id": "ch8_q22",
+    "number": "C8.22",
+    "chapterId": "ch8",
+    "topic": "kafka",
+    "type": "theory",
+    "prompt": "Vai trò của 'Partition' trong Topic của Apache Kafka là gì? (Slide 18)",
+    "answer": "Là đơn vị mở rộng song song (Parallelism) cơ bản của Kafka; cho phép chia nhỏ dữ liệu trong một Topic để lưu trữ và đọc song song trên nhiều máy chủ Broker khác nhau.",
+    "explanation": "Slide 18: Mỗi Partition là một chuỗi thông điệp có thứ tự bất biến. Việc chia thành nhiều Partitions giúp hệ thống đạt thông lượng hàng triệu bản ghi mỗi giây nhờ xử lý song song.",
+    "eli5": "Một con đường nếu chỉ có 1 làn xe sẽ bị kẹt xe; chia thành 8 làn xe (8 Partitions) thì 8 chiếc xe tải có thể chạy song song cùng một lúc.",
+    "commonMistakes": [
+      "Nghĩ rằng mỗi Topic trong Kafka chỉ có duy nhất 1 Partition."
+    ]
+  },
+  {
+    "id": "ch8_q23",
+    "number": "C8.23",
+    "chapterId": "ch8",
+    "topic": "data-storytelling",
+    "type": "theory",
+    "prompt": "Cấu trúc 4 bước tiêu chuẩn của một câu chuyện dữ liệu (Data Storytelling Framework) được nêu ở Slide 21 là gì?",
+    "answer": "1. Bối cảnh (Context) -> 2. Vấn đề (Problem) -> 3. Giải pháp (Solution) -> 4. Hành động (Action).",
+    "explanation": "Theo Slide 21: Data Storytelling không trình bày số liệu hỗn loạn mà dẫn dắt người xem theo một mạch truyện logic: Đặt vấn đề trong bối cảnh thực tế, chỉ ra điểm nghẽn, đề xuất giải pháp dựa trên dữ liệu và chốt bằng hành động cụ thể.",
+    "eli5": "Kể chuyện hấp dẫn 4 màn: Mở đầu giới thiệu tình hình (Bối cảnh) -> Biến cố xuất hiện (Vấn đề) -> Cách tháo gỡ nút thắt (Giải pháp) -> Kêu gọi mọi người cùng làm ngay (Hành động).",
+    "commonMistakes": [
+      "Chỉ ném các biểu đồ lên màn hình mà không có cấu trúc dẫn dắt hành động."
+    ]
+  },
+  {
+    "id": "ch8_q24",
+    "number": "C8.24",
+    "chapterId": "ch8",
+    "topic": "data-storytelling",
+    "type": "theory",
+    "prompt": "Tính năng 'Tự động tóm tắt' (Gen AI Summary) trên Dashboard thông minh mang lại lợi ích gì cho nhà quản lý? (Slide 21)",
+    "answer": "Sử dụng Generative AI để tự động viết các đoạn giải thích văn bản súc tích tóm tắt các phát hiện quan trọng, giúp lãnh đạo nắm bắt nhanh trọng tâm mà không cần tự phân tích số liệu.",
+    "explanation": "Slide 21 nêu rõ: Thay vì bắt giám đốc đọc hàng trăm ô số trên bảng tính, Gen AI đọc các chỉ số KPI, tự động sinh ra đoạn văn 3 dòng tóm tắt nguyên nhân tăng giảm doanh số và gợi ý phương án xử lý.",
+    "eli5": "Như có một trợ lý đứng cạnh Dashboard tóm tắt ngắn gọn: 'Thưa sếp, doanh số tuần này giảm 10% ở chi nhánh miền Tây do thiếu nguồn cung, sếp nên duyệt chuyển kho từ Cần Thơ sang'.",
+    "commonMistakes": [
+      "Nghĩ rằng lãnh đạo luôn muốn đọc toàn bộ dữ liệu thô thay vì bản tóm tắt hành động."
+    ]
+  },
+  {
+    "id": "ch8_q25",
+    "number": "C8.25",
+    "chapterId": "ch8",
+    "topic": "data-storytelling",
+    "type": "theory",
+    "prompt": "Khái niệm 'Alerting & Actions (Write-back to CRM)' trên Dashboard thông minh hoạt động như thế nào? (Slide 21)",
+    "answer": "Dashboard không chỉ để xem thụ động mà tích hợp các nút lệnh tương tác cho phép người dùng kích hoạt trực tiếp các quy trình nghiệp vụ (như gửi email, cập nhật trạng thái CRM) ngay trên giao diện.",
+    "explanation": "Theo Slide 21: Tính năng Write-back biến Dashboard từ công cụ quan sát thành công cụ tác nghiệp. Người quản lý nhìn thấy khách hàng có nguy cơ rời bỏ (Churn) có thể bấm nút 'Gửi voucher chăm sóc' ngay trên báo cáo để cập nhật ngược vào CRM.",
+    "eli5": "Không chỉ nhìn đồng hồ báo xăng cạn, trên mặt kính xe có luôn nút bấm gọi cứu hộ đổ xăng tự động chỉ bằng 1 cú chạm.",
+    "commonMistakes": [
+      "Nghĩ rằng Dashboard chỉ có thể đọc dữ liệu (Read-only) mà không bao giờ ghi ngược lại hệ sinh thái nguồn."
+    ]
+  },
+  {
+    "id": "ch8_q26",
+    "number": "C8.26",
+    "chapterId": "ch8",
+    "topic": "data-storytelling",
+    "type": "theory",
+    "prompt": "Theo các nghiên cứu khoa học hành vi được trích dẫn ở Slide 22, dữ liệu được trình bày dưới dạng câu chuyện có khả năng ghi nhớ và thuyết phục cao hơn bao nhiêu phần trăm?",
+    "answer": "Cao hơn 65% so với các con số khô khan trên bảng tính.",
+    "explanation": "Slide 22 khẳng định: Nghiên cứu khoa học hành vi chứng minh não bộ con người ghi nhớ và bị thuyết phục tốt hơn 65% khi dữ liệu gắn liền với bối cảnh và câu chuyện cảm xúc, thay vì bảng biểu số liệu đơn thuần.",
+    "eli5": "Bạn sẽ quên sạch một bảng chứa 50 con số sau 5 phút, nhưng bạn sẽ nhớ mãi câu chuyện về một người nông dân bán được nhiều gạo hơn nhờ xem dự báo thời tiết.",
+    "commonMistakes": [
+      "Nghĩ rằng các con số khô khan tự thân nó đã đủ sức thuyết phục người ra quyết định."
+    ]
+  },
+  {
+    "id": "ch8_q27",
+    "number": "C8.27",
+    "chapterId": "ch8",
+    "topic": "data-storytelling",
+    "type": "theory",
+    "prompt": "Thông điệp chiến lược của Data Storytelling đối với sinh viên ngành Hệ thống Thông tin Quản lý (MIS) là gì? (Slide 22)",
+    "answer": "Data Storytelling chính là kỹ năng cầu nối quan trọng nhất giữa bộ phận Kỹ thuật (IT/Data) và bộ phận Chiến lược (Business).",
+    "explanation": "Slide 22 nhấn mạnh thông điệp: Kỹ sư dữ liệu giỏi nhất không phải là người viết câu lệnh SQL phức tạp nhất, mà là người có thể dịch những con số kỹ thuật thành câu chuyện kinh doanh để Ban giám đốc ra quyết định.",
+    "eli5": "Người làm MIS đóng vai trò người phiên dịch: Hiểu ngôn ngữ kỹ thuật của máy tính nhưng biết cách diễn đạt bằng ngôn ngữ kiếm tiền của các nhà quản trị kinh doanh.",
+    "commonMistakes": [
+      "Cho rằng kỹ năng mềm kể chuyện không quan trọng bằng việc học thuộc lòng các hàm SQL."
+    ]
+  },
+  {
+    "id": "ch8_q28",
+    "number": "C8.28",
+    "chapterId": "ch8",
+    "topic": "agentic-bi",
+    "type": "theory",
+    "prompt": "Tầm nhìn giai đoạn 2025–2030 của 'Agentic BI' (Trí tuệ Tự hành) được dự báo ở Slide 23 là gì?",
+    "answer": "Không chỉ dừng lại ở vai trò trợ lý hỏi-đáp thụ động, AI Agents sẽ trở thành các 'Chuyên viên phân tích tự hành' (Autonomous Business Analysts).",
+    "explanation": "Theo Slide 23: Agentic BI là bước tiến hóa tiếp theo sau Generative BI. Thay vì đợi con người đặt câu hỏi, AI Agents tự động quan sát dữ liệu, tự đặt câu hỏi và tự hành động theo mục tiêu doanh nghiệp được giao.",
+    "eli5": "Từ 'trợ lý gõ đầu bảo gì làm nấy' tiến hóa thành 'nhân viên cấp cao tự giác': Tự biết mình phải làm gì để công ty đạt chỉ tiêu doanh số mà không cần sếp nhắc nhở.",
+    "commonMistakes": [
+      "Đồng nhất Agentic BI với các con Chatbot trả lời câu hỏi đơn giản."
+    ]
+  },
+  {
+    "id": "ch8_q29",
+    "number": "C8.29",
+    "chapterId": "ch8",
+    "topic": "agentic-bi",
+    "type": "theory",
+    "prompt": "Trình bày 4 năng lực cốt lõi của một AI Agent trong hệ thống Agentic BI (Slide 23).",
+    "answer": "1. Tự động theo dõi mục tiêu kinh doanh (OKRs/KPIs); 2. Tự lập kế hoạch phân tích (Planning & Reasoning); 3. Tự truy vấn DWH và phát hiện xu hướng ẩn; 4. Chủ động gửi báo cáo đề xuất chiến lược mà không cần lệnh liên tục từ con người.",
+    "explanation": "Slide 23 nêu rõ: AI Agents có khả năng tự trị cao (Autonomous): Thiết lập mục tiêu, phân rã công việc thành các bước truy vấn DWH, phân tích nguyên nhân gốc rễ và chủ động đề xuất giải pháp cho nhà quản lý.",
+    "eli5": "4 năng lực: Giữ vững mục tiêu doanh số -> Tự lên lịch các việc cần làm -> Tự vào kho lục dữ liệu tìm manh mối -> Tự viết email gửi sếp cảnh báo nguy cơ và giải pháp.",
+    "commonMistakes": [
+      "Cho rằng AI Agent cần con người ngồi canh và bấm nút cho từng bước xử lý."
+    ]
+  },
+  {
+    "id": "ch8_q30",
+    "number": "C8.30",
+    "chapterId": "ch8",
+    "topic": "vector-search",
+    "type": "calculation",
+    "prompt": "Cho hai vector nhúng đặc trưng của hai sản phẩm: $A = [1, 2, 3]$ và $B = [2, 4, 6]$. Tính độ tương đồng Cosine (Cosine Similarity) giữa hai sản phẩm này và rút ra nhận xét.",
+    "answer": "Cosine Similarity = 1.0; Hai sản phẩm có mức độ tương đồng ngữ nghĩa tuyệt đối (cùng hướng trong không gian vector).",
+    "explanation": "Công thức Cosine Similarity: $\\cos(A, B) = \\frac{A \\cdot B}{\\|A\\| \\|B\\|}$. Tích vô hướng: $A \\cdot B = 1\\times2 + 2\\times4 + 3\\times6 = 2 + 8 + 18 = 28$. Độ dài: $\\|A\\| = \\sqrt{1+4+9} = \\sqrt{14}$; $\\|B\\| = \\sqrt{4+16+36} = \\sqrt{56} = 2\\sqrt{14}$. Mẫu số: $\\sqrt{14} \\times 2\\sqrt{14} = 28$. Do đó $\\cos(A, B) = \\frac{28}{28} = 1.0$.",
+    "eli5": "Hai vector cùng chỉ về một hướng duy nhất trong không gian đa chiều, nghĩa là hai sản phẩm này hoàn toàn giống nhau về mặt nội dung và ý nghĩa.",
+    "commonMistakes": [
+      "Tính nhầm độ dài vector ở mẫu số hoặc nhầm lẫn với khoảng cách Euclidean."
+    ]
+  },
+  {
+    "id": "ch8_q31",
+    "number": "C8.31",
+    "chapterId": "ch8",
+    "topic": "vector-search",
+    "type": "calculation",
+    "prompt": "Cho hai vector đặc trưng tài liệu trong không gian 2 chiều: $u = [1, 0]$ và $v = [0, 1]$. Tính khoảng cách Euclidean và độ tương đồng Cosine giữa chúng.",
+    "answer": "Khoảng cách Euclidean $d(u, v) = \\sqrt{2} \\approx 1.414$; Độ tương đồng Cosine = 0 (hai vector trực giao, không liên quan ngữ nghĩa).",
+    "explanation": "Khoảng cách Euclidean: $d = \\sqrt{(1-0)^2 + (0-1)^2} = \\sqrt{1 + 1} = \\sqrt{2}$. Tích vô hướng: $u \\cdot v = 1\\times0 + 0\\times1 = 0 \\implies \\cos(u, v) = 0$. Hai tài liệu hoàn toàn không có sự tương đồng về ngữ cảnh.",
+    "eli5": "Một vector chỉ hướng Đông, một vector chỉ hướng Bắc; hai hướng vuông góc nhau thì độ tương đồng bằng 0.",
+    "commonMistakes": [
+      "Cho rằng độ tương đồng Cosine bằng 0 là hai tài liệu đối nghịch nhau (đối nghịch là -1; 0 là độc lập/vuông góc)."
+    ]
+  },
+  {
+    "id": "ch8_q32",
+    "number": "C8.32",
+    "chapterId": "ch8",
+    "topic": "vector-search",
+    "type": "formula",
+    "prompt": "Viết câu lệnh SQL minh họa việc tạo chỉ mục vector IVFFLAT trên cột `embedding` của bảng `product_catalog` trong cơ sở dữ liệu hỗ trợ Vector Search (như pgvector).",
+    "answer": "CREATE INDEX idx_products_vector ON product_catalog USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);",
+    "explanation": "Câu lệnh tạo chỉ mục IVFFLAT sử dụng toán tử khoảng cách Cosine `vector_cosine_ops`. Tham số `lists = 100` quy định số lượng tâm cụm (Centroids) phân vùng không gian vector phục vụ tìm kiếm xấp xỉ nhanh.",
+    "eli5": "Lệnh yêu cầu cơ sở dữ liệu chia 1 triệu sản phẩm thành 100 cụm theo độ tương đồng Cosine để khi khách tìm kiếm thì chỉ duyệt trong 1 cụm gần nhất.",
+    "commonMistakes": [
+      "Quên chỉ định toán tử khoảng cách (như vector_cosine_ops hoặc vector_l2_ops)."
+    ]
+  },
+  {
+    "id": "ch8_q33",
+    "number": "C8.33",
+    "chapterId": "ch8",
+    "topic": "unstructured-data",
+    "type": "formula",
+    "prompt": "Viết câu lệnh SQL minh họa việc tạo một Object Table trong Google BigQuery để trích xuất metadata từ các file tài liệu PDF lưu trữ trên Google Cloud Storage (GCS).",
+    "answer": "CREATE OR REPLACE EXTERNAL TABLE my_dataset.pdf_object_table WITH CONNECTION `my-project.us.my-connection` OPTIONS (object_metadata = 'SIMPLE', uris = ['gs://my-bucket/contracts/*.pdf']);",
+    "explanation": "Cú pháp BigQuery Object Table tạo bảng ngoại vi liên kết với Cloud Storage bucket thông qua Cloud Resource Connection, cho phép người dùng dùng SQL để truy vấn siêu dữ liệu và truyền trực tiếp đường dẫn file vào các mô hình Vertex AI.",
+    "eli5": "Lệnh mở cửa sổ từ BigQuery nhìn thẳng vào thư mục chứa file PDF trên đám mây để chuẩn bị gọi AI vào phân tích từng trang văn bản.",
+    "commonMistakes": [
+      "Dùng lệnh CREATE TABLE thông thường thay vì EXTERNAL TABLE có kết nối Object Table."
+    ]
+  },
+  {
+    "id": "ch8_q34",
+    "number": "C8.34",
+    "chapterId": "ch8",
+    "topic": "rag",
+    "type": "formula",
+    "prompt": "Trong kiến trúc RAG, tại sao bước 'Chunking' (băm nhỏ tài liệu) lại bắt buộc phải thực hiện trước khi tạo Vector Embeddings?",
+    "answer": "Vì các mô hình Embedding và LLM có giới hạn độ dài ngữ cảnh (Context Window Limit), và việc băm nhỏ tài liệu giúp tăng độ chính xác của bước truy xuất ngữ cảnh (Retrieval Precision).",
+    "explanation": "Nếu nhúng nguyên một cuốn sách dày 300 trang vào 1 vector duy nhất, thông tin chi tiết sẽ bị làm mờ và mất mát. Băm nhỏ thành các đoạn 500-1000 từ giúp Vector Search định vị chính xác đoạn văn chứa câu trả lời cho người dùng.",
+    "eli5": "Nếu bạn hỏi 'Bà mẹ trong truyện Tấm Cám tên gì?', thủ thư sẽ cắt truyện thành từng đoạn nhỏ để đưa bạn đúng đoạn nhắc đến tên, chứ không ai vác nguyên cuốn truyện dày cộm ném vào mặt bạn.",
+    "commonMistakes": [
+      "Cho rằng giữ nguyên toàn bộ file PDF dung lượng lớn làm một vector duy nhất sẽ tốt hơn."
+    ]
+  },
+  {
+    "id": "ch8_q35",
+    "number": "C8.35",
+    "chapterId": "ch8",
+    "topic": "generative-bi",
+    "type": "theory",
+    "prompt": "Tại sao một hệ thống Text-to-SQL trong Generative BI bắt buộc phải được cung cấp 'Semantic Layer' hoặc 'Business Glossary' thay vì chỉ nhìn vào tên cột vật lý của Database?",
+    "answer": "Vì tên cột vật lý thường viết tắt và khó hiểu (như `c_rev_net_amt`), Semantic Layer giúp LLM hiểu đúng ngữ nghĩa nghiệp vụ và các công thức tính toán chỉ số phức tạp theo chuẩn của công ty.",
+    "explanation": "Nếu chỉ đưa schema vật lý, LLM có thể viết sai công thức doanh thu (ví dụ tính cả thuế hoặc quên trừ chiết khấu). Semantic Layer (như LookML hoặc dbt Semantic Layer) định nghĩa sẵn logic kinh doanh chuẩn để LLM sinh SQL không bao giờ sai lệch số liệu.",
+    "eli5": "Tên cột trong máy tính viết tắt như tiếng lóng (`sl_amt`); Semantic Layer như cuốn từ điển dịch ra tiếng người 'Doanh thu thuần sau chiết khấu' để AI không viết nhầm công thức.",
+    "commonMistakes": [
+      "Nghĩ rằng chỉ cần đưa schema bảng nguyên bản là LLM đã tự động biết cách tính các chỉ số nghiệp vụ đặc thù của công ty."
+    ]
+  },
+  {
+    "id": "ch8_q36",
+    "number": "C8.36",
+    "chapterId": "ch8",
+    "topic": "kafka",
+    "type": "theory",
+    "prompt": "Cơ chế 'Consumer Group' trong Apache Kafka giúp ích gì cho khả năng mở rộng (Scalability) của việc xử lý dữ liệu luồng?",
+    "answer": "Cho phép nhiều Consumer phối hợp cùng chia sẻ việc đọc dữ liệu từ các Partition trong Topic, đảm bảo thông lượng xử lý cao và tự động cân bằng tải (Rebalancing) khi có Consumer gặp sự cố.",
+    "explanation": "Trong Kafka, mỗi Partition trong một Topic chỉ được đọc bởi duy nhất 1 Consumer trong cùng 1 Consumer Group tại một thời điểm. Điều này đảm bảo tính tuần tự của thông điệp mà vẫn xử lý song song trên nhiều máy chủ.",
+    "eli5": "Một nhóm thợ cùng chia nhau dọn một kho hàng lớn: Mỗi thợ phụ trách dọn một dãy kệ riêng biệt; nếu một thợ bị ốm, các thợ khác sẽ tự động chia nhau phụ trách kệ đó.",
+    "commonMistakes": [
+      "Cho rằng mọi Consumer trong cùng group đều đọc trùng lặp một thông điệp từ một partition."
+    ]
+  },
+  {
+    "id": "ch8_q37",
+    "number": "C8.37",
+    "chapterId": "ch8",
+    "topic": "data-storytelling",
+    "type": "theory",
+    "prompt": "Nguyên tắc chọn lựa biểu đồ (Chart Selection) trong Data Storytelling: Khi nào nên dùng Line Chart và khi nào nên dùng Bar Chart?",
+    "answer": "Dùng Line Chart (biểu đồ đường) khi biểu diễn xu hướng biến động liên tục theo chuỗi thời gian; dùng Bar Chart (biểu đồ cột) khi so sánh độ lớn giữa các danh mục độc lập (Categories).",
+    "explanation": "Biểu đồ đường nhấn mạnh độ dốc và chiều hướng phát triển (Trend over time). Biểu đồ cột giúp mắt người so sánh chính xác chiều cao/chiều dài giữa các nhóm đối tượng riêng rẽ.",
+    "eli5": "Theo dõi nhiệt độ cả ngày tăng giảm ra sao thì dùng đường lượn sóng (Line Chart); so sánh chiều cao của 5 bạn trong lớp thì dựng 5 cái cột đứng cạnh nhau (Bar Chart).",
+    "commonMistakes": [
+      "Dùng biểu đồ đường để so sánh doanh thu giữa các quốc gia không liên quan đến trục thời gian."
+    ]
+  },
+  {
+    "id": "ch8_q38",
+    "number": "C8.38",
+    "chapterId": "ch8",
+    "topic": "agentic-bi",
+    "type": "theory",
+    "prompt": "Sự khác biệt căn bản giữa 'Conversational BI' (Chat-with-your-data) và 'Agentic BI' là gì?",
+    "answer": "Conversational BI hoạt động thụ động theo cơ chế hỏi-đáp từng lệnh từ người dùng; Agentic BI hoạt động chủ động, tự lập kế hoạch nhiều bước, tự theo dõi dữ liệu và tự đề xuất hành động theo mục tiêu.",
+    "explanation": "Conversational BI chỉ trả lời đúng câu hỏi người dùng nhập vào. Agentic BI là hệ thống tự hành: Nó tự động phát hiện số liệu sụt giảm, tự đào sâu phân tích nguyên nhân gốc rễ và chủ động gửi thông báo đề xuất giải pháp mà không cần con người hỏi trước.",
+    "eli5": "Conversational BI như máy bán nước ngọt: Bạn bấm nút nào nhả chai đó; Agentic BI như bác sĩ gia đình tận tâm: Thấy bạn ho nhẹ là chủ động mang thuốc và dặn dò bạn ngay.",
+    "commonMistakes": [
+      "Nghĩ rằng hai thuật ngữ này là từ đồng nghĩa hoàn toàn."
+    ]
+  },
+  {
+    "id": "ch8_q39",
+    "number": "C8.39",
+    "chapterId": "ch8",
+    "topic": "blockchain-ai",
+    "type": "theory",
+    "prompt": "Dữ liệu thô trên mạng lưới Blockchain tồn tại ở dạng nào và thách thức lớn nhất khi nạp vào Kho dữ liệu là gì? (Câu 35 đề cương)",
+    "answer": "Tồn tại ở dạng phi cấu trúc / bán cấu trúc (chuỗi Hexadecimal, JSON nhị phân đóng gói trong các khối Block); thách thức là cần giải mã (Decode) sự kiện và ABI để chuyển thành bảng quan hệ.",
+    "explanation": "Theo câu 35 đề cương: Dữ liệu thô trên Blockchain là các chuỗi byte mã hóa thập lục phân (Hex). Muốn phân tích trong DWH, Data Engineer phải dùng Smart Contract ABI để biên dịch dữ liệu sang dạng bảng cấu trúc (Transactions, Logs, Token Transfers).",
+    "eli5": "Dữ liệu gốc trên Blockchain như các thông điệp mật mã viết bằng chuỗi số loằng ngoằng `0x7f2a...`; phải dùng chìa khóa giải mã ABI để dịch thành bảng 'Ví A chuyển cho Ví B 10 coin'.",
+    "commonMistakes": [
+      "Nghĩ rằng Blockchain lưu sẵn dữ liệu ở dạng bảng SQL thông thường."
+    ]
+  },
+  {
+    "id": "ch8_q40",
+    "number": "C8.40",
+    "chapterId": "ch8",
+    "topic": "multidimensional-mining",
+    "type": "theory",
+    "prompt": "Khả năng truy vấn nhiều cấp liên quan đến khai phá dữ liệu đa chiều (Multidimensional Data Mining) cho phép thực hiện thao tác nào? (Câu 39 đề cương)",
+    "answer": "Cho phép thực hiện các thao tác Roll-up (cuộn lên mức tổng quan), Drill-down (khoan sâu vào chi tiết), Slice, Dice và Pivot để phát hiện tri thức ngầm ẩn ở nhiều cấp độ phân cấp khác nhau.",
+    "explanation": "Theo câu 39 đề cương: Khai phá dữ liệu đa cấp cho phép phân tích dữ liệu ở các tầng phân cấp trừu tượng khác nhau (ví dụ từ Quốc gia -> Tỉnh thành -> Chi nhánh), giúp tìm ra các quy luật kinh doanh mà phân tích một cấp không thể thấy được.",
+    "eli5": "Như chiếc flycam: Bay tít lên cao để ngắm toàn cảnh khu rừng (Roll-up), rồi hạ sát xuống đất để soi từng chiếc lá sâu bệnh trên cây (Drill-down).",
+    "commonMistakes": [
+      "Nghĩ rằng khai phá dữ liệu đa cấp chỉ thực hiện được trên bảng phẳng 2 chiều đơn giản."
+    ]
+  },
+  {
+    "id": "ch8_q41",
+    "number": "C8.41",
+    "chapterId": "ch8",
+    "topic": "rag",
+    "type": "theory",
+    "prompt": "Trong kiến trúc RAG, 'Cosine Similarity' hay 'Dot Product' được ưu tiên sử dụng để đo lường độ tương đồng ngữ nghĩa khi nào?",
+    "answer": "Khi các vector đã được chuẩn hóa độ dài về 1 (Normalized vectors), Cosine Similarity tương đương với Dot Product và Dot Product được ưu tiên vì tốc độ tính toán nhanh hơn nhiều trên GPU/CPU.",
+    "explanation": "Nếu vector đã được L2-normalized (độ dài bằng 1), $\\|u\\| = \\|v\\| = 1$, khi đó $\\cos(u, v) = u \\cdot v$. Phép nhân vô hướng Dot Product chỉ gồm các phép nhân và cộng, giúp tăng tốc độ tìm kiếm hàng triệu vector.",
+    "eli5": "Khi mọi mũi tên đều đã được gọt dài bằng nhau, muốn biết mũi tên nào chỉ cùng hướng chỉ cần làm một phép nhân đơn giản nhất thay vì tính toán căn bậc hai phức tạp.",
+    "commonMistakes": [
+      "Nghĩ rằng Dot Product luôn luôn bằng Cosine Similarity ngay cả khi vector chưa chuẩn hóa độ dài."
+    ]
+  },
+  {
+    "id": "ch8_q42",
+    "number": "C8.42",
+    "chapterId": "ch8",
+    "topic": "streaming",
+    "type": "theory",
+    "prompt": "Tại sao việc kết hợp giữa 'Pub/Sub' và 'Continuous Queries' lại là nền tảng sống còn cho bài toán Dynamic Pricing (Định giá động)? (Slide 15-16)",
+    "answer": "Vì giá vé xe hoặc phòng khách sạn biến động theo từng giây dựa trên cung-cầu tức thời; hệ thống cần nhận dữ liệu đặt chỗ liên tục và tính toán lại giá mới ngay lập tức mà không có độ trễ.",
+    "explanation": "Mô hình Pub/Sub thu nhận hàng triệu tín hiệu mở app của khách hàng; Continuous Queries liên tục cập nhật chỉ số cầu/cung trên từng khu vực địa lý và phát giá mới về máy khách hàng trong chớp mắt.",
+    "eli5": "Nếu giá cước Grab tính bằng báo cáo cuối ngày thì khi trời mưa to tài xế đã tắt app về ngủ; hệ thống phải tăng giá ngay giây phút hạt mưa vừa rơi để kích thích tài xế nhận cuốc.",
+    "commonMistakes": [
+      "Cho rằng định giá động có thể chạy bằng các batch script định kỳ nửa tiếng một lần."
+    ]
+  },
+  {
+    "id": "ch8_q43",
+    "number": "C8.43",
+    "chapterId": "ch8",
+    "topic": "actionable-analytics",
+    "type": "theory",
+    "prompt": "Trình bày 4 cấp độ trong thang đo mức độ trưởng thành phân tích dữ liệu (Analytics Maturity Model) từ sơ khai đến hiện đại.",
+    "answer": "1. Descriptive Analytics (Mô tả: Điều gì đã xảy ra?) -> 2. Diagnostic Analytics (Chẩn đoán: Tại sao nó xảy ra?) -> 3. Predictive Analytics (Dự báo: Điều gì sẽ xảy ra?) -> 4. Prescriptive / Actionable Analytics (Chỉ định hành động: Cần làm gì để tối ưu?).",
+    "explanation": "Đây là nấc thang phát triển kinh điển của ngành Business Intelligence: Đi từ bị động nhìn lại quá khứ (Descriptive) đến chủ động can thiệp và tối ưu hóa tương lai (Prescriptive/Actionable) nhờ AI/ML.",
+    "eli5": "1. Báo cáo 'Xe vừa bị xẹp lốp' (Mô tả) -> 2. Giải thích 'Do cán đinh' (Chẩn đoán) -> 3. Báo trước 'Đi đường này 5km nữa sẽ gặp ổ gà' (Dự báo) -> 4. Tự động chuyển làn đường an toàn (Chỉ định hành động).",
+    "commonMistakes": [
+      "Nhầm lẫn vị trí giữa Predictive (dự báo) và Prescriptive (chỉ định giải pháp tối ưu)."
+    ]
+  },
+  {
+    "id": "ch8_q44",
+    "number": "C8.44",
+    "chapterId": "ch8",
+    "topic": "vector-search",
+    "type": "theory",
+    "prompt": "Tại sao tìm kiếm ngữ nghĩa (Semantic Search) lại đặc biệt hiệu quả trong việc phát hiện gian lận bảo hiểm y tế?",
+    "answer": "Vì những kẻ gian lận thường thay đổi từ ngữ mô tả triệu chứng bệnh để né tránh bộ lọc từ khóa chính xác; Semantic Search nhận diện được bản chất y khoa tương đồng dù cách hành văn khác nhau.",
+    "explanation": "Kẻ gian lận dùng nhiều từ đồng nghĩa hoặc câu chữ vòng vo để nộp hồ sơ bảo hiểm nhiều nơi. Semantic Search thông qua vector embedding nhận diện được cùng một mẫu bệnh lý hoặc đơn thuốc bất thường dù văn bản được diễn đạt khác nhau.",
+    "eli5": "Kẻ trộm đổi tên gọi từ 'đau đầu dữ dội' thành 'choáng váng thái dương liên tục' để qua mặt bộ lọc, nhưng AI hiểu hai câu này cùng một bản chất bệnh lý và báo động ngay.",
+    "commonMistakes": [
+      "Cho rằng bộ lọc từ khóa regex đơn giản có thể bắt được hết mọi biến thể hành văn gian lận."
+    ]
+  },
+  {
+    "id": "ch8_q45",
+    "number": "C8.45",
+    "chapterId": "ch8",
+    "topic": "rag",
+    "type": "theory",
+    "prompt": "Khái niệm 'Grounding' trong các mô hình Generative AI kết hợp với Kho dữ liệu doanh nghiệp có ý nghĩa gì?",
+    "answer": "Là quá trình neo giữ và ràng buộc câu trả lời của mô hình AI vào các nguồn dữ liệu thực tế đáng tin cậy đã được xác thực trong kho dữ liệu, kèm theo liên kết trích dẫn nguồn (Citations).",
+    "explanation": "Grounding biến một mô hình ngôn ngữ tự do thành một hệ thống thông tin tin cậy cho doanh nghiệp. Mọi câu khẳng định của AI đều có thể truy ngược lại bảng biểu hoặc dòng tài liệu gốc trong DWH.",
+    "eli5": "Như việc gắn mỏ neo cho chiếc thuyền: Giữ cho chiếc thuyền AI không bị dòng nước tưởng tượng cuốn trôi đi lung tung mà luôn đứng yên trên bến đỗ dữ liệu thật của công ty.",
+    "commonMistakes": [
+      "Nghĩ Grounding là huấn luyện lại mạng nơ-ron từ đầu."
+    ]
+  },
+  {
+    "id": "ch8_q46",
+    "number": "C8.46",
+    "chapterId": "ch8",
+    "topic": "data-storytelling",
+    "type": "theory",
+    "prompt": "Khi thiết kế một Executive Dashboard cho Tổng Giám đốc (CEO), nguyên tắc 'Visual Hierarchy' (Phân cấp thị giác) được áp dụng như thế nào?",
+    "answer": "Đặt các chỉ số tài chính sống còn (KPIs/North Star Metrics) ở vị trí trên cùng bên trái với kích thước lớn; tiếp theo là biểu đồ xu hướng chính; và đặt các chi tiết phụ trợ ở phía dưới.",
+    "explanation": "Mắt người đọc theo quy tắc hình chữ F hoặc chữ Z (từ trên xuống dưới, từ trái qua phải). Phân cấp thị giác dẫn dắt mắt lãnh đạo nhìn ngay vào sức khỏe tổng thể doanh nghiệp trước khi đi vào chi tiết.",
+    "eli5": "Cái quan trọng nhất (như tốc độ xe và mức xăng) phải hiện to rõ ngay trước mặt tài xế; các thông số phụ (như nhiệt độ điều hòa) để ở góc dưới.",
+    "commonMistakes": [
+      "Đặt các bảng số liệu chi tiết vụn vặt lên ngay đầu trang Dashboard."
+    ]
+  },
+  {
+    "id": "ch8_q47",
+    "number": "C8.47",
+    "chapterId": "ch8",
+    "topic": "agentic-bi",
+    "type": "theory",
+    "prompt": "Khái niệm 'Human-in-the-loop' (HITL) vẫn giữ vai trò thiết yếu như thế nào trong kỷ nguyên Agentic BI tự hành?",
+    "answer": "Đối với các hành động chiến lược có tính rủi ro cao (như duyệt ngân sách hàng chục tỷ, sa thải nhân sự), AI Agent chỉ lập phương án và khuyến nghị; quyền phê duyệt thực thi cuối cùng vẫn bắt buộc thuộc về con người.",
+    "explanation": "Dù AI Agent có khả năng tự trị cao đến đâu, nguyên tắc quản trị và pháp lý (như EU AI Act) bắt buộc phải có sự kiểm duyệt của con người đối với các quyết định then chốt, tránh thảm họa vận hành khi mô hình gặp trường hợp ngoại lệ.",
+    "eli5": "Dù máy bay có chế độ lái tự động hiện đại đến mấy, khi hạ cánh khẩn cấp xuống biển vẫn cần cơ trưởng bằng xương bằng thịt đưa ra quyết định.",
+    "commonMistakes": [
+      "Cho rằng Agentic BI có nghĩa là loại bỏ hoàn toàn con người khỏi mọi quyết định quản trị."
+    ]
+  },
+  {
+    "id": "ch8_q48",
+    "number": "C8.48",
+    "chapterId": "ch8",
+    "topic": "unstructured-data",
+    "type": "theory",
+    "prompt": "Tại sao việc tích hợp mô hình Multimodal AI (như Gemini) trực tiếp vào Kho dữ liệu đám mây lại tạo nên bước nhảy vọt so với các giải pháp AI độc lập?",
+    "answer": "Vì nó cho phép kết hợp và phân tích đồng thời cả dữ liệu số có cấu trúc (Doanh số, Tồn kho) với dữ liệu phi cấu trúc (Hình ảnh sản phẩm, Hóa đơn quét) trong cùng một câu lệnh SQL duy nhất mà không cần ETL.",
+    "explanation": "Trước đây, xử lý ảnh cần cụm server riêng, sau đó xuất kết quả nạp vào DWH. Multimodal AI nhúng trực tiếp trong DWH cho phép viết SQL đối chiếu: 'Tìm những hóa đơn có ảnh chụp không khớp với số tiền nhập trong hệ thống kế toán'.",
+    "eli5": "Trước đây muốn kiểm tra hóa đơn phải nhờ một người xem ảnh riêng rồi một người dò sổ sách riêng; nay máy tính vừa mở ảnh vừa soi sổ sách kế toán trong một cái chớp mắt.",
+    "commonMistakes": [
+      "Nghĩ rằng Multimodal AI chỉ có thể chạy trên ứng dụng di động độc lập."
+    ]
+  },
+  {
+    "id": "ch8_q49",
+    "number": "C8.49",
+    "chapterId": "ch8",
+    "topic": "streaming",
+    "type": "theory",
+    "prompt": "Khái niệm 'Event-Driven Architecture' (Kiến trúc hướng sự kiện) liên kết với Kho dữ liệu thời gian thực như thế nào?",
+    "answer": "Mỗi hành động của người dùng (như click chuột, thanh toán, đổi trạng thái) được phát đi dưới dạng một Event vào luồng dữ liệu; DWH liên tục nạp và phân tích luồng event này để kích hoạt hành động phản hồi tức thời.",
+    "explanation": "Thay vì cập nhật trạng thái tĩnh theo chu kỳ, kiến trúc hướng sự kiện biến dòng đời dữ liệu thành một chuỗi phim liên tục. DWH trở thành trung tâm phản ứng nhanh của doanh nghiệp số.",
+    "eli5": "Thay vì cuối ngày nhân viên gom một xấp hóa đơn nộp lên bàn giám đốc, mỗi khi có khách mua một cây kem, chuông báo động ở phòng kế toán reo lên ngay lập tức.",
+    "commonMistakes": [
+      "Coi Event-Driven Architecture chỉ là một dạng lưu trữ file nén định kỳ."
+    ]
+  },
+  {
+    "id": "ch8_q50",
+    "number": "C8.50",
+    "chapterId": "ch8",
+    "topic": "conclusion",
+    "type": "theory",
+    "prompt": "Tổng kết bức tranh toàn cảnh xuyên suốt 8 chương môn học 'Nhà kho dữ liệu và Tích hợp': Xu hướng chuyển dịch cốt lõi của ngành dữ liệu trong kỷ nguyên AI là gì?",
+    "answer": "Chuyển dịch từ 'Lưu trữ dữ liệu tĩnh để báo cáo quá khứ' sang 'Hệ sinh thái AI-Native Lakehouse hợp nhất, xử lý thời gian thực, tự động hóa toàn diện từ Ingestion đến Insights và hành động thông minh'.",
+    "explanation": "Qua 8 chương học: Bắt đầu từ sự tiến hóa của RDBMS sang Cloud Data Warehouse, kiến trúc Medallion, ETL/ELT hiện đại, chất lượng dữ liệu, khai phá luật kết hợp, In-Database Machine Learning, Quản trị an toàn dữ liệu và kết thúc ở Generative & Agentic BI. Dữ liệu giờ đây không chỉ là sổ sách lưu trữ mà là động cơ điều khiển toàn bộ trí tuệ tự hành của doanh nghiệp tương lai.",
+    "eli5": "Từ một kho chứa giấy tờ bụi bặm trong tầng hầm để thỉnh thoảng lục lại xem quá khứ, Nhà kho dữ liệu đã lột xác thành bộ não siêu máy tính chỉ huy con tàu vũ trụ doanh nghiệp bay vào kỷ nguyên AI.",
+    "commonMistakes": [
+      "Nghĩ rằng môn học chỉ dạy cách thiết kế lược đồ hình sao Star Schema cho báo cáo Excel."
+    ]
+  }
+]

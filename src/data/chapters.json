@@ -2752,45 +2752,336 @@
   },
   {
     "id": "ch8",
-    "title": "Chương 8: Blockchain, Vector Search và Đạo luật AI Act",
+    "title": "Chương 8: Generative BI & AI-Driven Insights",
     "order": 8,
     "objectives": [
-      "Hiểu bản chất dữ liệu thô trên Blockchain và kỹ thuật trích xuất",
-      "Chỉ mục IVFFLAT trong Vector Search",
-      "Bảo mật Column-level Masking (CLM)",
-      "4 cấp độ rủi ro trong Đạo luật AI Act của EU",
-      "Truy vấn nhiều cấp và phân tích đa chiều"
+      "Nắm vững sự chuyển dịch từ Phân tích mô tả (Descriptive) sang Phân tích hành động (Actionable Analytics)",
+      "Làm chủ kỹ thuật khai thác dữ liệu phi cấu trúc trong DWH với BigQuery Object Tables & Multimodal AI",
+      "Thành thạo nguyên lý Embeddings, độ đo Cosine Similarity và chỉ mục Vector IVFFLAT (Inverted File Flat)",
+      "Hiểu sâu kiến trúc RAG (Retrieval-Augmented Generation) 4 bước và cơ chế khử ảo giác (Hallucination)",
+      "Thực hành Generative BI, giao diện Chat-with-your-data và luồng Text-to-SQL kết hợp Semantic Layer",
+      "Ứng dụng phân tích dữ liệu luồng (Streaming Analytics) với Apache Kafka và ra quyết định tức thời Zero Latency",
+      "Làm chủ nghệ thuật Data Storytelling 4 bước (Bối cảnh - Vấn đề - Giải pháp - Hành động) trên Dashboard thông minh",
+      "Định hướng tương lai Trí tuệ Tự hành (Agentic BI giai đoạn 2025-2030) và các Chuyên viên phân tích tự trị"
     ],
     "lessons": [
       {
         "id": "les-8-1",
-        "title": "Bài 1: Phân tích dữ liệu Blockchain và Vector Search",
-        "status": "empty",
-        "sections": [],
+        "title": "Bài 1: Sự chuyển dịch từ Phân tích mô tả sang Phân tích hành động (Actionable Analytics)",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững 4 cấp độ trưởng thành phân tích dữ liệu: Descriptive -> Diagnostic -> Predictive -> Prescriptive",
+              "Phân biệt hạn chế của phân tích truyền thống (dữ liệu tĩnh, độ trễ cao) và ưu thế của Actionable Analytics",
+              "Hiểu nguyên lý nhúng trí tuệ nhân tạo (BigQuery ML) vào kho dữ liệu để đưa ra quyết định tại chỗ",
+              "Định hướng tư duy chuyển đổi số: Biến Insights thành hành động kinh doanh tức thì"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Sự chuyển dịch sang Phân tích mô tả hành động (Slide 3-4)\nTrong kỷ nguyên số, dữ liệu không chỉ được dùng để tổng kết quá khứ mà trở thành **động cơ điều khiển hành động tương lai**:\n- **Phân tích truyền thống (Descriptive Analytics)**:\n  - Tập trung trả lời câu hỏi: *\"Điều gì đã xảy ra?\"*.\n  - Báo cáo dữ liệu tĩnh, độ trễ cao theo chu kỳ tháng/quý, phụ thuộc hoàn toàn vào con người để đọc và tự ra quyết định.\n- **Phân tích hiện đại (Actionable Analytics / Prescriptive Analytics)**:\n  - Ứng dụng AI/ML trực tiếp tại kho dữ liệu (như BigQuery ML, Snowflake Cortex) để:\n    - **Dự báo (Predict)**: *\"Điều gì sẽ xảy ra tiếp theo?\"*\n    - **Đề xuất hành động (Prescribe)**: *\"Cần hành động cụ thể gì ngay bây giờ để đạt hiệu quả tối ưu?\"*\n  - Biến Insights thành giá trị kinh doanh và hành động tức thì tại thời điểm dữ liệu phát sinh.\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-indigo-400 mb-3 text-center\">\n    📊 BỐN CẤP ĐỘ TRƯỞNG THÀNH PHÂN TÍCH DỮ LIỆU: TỪ DESCRIPTIVE ĐẾN ACTIONABLE (SLIDE 3-4)\n  </div>\n  <svg viewBox=\"0 0 800 240\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Level 1: Descriptive -->\n    <rect x=\"20\" y=\"140\" width=\"170\" height=\"80\" rx=\"12\" fill=\"#1e293b\" stroke=\"#64748b\" stroke-width=\"1.5\"/>\n    <text x=\"105\" y=\"165\" fill=\"#94a3b8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">1. DESCRIPTIVE</text>\n    <text x=\"105\" y=\"185\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">\"Điều gì đã xảy ra?\"</text>\n    <text x=\"105\" y=\"205\" fill=\"#64748b\" font-size=\"9\" text-anchor=\"middle\">Báo cáo quá khứ, Dữ liệu tĩnh</text>\n    <!-- Arrow 1 -->\n    <line x1=\"190\" y1=\"170\" x2=\"215\" y2=\"150\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Level 2: Diagnostic -->\n    <rect x=\"215\" y=\"105\" width=\"170\" height=\"85\" rx=\"12\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"1.5\"/>\n    <text x=\"300\" y=\"130\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">2. DIAGNOSTIC</text>\n    <text x=\"300\" y=\"150\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">\"Tại sao nó xảy ra?\"</text>\n    <text x=\"300\" y=\"170\" fill=\"#93c5fd\" font-size=\"9\" text-anchor=\"middle\">Khoan sâu (Drill-down), Root cause</text>\n    <!-- Arrow 2 -->\n    <line x1=\"385\" y1=\"135\" x2=\"410\" y2=\"115\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Level 3: Predictive -->\n    <rect x=\"410\" y=\"70\" width=\"170\" height=\"90\" rx=\"12\" fill=\"#1e293b\" stroke=\"#a855f7\" stroke-width=\"1.5\"/>\n    <text x=\"495\" y=\"95\" fill=\"#c084fc\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">3. PREDICTIVE</text>\n    <text x=\"495\" y=\"115\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">\"Điều gì sẽ xảy ra?\"</text>\n    <text x=\"495\" y=\"135\" fill=\"#e9d5ff\" font-size=\"9\" text-anchor=\"middle\">Mô hình Machine Learning</text>\n    <!-- Arrow 3 -->\n    <line x1=\"580\" y1=\"100\" x2=\"605\" y2=\"80\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <!-- Level 4: Actionable / Prescriptive -->\n    <rect x=\"605\" y=\"30\" width=\"175\" height=\"100\" rx=\"14\" fill=\"#064e3b\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <text x=\"692\" y=\"55\" fill=\"#34d399\" font-size=\"11.5\" font-weight=\"bold\" text-anchor=\"middle\">4. ACTIONABLE (PRESCRIPTIVE)</text>\n    <text x=\"692\" y=\"75\" fill=\"#ffffff\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">\"Cần hành động gì ngay?\"</text>\n    <text x=\"692\" y=\"95\" fill=\"#a7f3d0\" font-size=\"9\" text-anchor=\"middle\">BigQuery ML, Cortex, AI Agents</text>\n    <text x=\"692\" y=\"115\" fill=\"#6ee7b7\" font-size=\"8.5\" text-anchor=\"middle\">⚡ Tối ưu & Tự động ra quyết định</text>\n  </svg>\n</div>\n\n---\n\n### 2. Bốn cấp độ trong thang đo trưởng thành phân tích dữ liệu\n1. **Descriptive (Mô tả)**: Trực quan hóa số liệu lịch sử (Doanh thu tháng trước giảm 15%).\n2. **Diagnostic (Chẩn đoán)**: Phân tích nguyên nhân gốc rễ (Doanh thu giảm do đứt gãy nguồn cung tại chi nhánh Đà Nẵng).\n3. **Predictive (Dự báo)**: Mô hình học máy dự báo tương lai (Nếu không bổ sung hàng, chi nhánh sẽ hết hàng trong 4 ngày tới).\n4. **Actionable / Prescriptive (Chỉ định hành động)**: Tự động đề xuất và kích hoạt hành động (Tự động tạo lệnh điều chuyển 500 thùng hàng từ kho TP.HCM ra Đà Nẵng)."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Ví dụ thực tế: Chuyển dịch phân tích trong quản trị bán lẻ\n- **Cách làm cũ (Descriptive)**: Cuối tháng, nhân viên xuất file Excel tổng hợp các đơn hàng bị hủy, giám đốc kinh doanh thở dài nhìn con số đơn hủy tăng 20%.\n- **Cách làm mới (Actionable Analytics)**:\n  - Mô hình In-Database ML tính điểm rủi ro hủy đơn của từng khách hàng ngay khi họ đang thao tác trên website.\n  - Khi phát hiện khách hàng có điểm rủi ro bỏ đơn cao, hệ thống tự động kích hoạt mã giảm giá hoặc mở khung chat hỗ trợ trực tiếp.\n  - **Kết quả**: Giảm 40% tỷ lệ hủy đơn trước khi giao dịch bị bỏ lỡ."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo làm bài thi\n- **Descriptive Analytics**: Trả lời câu hỏi *\"Điều gì đã xảy ra?\"* (quá khứ).\n- **Actionable Analytics**: Ứng dụng AI để **Predict** (dự báo) và **Prescribe** (chỉ định hành động tức thì).\n- Nền tảng cốt lõi: Ứng dụng In-Database AI như BigQuery ML để phân tích tại chỗ."
+          }
+        ],
         "miniQuiz": [
-          "q35",
-          "q36"
+          "ch8_q01"
         ],
         "relatedQuestionIds": [
-          "q35",
-          "q36"
+          "ch8_q01",
+          "ch8_q43",
+          "ch8_q50"
         ],
         "labIds": []
       },
       {
         "id": "les-8-2",
-        "title": "Bài 2: Quản trị bảo mật CLM, AI Act và Khai phá đa cấp",
-        "status": "empty",
-        "sections": [],
+        "title": "Bài 2: Khai thác Dữ liệu phi cấu trúc trong DWH: BigQuery Object Tables & Multimodal AI",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu thực trạng 80% dữ liệu doanh nghiệp tồn tại dưới dạng phi cấu trúc (Unstructured Data)",
+              "Làm chủ tính năng BigQuery Object Tables phân tích hình ảnh, PDF, audio, video qua SQL",
+              "Nắm vững lợi ích Zero Data Movement: Bảo mật tập trung và quản trị thống nhất",
+              "Ứng dụng chuyển đổi dữ liệu từ không cấu trúc thành bán cấu trúc (JSON) và bảng quan hệ"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Mở khóa 80% dữ liệu tiềm ẩn của doanh nghiệp (Slide 5)\n- **Thực trạng**: Các bảng số liệu có cấu trúc truyền thống chỉ chiếm khoảng **20%** thông tin doanh nghiệp. Hơn **80%** dữ liệu giá trị còn lại bị chôn vùi trong các tài liệu phi cấu trúc: hợp đồng pháp lý PDF, hóa đơn quét, email chăm sóc khách hàng, ảnh kiểm định sản phẩm, video an ninh và ghi âm cuộc gọi.\n- **Giải pháp BigQuery Object Tables**:\n  - Cho phép kho dữ liệu tạo các bảng ảo (*Object Tables*) liên kết trực tiếp với các tệp tin lưu trữ trên Cloud Storage (GCS, S3).\n  - Sử dụng trực tiếp câu lệnh SQL chuẩn để quét, lọc và truyền dữ liệu phi cấu trúc vào các mô hình **Multimodal AI** (như Google Gemini, Vertex AI).\n- **Hai lợi ích sống còn**:\n  1. **Bảo mật tập trung & Quản trị thống nhất**: Toàn bộ chính sách phân quyền IAM, CLM, RLS của DWH được áp dụng đồng bộ cho cả dữ liệu phi cấu trúc.\n  2. **Zero Data Movement**: Dữ liệu nằm yên tại chỗ, không cần sao chép tốn dung lượng băng thông ra ngoài hệ thống."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Ví dụ câu lệnh SQL trích xuất tri thức từ hóa đơn PDF bằng Object Tables\n```sql\n-- Tạo Object Table liên kết tới thư mục chứa hóa đơn PDF trên Cloud Storage\nCREATE OR REPLACE EXTERNAL TABLE finance_dw.invoices_object_table\nWITH CONNECTION `us.my_cloud_connection`\nOPTIONS (\n  object_metadata = 'SIMPLE',\n  uris = ['gs://company-invoices-vault/*.pdf']\n);\n\n-- Phân tích và trích xuất số tiền hóa đơn bằng mô hình Gemini nhúng trực tiếp trong BigQuery\nSELECT \n  uri,\n  ML.GENERATE_TEXT(\n    MODEL `finance_dw.gemini_pro_model`,\n    TABLE finance_dw.invoices_object_table,\n    STRUCT('Trích xuất Tổng số tiền thanh toán và Tên nhà cung cấp dưới dạng JSON' AS prompt)\n  ) AS extracted_data\nFROM finance_dw.invoices_object_table;\n```"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Nghiên cứu khoa học tham chiếu (Slide 8-9)\nNghiên cứu *'Grouping and Predicting Information Propagation on Social Networks Based on Hierarchical Trees and Sequence Prediction'* (2024) chứng minh dữ liệu phi cấu trúc và bán cấu trúc trên mạng xã hội có thể được tổ chức thành các cây phân cấp để dự đoán chính xác quy luật lan truyền tri thức."
+          }
+        ],
         "miniQuiz": [
-          "q37",
-          "q38",
-          "q39"
+          "ch8_q02"
         ],
         "relatedQuestionIds": [
-          "q37",
-          "q38",
-          "q39"
+          "ch8_q02",
+          "ch8_q03",
+          "ch8_q04",
+          "ch8_q05",
+          "ch8_q33",
+          "ch8_q48"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-8-3",
+        "title": "Bài 3: Embeddings & Vector Search: Chỉ mục IVFFLAT và Tìm kiếm Semantic Search",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Định nghĩa Embeddings và cách chuyển đổi văn bản/hình ảnh thành vector số thực đa chiều",
+              "Làm chủ cấu trúc và nguyên lý phân cụm Voronoi của chỉ mục IVFFLAT (Inverted File Flat)",
+              "Phân biệt 3 độ đo khoảng cách vector: Cosine Similarity, Dot Product, Euclidean Distance",
+              "Thực hành giải bài toán tính toán độ tương đồng Cosine giữa hai vector đặc trưng"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Vector Embeddings & Chỉ mục IVFFLAT (Slide 10, câu 36 đề cương)\n- **Embeddings**: Quá trình chuyển đổi văn bản, hình ảnh thành chuỗi số thực (*Vector $n$ chiều*). Các khái niệm có ngữ nghĩa tương đồng sẽ nằm gần nhau trong không gian vector.\n- **Chỉ mục IVFFLAT (Inverted File Flat)**:\n  - Khi cơ sở dữ liệu có hàng triệu vector, việc so sánh tuần tự vét cạn (*Brute-force*) sẽ cực kỳ chậm chạp.\n  - IVFFLAT sử dụng thuật toán phân cụm (**K-Means**) để chia không gian vector thành $k$ cụm lân cận (**Voronoi Cells**).\n  - Khi có câu truy vấn $Q$, hệ thống chỉ cần tìm tâm cụm gần nhất, sau đó quét các vector trong cụm đó.\n  - **Hiệu năng**: Giúp tìm kiếm hàng triệu bản ghi tương đồng chỉ trong **vài mili-giây** (*Sub-second response time*).\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-sky-400 mb-3 text-center\">\n    🧭 VECTOR SEARCH & CƠ CHẾ CHỈ MỤC IVFFLAT (INVERTED FILE FLAT) (SLIDE 10, CÂU 36 ĐỀ CƯƠNG)\n  </div>\n  <svg viewBox=\"0 0 820 260\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Panel 1: Voronoi Partitioning -->\n    <rect x=\"15\" y=\"15\" width=\"450\" height=\"230\" rx=\"14\" fill=\"#0f172a\" stroke=\"#38bdf8\" stroke-width=\"1.5\"/>\n    <text x=\"240\" y=\"38\" fill=\"#38bdf8\" font-size=\"11.5\" font-weight=\"bold\" text-anchor=\"middle\">KHÔNG GIAN VECTOR & PHÂN CỤM VORONOI (IVFFLAT)</text>\n    <!-- Cluster 1 -->\n    <circle cx=\"120\" cy=\"110\" r=\"65\" fill=\"#1e293b\" stroke=\"#64748b\" stroke-dasharray=\"3,3\"/>\n    <circle cx=\"120\" cy=\"110\" r=\"7\" fill=\"#f59e0b\"/>\n    <text x=\"120\" y=\"98\" fill=\"#f59e0b\" font-size=\"9\" font-weight=\"bold\" text-anchor=\"middle\">Cụm 1 (C1)</text>\n    <circle cx=\"100\" cy=\"130\" r=\"3\" fill=\"#cbd5e1\"/><circle cx=\"140\" cy=\"120\" r=\"3\" fill=\"#cbd5e1\"/><circle cx=\"110\" cy=\"85\" r=\"3\" fill=\"#cbd5e1\"/>\n    <!-- Cluster 2 (Target) -->\n    <circle cx=\"260\" cy=\"150\" r=\"70\" fill=\"#064e3b\" fill-opacity=\"0.3\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <circle cx=\"260\" cy=\"150\" r=\"7\" fill=\"#10b981\"/>\n    <text x=\"260\" y=\"138\" fill=\"#34d399\" font-size=\"9\" font-weight=\"bold\" text-anchor=\"middle\">Cụm 2 (Cụm gần nhất)</text>\n    <circle cx=\"240\" cy=\"165\" r=\"3\" fill=\"#6ee7b7\"/><circle cx=\"280\" cy=\"140\" r=\"3\" fill=\"#6ee7b7\"/><circle cx=\"255\" cy=\"180\" r=\"3\" fill=\"#6ee7b7\"/>\n    <!-- Query Vector Q -->\n    <circle cx=\"295\" cy=\"125\" r=\"8\" fill=\"#ef4444\" stroke=\"#ffffff\" stroke-width=\"2\"/>\n    <text x=\"315\" y=\"125\" fill=\"#f87171\" font-size=\"10\" font-weight=\"bold\">Vector Q (Câu hỏi)</text>\n    <!-- Line Q to C2 -->\n    <line x1=\"295\" y1=\"125\" x2=\"260\" y2=\"150\" stroke=\"#ef4444\" stroke-width=\"1.5\" stroke-dasharray=\"2,2\"/>\n    <!-- Cluster 3 -->\n    <circle cx=\"360\" cy=\"80\" r=\"55\" fill=\"#1e293b\" stroke=\"#64748b\" stroke-dasharray=\"3,3\"/>\n    <circle cx=\"360\" cy=\"80\" r=\"7\" fill=\"#818cf8\"/>\n    <text x=\"360\" y=\"68\" fill=\"#818cf8\" font-size=\"9\" font-weight=\"bold\" text-anchor=\"middle\">Cụm 3 (C3)</text>\n    <circle cx=\"380\" cy=\"95\" r=\"3\" fill=\"#cbd5e1\"/><circle cx=\"340\" cy=\"75\" r=\"3\" fill=\"#cbd5e1\"/>\n    <text x=\"240\" y=\"230\" fill=\"#94a3b8\" font-size=\"9.5\" text-anchor=\"middle\">⚡ Chỉ quét vector trong Cụm 2 -> Tốc độ vài mili-giây cho triệu bản ghi</text>\n    <!-- Panel 2: Metric Explanation -->\n    <rect x=\"480\" y=\"15\" width=\"325\" height=\"230\" rx=\"14\" fill=\"#0f172a\" stroke=\"#818cf8\" stroke-width=\"1.5\"/>\n    <text x=\"642\" y=\"38\" fill=\"#a5b4fc\" font-size=\"11.5\" font-weight=\"bold\" text-anchor=\"middle\">3 ĐỘ ĐO KHOẢNG CÁCH VECTOR</text>\n    <!-- Metric 1: Cosine -->\n    <rect x=\"495\" y=\"55\" width=\"295\" height=\"48\" rx=\"8\" fill=\"#1e293b\"/>\n    <text x=\"510\" y=\"73\" fill=\"#38bdf8\" font-size=\"10\" font-weight=\"bold\">1. Cosine Similarity (Góc cosin)</text>\n    <text x=\"510\" y=\"90\" fill=\"#cbd5e1\" font-size=\"8.5\">Đo hướng ngữ nghĩa, không phụ thuộc độ dài văn bản</text>\n    <!-- Metric 2: Dot Product -->\n    <rect x=\"495\" y=\"112\" width=\"295\" height=\"48\" rx=\"8\" fill=\"#1e293b\"/>\n    <text x=\"510\" y=\"130\" fill=\"#34d399\" font-size=\"10\" font-weight=\"bold\">2. Dot Product (Tích vô hướng)</text>\n    <text x=\"510\" y=\"147\" fill=\"#cbd5e1\" font-size=\"8.5\">Tốc độ siêu nhanh trên GPU khi vector chuẩn hóa ||v||=1</text>\n    <!-- Metric 3: L2 Euclidean -->\n    <rect x=\"495\" y=\"169\" width=\"295\" height=\"48\" rx=\"8\" fill=\"#1e293b\"/>\n    <text x=\"510\" y=\"187\" fill=\"#facc15\" font-size=\"10\" font-weight=\"bold\">3. L2 Euclidean Distance (Khoảng cách)</text>\n    <text x=\"510\" y=\"204\" fill=\"#cbd5e1\" font-size=\"8.5\">Đo khoảng cách vật lý thẳng giữa 2 điểm tọa độ</text>\n  </svg>\n</div>\n\n---\n\n### 2. Ba độ đo khoảng cách vector phổ biến\n1. **Cosine Similarity (Độ tương đồng Cosine)**:\n   $$\\cos(u, v) = \\frac{u \\cdot v}{\\|u\\| \\|v\\|} = \\frac{\\sum u_i v_i}{\\sqrt{\\sum u_i^2} \\sqrt{\\sum v_i^2}}$$\n   - Đo góc giữa 2 vector, nhận giá trị từ $[-1, 1]$. Không phụ thuộc vào độ dài văn bản ngắn hay dài.\n2. **Dot Product (Tích vô hướng)**:\n   $$u \\cdot v = \\sum u_i v_i$$\n   - Khi các vector đã được chuẩn hóa độ dài về 1 ($\\|u\\|=\\|v\\|=1$), Dot Product bằng chính Cosine Similarity nhưng có tốc độ tính toán siêu nhanh trên GPU.\n3. **Euclidean Distance (Khoảng cách L2)**:\n   $$d(u, v) = \\sqrt{\\sum (u_i - v_i)^2}$$\n   - Đo khoảng cách vật lý đường thẳng giữa hai điểm trong không gian."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Bài toán tính toán mẫu Cosine Similarity\nCho vector biểu diễn sản phẩm $A = [1, 2, 3]$ và sản phẩm $B = [2, 4, 6]$.\n- **Tích vô hướng ($A \\cdot B$)**:\n  $$A \\cdot B = 1 \\times 2 + 2 \\times 4 + 3 \\times 6 = 2 + 8 + 18 = 28$$\n- **Độ dài vector ($L_2$ Norm)**:\n  $$\\|A\\| = \\sqrt{1^2 + 2^2 + 3^2} = \\sqrt{14}$$\n  $$\\|B\\| = \\sqrt{2^2 + 4^2 + 6^2} = \\sqrt{4 + 16 + 36} = \\sqrt{56} = 2\\sqrt{14}$$\n- **Tính Cosine Similarity**:\n  $$\\cos(A, B) = \\frac{28}{\\sqrt{14} \\times 2\\sqrt{14}} = \\frac{28}{2 \\times 14} = \\frac{28}{28} = \\mathbf{1.0}$$\n- **Kết luận**: Hai sản phẩm có độ tương đồng tuyệt đối (100% cùng hướng ngữ nghĩa)."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo làm bài thi\n- **IVFFLAT** (Inverted File Flat) dùng thuật toán **K-Means** chia không gian thành các cụm (Voronoi cells) để tìm kiếm xấp xỉ nhanh (ANN).\n- **Semantic Match**: Tìm theo ý nghĩa thay vì từ khóa chính xác (Exact match).\n- Vector chuẩn hóa thì **Dot Product** tính toán nhanh nhất."
+          }
+        ],
+        "miniQuiz": [
+          "ch8_q07"
+        ],
+        "relatedQuestionIds": [
+          "ch8_q06",
+          "ch8_q07",
+          "ch8_q08",
+          "ch8_q09",
+          "ch8_q30",
+          "ch8_q31",
+          "ch8_q32"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-8-4",
+        "title": "Bài 4: Kiến trúc RAG cho Dữ liệu Doanh nghiệp: Khử hiện tượng ảo giác (Hallucination)",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu bản chất hiện tượng ảo giác (Hallucination) của các mô hình ngôn ngữ lớn (LLMs)",
+              "Làm chủ kiến trúc RAG (Retrieval-Augmented Generation) 4 bước trong DWH",
+              "Nắm vững kỹ thuật băm nhỏ tài liệu (Chunking) tối ưu hóa độ dài ngữ cảnh",
+              "Ứng dụng RAG giải quyết các bài toán Chatbot HR, tra cứu SOP và hỗ trợ khách hàng đa kênh"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Kiến trúc RAG và Giải pháp khử ảo giác (Slide 11-12)\n- **Vấn đề Ảo giác (AI Hallucination)**: Các mô hình LLM công cộng (như ChatGPT, Gemini độc lập) có xu hướng tự tin đưa ra những câu trả lời sai lệch hoặc bịa số liệu khi gặp các câu hỏi đặc thù về nội bộ công ty.\n- **Giải pháp RAG (Retrieval-Augmented Generation)**:\n  - Ép mô hình chỉ được phép trả lời dựa trên các đoạn tài liệu nội bộ đã được kiểm chứng (**Grounded on Internal Data**).\n  - Nếu trong kho dữ liệu không có thông tin, hệ thống sẽ trả về: *\"Không tìm thấy thông tin trong dữ liệu nội bộ\"* thay vì tự bịa câu trả lời.\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3 text-center\">\n    🔄 KIẾN TRÚC RAG (RETRIEVAL-AUGMENTED GENERATION) CHO BUSINESS DATA (SLIDE 11-12)\n  </div>\n  <svg viewBox=\"0 0 820 240\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Step 1: Ingestion -->\n    <rect x=\"15\" y=\"45\" width=\"165\" height=\"100\" rx=\"12\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"1.5\"/>\n    <text x=\"97\" y=\"70\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">1. INGESTION</text>\n    <text x=\"97\" y=\"92\" fill=\"#f8fafc\" font-size=\"9.5\" text-anchor=\"middle\">Tài liệu, Hợp đồng PDF</text>\n    <text x=\"97\" y=\"110\" fill=\"#f8fafc\" font-size=\"9.5\" text-anchor=\"middle\">BigQuery Object Tables</text>\n    <text x=\"97\" y=\"128\" fill=\"#94a3b8\" font-size=\"8.5\" text-anchor=\"middle\">Zero Data Movement</text>\n    <!-- Arrow 1 -->\n    <line x1=\"180\" y1=\"95\" x2=\"220\" y2=\"95\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Step 2: Embedding -->\n    <rect x=\"225\" y=\"45\" width=\"165\" height=\"100\" rx=\"12\" fill=\"#1e293b\" stroke=\"#818cf8\" stroke-width=\"1.5\"/>\n    <text x=\"307\" y=\"70\" fill=\"#a5b4fc\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">2. EMBEDDING</text>\n    <text x=\"307\" y=\"92\" fill=\"#f8fafc\" font-size=\"9.5\" text-anchor=\"middle\">Băm nhỏ đoạn (Chunking)</text>\n    <text x=\"307\" y=\"110\" fill=\"#f8fafc\" font-size=\"9.5\" text-anchor=\"middle\">Sinh Vector Embedding</text>\n    <text x=\"307\" y=\"128\" fill=\"#94a3b8\" font-size=\"8.5\" text-anchor=\"middle\">Lập chỉ mục IVFFLAT</text>\n    <!-- Arrow 2 -->\n    <line x1=\"390\" y1=\"95\" x2=\"430\" y2=\"95\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Step 3: Retrieval -->\n    <rect x=\"435\" y=\"45\" width=\"165\" height=\"100\" rx=\"12\" fill=\"#1e293b\" stroke=\"#eab308\" stroke-width=\"1.5\"/>\n    <text x=\"517\" y=\"70\" fill=\"#facc15\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">3. RETRIEVAL</text>\n    <text x=\"517\" y=\"92\" fill=\"#f8fafc\" font-size=\"9.5\" text-anchor=\"middle\">Người dùng đặt câu hỏi</text>\n    <text x=\"517\" y=\"110\" fill=\"#f8fafc\" font-size=\"9.5\" text-anchor=\"middle\">Tìm kiếm Vector tương đồng</text>\n    <text x=\"517\" y=\"128\" fill=\"#94a3b8\" font-size=\"8.5\" text-anchor=\"middle\">Rút trích ngữ cảnh (Context)</text>\n    <!-- Arrow 3 -->\n    <line x1=\"600\" y1=\"95\" x2=\"640\" y2=\"95\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Step 4: Generation -->\n    <rect x=\"645\" y=\"45\" width=\"160\" height=\"100\" rx=\"12\" fill=\"#064e3b\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <text x=\"725\" y=\"70\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">4. GENERATION</text>\n    <text x=\"725\" y=\"92\" fill=\"#ffffff\" font-size=\"9.5\" text-anchor=\"middle\">LLM (Gemini / Claude)</text>\n    <text x=\"725\" y=\"110\" fill=\"#a7f3d0\" font-size=\"9.5\" text-anchor=\"middle\">Trả lời kèm Trích dẫn</text>\n    <text x=\"725\" y=\"128\" fill=\"#34d399\" font-size=\"8.5\" font-weight=\"bold\" text-anchor=\"middle\">KHỬ HOÀN TOÀN ẢO GIÁC</text>\n    <!-- Bottom banner -->\n    <rect x=\"15\" y=\"165\" width=\"790\" height=\"45\" rx=\"10\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"1\"/>\n    <text x=\"410\" y=\"192\" fill=\"#34d399\" font-size=\"10.5\" font-weight=\"bold\" text-anchor=\"middle\">🛡️ AI THEO NGỮ CẢNH: Chỉ được dùng dữ liệu nội bộ đã kiểm chứng để trả lời (Grounded AI)</text>\n  </svg>\n</div>\n\n---\n\n### 2. Bốn bước vận hành chuẩn của kiến trúc RAG\n1. **Ingestion**: Nạp tài liệu hợp đồng, văn bản, quy trình nội bộ vào Cloud DWH / Object Tables.\n2. **Embedding**: Băm nhỏ tài liệu thành từng đoạn ngắn (**Chunks**) và chuyển hóa thành Vector Embeddings lưu trữ trong Vector Index.\n3. **Retrieval**: Khi người dùng đặt câu hỏi, hệ thống dùng Vector Search trích xuất các đoạn văn bản có độ tương đồng ngữ nghĩa cao nhất.\n4. **Generation**: Đưa câu hỏi kèm các đoạn văn bản vừa tìm được vào LLM làm ngữ cảnh (*Prompt Context*), yêu cầu LLM tổng hợp câu trả lời chính xác kèm dẫn nguồn số trang."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Ba ứng dụng tiêu biểu của RAG trong doanh nghiệp (Slide 12)\n1. **Chatbot nội bộ cho phòng Nhân sự (HR)**: Nhân viên hỏi: *\"Chính sách nghỉ phép kết hôn của công ty là mấy ngày?\"* $\\implies$ RAG trích xuất đúng Điều 15 Sổ tay nhân viên và trả lời chính xác.\n2. **Tra cứu quy trình vận hành phức tạp (SOPs)**: Kỹ sư nhà máy hỏi: *\"Quy trình xử lý sự cố rò rỉ van áp suất số 3\"* $\\implies$ Hệ thống hiển thị 4 bước xử lý khẩn cấp kèm sơ đồ.\n3. **Chăm sóc khách hàng cá nhân hóa**: Nhân viên tổng đài tra cứu nhanh toàn bộ lịch sử khiếu nại và giao dịch 3 năm của khách hàng để đưa ra phương án đền bù hợp lý."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Điểm mấu chốt cần nhớ\n- RAG không cần huấn luyện lại mô hình nền tảng (**Không cần Fine-tuning tốn kém**).\n- RAG giúp AI cập nhật kiến thức mới ngay lập tức mỗi khi tài liệu mới được nạp vào kho dữ liệu."
+          }
+        ],
+        "miniQuiz": [
+          "ch8_q11"
+        ],
+        "relatedQuestionIds": [
+          "ch8_q10",
+          "ch8_q11",
+          "ch8_q12",
+          "ch8_q13",
+          "ch8_q34",
+          "ch8_q41",
+          "ch8_q45"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-8-5",
+        "title": "Bài 5: Generative BI: Giao diện Chat-with-your-data & Luồng Text-to-SQL tự động",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu khái niệm Generative BI và xu hướng Dân chủ hóa dữ liệu (Data Democratization)",
+              "Làm chủ 3 bước Workflow của Conversational BI: Natural Query -> Auto-SQL -> Instant Insight",
+              "Nắm vững vai trò sống còn của Semantic Layer trong việc ngăn chặn LLM sinh sai câu lệnh SQL",
+              "Tích hợp BI Tools (Looker, Tableau) với Large Language Models (Gemini, GPT)"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Dân chủ hóa dữ liệu với Generative BI (Slide 13)\n- **Thực trạng**: Trước đây, các nhà quản lý kinh doanh phụ thuộc hoàn toàn vào đội ngũ Data Analyst để tạo báo cáo. Một yêu cầu chỉnh sửa bảng biểu thường mất từ vài ngày đến cả tuần.\n- **Đột phá Generative BI**:\n  - Xóa bỏ rào cản kỹ thuật về ngôn ngữ SQL: Cho phép người dùng nghiệp vụ trực tiếp tương tác theo phong cách **Chat-with-your-data**.\n  - Người dùng chỉ cần gõ câu hỏi bằng tiếng Việt hoặc tiếng Anh tự nhiên.\n  - Giảm hầu hết thời gian tạo báo cáo, giúp tổ chức đưa ra quyết định dựa trên dữ liệu (**Data-driven Decisions**) tức thì.\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-purple-400 mb-3 text-center\">\n    💬 WORKFLOW GENERATIVE BI: GIAO DIỆN CHAT-WITH-YOUR-DATA & TEXT-TO-SQL (SLIDE 13-14)\n  </div>\n  <svg viewBox=\"0 0 820 230\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Step 1: Natural Query -->\n    <rect x=\"15\" y=\"30\" width=\"220\" height=\"150\" rx=\"12\" fill=\"#1e293b\" stroke=\"#a855f7\" stroke-width=\"1.5\"/>\n    <text x=\"125\" y=\"55\" fill=\"#c084fc\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">1. NATURAL QUERY</text>\n    <rect x=\"30\" y=\"70\" width=\"190\" height=\"60\" rx=\"8\" fill=\"#0f172a\"/>\n    <text x=\"40\" y=\"92\" fill=\"#f8fafc\" font-size=\"9.5\">\"Hiển thị top 5 sản phẩm</text>\n    <text x=\"40\" y=\"108\" fill=\"#f8fafc\" font-size=\"9.5\">doanh thu cao nhất Q3\"</text>\n    <text x=\"125\" y=\"155\" fill=\"#94a3b8\" font-size=\"8.5\" text-anchor=\"middle\">Không cần biết code SQL</text>\n    <!-- Arrow 1 -->\n    <line x1=\"235\" y1=\"105\" x2=\"280\" y2=\"105\" stroke=\"#a855f7\" stroke-width=\"2\"/>\n    <!-- Step 2: Auto-SQL -->\n    <rect x=\"285\" y=\"30\" width=\"245\" height=\"150\" rx=\"12\" fill=\"#1e293b\" stroke=\"#38bdf8\" stroke-width=\"1.5\"/>\n    <text x=\"407\" y=\"55\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">2. AUTO-SQL BIÊN DỊCH</text>\n    <rect x=\"300\" y=\"70\" width=\"215\" height=\"60\" rx=\"8\" fill=\"#0f172a\"/>\n    <text x=\"310\" y=\"88\" fill=\"#38bdf8\" font-size=\"8.5\" font-family=\"monospace\">SELECT prod, SUM(rev)</text>\n    <text x=\"310\" y=\"103\" fill=\"#38bdf8\" font-size=\"8.5\" font-family=\"monospace\">FROM sales WHERE q = 3</text>\n    <text x=\"310\" y=\"118\" fill=\"#38bdf8\" font-size=\"8.5\" font-family=\"monospace\">ORDER BY 2 DESC LIMIT 5</text>\n    <text x=\"407\" y=\"155\" fill=\"#94a3b8\" font-size=\"8.5\" text-anchor=\"middle\">Semantic Layer chuẩn hóa logic</text>\n    <!-- Arrow 2 -->\n    <line x1=\"530\" y1=\"105\" x2=\"575\" y2=\"105\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <!-- Step 3: Instant Insight -->\n    <rect x=\"580\" y=\"30\" width=\"225\" height=\"150\" rx=\"12\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <text x=\"692\" y=\"55\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">3. INSTANT INSIGHT</text>\n    <!-- Mini Bar Chart -->\n    <rect x=\"610\" y=\"110\" width=\"18\" height=\"30\" fill=\"#38bdf8\" rx=\"2\"/>\n    <rect x=\"635\" y=\"90\" width=\"18\" height=\"50\" fill=\"#818cf8\" rx=\"2\"/>\n    <rect x=\"660\" y=\"70\" width=\"18\" height=\"70\" fill=\"#10b981\" rx=\"2\"/>\n    <rect x=\"685\" y=\"95\" width=\"18\" height=\"45\" fill=\"#eab308\" rx=\"2\"/>\n    <rect x=\"710\" y=\"115\" width=\"18\" height=\"25\" fill=\"#f97316\" rx=\"2\"/>\n    <text x=\"692\" y=\"160\" fill=\"#a7f3d0\" font-size=\"8.5\" text-anchor=\"middle\">Tự chọn biểu đồ & tóm tắt GenAI</text>\n    <text x=\"410\" y=\"210\" fill=\"#cbd5e1\" font-size=\"10\" text-anchor=\"middle\">⚡ Dân chủ hóa dữ liệu: Xóa bỏ rào cản kỹ thuật cho người dùng nghiệp vụ</text>\n  </svg>\n</div>\n\n---\n\n### 2. Workflow của Conversational BI / Text-to-SQL (Slide 14)\n1. **Natural Query**: Người dùng nhập câu hỏi tự nhiên: *\"Cho tôi xem top 5 sản phẩm có doanh thu cao nhất quý 3 năm nay\"*.\n2. **Auto-SQL**:\n   - LLM đọc schema của bảng kết hợp với tầng ngữ nghĩa (**Semantic Layer / Business Glossary**).\n   - Tự động biên dịch thành câu lệnh SQL chuẩn xác, tối ưu cú pháp và tuân thủ các chính sách bảo mật (RLS/CLM).\n3. **Instant Insight**:\n   - Hệ thống thực thi SQL trên kho dữ liệu DWH và tự động chọn loại biểu đồ trực quan hóa phù hợp nhất (Bar chart, Line chart) cùng đoạn tóm tắt giải thích ý nghĩa số liệu."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Tại sao Text-to-SQL bắt buộc phải có Semantic Layer? (Slide 14, 22)\nNếu chỉ đưa cấu trúc bảng vật lý thô cho LLM:\n- Cột tên là `c_rev_net_amt` $\\implies$ LLM có thể nhầm lẫn với doanh thu gộp (*Gross Revenue*) hoặc quên trừ thuế VAT.\n- Khi có **Semantic Layer** (như LookML trong Google Looker hoặc dbt MetricFlow):\n  - Định nghĩa chuẩn: `metric: net_revenue = sum(sales_amount) - sum(discount) - sum(tax)`.\n  - LLM nhìn vào Semantic Layer sẽ luôn luôn sinh ra câu lệnh SQL chính xác 100% theo quy chuẩn tài chính của doanh nghiệp."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo làm bài thi\n- 3 bước Conversational BI: **Natural Query $\\to$ Auto-SQL $\\to$ Instant Insight**.\n- Công nghệ kết hợp giữa **BI Tools** (Looker, Tableau) và **LLMs** (Gemini, ChatGPT).\n- Giúp **Dân chủ hóa dữ liệu**, ai cũng có thể tự tạo báo cáo."
+          }
+        ],
+        "miniQuiz": [
+          "ch8_q16"
+        ],
+        "relatedQuestionIds": [
+          "ch8_q14",
+          "ch8_q15",
+          "ch8_q16",
+          "ch8_q35"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-8-6",
+        "title": "Bài 6: Real-time Insights: Phân tích dữ liệu luồng với Apache Kafka & Quyết định độ trễ bằng 0",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu nguyên lý hoạt động của nền tảng xử lý luồng phân tán Apache Kafka",
+              "Nắm vững các thành phần Producer, Topic, Partition, Broker và Consumer Group",
+              "Làm chủ khái niệm Zero Latency (Độ trễ bằng 0) tại điểm chạm người dùng",
+              "Phân tích ứng dụng Streaming trong phát hiện gian lận thẻ và ngăn chặn bỏ giỏ hàng (Cart Abandonment)"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Phân tích dữ liệu luồng (Streaming Analytics) (Slide 15)\n- **Khái niệm**: Xử lý và phân tích dữ liệu ngay khi nó vừa phát sinh trên hệ thống (hàng triệu sự kiện mỗi giây) mà không đợi gom thành lô (*Batch*).\n- **Hạ tầng công nghệ**: Tích hợp Streaming API với các công cụ hàng đầu: **Apache Kafka**, Google Cloud Dataflow, Pub/Sub.\n- **3 Ứng dụng cốt lõi**:\n  1. **Phát hiện gian lận thẻ tín dụng (Fraud Detection)**: Khóa giao dịch lừa đảo trong vài mili-giây.\n  2. **Định giá động theo thời gian thực (Dynamic Pricing)**: Điều chỉnh giá vé máy bay hoặc cước xe công nghệ theo cung cầu tức thời.\n  3. **Quản trị chuỗi cung ứng và giao vận**: Theo dõi lộ trình hàng hóa và nhiệt độ xe lạnh liên tục.\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 text-center\">\n    ⚡ REAL-TIME STREAMING: KIẾN TRÚC APACHE KAFKA & QUYẾT ĐỊNH ZERO LATENCY (SLIDE 15-20)\n  </div>\n  <svg viewBox=\"0 0 820 250\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Producers -->\n    <rect x=\"15\" y=\"40\" width=\"150\" height=\"150\" rx=\"12\" fill=\"#1e293b\" stroke=\"#f59e0b\" stroke-width=\"1.5\"/>\n    <text x=\"90\" y=\"65\" fill=\"#f59e0b\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">PRODUCERS</text>\n    <rect x=\"30\" y=\"80\" width=\"120\" height=\"26\" rx=\"6\" fill=\"#0f172a\"/>\n    <text x=\"90\" y=\"97\" fill=\"#f8fafc\" font-size=\"9\" text-anchor=\"middle\">Web Clickstream</text>\n    <rect x=\"30\" y=\"115\" width=\"120\" height=\"26\" rx=\"6\" fill=\"#0f172a\"/>\n    <text x=\"90\" y=\"132\" fill=\"#f8fafc\" font-size=\"9\" text-anchor=\"middle\">POS & Card Swipe</text>\n    <rect x=\"30\" y=\"150\" width=\"120\" height=\"26\" rx=\"6\" fill=\"#0f172a\"/>\n    <text x=\"90\" y=\"167\" fill=\"#f8fafc\" font-size=\"9\" text-anchor=\"middle\">IoT Sensor Stream</text>\n    <!-- Arrow to Kafka -->\n    <line x1=\"165\" y1=\"115\" x2=\"215\" y2=\"115\" stroke=\"#f59e0b\" stroke-width=\"2\"/>\n    <!-- Kafka Cluster -->\n    <rect x=\"220\" y=\"25\" width=\"370\" height=\"185\" rx=\"14\" fill=\"#0f172a\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <text x=\"405\" y=\"50\" fill=\"#38bdf8\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">APACHE KAFKA CLUSTER (EVENT BROKERS)</text>\n    <!-- Topic 1 -->\n    <rect x=\"235\" y=\"65\" width=\"340\" height=\"60\" rx=\"8\" fill=\"#1e293b\" stroke=\"#64748b\"/>\n    <text x=\"245\" y=\"82\" fill=\"#cbd5e1\" font-size=\"9.5\" font-weight=\"bold\">Topic: 'checkout-events'</text>\n    <!-- Partitions -->\n    <rect x=\"245\" y=\"90\" width=\"95\" height=\"26\" rx=\"4\" fill=\"#0284c7\"/><text x=\"292\" y=\"106\" fill=\"#ffffff\" font-size=\"8.5\" text-anchor=\"middle\">Partition 0</text>\n    <rect x=\"350\" y=\"90\" width=\"95\" height=\"26\" rx=\"4\" fill=\"#0284c7\"/><text x=\"397\" y=\"106\" fill=\"#ffffff\" font-size=\"8.5\" text-anchor=\"middle\">Partition 1</text>\n    <rect x=\"455\" y=\"90\" width=\"95\" height=\"26\" rx=\"4\" fill=\"#0284c7\"/><text x=\"502\" y=\"106\" fill=\"#ffffff\" font-size=\"8.5\" text-anchor=\"middle\">Partition 2</text>\n    <!-- Continuous Query Engine -->\n    <rect x=\"235\" y=\"135\" width=\"340\" height=\"60\" rx=\"8\" fill=\"#312e81\" stroke=\"#818cf8\"/>\n    <text x=\"405\" y=\"155\" fill=\"#a5b4fc\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">Google Dataflow / Apache Flink (Continuous Queries)</text>\n    <text x=\"405\" y=\"175\" fill=\"#e0e7ff\" font-size=\"9\" text-anchor=\"middle\">Xử lý hàng triệu event/giây, phát hiện mẫu hành vi thời gian thực</text>\n    <!-- Arrow to Consumers -->\n    <line x1=\"590\" y1=\"115\" x2=\"635\" y2=\"115\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <!-- Zero Latency Actions -->\n    <rect x=\"640\" y=\"40\" width=\"165\" height=\"150\" rx=\"12\" fill=\"#064e3b\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <text x=\"722\" y=\"65\" fill=\"#34d399\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">ZERO LATENCY ACTION</text>\n    <rect x=\"650\" y=\"80\" width=\"145\" height=\"30\" rx=\"6\" fill=\"#0f172a\"/>\n    <text x=\"722\" y=\"98\" fill=\"#6ee7b7\" font-size=\"8.5\" text-anchor=\"middle\">Chặn gian lận thẻ &lt;10ms</text>\n    <rect x=\"650\" y=\"115\" width=\"145\" height=\"30\" rx=\"6\" fill=\"#0f172a\"/>\n    <text x=\"722\" y=\"133\" fill=\"#6ee7b7\" font-size=\"8.5\" text-anchor=\"middle\">Voucher giữ giỏ hàng tức thì</text>\n    <rect x=\"650\" y=\"150\" width=\"145\" height=\"30\" rx=\"6\" fill=\"#0f172a\"/>\n    <text x=\"722\" y=\"168\" fill=\"#6ee7b7\" font-size=\"8.5\" text-anchor=\"middle\">Định giá động (Dynamic Price)</text>\n    <text x=\"410\" y=\"230\" fill=\"#94a3b8\" font-size=\"9.5\" text-anchor=\"middle\">⚡ Tích hợp Streaming API: Phản ứng ngay lập tức tại đúng điểm chạm khách hàng</text>\n  </svg>\n</div>\n\n---\n\n### 2. Nguyên lý hoạt động của Apache Kafka (Slide 17-19)\n- **Producers**: Các ứng dụng phát sinh sự kiện (Web Clickstream, máy quẹt thẻ POS, thiết bị IoT).\n- **Topics & Partitions**:\n  - Dữ liệu trong Kafka được tổ chức theo các chủ đề (**Topics**).\n  - Mỗi Topic được chia nhỏ thành nhiều phân vùng (**Partitions**) để mở rộng khả năng xử lý song song (*Parallelism*).\n- **Brokers**: Các máy chủ trong cụm Kafka chịu trách nhiệm nhận, lưu trữ và chuyển tiếp thông điệp an toàn.\n- **Consumer Groups**: Các nhóm ứng dụng đọc dữ liệu độc lập, tự động cân bằng tải khi có máy chủ gặp sự cố.\n\n---\n\n### 3. Quyết định tức thời tại điểm chạm (Zero Latency) (Slide 16)\n- **Nguyên lý**: Kết hợp Pub/Sub và **Continuous Queries** để thực hiện hành động can thiệp tức thì ngay tại thời điểm khách hàng tương tác.\n- **Case Study kinh điển**: Khách hàng thêm sản phẩm vào giỏ hàng nhưng chuẩn bị tắt ứng dụng (Cart Abandonment). Hệ thống phân tích luồng phát hiện ngay lập tức và bắn thông báo ưu đãi giảm giá 10% trong vòng 5 phút để giữ chân đơn hàng thành công."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 So sánh Batch Processing vs Real-time Streaming\n\n| Tiêu chí | Batch Processing (Xử lý theo lô) | Real-time Streaming (Xử lý luồng) |\n| :--- | :--- | :--- |\n| **Độ trễ dữ liệu** | Hàng giờ, hàng ngày (T-1) | **Vài mili-giây (Real-time)** |\n| **Công nghệ tiêu biểu** | DWH ETL, SQL Views, dbt | **Apache Kafka, Apache Flink, Dataflow** |\n| **Khối lượng xử lý** | Dữ liệu hữu hạn (*Bounded dataset*) | Dữ liệu vô hạn không ngừng (*Unbounded stream*) |\n| **Mục đích sử dụng** | Báo cáo tài chính, tổng kết doanh thu | Phát hiện gian lận, cứu giỏ hàng, định giá động |"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo làm bài thi\n- **Apache Kafka** mở rộng song song thông lượng nhờ việc chia Topic thành các **Partitions**.\n- **Zero Latency**: Can thiệp ngay lập tức khi dữ liệu phát sinh.\n- Streaming ứng dụng cho **Fraud Detection**, **Dynamic Pricing**, **Cart Abandonment**."
+          }
+        ],
+        "miniQuiz": [
+          "ch8_q19"
+        ],
+        "relatedQuestionIds": [
+          "ch8_q17",
+          "ch8_q18",
+          "ch8_q19",
+          "ch8_q20",
+          "ch8_q21",
+          "ch8_q22",
+          "ch8_q36",
+          "ch8_q42",
+          "ch8_q49"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-8-7",
+        "title": "Bài 7: Data Storytelling & Dashboard thông minh: Cấu trúc Bối cảnh - Vấn đề - Giải pháp - Hành động",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Làm chủ cấu trúc 4 bước tiêu chuẩn của một câu chuyện dữ liệu: Bối cảnh -> Vấn đề -> Giải pháp -> Hành động",
+              "Hiểu nghiên cứu hành vi chứng minh câu chuyện dữ liệu giúp tăng khả năng ghi nhớ và thuyết phục hơn 65%",
+              "Ứng dụng Generative AI để tự động viết đoạn tóm tắt giải thích thông minh cho Dashboard",
+              "Nắm vững tính năng Alerting & Actions (Write-back to CRM) biến Dashboard thành công cụ tác nghiệp"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Data Storytelling: Kỹ năng cầu nối giữa Kỹ thuật và Chiến lược (Slide 21-22)\n- **Giá trị khoa học**: Theo các nghiên cứu khoa học hành vi, dữ liệu được trình bày dưới dạng câu chuyện có khả năng **ghi nhớ và thuyết phục cao hơn 65%** so với các con số khô khan trên bảng tính.\n- **Thông điệp cho sinh viên MIS**: Data Storytelling chính là cây cầu nối quan trọng nhất kết nối giữa bộ phận kỹ thuật (*IT/Data*) và các nhà quản trị chiến lược (*Business Executives*).\n- **Khung cấu trúc 4 bước kinh điển**:\n  1. **Bối cảnh (Context)**: Thiết lập bức tranh toàn cảnh về thị trường và mục tiêu chung của doanh nghiệp.\n  2. **Vấn đề (Problem)**: Chỉ ra điểm nghẽn, sự cố hoặc sự sụt giảm bất thường trong số liệu.\n  3. **Giải pháp (Solution)**: Dùng các phân tích dữ liệu để đề xuất các phương án tháo gỡ nút thắt.\n  4. **Hành động (Action)**: Kêu gọi hành động cụ thể, phân công trách nhiệm và đặt mốc thời gian hoàn thành.\n\n---\n\n### 2. Các tính năng của Dashboard thông minh hiện đại (Slide 21)\n- **Trực quan hóa thông minh**: Sử dụng độ tương phản màu sắc và nguyên lý phân cấp thị giác (*Visual Hierarchy*) để dẫn dắt mắt người xem vào các chỉ số then chốt (KPIs).\n- **Tự động tóm tắt (Gen AI Summary)**: Dùng Generative AI đọc các chỉ số trên dashboard và tự động sinh ra đoạn văn bản 3 dòng giải thích nguyên nhân tăng giảm, giúp sếp nắm bắt nhanh trọng tâm trong 30 giây.\n- **Alerting & Actions (Write-back to CRM)**:\n  - Dashboard không chỉ để xem thụ động (*Read-only*).\n  - Tích hợp các nút bấm hành động (*Action Buttons*): Ví dụ khi phát hiện danh sách khách hàng VIP sắp rời bỏ, người quản lý bấm nút **'Gửi email chăm sóc'** ngay trên Dashboard để hệ thống tự động ghi ngược (*Write-back*) vào Salesforce/HubSpot."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Minh họa cấu trúc kể chuyện dữ liệu thực tế:\n- **Bối cảnh (Context)**: *\"Quý 3 vừa qua, toàn công ty đạt 95% chỉ tiêu doanh số năm, thị trường thương mại điện tử tăng trưởng 12%\"*.\n- **Vấn đề (Problem)**: *\"Tuy nhiên, tỷ lệ khách hàng mua lại (Retention Rate) tại ngành hàng Gia dụng giảm mạnh 28% trong tháng 9\"*.\n- **Giải pháp (Solution)**: *\"Dữ liệu khảo sát cho thấy 70% khách phàn nàn về thời gian giao hàng chậm trễ do kho miền Trung bị quá tải\"*.\n- **Hành động (Action)**: *\"Đề xuất phê duyệt ngay kế hoạch mở thêm kho vệ tinh tại Đà Nẵng trước ngày 15/10 để kịp phục vụ mùa mua sắm cuối năm\"*."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo làm bài thi\n- Cấu trúc 4 bước: **Bối cảnh $\\to$ Vấn đề $\\to$ Giải pháp $\\to$ Hành động**.\n- Kể chuyện dữ liệu giúp tăng khả năng thuyết phục hơn **65%**.\n- **Write-back**: Khả năng kích hoạt trực tiếp các quy trình nghiệp vụ ngay từ Dashboard."
+          }
+        ],
+        "miniQuiz": [
+          "ch8_q23"
+        ],
+        "relatedQuestionIds": [
+          "ch8_q23",
+          "ch8_q24",
+          "ch8_q25",
+          "ch8_q26",
+          "ch8_q27",
+          "ch8_q37",
+          "ch8_q46"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-8-8",
+        "title": "Bài 8: Agentic BI: Tương lai Trí tuệ Tự hành & AI Agents trong Kho Dữ liệu",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững tầm nhìn giai đoạn 2025-2030: Tiến hóa từ trợ lý hỏi đáp sang Chuyên viên phân tích tự hành",
+              "Làm chủ 4 năng lực cốt lõi của AI Agents: Giám sát mục tiêu, Lập kế hoạch, Truy vấn DWH, Đề xuất hành động",
+              "Hiểu sự khác biệt căn bản giữa Conversational BI thụ động và Agentic BI tự hành",
+              "Nắm vững bức tranh tổng kết xuyên suốt 8 chương môn học Nhà kho dữ liệu và Tích hợp"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Agentic BI: Tương lai của Trí tuệ Tự hành (Slide 23-25)\n- **Tầm nhìn giai đoạn 2025 – 2030**:\n  - Công nghệ BI bước vào giai đoạn tự hành (**Agentic BI**).\n  - AI không chỉ là trợ lý đợi người dùng đặt câu hỏi mà trở thành các **Chuyên viên phân tích dữ liệu tự hành (Autonomous Business Analysts)** làm việc 24/7.\n- **Bốn năng lực cốt lõi của AI Agent**:\n  1. **Tự động theo dõi mục tiêu kinh doanh**: Giám sát liên tục các chỉ số OKRs, KPIs của doanh nghiệp theo thời gian thực.\n  2. **Tự lập kế hoạch phân tích (Planning & Reasoning)**: Khi phát hiện số liệu bất thường, Agent tự phân rã mục tiêu thành các bước kiểm tra giả thuyết logic.\n  3. **Tự truy vấn kho dữ liệu DWH**: Tự viết SQL, tự chạy phân tích hồi quy, kiểm tra chéo các bảng để tìm ra nguyên nhân gốc rễ.\n  4. **Chủ động gửi báo cáo đề xuất chiến lược**: Soạn sẵn báo cáo giải trình kèm 3 phương án hành động cụ thể gửi đến hộp thư của lãnh đạo mà không cần con người nhắc nhở.\n\n---\n\n### 2. Sự tiến hóa vượt bậc qua các thế hệ BI\n- **Thế hệ 1 (Traditional BI - 1990s - 2010s)**: Báo cáo tĩnh, phụ thuộc vào đội ngũ IT viết SQL và ETL thủ công.\n- **Thế hệ 2 (Self-Service BI - 2010s - 2020s)**: Kéo thả trực quan (Tableau, Power BI), người dùng tự xây dựng Dashboard.\n- **Thế hệ 3 (Generative BI - 2023 - 2025)**: Chat-with-your-data, Text-to-SQL bằng ngôn ngữ tự nhiên.\n- **Thế hệ 4 (Agentic BI - 2025 trở đi)**: AI Agents tự hành, tự giám sát, tự phân tích và chủ động hành động tối ưu kinh doanh."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 💡 Tình huống một ngày làm việc của Autonomous BI Agent\n- **03:00 sáng**: Agent giám sát phát hiện tỷ lệ lỗi thanh toán qua thẻ tín dụng tăng đột biến từ 1% lên 18% ở thị trường Singapore.\n- **03:05 sáng**: Agent tự viết SQL truy vấn bảng log cổng thanh toán, tự kiểm tra mã lỗi và phát hiện cổng thanh toán đối tác đang bảo trì đột xuất.\n- **03:10 sáng**: Agent tự động chuyển 100% lưu lượng giao dịch sang cổng thanh toán dự phòng, cứu vãn hàng trăm nghìn USD doanh thu.\n- **07:00 sáng**: Giám đốc thức dậy và nhận được một báo cáo tóm tắt trên điện thoại: *'Sự cố đã được phát hiện lúc 3h sáng và tự động khắc phục thành công'*. Đó chính là sức mạnh của Agentic BI!"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 🎓 Tổng kết môn học: Bức tranh toàn cảnh 8 chương (TS. Nguyễn Thôn Dã)\n1. **Chương 1**: Sự tiến hóa từ RDBMS đến AI-Native Lakehouse & Kiến trúc Medallion.\n2. **Chương 2**: Thiết kế mô hình dữ liệu Dimensional Modeling & Kỹ thuật vi phân vùng (Micro-partitioning).\n3. **Chương 3**: Tích hợp dữ liệu hiện đại: ELT, CDC, Zero-ETL, Airflow & dbt.\n4. **Chương 4**: Đa chiều chất lượng dữ liệu & Kỹ thuật tiền xử lý (Z-Score, IQR, PCA, Binning).\n5. **Chương 5**: Khai phá tri thức ngầm ẩn: Association Rules, Apriori, FP-Growth, C4.5, Naive Bayes, Clustering.\n6. **Chương 6**: In-Database Machine Learning: CPT/CPT+, PageRank, BigQuery ML, Snowpark, Feature Store, MLOps.\n7. **Chương 7**: Quản trị dữ liệu (Data Governance), Đạo luật EU AI Act 2026, RLS, CLM, Zero-Copy Sharing, k-Anonymity & Continuous Auditing.\n8. **Chương 8**: Generative BI, Vector Search (IVFFLAT), RAG khử ảo giác, Real-time Streaming Kafka, Data Storytelling & Agentic BI."
+          }
+        ],
+        "miniQuiz": [
+          "ch8_q28"
+        ],
+        "relatedQuestionIds": [
+          "ch8_q28",
+          "ch8_q29",
+          "ch8_q38",
+          "ch8_q47",
+          "ch8_q50"
         ],
         "labIds": []
       }
