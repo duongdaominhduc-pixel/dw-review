@@ -1488,62 +1488,424 @@
   },
   {
     "id": "ch5",
-    "title": "Chương 5: Khai phá Luật Kết hợp (Apriori & FP-Growth)",
+    "title": "Chương 5: Thuật toán Khai thác Dữ liệu Cốt lõi (Data Mining)",
     "order": 5,
     "objectives": [
-      "Nắm vững các chỉ số luật kết hợp: Support, Confidence, Lift, Leverage",
-      "Tính tổ hợp sinh tập ứng viên C(n, 2)",
-      "Quy trình xây dựng cây FP-tree từng bước",
-      "Khai phá tập phổ biến từ Conditional Pattern Base"
+      "Nắm vững các chỉ số đánh giá luật kết hợp: Support, Confidence, Lift, Leverage, Conviction",
+      "Hiểu sâu thuật toán Apriori (Candidate Generation, Pruning) và giải thuật không sinh ứng viên FP-Growth (FP-Tree, CPB)",
+      "Phân biệt cây quyết định ID3 (Information Gain) và C4.5 (Gain Ratio, xử lý Null, Post-pruning)",
+      "Làm chủ mô hình phân loại xác suất: Naive Bayes (Class-conditional independence) và Mạng Bayes (DAG, CPT)",
+      "So sánh các thuật toán phân cụm K-Means, K-Medoids, DBSCAN, Hierarchical (AGNES/DIANA) và Grid-based (STING, CLIQUE)",
+      "Nắm vững các phương pháp phát hiện Outliers: Statistical-based (Gaussian 3-sigma, Boxplot IQR) và Distance-based (k-NN)"
     ],
     "lessons": [
       {
         "id": "les-5-1",
-        "title": "Bài 1: Các chỉ số chất lượng luật kết hợp",
-        "status": "empty",
-        "sections": [],
+        "order": 1,
+        "title": "Bài 1: Khai phá Association Rules: Support, Confidence, Lift, Leverage và Conviction",
+        "duration": "45 phút",
+        "status": "done",
+        "sections": [
+          {
+            "id": "sec-5-1-1",
+            "title": "1. Khái niệm Luật kết hợp (Association Rules)",
+            "content": "### 1. Khái niệm Luật kết hợp (Association Rules)\nTheo **Slide 4**, luật kết hợp là một mối quan hệ thống kê giữa các tập hợp các item trong cơ sở dữ liệu giao dịch, nhằm phát hiện các mẫu hành vi ngầm ẩn giữa các sản phẩm hoặc sự kiện.\n- Dạng tổng quát:\n  $$X \\Rightarrow Y$$\n  Trong đó:\n  - $X$ (**Antecedent - Tiền đề**): Tập hợp các item xuất hiện trước.\n  - $Y$ (**Consequent - Hậu đề**): Tập hợp các item xuất hiện sau (với $X \\cap Y = \\emptyset$).\n  - **Ý nghĩa nghiệp vụ:** Nếu khách hàng mua tập sản phẩm $X$, thì họ cũng có khả năng cao sẽ mua thêm tập sản phẩm $Y$.\n\n---\n\n### 2. Các thang đo chất lượng luật cốt lõi\n#### a. Độ hỗ trợ (Support) - Tần suất xuất hiện\nĐo lường mức độ phổ biến của luật trong toàn bộ CSDL:\n$$Sup(X \\Rightarrow Y) = P(X \\cap Y) = \\frac{\\text{count}(X \\cup Y)}{N}$$\n- Tiến gần 1: Tập luật cực kỳ phổ biến.\n- Tiến gần 0: Tập luật hiếm gặp.\n\n#### b. Độ tin cậy (Confidence) - Xác suất có điều kiện\nĐo lường mức độ chắc chắn của dự đoán:\n$$Conf(X \\Rightarrow Y) = P(Y|X) = \\frac{Sup(X \\cap Y)}{Sup(X)} = \\frac{\\text{count}(X \\cup Y)}{\\text{count}(X)}$$\n- $Conf = 1$ ($100\\%$): Tuyệt đối đúng.\n- $0.9 \\le Conf < 1$: Rất mạnh, đáng tin cậy cao.\n- $0.5 \\le Conf < 0.9$: Trung bình, tin cậy vừa phải.\n- $Conf < 0.5$: Luật yếu.\n\n#### c. Độ nâng (Lift) - Tương quan phụ thuộc\nĐo lường mức độ tương quan giữa tiền đề và hậu đề:\n$$Lift(X \\Rightarrow Y) = \\frac{Conf(X \\Rightarrow Y)}{P(Y)} = \\frac{P(X \\cap Y)}{P(X) \\cdot P(Y)}$$\n- $Lift > 1$: Tương quan dương (Hiệp đồng, mua $X$ thúc đẩy mua $Y$).\n- $Lift = 1$: Độc lập thống kê (Không có tác động qua lại).\n- $Lift < 1$: Tương quan âm (Hàng thay thế, mua $X$ làm giảm khả năng mua $Y$)."
+          },
+          {
+            "id": "sec-5-1-2",
+            "title": "2. Chỉ số nâng cao: Leverage và Conviction",
+            "content": "### 3. Hai độ đo nâng cao: Leverage và Conviction\n#### a. Leverage (Độ đòn bẩy)\nĐo lường sự sai khác giữa tần suất đồng xuất hiện thực tế và tần suất kỳ vọng nếu hai biến độc lập hoàn toàn:\n$$Leverage(X \\Rightarrow Y) = P(X \\cap Y) - P(X) \\cdot P(Y)$$\n- Phạm vi giá trị: $[-0.25, 0.25]$.\n- $Leverage = 0$ khi $X$ và $Y$ độc lập thống kê.\n- Khác với Lift là một tỷ số (phép chia), Leverage là một hiệu số (phép trừ xác suất), ưu tiên các luật có độ hỗ trợ lớn.\n\n#### b. Conviction (Độ tin chắc)\nĐo lường tỷ lệ giữa tần suất kỳ vọng luật bị sai nếu độc lập chia cho tần suất luật bị sai thực tế:\n$$Conviction(X \\Rightarrow Y) = \\frac{1 - P(Y)}{1 - Conf(X \\Rightarrow Y)}$$\n- $Conviction = 1$: Tiền đề và hậu đề độc lập.\n- $Conviction \\to \\infty$: Khi $Conf = 1$ (luật không bao giờ sai).\n\n---\n\n### 4. Ngưỡng lọc luật chuẩn công nghiệp\nTheo **Slide 9**:\n- **$minsup$ tối thiểu:** Thường đặt là **$0.01$ ($1\\%$)** để loại bỏ các trường hợp cá biệt.\n- **$minconf$ tối thiểu:** Thường đặt là **$0.8$ ($80\\%$)** để đảm bảo độ tin cậy khi ra quyết định kinh doanh."
+          },
+          {
+            "id": "sec-5-1-3",
+            "title": "3. Bài toán thực hành tính toán từng bước (Slide 9-10)",
+            "content": "### 5. Bài toán tính toán mẫu từ Slide 9-10\nCho cơ sở dữ liệu gồm $N = 8$ giao dịch:\n- **T1:** $\\{a, b, c\\}$\n- **T2:** $\\{a, b, c, d, e\\}$\n- **T3:** $\\{b\\}$\n- **T4:** $\\{c, d, e\\}$\n- **T5:** $\\{c\\}$\n- **T6:** $\\{b, c, d\\}$\n- **T7:** $\\{c, d, e\\}$\n- **T8:** $\\{c, e\\}$\n\nXét luật kết hợp $L: \\{c, d\\} \\Rightarrow \\{e\\}$:\n1. **Đếm tần suất:**\n   - Tập tiền đề $\\{c, d\\}$ xuất hiện trong: T2, T4, T6, T7 $\\implies \\text{count}(\\{c, d\\}) = 4$.\n   - Cả hai tập $\\{c, d, e\\}$ xuất hiện trong: T2, T4, T7 $\\implies \\text{count}(\\{c, d, e\\}) = 3$.\n   - Tập hậu đề $\\{e\\}$ xuất hiện trong: T2, T4, T7, T8 $\\implies \\text{count}(\\{e\\}) = 4$.\n2. **Tính các chỉ số:**\n   - **Độ hỗ trợ:**\n     $$Sup(L) = \\frac{\\text{count}(\\{c, d, e\\})}{N} = \\frac{3}{8} = 0.375 = 37.5\\%$$\n   - **Độ tin cậy:**\n     $$Conf(L) = \\frac{\\text{count}(\\{c, d, e\\})}{\\text{count}(\\{c, d\\})} = \\frac{3}{4} = 0.75 = 75\\%$$\n   - **Xác suất hậu đề:**\n     $$P(e) = \\frac{4}{8} = 0.5$$\n   - **Độ nâng:**\n     $$Lift(L) = \\frac{Conf(L)}{P(e)} = \\frac{0.75}{0.5} = 1.5$$\n   - **Độ đòn bẩy:**\n     $$Leverage(L) = P(cd \\cap e) - P(cd)P(e) = \\frac{3}{8} - \\left(\\frac{4}{8} \\times \\frac{4}{8}\\right) = 0.375 - 0.25 = 0.125$$\n   - **Độ tin chắc:**\n     $$Conviction(L) = \\frac{1 - 0.5}{1 - 0.75} = \\frac{0.5}{0.25} = 2.0$$\n\n> **Kết luận:** Khách hàng mua $c$ và $d$ có khả năng mua thêm $e$ cao gấp **$1.5$ lần** so với mức ngẫu nhiên thông thường."
+          },
+          {
+            "id": "sec-5-1-4",
+            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
+            "content": "### 💡 Mẹo ghi nhớ cho sinh viên\n- **Support:** Mẫu số luôn là **TỔNG SỐ GIAO DỊCH ($N$)**.\n- **Confidence:** Mẫu số là **SỐ LƯỢNG TIỀN ĐỀ ($\text{count}(X)$)**.\n- **Lift:** Bằng Confidence chia cho xác suất hậu đề $P(Y)$.\n- **Lift > 1:** Tốt; **Lift = 1:** Vô dụng; **Lift < 1:** Tiêu cực."
+          }
+        ],
         "miniQuiz": [
-          "q27",
-          "q28a",
-          "q28b",
-          "q28c",
-          "q28d",
-          "q28f",
-          "q30"
+          {
+            "question": "Nếu luật X => Y có Confidence = 95% nhưng P(Y) = 95%, chỉ số Lift bằng bao nhiêu và luật có ý nghĩa không?",
+            "options": [
+              "A. Lift = 1.0, luật không có ý nghĩa vì X và Y độc lập thống kê",
+              "B. Lift = 0.95, luật rất mạnh",
+              "C. Lift = 1.9, luật kích cầu mạnh",
+              "D. Lift = 0, luật bị sai"
+            ],
+            "answer": "A. Lift = 1.0, luật không có ý nghĩa vì X và Y độc lập thống kê",
+            "explanation": "Lift = Conf / P(Y) = 0.95 / 0.95 = 1.0. Khi Lift = 1, tiền đề và hậu đề độc lập, việc mua X không hề làm tăng khả năng mua Y."
+          }
         ],
         "relatedQuestionIds": [
-          "q27",
           "q28a",
           "q28b",
           "q28c",
           "q28d",
           "q28f",
-          "q30"
-        ],
-        "labIds": [
-          "rule-metrics-lab"
+          "q30",
+          "ch5_q01",
+          "ch5_q02",
+          "ch5_q03",
+          "ch5_q04",
+          "ch5_q05",
+          "ch5_q06",
+          "ch5_q07",
+          "ch5_q08",
+          "ch5_q09",
+          "ch5_q10"
         ]
       },
       {
         "id": "les-5-2",
-        "title": "Bài 2: Thuật toán FP-Growth từng bước",
-        "status": "empty",
+        "order": 2,
+        "title": "Bài 2: Thuật toán Apriori: Nguyên lý tỉa nhánh (Pruning) và Sinh tập phổ biến",
+        "duration": "50 phút",
+        "status": "done",
         "sections": [
           {
-            "kind": "lab",
-            "labId": "fpgrowth-lab"
+            "id": "sec-5-2-1",
+            "title": "1. Bài toán khai phá tập phổ biến & Không gian tìm kiếm",
+            "content": "### 1. Không gian tìm kiếm tổ hợp\nTheo **Slide 15-20**, cho tập gồm $n$ item khác nhau $I = \\{i_1, i_2, ..., i_n\\}$.\n- Một tập con chứa $k$ item được gọi là một **$k$-itemset**.\n- Tổng số tập con không rỗng cần kiểm tra trong không gian tìm kiếm là:\n  $$2^{|I|} - 1 = 2^n - 1$$\n- Ví dụ với $n = 5$ (Pasta, Lemon, Bread, Orange, Cake), ta có $2^5 - 1 = 31$ tập con.\n- Nếu $n = 100$, không gian tìm kiếm là $2^{100} - 1 \\approx 1.26 \\times 10^{30}$, vượt xa năng lực tính toán của mọi siêu máy tính nếu duyệt vét cạn (brute-force)."
+          },
+          {
+            "id": "sec-5-2-2",
+            "title": "2. Hai tính chất cốt lõi của Apriori (Anti-monotonicity)",
+            "content": "### 2. Hai nguyên lý nền tảng của Apriori (R. Agrawal 1993)\n#### a. Tính chất 1: Tính đơn điệu giảm của độ hỗ trợ\nVới hai tập mục $X$ và $Y$:\n$$X \\subseteq Y \\implies Sup(Y) \\le Sup(X)$$\n*Giải thích:* Khi mở rộng thêm các điều kiện item vào giỏ hàng, số lượng giao dịch đáp ứng đồng thời chỉ có thể giữ nguyên hoặc giảm xuống.\n- Ví dụ (Slide 25):\n  $$Sup(\\{pasta\\}) = 4 \\ge Sup(\\{pasta, lemon\\}) = 3 \\ge Sup(\\{pasta, lemon, orange\\}) = 2$$\n\n#### b. Tính chất 2: Nguyên lý tỉa nhánh Apriori (Apriori Pruning Principle)\n- **Mọi tập con không rỗng của một tập phổ biến (frequent itemset) đều phải là tập phổ biến.**\n- **Hệ quả tương đương (Tỉa cành):**\n  $$\\text{Nếu } \\exists X \\subset Y \\text{ mà } X \\text{ không phổ biến (infrequent)} \\implies Y \\text{ chắc chắn không phổ biến.}$$\n- *Ý nghĩa:* Nếu biết $\\{bread\\}$ là không phổ biến, ta có thể lập tức loại bỏ toàn bộ các tập cha như $\\{bread, lemon\\}$, $\\{bread, pasta\\}$, $\\{bread, lemon, orange, cake\\}$ mà không cần tốn công quét CSDL để đếm."
+          },
+          {
+            "id": "sec-5-2-3",
+            "title": "3. Bài toán thực hành từng bước từ Slide 27-41",
+            "content": "### 3. Thực hành thuật toán Apriori với CSDL 4 giao dịch (minsup = 2)\nCho 4 giao dịch:\n- **T1:** Pasta, Lemon, Bread, Orange\n- **T2:** Pasta, Lemon\n- **T3:** Pasta, Orange, Cake\n- **T4:** Pasta, Lemon, Orange, Cake\n\n#### Vòng 1: Tìm $L_1$ (1-itemsets)\n- Đếm qua CSDL:\n  - Pasta: 4\n  - Lemon: 3\n  - Bread: 1 ($< 2 \\implies$ **LOẠI**)\n  - Orange: 3\n  - Cake: 2\n- Kết quả $L_1 = \\{\\{pasta\\}, \\{lemon\\}, \\{orange\\}, \\{cake\\}\\}$.\n\n#### Vòng 2: Sinh $C_2$ và Tìm $L_2$\n- Kết hợp các cặp trong $L_1$ sinh $C_2$: $\\binom{4}{2} = 6$ ứng viên.\n- Không có ứng viên nào chứa tập con không phổ biến.\n- Đếm support qua CSDL:\n  - $\\{pasta, lemon\\}$: 3\n  - $\\{pasta, orange\\}$: 3\n  - $\\{pasta, cake\\}$: 2\n  - $\\{lemon, orange\\}$: 2\n  - $\\{lemon, cake\\}$: 1 ($< 2 \\implies$ **LOẠI**)\n  - $\\{orange, cake\\}$: 2\n- Kết quả $L_2 = \\{\\{pasta, lemon\\}, \\{pasta, orange\\}, \\{pasta, cake\\}, \\{lemon, orange\\}, \\{orange, cake\\}\\}$.\n\n#### Vòng 3: Sinh $C_3$, Prune và Tìm $L_3$\n- Nối các tập có chung phần tử đầu:\n  - $\\{pasta, lemon, orange\\}$: Các tập con 2 phần tử là $\\{pasta, lemon\\}, \\{pasta, orange\\}, \\{lemon, orange\\}$ đều $\\in L_2$ $\\implies$ **Hợp lệ** ($sup = 2$).\n  - $\\{pasta, orange, cake\\}$: Các tập con $\\{pasta, orange\\}, \\{pasta, cake\\}, \\{orange, cake\\}$ đều $\\in L_2$ $\\implies$ **Hợp lệ** ($sup = 2$).\n  - Các ứng viên khác như $\\{pasta, lemon, cake\\}$ có chứa $\\{lemon, cake\\} \\notin L_2$ nên bị **TỈA BỎ NGAY LẬP TỨC (Pruned)**.\n- Kết quả $L_3 = \\{\\{pasta, lemon, orange\\}, \\{pasta, orange, cake\\}\\}$.\n\n#### Vòng 4: Sinh $C_4$ và Dừng\n- Ứng viên 4 phần tử duy nhất $\\{pasta, lemon, orange, cake\\}$ chứa tập con $\\{lemon, cake\\} \\notin L_2$ nên bị tỉa bỏ. $C_4 = \\emptyset$. Thuật toán dừng lại."
+          },
+          {
+            "id": "sec-5-2-4",
+            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
+            "content": "### 💡 Tóm tắt công thức tổ hợp sinh ứng viên\nNếu có $n$ item phổ biến kích thước 1, số lượng ứng viên 2-itemset được sinh ra ở vòng 2 là:\n$$\\binom{n}{2} = \\frac{n(n - 1)}{2} \\approx \\frac{n^2}{2}$$\nKhi $n = 6$ (như trong câu 27 đề cương), số ứng viên xấp xỉ là $6^2 / 2 = 18$ (hoặc chính xác là $\\binom{6}{2} = 15$)."
           }
         ],
         "miniQuiz": [
-          "q28e",
-          "q29"
+          {
+            "question": "Nếu biết itemset {A, B} không phổ biến, theo nguyên lý Apriori ta có thể kết luận gì về tập {A, B, C, D}?",
+            "options": [
+              "A. Chắc chắn không phổ biến, tỉa bỏ ngay mà không cần quét CSDL",
+              "B. Có thể phổ biến nếu C và D có tần suất rất cao",
+              "C. Cần quét CSDL để tính lại support",
+              "D. Chưa đủ dữ kiện để kết luận"
+            ],
+            "answer": "A. Chắc chắn không phổ biến, tỉa bỏ ngay mà không cần quét CSDL",
+            "explanation": "Theo tính chất Apriori Pruning: Mọi tập cha chứa tập con không phổ biến đều chắc chắn không phổ biến."
+          }
+        ],
+        "relatedQuestionIds": [
+          "q27",
+          "ch5_q11",
+          "ch5_q12",
+          "ch5_q13",
+          "ch5_q14",
+          "ch5_q15",
+          "ch5_q16",
+          "ch5_q17",
+          "ch5_q18",
+          "ch5_q19",
+          "ch5_q20"
+        ]
+      },
+      {
+        "id": "les-5-3",
+        "order": 3,
+        "title": "Bài 3: Thuật toán FP-Growth: Cấu trúc FP-Tree và Khai phá không sinh ứng viên",
+        "duration": "55 phút",
+        "status": "done",
+        "sections": [
+          {
+            "id": "sec-5-3-1",
+            "title": "1. Hạn chế của Apriori & Sự ra đời của FP-Growth",
+            "content": "### 1. Tại sao FP-Growth ra đời?\nTheo **Slide 42**, Apriori có 2 điểm nghẽn nghiêm trọng:\n1. **Quá nhiều lần quét CSDL (Multiple DB Scans):** CSDL hàng triệu dòng mà quét lại $k$ lần sẽ làm tắc nghẽn ổ đĩa.\n2. **Bùng nổ tổ hợp ứng viên (Candidate Generation Explosion):** Sinh hàng triệu ứng viên vô nghĩa gây tràn bộ nhớ RAM.\n\n**FP-Growth (Frequent Pattern Growth - Jiawei Han 2000):**\n- **Chỉ quét CSDL đúng 2 lần.**\n- **Hoàn toàn không sinh tập ứng viên (No Candidate Generation).**\n- **Nén dữ liệu vào cây FP-tree (Frequent Pattern Tree) trong RAM.**"
+          },
+          {
+            "id": "sec-5-3-2",
+            "title": "2. Cấu trúc cây FP-tree & Quy tắc sắp xếp giảm dần",
+            "content": "### 2. Quy trình xây dựng cây FP-tree từng bước\n#### Bước 1: Quét CSDL lần 1 & Tạo Header Table\n- Quét qua toàn bộ CSDL để đếm tần suất đơn lẻ của từng item.\n- Loại bỏ các item có $count < minsup\\_count$.\n- **Sắp xếp các item phổ biến còn lại theo thứ tự giảm dần của tần suất (frequency-descending order).**\n  - *Quy tắc bắt buộc:* Các item trong mỗi giao dịch phải được viết theo thứ tự này để tối đa hóa việc dùng chung tiền tố (Prefix Sharing).\n  - Ví dụ (Slide 50): Với thứ tự `F > C > A > B > M > P`, tập $\\{C, A, M\\}$ là hợp lệ, còn $\\{M, C, A\\}$ là sai quy chuẩn.\n\n#### Bước 2: Quét CSDL lần 2 & Xây dựng cây FP-tree\n- Đọc từng giao dịch, lọc bỏ item hiếm, sắp xếp theo thứ tự Header Table.\n- Chèn từng chuỗi vào cây:\n  - Bắt đầu từ nút gốc **Root (null)**.\n  - Nếu nhánh đã có sẵn nút tương ứng $\\implies$ tăng $count$ lên 1.\n  - Nếu nhánh chưa có $\\implies$ tạo nút mới với $count = 1$.\n  - Cập nhật con trỏ liên kết ngang (node-link) từ Header Table trỏ vào nút mới."
+          },
+          {
+            "id": "sec-5-3-3",
+            "title": "3. Conditional Pattern Base & Khai phá đệ quy (Slide 58-62)",
+            "content": "### 3. Khai phá từ Conditional Pattern Base (CPB)\nDuyệt Header Table từ dưới lên trên (từ item hiếm nhất đến item phổ biến nhất):\n- **Conditional Pattern Base (CPB):** Tập hợp các đường dẫn tiền tố từ nút gốc đến nút đang xét (kèm count của nút đó).\n- **Conditional FP-Tree:** Cây con có điều kiện được tạo bằng cách giữ lại các item trong CPB có tổng số lần xuất hiện $\\ge minsup\\_count$.\n\n#### Bảng chi tiết từ Slide 59-61 ($minsup\\_count = 3$):\n| Item | Conditional Pattern Base (CPB) | Tổng số lần xuất hiện | Conditional FP-Tree | Frequent Patterns sinh ra |\n| :---: | :--- | :--- | :---: | :--- |\n| **P** | $\\{\\{F, C, A, M : 2\\}, \\{C, B : 1\\}\\}$ | $\\{F:2, C:3, A:2, M:2, B:1\\}$ | $\\{C : 3\\}$ | $\\{C, P : 3\\}$ |\n| **M** | $\\{\\{F, C, A : 2\\}, \\{F, C, A, B : 1\\}\\}$ | $\\{F:3, C:3, A:3, B:1\\}$ | $\\{F:3, C:3, A:3\\}$ | $\\{F, M\\}, \\{C, M\\}, \\{A, M\\}, \\{F, C, M\\}, \\{F, A, M\\}, \\{C, A, M\\}, \\{F, C, A, M\\}$ |\n| **B** | $\\{\\{F : 1\\}, \\{C : 1\\}, \\{F, C, A : 1\\}\\}$ | $\\{F:2, C:2, A:1\\}$ | **Rỗng ($-$)** | Không có tập kết hợp |\n| **A** | $\\{\\{F, C : 3\\}\\}$ | $\\{F:3, C:3\\}$ | $\\{F:3, C:3\\}$ | $\\{F, A\\}, \\{C, A\\}, \\{F, C, A\\}$ |\n| **C** | $\\{\\{F : 3\\}\\}$ | $\\{F:3\\}$ | $\\{F:3\\}$ | $\\{F, C : 3\\}$ |\n\n> **Ghi chú quan trọng:** Vì item $B$ chỉ có $F:2, C:2, A:1$ (tất cả đều $< 3$), Conditional FP-Tree của B hoàn toàn rỗng!"
+          },
+          {
+            "id": "sec-5-3-4",
+            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
+            "content": "### 💡 So sánh Apriori vs FP-Growth\n| Tiêu chí | Apriori | FP-Growth |\n| :--- | :--- | :--- |\n| **Số lần quét CSDL** | $k+1$ lần (rất nhiều) | Đúng 2 lần |\n| **Sinh tập ứng viên** | Có ($O(n^2/2)$) | **Hoàn toàn không** |\n| **Cấu trúc lưu trữ** | Mảng/Bảng băm | Cây nén FP-tree trong RAM |\n| **Hiệu năng trên Big Data** | Chậm, dễ tràn RAM | Nhanh hơn 10 - 100 lần |"
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Trong thuật toán FP-Growth, các item trong giao dịch được sắp xếp theo thứ tự nào trước khi chèn vào cây FP-tree?",
+            "options": [
+              "A. Thứ tự giảm dần theo tần suất xuất hiện (frequency-descending order)",
+              "B. Thứ tự tăng dần theo tần suất xuất hiện",
+              "C. Thứ tự chữ cái Alphabet A-Z",
+              "D. Thứ tự ngẫu nhiên của giao dịch gốc"
+            ],
+            "answer": "A. Thứ tự giảm dần theo tần suất xuất hiện (frequency-descending order)",
+            "explanation": "Quy tắc bắt buộc là giảm dần theo tần suất để các item phổ biến nhất nằm gần gốc, tối đa hóa việc dùng chung tiền tố (Prefix Sharing)."
+          }
         ],
         "relatedQuestionIds": [
           "q28e",
-          "q29"
+          "q29",
+          "ch5_q21",
+          "ch5_q22",
+          "ch5_q23",
+          "ch5_q24",
+          "ch5_q25",
+          "ch5_q26",
+          "ch5_q27",
+          "ch5_q28",
+          "ch5_q29",
+          "ch5_q30",
+          "ch5_q31",
+          "ch5_q32",
+          "ch5_q35"
+        ]
+      },
+      {
+        "id": "les-5-4",
+        "order": 4,
+        "title": "Bài 4: Cây quyết định (Decision Tree): So sánh toàn diện ID3 và C4.5",
+        "duration": "40 phút",
+        "status": "done",
+        "sections": [
+          {
+            "id": "sec-5-4-1",
+            "title": "1. Khái niệm Phân lớp (Classification) bằng Decision Tree",
+            "content": "### 1. Phân loại dữ liệu bằng Cây quyết định\nBài toán Phân lớp (Classification) thuộc nhóm học có giám sát (Supervised Learning):\n- Mục tiêu: Xây dựng mô hình từ tập huấn luyện (training set) có nhãn lớp để dự đoán nhãn lớp của các đối tượng dữ liệu mới.\n- **Cấu trúc cây quyết định:**\n  - **Nút gốc (Root node):** Thuộc tính tốt nhất được chọn để phân tách đầu tiên.\n  - **Nút nội bộ (Internal nodes):** Các phép kiểm tra trên thuộc tính.\n  - **Các nhánh (Branches):** Kết quả của phép kiểm tra.\n  - **Nút lá (Leaf nodes):** Nhãn lớp quyết định (Class label)."
+          },
+          {
+            "id": "sec-5-4-2",
+            "title": "2. Bảng so sánh kinh điển ID3 vs C4.5 (Slide 65)",
+            "content": "### 2. So sánh toàn diện ID3 và C4.5 (Slide 65)\nC4.5 được phát triển bởi Ross Quinlan để khắc phục các nhược điểm chết người của thuật toán ID3:\n\n| Tiêu chí so sánh | Thuật toán ID3 (1986) | Thuật toán C4.5 (1993) |\n| :--- | :--- | :--- |\n| **Tiêu chí chọn thuộc tính** | **Information Gain** (Dựa trên Shannon Entropy) | **Gain Ratio** (Độ lợi thông tin chuẩn hóa theo Split Info) |\n| **Hỗ trợ loại dữ liệu** | **Chỉ dữ liệu rời rạc** (Categorical) | **Cả rời rạc và liên tục** (Numerical) |\n| **Xử lý giá trị Null / Missing** | **Không hỗ trợ** (Báo lỗi hệ thống) | **Hỗ trợ** (Gán trọng số xác suất cho các nhánh) |\n| **Kỹ thuật cắt tỉa cây** | **Không có cơ chế cắt tỉa** | **Có cơ chế Post-pruning** (Cắt tỉa sau dựa trên độ lỗi) |\n| **Kiểm soát Overfitting** | **Kém** (Cây quá sâu, dễ bị quá khớp) | **Tốt** (Cây gọn gàng, tính tổng quát cao) |"
+          },
+          {
+            "id": "sec-5-4-3",
+            "title": "3. Chi tiết công thức: Information Gain vs Gain Ratio",
+            "content": "### 3. Tại sao Gain Ratio vượt trội hơn Information Gain?\n- **Nhược điểm của Information Gain (ID3):**\n  Information Gain bị thiên vị nặng nề đối với các thuộc tính có nhiều giá trị phân biệt (ví dụ thuộc tính `Mã_CCCD` hay `ID_Khách_hàng`). Khi chia theo thuộc tính này, mỗi nhánh chỉ có 1 bản ghi, Entropy nhánh bằng 0, dẫn đến Information Gain đạt cực đại. Tuy nhiên, cây này hoàn toàn vô dụng vì không có tính tổng quát.\n- **C4.5 chuẩn hóa bằng Split Info:**\n  $$SplitInfo_A(D) = - \\sum_{j=1}^v \\frac{|D_j|}{|D|} \\log_2 \\left(\\frac{|D_j|}{|D|}\\right)$$\n  $$GainRatio(A) = \\frac{Gain(A)}{SplitInfo_A(D)}$$\n  Thuộc tính nào càng bị xé vụn ra nhiều nhánh thì $SplitInfo$ càng lớn, làm cho $GainRatio$ bị giảm đi (bị phạt), giúp thuật toán chọn được thuộc tính thực sự hữu ích."
+          },
+          {
+            "id": "sec-5-4-4",
+            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
+            "content": "### 💡 Mẹo phân biệt thi cử\n- Nhớ câu khẩu quyết: **ID3 = Information Gain + Rời rạc + Không tỉa cành**.\n- **C4.5 = Gain Ratio + Liên tục + Post-pruning (Cắt tỉa sau)**."
+          }
         ],
-        "labIds": [
-          "fpgrowth-lab"
+        "miniQuiz": [
+          {
+            "question": "Thuật toán C4.5 sử dụng tiêu chí nào để lựa chọn thuộc tính phân tách tốt nhất?",
+            "options": [
+              "A. Gain Ratio",
+              "B. Information Gain",
+              "C. Gini Index",
+              "D. Chi-Square"
+            ],
+            "answer": "A. Gain Ratio",
+            "explanation": "Theo bảng Slide 65: ID3 dùng Information Gain, còn C4.5 dùng Gain Ratio để khắc phục nhược điểm thiên vị thuộc tính nhiều giá trị của Information Gain."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch5_q36",
+          "ch5_q37",
+          "ch5_q38"
+        ]
+      },
+      {
+        "id": "les-5-5",
+        "order": 5,
+        "title": "Bài 5: Phân lớp Bayes: Định lý Naive Bayes và Mạng niềm tin Bayes",
+        "duration": "45 phút",
+        "status": "done",
+        "sections": [
+          {
+            "id": "sec-5-5-1",
+            "title": "1. Nguyên lý phân loại Naive Bayes (Slide 66)",
+            "content": "### 1. Phân loại Naive Bayes\nTheo **Slide 66**, Naive Bayes dự báo đối tượng thuộc về nhóm nào bằng cách tính toán xác suất đối tượng rơi vào từng nhóm dựa trên đặc trưng của nó. Đối tượng sẽ được xếp vào lớp có xác suất hậu nghiệm cao nhất (**MAP - Maximum A Posteriori**).\n- **Định lý Bayes:**\n  $$P(C|X) = \\frac{P(X|C) \\cdot P(C)}{P(X)}$$\n  Trong đó:\n  - $P(C|X)$: Xác suất đối tượng mang đặc trưng $X$ thuộc về lớp $C$ (Posterior).\n  - $P(C)$: Xác suất tiên nghiệm của lớp $C$ (Prior).\n  - $P(X|C)$: Khả năng quan sát thấy đặc trưng $X$ khi đã biết thuộc lớp $C$ (Likelihood).\n  - $P(X)$: Xác suất của đặc trưng $X$ trong toàn tập dữ liệu (Evidence - hằng số chuẩn hóa).\n\n---\n\n### 2. Giả định 'Naive' (Độc lập có điều kiện)\nĐể tính $P(X|C)$ với $X = (x_1, x_2, ..., x_d)$, Naive Bayes giả định tất cả các thuộc tính độc lập hoàn toàn với nhau khi biết nhãn lớp $C$:\n$$P(X|C) = \\prod_{i=1}^d P(x_i|C) = P(x_1|C) \\cdot P(x_2|C) \\cdot ... \\cdot P(x_d|C)$$\nQuy tắc phân loại:\n$$C^* = \\arg\\max_{C_k} \\left[ P(C_k) \\prod_{i=1}^d P(x_i|C_k) \\right]$$"
+          },
+          {
+            "id": "sec-5-5-2",
+            "title": "2. Hiện tượng Zero-frequency & Hiệu chỉnh Laplace",
+            "content": "### 3. Vấn đề Tần suất bằng 0 (Zero-frequency Problem)\nNếu một thuộc tính $x_i$ chưa từng xuất hiện cùng với lớp $C$ trong tập huấn luyện, ta có $P(x_i|C) = 0$.\nDo phép nhân dồn:\n$$0 \\times P(x_2|C) \\times ... \\times P(C) = 0$$\nToàn bộ tích xác suất bị triệt tiêu thành 0, khiến mô hình kết luận xác suất bằng 0 dù các đặc trưng khác có khớp đến đâu.\n\n#### Giải pháp: Hiệu chỉnh Laplace (Laplacian Correction / Smoothing)\nCộng thêm $1$ vào tử số và cộng thêm số lượng giá trị khả dĩ $q$ vào mẫu số:\n$$P(x_i|C) = \\frac{\\text{count}(x_i, C) + 1}{\\text{count}(C) + q}$$\nĐảm bảo xác suất không bao giờ bằng 0 mà vẫn duy trì tính chất tổng xác suất bằng 1."
+          },
+          {
+            "id": "sec-5-5-3",
+            "title": "3. Mạng niềm tin Bayes (Bayesian Belief Networks - Slide 67)",
+            "content": "### 4. Mạng niềm tin Bayes (Bayesian Belief Networks / DAG)\nTheo **Slide 67**, Naive Bayes Network là một cấu trúc đồ thị kết hợp với lý thuyết xác suất, cho phép mô hình hóa các hệ thống phức tạp có nhiều biến số phụ thuộc lẫn nhau, **khắc phục hoàn toàn nhược điểm 'Naive'**.\n- **Cấu trúc gồm 2 thành phần:**\n  1. **Đồ thị có hướng không chu trình (DAG - Directed Acyclic Graph):**\n     - Nút (Nodes): Đại diện cho các biến ngẫu nhiên.\n     - Cung (Arcs): Biểu thị mối quan hệ phụ thuộc có điều kiện trực tiếp (nguyên nhân $\\to$ kết quả).\n  2. **Bảng xác suất có điều kiện (CPT - Conditional Probability Table):**\n     - Mỗi nút có một bảng CPT định nghĩa phân phối xác suất của nó theo các nút cha trực tiếp: $P(X_i | Parents(X_i))$.\n- **Tính toán xác suất đồng thời:**\n  $$P(x_1, x_2, ..., x_n) = \\prod_{i=1}^n P(x_i | Parents(X_i))$$"
+          },
+          {
+            "id": "sec-5-5-4",
+            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
+            "content": "### 💡 Điểm cốt lõi cần nhớ\n- **Naive Bayes:** Cực nhanh, giả định các biến độc lập khi biết lớp. Cần dùng Laplace smoothing để tránh xác suất 0.\n- **Bayesian Network:** Dùng đồ thị DAG + bảng CPT để biểu diễn các biến phụ thuộc lẫn nhau."
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Giả định 'Naive' trong thuật toán Naive Bayes có nghĩa là gì?",
+            "options": [
+              "A. Tất cả các thuộc tính đều độc lập với nhau khi biết nhãn lớp",
+              "B. Tất cả các thuộc tính đều phụ thuộc vào một thuộc tính gốc",
+              "C. Không cần nhãn lớp trong quá trình huấn luyện",
+              "D. Dữ liệu không được có giá trị thiếu"
+            ],
+            "answer": "A. Tất cả các thuộc tính đều độc lập với nhau khi biết nhãn lớp",
+            "explanation": "Naive Bayes giả định tính độc lập có điều kiện theo lớp (Class-conditional independence): P(X|C) = P(x1|C) * P(x2|C) * ... * P(xd|C)."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch5_q39",
+          "ch5_q40",
+          "ch5_q41"
+        ]
+      },
+      {
+        "id": "les-5-6",
+        "order": 6,
+        "title": "Bài 6: Phân cụm phân hoạch: Thuật toán K-Means, K-Medoids và các biến thể",
+        "duration": "50 phút",
+        "status": "done",
+        "sections": [
+          {
+            "id": "sec-5-6-1",
+            "title": "1. Khái niệm Gom cụm (Clustering) & K-Means",
+            "content": "### 1. Phân cụm dữ liệu (Clustering)\nGom cụm là bài toán học không giám sát (Unsupervised Learning):\n- Không có sẵn nhãn lớp (unlabeled data).\n- Mục tiêu: Gom các điểm dữ liệu thành các cụm sao cho các điểm trong cùng cụm có độ tương đồng cao nhất (intra-cluster similarity cao), và các điểm giữa các cụm khác nhau có độ tương đồng thấp nhất (inter-cluster similarity thấp).\n\n---\n\n### 2. Thuật toán K-Means\n- **Tâm cụm:** Trọng tâm ảo (**Mean**), tính bằng trung bình cộng tọa độ các điểm trong cụm.\n- **Hàm mục tiêu:** Tối thiểu hóa tổng bình phương sai số (SSE - Sum of Squared Errors):\n  $$SSE = \\sum_{i=1}^K \\sum_{x \\in C_i} \\|x - m_i\\|^2$$\n- **Quy trình lặp:**\n  1. Khởi tạo ngẫu nhiên $K$ tâm cụm ban đầu.\n  2. Gán mỗi điểm dữ liệu vào tâm cụm gần nó nhất theo khoảng cách Euclidean.\n  3. Cập nhật lại tọa độ tâm cụm bằng trung bình cộng các điểm vừa gán.\n  4. Lặp lại bước 2-3 cho đến khi tâm cụm không còn dịch chuyển (hội tụ)."
+          },
+          {
+            "id": "sec-5-6-2",
+            "title": "2. So sánh K-Means vs K-Medoids (Slide 68)",
+            "content": "### 3. So sánh chi tiết K-Means và K-Medoids (Slide 68)\n| Tiêu chí | K-Means | K-Medoids (PAM) |\n| :--- | :--- | :--- |\n| **Tâm cụm (Center)** | **Mean (Trọng tâm ảo)** | **Medoid (Điểm thật có trong CSDL)** |\n| **Loại dữ liệu** | Chỉ dữ liệu số (**Numerical**) | Mọi loại dữ liệu (kể cả Categorical, Text) |\n| **Ưu điểm** | Chạy rất nhanh với dữ liệu lớn ($O(tKn)$) | Chống nhiễu và ngoại lai (**Outliers**) cực tốt |\n| **Nhược điểm** | Rất nhạy cảm với ngoại lai (**Outliers**) | Chạy rất chậm trên dữ liệu lớn ($O(tK(n-K)^2)$) |\n\n*Tại sao K-Means nhạy với Outliers?*\nVì Mean lấy trung bình cộng tất cả các điểm. Nếu xuất hiện một điểm dị biệt có tọa độ cực lớn, nó sẽ kéo phăng tâm cụm về phía nó, làm sai lệch cấu trúc tự nhiên của toàn bộ cụm."
+          },
+          {
+            "id": "sec-5-6-3",
+            "title": "3. Xác định K tối ưu & Các biến thể (Slide 68-69)",
+            "content": "### 4. Cách chọn số cụm K: Phương pháp khuỷu tay (Elbow Method)\nChạy K-Means với các giá trị $K = 1, 2, ..., 10$. Vẽ đồ thị hàm mất mát SSE theo $K$.\nĐiểm uốn gập khúc rõ rệt trên đồ thị (nhìn giống như khuỷu tay) chính là giá trị $K$ tối ưu (cân bằng giữa độ nén mô hình và độ chính xác).\n\n---\n\n### 5. Bốn biến thể nâng cấp (Slide 69)\n1. **Mini-Batch K-Means:** Bản K-Means dành cho Big Data, bốc các mẫu con ngẫu nhiên để cập nhật tâm cụm, tiết kiệm RAM và thời gian.\n2. **K-Modes:** Bản K-Means dành riêng cho dữ liệu phân loại (Categorical). Thay Mean bằng Mode (giá trị có tần số lớn nhất).\n3. **K-Prototypes:** Thuật toán lai kết hợp K-Means và K-Modes, xử lý tập dữ liệu hỗn hợp (vừa có thuộc tính số vừa có thuộc tính chữ).\n4. **CLARA / CLARANS:** Bản phân tách mẫu ngẫu nhiên của K-Medoids giúp K-Medoids có thể chạy được trên dữ liệu lớn."
+          },
+          {
+            "id": "sec-5-6-4",
+            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
+            "content": "### 💡 Mẹo ghi nhớ\n- **K-Means:** Mean, tâm ảo, nhanh, ghét Outliers.\n- **K-Medoids:** Medoid, điểm thật, chậm, chịu được Outliers.\n- **Dữ liệu phân loại (chữ):** Dùng K-Modes. Dữ liệu hỗn hợp: Dùng K-Prototypes."
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Điểm khác biệt quan trọng nhất giữa K-Means và K-Medoids là gì?",
+            "options": [
+              "A. K-Means dùng trọng tâm ảo (Mean), K-Medoids dùng điểm dữ liệu thật (Medoid) làm tâm",
+              "B. K-Means không cần chọn K, K-Medoids phải chọn K",
+              "C. K-Medoids nhạy cảm với nhiễu hơn K-Means",
+              "D. K-Means chỉ dùng cho dữ liệu văn bản"
+            ],
+            "answer": "A. K-Means dùng trọng tâm ảo (Mean), K-Medoids dùng điểm dữ liệu thật (Medoid) làm tâm",
+            "explanation": "Theo Slide 68: K-Means lấy Mean làm tâm (nhạy với outlier), K-Medoids chọn điểm thật medoid trung tâm nhất (chống nhiễu tốt)."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch5_q42",
+          "ch5_q43",
+          "ch5_q44",
+          "ch5_q45"
+        ]
+      },
+      {
+        "id": "les-5-7",
+        "order": 7,
+        "title": "Bài 7: Phân cụm dựa trên mật độ: Thuật toán DBSCAN và cơ chế loang điểm",
+        "duration": "45 phút",
+        "status": "done",
+        "sections": [
+          {
+            "id": "sec-5-7-1",
+            "title": "1. Nguyên lý phân cụm dựa trên mật độ (Slide 70)",
+            "content": "### 1. Nguyên lý của DBSCAN\nDBSCAN (*Density-Based Spatial Clustering of Applications with Noise*) tiếp cận bài toán gom cụm hoàn toàn khác K-Means:\n- **Định nghĩa cụm:** Cụm là một vùng không gian có **mật độ điểm dữ liệu dày đặc**, được ngăn cách bởi các vùng có mật độ thấp (vùng thưa thớt).\n- **Đặc điểm đột phá:** **Không cần biết trước số cụm $K$**.\n\n---\n\n### 2. Hai tham số cốt lõi\n1. **Eps ($\\epsilon$ - Epsilon):** Bán kính lân cận quét xung quanh một điểm dữ liệu.\n2. **MinPts (Minimum Points):** Số lượng điểm tối thiểu phải có trong bán kính Eps (tính cả điểm đang xét) để tạo thành một vùng mật độ cao."
+          },
+          {
+            "id": "sec-5-7-2",
+            "title": "2. Ba loại điểm trong DBSCAN (Core, Border, Noise)",
+            "content": "### 3. Phân loại 3 loại điểm trong DBSCAN (Slide 70)\nMọi điểm dữ liệu trong không gian đều được phân vào đúng 1 trong 3 nhóm:\n1. **Điểm lõi (Core Point):**\n   - Số điểm trong lân cận bán kính Eps $\\ge MinPts$.\n   - Là hạt nhân để khởi tạo và mở rộng cụm.\n2. **Điểm biên (Border Point):**\n   - Nằm trong vùng lân cận bán kính Eps của một điểm lõi, nhưng bản thân nó có $< MinPts$ điểm lân cận.\n   - Nằm ở mép ngoài của cụm.\n3. **Điểm nhiễu (Noise / Outlier):**\n   - Không phải điểm lõi, cũng không phải điểm biên.\n   - Nằm trơ trọi ở vùng mật độ thấp $\\implies$ Bị thuật toán gạt bỏ ra khỏi cụm."
+          },
+          {
+            "id": "sec-5-7-3",
+            "title": "3. Cơ chế loang điểm & Các ưu điểm vượt trội",
+            "content": "### 4. Cơ chế loang điểm (Density Propagation)\n- Chọn ngẫu nhiên một điểm chưa thăm.\n- Nếu là điểm Core: Khởi tạo một cụm mới. Thuật toán tiến hành 'loang' (loang như vệt dầu loang) bằng cách gom tất cả các điểm có thể tiếp cận về mặt mật độ (**Density-reachable**). Nếu gặp một điểm Core khác, tiếp tục mở rộng vùng biên cho đến khi không còn điểm Core nào mới.\n- Nếu là điểm Noise: Tạm thời đánh dấu là nhiễu (có thể trở thành Border point sau này nếu gặp điểm Core khác).\n\n---\n\n### 5. So sánh DBSCAN vs K-Means\n| Tiêu chí | K-Means | DBSCAN |\n| :--- | :--- | :--- |\n| **Xác định số cụm K** | Bắt buộc phải nhập trước | **Tự động tìm ra số cụm** |\n| **Hình dạng cụm** | Chỉ tìm được hình cầu / lồi (Spherical) | **Mọi hình dạng bất kỳ (Arbitrary shapes, xoắn ốc, chữ U...)** |\n| **Xử lý nhiễu (Noise)** | Ép mọi điểm nhiễu vào cụm | **Tự động phát hiện và loại bỏ Outliers** |"
+          },
+          {
+            "id": "sec-5-7-4",
+            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
+            "content": "### 💡 Mẹo nhận diện câu hỏi trắc nghiệm\n- Nhắc đến **Core, Border, Noise** $\\implies$ Chọn **DBSCAN**.\n- Nhắc đến **Eps và MinPts** $\\implies$ Chọn **DBSCAN**.\n- Nhắc đến **Cụm hình dạng bất kỳ, tự động lọc Outlier** $\\implies$ Chọn **DBSCAN**."
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Trong thuật toán DBSCAN, một điểm được coi là Core point (điểm lõi) khi nào?",
+            "options": [
+              "A. Có ít nhất MinPts điểm nằm trong bán kính lân cận Eps",
+              "B. Có ít hơn MinPts điểm nằm trong bán kính Eps nhưng gần điểm lõi",
+              "C. Là điểm nằm ở trung tâm hình học của toàn bộ tập dữ liệu",
+              "D. Có khoảng cách Euclidean đến các điểm khác bằng 0"
+            ],
+            "answer": "A. Có ít nhất MinPts điểm nằm trong bán kính lân cận Eps",
+            "explanation": "Theo định nghĩa ở Slide 70: Điểm Core là điểm có số lượng láng giềng trong bán kính Eps >= MinPts."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch5_q46",
+          "ch5_q47",
+          "ch5_q48"
+        ]
+      },
+      {
+        "id": "les-5-8",
+        "order": 8,
+        "title": "Bài 8: Phân cụm Hierarchical, Grid-based và Kỹ thuật Phát hiện Ngoại lai (Outliers)",
+        "duration": "45 phút",
+        "status": "done",
+        "sections": [
+          {
+            "id": "sec-5-8-1",
+            "title": "1. Phân cụm phân cấp (Hierarchical Clustering)",
+            "content": "### 1. Phân cụm phân cấp (Hierarchical Clustering)\nTheo **Slide 71**, phân cụm phân cấp xây dựng một cây phân cấp các cụm gọi là **Dendrogram**.\n- **Hai phương pháp tiếp cận:**\n  1. **Agglomerative (Gộp dần - Bottom-up, điển hình: AGNES):** Bắt đầu coi mỗi điểm là 1 cụm riêng lẻ, sau đó lần lượt gộp các cặp cụm gần nhau nhất lại cho đến khi chỉ còn 1 cụm duy nhất.\n  2. **Divisive (Tách dần - Top-down, điển hình: DIANA):** Bắt đầu coi toàn bộ dữ liệu là 1 cụm lớn duy nhất, sau đó lần lượt chia nhỏ cụm ra cho đến khi mỗi cụm chỉ còn 1 điểm.\n- **Các độ đo khoảng cách giữa 2 cụm:**\n  - **Single-link:** Khoảng cách ngắn nhất giữa 2 điểm thuộc 2 cụm.\n  - **Complete-link:** Khoảng cách dài nhất giữa 2 điểm thuộc 2 cụm.\n  - **Average-link:** Khoảng cách trung bình giữa tất cả các cặp điểm.\n- **Thuật toán tiêu biểu nâng cao:** **BIRCH, CURE**."
+          },
+          {
+            "id": "sec-5-8-2",
+            "title": "2. Phân cụm dựa trên lưới (Grid-based Clustering)",
+            "content": "### 2. Phân cụm dựa trên lưới (Grid-based Clustering)\nTheo **Slide 71**, thay vì xử lý từng điểm dữ liệu, Grid-based chia không gian đa chiều thành **các ô lưới (grid cells)** có kích thước xác định:\n- Các thuộc tính thống kê (số điểm, mean, min, max...) được tính toán sẵn cho từng ô lưới.\n- Việc gom cụm được thực hiện trực tiếp trên các ô lưới có mật độ cao liền kề nhau.\n- **Ưu điểm lớn nhất:** **Tốc độ xử lý siêu nhanh**, độ phức tạp thời gian chỉ phụ thuộc vào số ô lưới, hoàn toàn độc lập với số điểm dữ liệu $N$, chuyên trị Big Data.\n- **Thuật toán tiêu biểu:** **STING, CLIQUE, WaveCluster**."
+          },
+          {
+            "id": "sec-5-8-3",
+            "title": "3. Phát hiện Ngoại lai (Outlier Detection - Slide 72)",
+            "content": "### 3. Các kỹ thuật phát hiện ngoại lai (Slide 72)\nNgoại lai (Outlier / Anomaly) là đối tượng dữ liệu có sự sai khác đáng kể so với phần còn lại của tập dữ liệu.\n\n#### a. Statistical-based (Dựa trên thống kê)\n- Giả định dữ liệu tuân theo một phân phối xác suất (thường là phân phối Chuẩn $\\mathcal{N}(\\mu, \\sigma^2)$).\n- **Quy tắc $3\\sigma$ (Empirical Rule):** Các điểm nằm ngoài khoảng $[\\mu - 3\\sigma, \\mu + 3\\sigma]$ có xác suất xuất hiện cực thấp ($< 0.3\\%$) $\\implies$ là ngoại lai.\n- **Quy tắc Boxplot (IQR):** Điểm nằm ngoài $[Q_1 - 1.5 IQR, Q_3 + 1.5 IQR]$ là ngoại lai.\n- *Đặc điểm:* Rất nhanh, nhưng kém hiệu quả nếu dữ liệu thực tế không tuân theo phân phối chuẩn.\n\n#### b. Distance-based (Dựa trên khoảng cách)\n- Một điểm là ngoại lai nếu nó nằm cách xa hầu hết các điểm khác trong không gian hình học.\n- Dùng khoảng cách đến $k$ láng giềng gần nhất ($k$-NN Outlier Score). Điểm nào có khoảng cách trung bình đến các láng giềng lớn nhất là ngoại lai.\n- *Đặc điểm:* Không cần giả định phân phối, dùng tốt cho đa chiều, nhưng tốn chi phí tính toán."
+          },
+          {
+            "id": "sec-5-8-4",
+            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
+            "content": "### 💡 Bảng đối chiếu nhanh Slide 71-72\n- **Dendrogram, AGNES, DIANA, BIRCH, CURE** $\\implies$ Hierarchical Clustering.\n- **Ô lưới, STING, CLIQUE, tốc độ siêu nhanh độc lập với N** $\\implies$ Grid-based Clustering.\n- **Phân phối chuẩn $3\\sigma$, Boxplot IQR** $\\implies$ Statistical-based Outliers.\n- **Khoảng cách k-NN trong không gian hình học** $\\implies$ Distance-based Outliers."
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Ưu điểm lớn nhất của thuật toán phân cụm Grid-based (như STING, CLIQUE) so với các phương pháp khác là gì?",
+            "options": [
+              "A. Tốc độ xử lý siêu nhanh vì thời gian tính toán độc lập với số điểm dữ liệu",
+              "B. Luôn tạo ra cây phân cấp Dendrogram chi tiết",
+              "C. Tìm được chính xác trọng tâm ảo của từng cụm",
+              "D. Chống ngoại lai tốt nhất trong mọi thuật toán"
+            ],
+            "answer": "A. Tốc độ xử lý siêu nhanh vì thời gian tính toán độc lập với số điểm dữ liệu",
+            "explanation": "Theo Slide 71: Grid-based lượng tử hóa dữ liệu thành các ô lưới, tính toán trên các ô lưới nên tốc độ cực nhanh, chuyên trị dữ liệu lớn."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch5_q49",
+          "ch5_q50"
         ]
       }
     ]

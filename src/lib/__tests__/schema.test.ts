@@ -5,6 +5,7 @@ import chapter1QuestionsData from '../../data/chapter1Questions.json';
 import chapter2QuestionsData from '../../data/chapter2Questions.json';
 import chapter3QuestionsData from '../../data/chapter3Questions.json';
 import chapter4QuestionsData from '../../data/chapter4Questions.json';
+import chapter5QuestionsData from '../../data/chapter5Questions.json';
 import { Question, Chapter } from '../../types';
 
 describe('Data Schema Validation', () => {
@@ -78,21 +79,29 @@ describe('Data Schema Validation', () => {
     expect(ch4!.lessons.every(l => l.status === 'done')).toBe(true);
     expect(ch4!.lessons.every(l => l.sections.length > 0)).toBe(true);
 
+    // Chapter 5 has all 8 fully completed lessons
+    const ch5 = chapters.find(c => c.id === 'ch5');
+    expect(ch5).toBeDefined();
+    expect(ch5!.lessons.length).toBe(8);
+    expect(ch5!.lessons.every(l => l.status === 'done')).toBe(true);
+    expect(ch5!.lessons.every(l => l.sections.length > 0)).toBe(true);
+
     // Lessons in other chapters have empty status as specified
-    const otherChapterLessons = chapters.filter(c => !['ch1', 'ch2', 'ch3', 'ch4'].includes(c.id)).flatMap(c => c.lessons);
+    const otherChapterLessons = chapters.filter(c => !['ch1', 'ch2', 'ch3', 'ch4', 'ch5'].includes(c.id)).flatMap(c => c.lessons);
     expect(otherChapterLessons.every(l => l.status === 'empty')).toBe(true);
   });
 
-  it('validates Chapter 1, 2, 3, 4 slide questions', () => {
+  it('validates Chapter 1, 2, 3, 4, 5 slide questions', () => {
     expect(chapter1QuestionsData.length).toBe(47);
     expect(chapter2QuestionsData.length).toBe(50);
     expect(chapter3QuestionsData.length).toBe(50);
     expect(chapter4QuestionsData.length).toBe(50);
+    expect(chapter5QuestionsData.length).toBe(50);
 
-    for (const q of chapter4QuestionsData as Question[]) {
+    for (const q of chapter5QuestionsData as Question[]) {
       expect(q.id).toBeDefined();
       expect(q.number).toBeDefined();
-      expect(q.chapterId).toBe('ch4');
+      expect(q.chapterId).toBe('ch5');
       expect(q.prompt).toBeTruthy();
       expect(q.answer).toBeTruthy();
       expect(q.explanation).toBeTruthy();

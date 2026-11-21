@@ -1,0 +1,702 @@
+[
+  {
+    "id": "ch5_q01",
+    "number": "C5.1",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "theory",
+    "prompt": "Trong khai phá dữ liệu, Luật kết hợp (Association Rule) có dạng tổng quát $X \\Rightarrow Y$. Ý nghĩa của $X$ và $Y$ là gì?",
+    "answer": "$X$ là Tiền đề (Antecedent - tập item xuất hiện trước), $Y$ là Hậu đề (Consequent - tập item xuất hiện sau với $X \\cap Y = \\emptyset$). Luật mang ý nghĩa: 'Nếu một giao dịch chứa $X$, thì giao dịch đó cũng có khả năng cao sẽ chứa $Y$'.",
+    "explanation": "Theo Slide 4, luật kết hợp là mối quan hệ thống kê giữa các tập item trong CSDL giao dịch. $X$ (Antecedent) là tiền đề, $Y$ (Consequent) là hậu đề. Chúng thường được ứng dụng mạnh mẽ trong bán lẻ (Market Basket Analysis), ngân hàng và dịch vụ trực tuyến.",
+    "eli5": "Giống như quan sát ở siêu thị: 'Nếu khách mua Bia ($X$) thì khách cũng thường mua kèm Đậu phộng ($Y$)'. Bia là tiền đề, đậu phộng là kết quả đi kèm.",
+    "commonMistakes": [
+      "Nhầm lẫn luật kết hợp là quan hệ nhân quả (Causation) thay vì quan hệ tương quan đồng xuất hiện (Co-occurrence)"
+    ]
+  },
+  {
+    "id": "ch5_q02",
+    "number": "C5.2",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "formula",
+    "prompt": "Độ hỗ trợ (Support) của một luật kết hợp $X \\Rightarrow Y$ được định nghĩa và tính toán theo công thức nào? Giá trị của Support tiến gần 1 và tiến gần 0 mang ý nghĩa gì?",
+    "answer": "$$Sup(X \\Rightarrow Y) = P(X \\cap Y) = \\frac{\\text{Số giao dịch chứa cả } X \\text{ và } Y}{\\text{Tổng số giao dịch trong CSDL}}$$\nGiá trị tiến gần 1 nghĩa là tập item xuất hiện rất phổ biến trong CSDL; tiến gần 0 nghĩa là tập item rất hiếm khi xuất hiện cùng nhau.",
+    "explanation": "Theo Slide 5, Support đo lường tần suất xuất hiện đồng thời của cả tiền đề và hậu đề trong toàn bộ tập dữ liệu. Công thức: $Sup(X \\Rightarrow Y) = \\text{count}(X \\cup Y) / N$. Nếu Support quá thấp, luật đó không có ý nghĩa thống kê dù độ tin cậy có thể cao.",
+    "eli5": "Support giống như 'tỷ lệ phủ sóng'. Có 100 người đi chợ mà 80 người mua cả hai món đó thì độ hỗ trợ là 80% (rất phổ biến).",
+    "commonMistakes": [
+      "Tính Support bằng cách chia cho số giao dịch chứa X (đó là công thức của Confidence, không phải Support)"
+    ]
+  },
+  {
+    "id": "ch5_q03",
+    "number": "C5.3",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Trong CSDL của một ngân hàng gồm $1.000$ giao dịch, có $262$ giao dịch mà khách hàng sở hữu đồng thời cả 3 sản phẩm: Tài khoản tiết kiệm, Mobile banking và Thẻ tín dụng. Hãy tính độ hỗ trợ (Support) của luật: $\\{\\text{tài khoản tiết kiệm, mobile banking}\\} \\Rightarrow \\{\\text{thẻ tín dụng}\\}$.",
+    "answer": "$$Sup(L) = \\frac{262}{1.000} = 0.262 = 26.2\\%$$",
+    "explanation": "Theo ví dụ ở Slide 5: Tổng số giao dịch $N = 1000$. Số giao dịch chứa cả tiền đề và hậu đề (cả 3 sản phẩm) là 262. Do đó $Sup(L) = 262 / 1000 = 0.262$ (26.2%).",
+    "eli5": "Cứ 100 khách hàng thì có hơn 26 khách sở hữu trọn bộ cả 3 dịch vụ tài chính này.",
+    "commonMistakes": [
+      "Lấy 262 chia cho số khách có tiền đề thay vì chia cho tổng số 1.000 khách"
+    ]
+  },
+  {
+    "id": "ch5_q04",
+    "number": "C5.4",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "formula",
+    "prompt": "Độ tin cậy (Confidence) của luật $X \\Rightarrow Y$ được tính bằng công thức nào? Các thang giá trị của Confidence ($1$, $0.9\\text{--}1$, $0.5\\text{--}0.9$, $< 0.5$) được đánh giá như thế nào theo slide?",
+    "answer": "$$Conf(X \\Rightarrow Y) = \\frac{Sup(X \\cap Y)}{Sup(X)} = \\frac{P(X \\cap Y)}{P(X)} = \\frac{\\text{count}(X \\cup Y)}{\\text{count}(X)}$$\nThang đánh giá (Slide 6):\n- $1$ ($100\\%$): Luật tuyệt đối đúng, mọi trường hợp có $X$ đều có $Y$.\n- $0.9\\text{--}1$: Luật rất mạnh, đáng tin cậy.\n- $0.5\\text{--}0.9$: Luật trung bình, có thể tin cậy vừa phải.\n- $< 0.5$: Luật yếu, ít tin cậy.",
+    "explanation": "Confidence phản ánh xác suất có điều kiện $P(Y|X)$: khi khách hàng đã mua $X$ thì xác suất họ mua tiếp $Y$ là bao nhiêu.",
+    "eli5": "Nếu biết chắc bạn đã vào quán cà phê ($X$), thì xác suất 95% bạn sẽ gọi đồ uống ($Y$). Đó chính là độ tin cậy.",
+    "commonMistakes": [
+      "Mẫu số của Confidence là Sup(X), nhiều bạn nhầm thành Sup(Y) hoặc tổng số giao dịch N"
+    ]
+  },
+  {
+    "id": "ch5_q05",
+    "number": "C5.5",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Cũng trong CSDL ngân hàng trên ($1.000$ giao dịch), có $283$ khách hàng mở $\\{\\text{tài khoản tiết kiệm, mobile banking}\\}$, và trong số đó có $262$ khách đồng thời sở hữu $\\{\\text{thẻ tín dụng}\\}$. Hãy tính độ tin cậy (Confidence) của luật.",
+    "answer": "$$Conf(L) = \\frac{\\text{count}(X \\cup Y)}{\\text{count}(X)} = \\frac{262}{283} \\approx 0.9258 \\approx 92.6\\%$$",
+    "explanation": "Theo Slide 6: $Conf(L) = 262 / 283 \\approx 0.926$. Kết quả nằm trong khoảng 0.9–1 nên đây là một luật rất mạnh và đáng tin cậy (92.6% khách có tiết kiệm + mobile banking đều làm thẻ tín dụng).",
+    "eli5": "Cứ 100 người có tiết kiệm & mobile banking thì có tới gần 93 người mở luôn thẻ tín dụng.",
+    "commonMistakes": [
+      "Lấy 262 / 1000 ra Support thay vì lấy 262 / 283 ra Confidence"
+    ]
+  },
+  {
+    "id": "ch5_q06",
+    "number": "C5.6",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "formula",
+    "prompt": "Độ nâng (Lift) của luật $X \\Rightarrow Y$ được định nghĩa và tính toán như thế nào? Nêu ý nghĩa của 3 trường hợp: $Lift > 1$, $Lift = 1$, và $Lift < 1$.",
+    "answer": "$$Lift(X \\Rightarrow Y) = \\frac{Conf(X \\Rightarrow Y)}{P(Y)} = \\frac{P(X \\cap Y)}{P(X) \\cdot P(Y)}$$\nÝ nghĩa (Slide 7):\n- $Lift > 1$: Tiền đề $X$ làm tăng khả năng xảy ra hậu đề $Y$ (mối quan hệ tích cực / hiệp đồng).\n- $Lift = 1$: Tiền đề $X$ và hậu đề $Y$ độc lập thống kê với nhau ($P(X \\cap Y) = P(X)P(Y)$), không có tác động qua lại.\n- $Lift < 1$: Tiền đề $X$ làm giảm khả năng xảy ra hậu đề $Y$ (mối quan hệ tiêu cực / thay thế lẫn nhau).",
+    "explanation": "Lift so sánh xác suất xuất hiện $Y$ khi đã có $X$ so với xác suất xuất hiện ngẫu nhiên tự nhiên của $Y$ trong toàn bộ CSDL. Nếu Lift <= 1 thì luật không có giá trị hành động dù Confidence có thể cao.",
+    "eli5": "Nếu mua bia làm tăng khả năng mua mồi lên gấp đôi so với người bình thường thì Lift = 2 (tốt). Nếu mua iPhone làm giảm khả năng mua điện thoại Samsung thì Lift < 1 (hàng thay thế).",
+    "commonMistakes": [
+      "Nghĩ rằng Confidence cao là luật luôn tốt mà quên kiểm tra Lift; nếu P(Y) rất cao sẵn (ví dụ 95%) thì Conf = 90% thực ra làm Lift < 1"
+    ]
+  },
+  {
+    "id": "ch5_q07",
+    "number": "C5.7",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Trong CSDL ngân hàng ở Slide 8, biết tổng số giao dịch là $1.000$, số giao dịch có hậu đề $\\{\\text{thẻ tín dụng}\\}$ là $610$, và $Conf(L) = 0.926$. Hãy tính Lift của luật $L$ và giải thích ý nghĩa nghiệp vụ.",
+    "answer": "$$P(Y) = \\frac{610}{1.000} = 0.61$$\n$$Lift(L) = \\frac{Conf(L)}{P(Y)} = \\frac{0.926}{0.61} \\approx 1.518 \\approx 1.52$$\nÝ nghĩa: Nhóm khách hàng có tài khoản tiết kiệm và sử dụng mobile banking có khả năng sở hữu thẻ tín dụng cao hơn **$1.52$ lần** so với mức trung bình của toàn bộ khách hàng trong cơ sở dữ liệu.",
+    "explanation": "Chi tiết theo Slide 8: Vì Lift = 1.52 > 1, việc sở hữu tiết kiệm + mobile banking có tác động thúc đẩy tích cực rõ rệt đến việc mở thẻ tín dụng.",
+    "eli5": "Bình thường tỷ lệ mở thẻ chung là 61%, nhưng với nhóm khách hàng này tỷ lệ vọt lên 92.6%, tức tăng gấp 1.52 lần.",
+    "commonMistakes": [
+      "Lấy Conf chia cho P(X) thay vì chia cho P(Y)"
+    ]
+  },
+  {
+    "id": "ch5_q08",
+    "number": "C5.8",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "theory",
+    "prompt": "Theo thực tế khai phá dữ liệu (Slide 9), người ta thường thiết lập ngưỡng hỗ trợ tối thiểu (minsup) và ngưỡng tin cậy tối thiểu (minconf) mặc định là bao nhiêu để loại bỏ luật rác?",
+    "answer": "- Ngưỡng $minsup$ thường được chọn là **$0.01$ ($1\\%$)** để loại bỏ các tập mục quá hiếm không có ý nghĩa thống kê.\n- Ngưỡng $minconf$ thường được chọn là **$0.8$ ($80\\%$)** để loại bỏ các luật dự đoán không đủ chắc chắn.",
+    "explanation": "Theo Slide 9 và câu hỏi 30 đề cương, minsup = 0.01 và minconf = 0.8 là hai ngưỡng chuẩn kinh điển thường áp dụng trong khai phá luật kết hợp bán lẻ và tài chính.",
+    "eli5": "Ít nhất phải xuất hiện trong 1% tổng số đơn hàng thì mới thèm để ý, và khi đoán thì độ chuẩn xác phải từ 80% trở lên thì mới dùng để kinh doanh.",
+    "commonMistakes": [
+      "Nhầm minsup = 80% và minconf = 1% (ngược giá trị)"
+    ]
+  },
+  {
+    "id": "ch5_q09",
+    "number": "C5.9",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "calculation",
+    "prompt": "Cho CSDL gồm 8 giao dịch (Slide 9-10): T1:{a,b,c}, T2:{a,b,c,d,e}, T3:{b}, T4:{c,d,e}, T5:{c}, T6:{b,c,d}, T7:{c,d,e}, T8:{c,e}. Hãy tính Support, Confidence và Lift của luật: $\\{c, d\\} \\Rightarrow \\{e\\}$.",
+    "answer": "- Tập tiền đề $\\{c, d\\}$ xuất hiện trong các giao dịch: T2, T4, T6, T7 $\\Rightarrow \\text{count}(\\{c, d\\}) = 4$.\n- Tập $\\{c, d, e\\}$ xuất hiện trong các giao dịch: T2, T4, T7 $\\Rightarrow \\text{count}(\\{c, d, e\\}) = 3$.\n- Tập hậu đề $\\{e\\}$ xuất hiện trong: T2, T4, T7, T8 $\\Rightarrow \\text{count}(\\{e\\}) = 4$.\nDo đó:\n- $$Sup(\\{c, d\\} \\Rightarrow \\{e\\}) = \\frac{3}{8} = 0.375 = 37.5\\%$$\n- $$Conf(\\{c, d\\} \\Rightarrow \\{e\\}) = \\frac{3}{4} = 0.75 = 75\\%$$\n- $$P(e) = \\frac{4}{8} = 0.5 \\Rightarrow Lift = \\frac{0.75}{0.5} = 1.5$$",
+    "explanation": "Theo Slide 10: count({c,d,e}) = 3, count({c,d}) = 4, N = 8, count({e}) = 4. Kết quả: Support = 3/8 = 0.375; Conf = 3/4 = 0.75; Lift = 0.75 / 0.5 = 1.5.",
+    "eli5": "Có 8 đơn hàng, 3 đơn có đủ {c, d, e} nên Support = 3/8. Trong 4 đơn có {c, d} thì có 3 đơn có e nên Conf = 3/4. Do tỷ lệ mua e nói chung là 50%, nên nhóm có {c, d} mua e gấp 1.5 lần.",
+    "commonMistakes": [
+      "Đếm sót giao dịch T8 có chứa {c, e} dẫn đến đếm sai count(e) = 3 thay vì 4"
+    ]
+  },
+  {
+    "id": "ch5_q10",
+    "number": "C5.10",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "formula",
+    "prompt": "Ngoài Support, Confidence và Lift, hai chỉ số nâng cao nào thường được dùng để đánh giá chất lượng luật kết hợp? Nêu công thức tính Leverage và Conviction.",
+    "answer": "1. **Leverage (Độ đòn bẩy):** Đo lường sự chênh lệch giữa tần suất đồng xuất hiện thực tế và tần suất kỳ vọng nếu hai biến độc lập hoàn toàn:\n$$Leverage(X \\Rightarrow Y) = P(X \\cap Y) - P(X) \\cdot P(Y)$$\n2. **Conviction (Độ tin chắc):** Đo lường mức độ phụ thuộc bằng tỷ lệ giữa tần suất kỳ vọng $Y$ không xảy ra nếu độc lập chia cho tần suất dự đoán sai thực tế của luật:\n$$Conviction(X \\Rightarrow Y) = \\frac{1 - P(Y)}{1 - Conf(X \\Rightarrow Y)}$$",
+    "explanation": "Leverage nằm trong khoảng [-0.25, 0.25], bằng 0 khi độc lập hoàn toàn. Conviction tiến tới vô cùng (\\infty) khi Confidence = 1 (luật luôn đúng).",
+    "eli5": "Leverage là phép trừ xác suất: thực tế trừ đi ngẫu nhiên. Conviction là đo lường mức độ sai lầm: nếu luật sai càng ít thì mẫu số càng gần 0, giá trị càng vọt lên trời.",
+    "commonMistakes": [
+      "Nhầm Leverage là phép chia (phép chia là Lift, phép trừ là Leverage)"
+    ]
+  },
+  {
+    "id": "ch5_q11",
+    "number": "C5.11",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "theory",
+    "prompt": "Tập phổ biến (Frequent Itemset) là gì? Thế nào là một $k$-itemset?",
+    "answer": "- **Tập phổ biến (Frequent Itemset):** Là một tập hợp các item (hàng hóa, dịch vụ, sự kiện...) có độ hỗ trợ (Support) lớn hơn hoặc bằng ngưỡng hỗ trợ tối thiểu ($minsup$) do người dùng đặt ra ($Sup(X) \\ge minsup$).\n- **$k$-itemset:** Là một tập hợp chứa đúng $k$ item khác nhau (ví dụ: $\\{bread\\}$ là 1-itemset, $\\{bread, butter\\}$ là 2-itemset, $\\{bread, butter, milk\\}$ là 3-itemset).",
+    "explanation": "Theo Slide 11-12 và Slide 20, frequent itemset là nền tảng để sinh ra các luật kết hợp mạnh thỏa mãn cả minsup và minconf.",
+    "eli5": "k-itemset là giỏ hàng có đúng k món. Nếu giỏ hàng đó được nhiều người cùng mua hơn ngưỡng quy định thì gọi là tập phổ biến.",
+    "commonMistakes": [
+      "Nhầm k-itemset là tập item xuất hiện k lần trong dữ liệu (k là số lượng phần tử trong tập, không phải số lần xuất hiện)"
+    ]
+  },
+  {
+    "id": "ch5_q12",
+    "number": "C5.12",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "theory",
+    "prompt": "Thuật toán Apriori do ai đề xuất vào năm nào? Nêu 3 ứng dụng phổ biến của việc khai phá mẫu phổ biến bằng Apriori.",
+    "answer": "Thuật toán Apriori được đề xuất bởi **Rakesh Agrawal (và Srikant) vào năm 1993** (Slide 14).\nBa ứng dụng phổ biến (Slide 13):\n1. **Tối ưu hóa Marketing:** Gửi ưu đãi, khuyến mãi cá nhân hóa đến đúng đối tượng khách hàng dựa trên sản phẩm họ đã mua.\n2. **Quản lý hàng tồn kho / tài sản:** Dự đoán nhu cầu hàng hóa đi kèm để nhập hàng, tránh dư thừa hoặc thiếu hụt.\n3. **Quản trị quan hệ khách hàng (CRM):** Bán chéo (cross-selling), gia tăng sự trung thành và gắn kết dài hạn.",
+    "explanation": "Apriori là thuật toán kinh điển mở đầu cho kỷ nguyên khai phá luật kết hợp trên cơ sở dữ liệu giao dịch quy mô lớn.",
+    "eli5": "Được phát minh năm 1993, chuyên dùng để tìm ra khách mua cái này thì sẽ thích mua kèm cái gì để siêu thị xếp gần nhau hoặc gợi ý mua kèm trên Shopee.",
+    "commonMistakes": [
+      "Nhầm người phát minh Apriori với Han (Jiawei Han là người phát minh FP-Growth năm 2000)"
+    ]
+  },
+  {
+    "id": "ch5_q13",
+    "number": "C5.13",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "theory",
+    "prompt": "Trong biểu diễn CSDL giao dịch cho thuật toán Apriori (Slide 18), ma trận nhị phân (Binary Matrix) được cấu tạo như thế nào?",
+    "answer": "Ma trận nhị phân có các hàng đại diện cho từng giao dịch (TID: T1, T2, ...), các cột đại diện cho từng item có trong từ điển ($I_1, I_2, ...$). Giá trị tại ô $(i, j)$ bằng **$1$** nếu giao dịch $T_i$ có chứa item $I_j$, và bằng **$0$** nếu giao dịch không chứa item đó.",
+    "explanation": "Theo Slide 18, việc chuyển đổi CSDL giao dịch sang ma trận nhị phân 0/1 cho phép thực hiện các phép toán logic bitwise (AND) nhanh chóng khi tính toán tần suất đồng xuất hiện.",
+    "eli5": "Giống bảng điểm danh: Hàng là tên khách, cột là tên món hàng. Khách nào mua món gì thì đánh dấu 1, không mua đánh dấu 0.",
+    "commonMistakes": [
+      "Nghĩ rằng giá trị trong ma trận nhị phân là số lượng món hàng mua (nó chỉ là 0 hoặc 1)"
+    ]
+  },
+  {
+    "id": "ch5_q14",
+    "number": "C5.14",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "calculation",
+    "prompt": "Nếu một cửa hàng có $n = 5$ sản phẩm khác nhau ($I = \\{pasta, lemon, bread, orange, cake\\}$), không gian tìm kiếm chứa tối đa bao nhiêu tập con (itemset) không rỗng cần kiểm tra?",
+    "answer": "$$\\text{Số tập con không rỗng} = 2^{|I|} - 1 = 2^5 - 1 = 32 - 1 = 31 \\text{ tập con}$$",
+    "explanation": "Theo Slide 19: Với tập $I$ gồm $n$ phần tử, số tập con là $2^n$. Bỏ đi tập rỗng $\\emptyset$, ta có $2^n - 1 = 31$. Nếu $n = 100$, $2^{100} - 1$ sẽ gây bùng nổ tổ hợp khủng khiếp nếu không có cơ chế cắt tỉa.",
+    "eli5": "Mỗi món hàng bạn có 2 lựa chọn: bỏ vào giỏ hoặc không bỏ. 5 món là 2^5 = 32 cách, trừ trường hợp giỏ rỗng thì còn 31 tập hợp.",
+    "commonMistakes": [
+      "Quên trừ 1 cho tập rỗng, tính ra 32"
+    ]
+  },
+  {
+    "id": "ch5_q15",
+    "number": "C5.15",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "theory",
+    "prompt": "Phát biểu Tính chất 1 (Tính đơn điệu giảm / Anti-monotonicity) của độ hỗ trợ Support trong thuật toán Apriori.",
+    "answer": "Giả sử có hai tập mục $X$ và $Y$:\n$$\\text{Nếu } X \\subseteq Y \\implies Sup(Y) \\le Sup(X)$$\nNghĩa là: Khi thêm bất kỳ item nào vào một tập mục, độ hỗ trợ của tập mục mới chỉ có thể giữ nguyên hoặc giảm đi, không bao giờ tăng lên.",
+    "explanation": "Theo Slide 25: Ví dụ $Sup(\\{pasta\\}) = 4$, $Sup(\\{pasta, lemon\\}) = 3$, $Sup(\\{pasta, lemon, orange\\}) = 2$. Do điều kiện đồng xuất hiện ngày càng khắt khe hơn nên số giao dịch thỏa mãn chỉ có thể giảm.",
+    "eli5": "Số người vừa thích đá bóng vừa thích bơi lội chắc chắn phải ít hơn hoặc bằng số người chỉ thích đá bóng.",
+    "commonMistakes": [
+      "Nghĩ rằng khi gộp thêm item thì Support có thể tăng lên"
+    ]
+  },
+  {
+    "id": "ch5_q16",
+    "number": "C5.16",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "theory",
+    "prompt": "Phát biểu Tính chất 2 (Nguyên lý tỉa nhánh Apriori - Apriori Pruning Principle). Ý nghĩa cốt lõi của tính chất này là gì?",
+    "answer": "- **Phát biểu (Slide 26):** \n1. Mọi tập con không rỗng của một tập phổ biến (frequent itemset) đều phải là tập phổ biến.\n2. Ngược lại: Nếu tồn tại một tập con $X \\subset Y$ mà $X$ không phổ biến (infrequent), thì tập cha $Y$ chắc chắn cũng **không phổ biến**.\n- **Ý nghĩa:** Cho phép thuật toán ngay lập tức loại bỏ (tỉa cành) toàn bộ các tập cha có chứa tập con không phổ biến mà không cần quét lại CSDL để đếm.",
+    "explanation": "Đây là hòn đá tảng giúp Apriori giảm mạnh không gian tìm kiếm từ $2^n$ xuống một lượng khả thi.",
+    "eli5": "Nếu món Bánh mì đã chẳng có ai mua, thì chắc chắn món 'Bánh mì kẹp chanh' cũng sẽ ế ẩm, khỏi mất công đi đếm làm gì cho mệt.",
+    "commonMistakes": [
+      "Phát biểu ngược lại: 'Nếu tập cha không phổ biến thì tập con cũng không phổ biến' (sai hoàn toàn)"
+    ]
+  },
+  {
+    "id": "ch5_q17",
+    "number": "C5.17",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "theory",
+    "prompt": "Quy trình tổng quát của thuật toán Apriori gồm những bước lặp nào để đi từ $L_{k-1}$ sang $L_k$?",
+    "answer": "Với mỗi bước $k$ (bắt đầu từ $k=1$):\n1. **Bước nối (Join step):** Sinh tập ứng viên kích thước $k$ ($C_k$) bằng cách kết hợp các cặp tập phổ biến kích thước $k-1$ ($L_{k-1} \\Join L_{k-1}$ có cùng $k-2$ phần tử đầu).\n2. **Bước tỉa (Prune step):** Loại bỏ bất kỳ ứng viên nào trong $C_k$ có chứa ít nhất một tập con kích thước $k-1$ không thuộc $L_{k-1}$ (dựa vào Tính chất 2).\n3. **Bước quét CSDL (Scan step):** Quét qua CSDL giao dịch để đếm độ hỗ trợ thực tế cho các ứng viên còn lại trong $C_k$.\n4. **Bước lọc (Filter step):** Giữ lại các ứng viên có $Sup \\ge minsup$ để tạo thành $L_k$. Dừng lại khi $C_k$ hoặc $L_k$ rỗng.",
+    "explanation": "Theo Slide 27-40, thuật toán duyệt theo chiều rộng (level-wise search), mỗi cấp $k$ cần một lần quét toàn bộ CSDL.",
+    "eli5": "Ghép cặp các tập tốt ở vòng trước -> Bỏ ngay đứa nào chứa phần tử phế -> Quét CSDL đếm điểm -> Lọc đứa đủ điểm vào vòng trong -> Lặp lại.",
+    "commonMistakes": [
+      "Quên bước Prune mà đi quét CSDL đếm ngay cho toàn bộ tổ hợp được sinh ra"
+    ]
+  },
+  {
+    "id": "ch5_q18",
+    "number": "C5.18",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "calculation",
+    "prompt": "Cho CSDL 4 giao dịch (Slide 28): T1:{pasta, lemon, bread, orange}, T2:{pasta, lemon}, T3:{pasta, orange, cake}, T4:{pasta, lemon, orange, cake}. Với $minsup = 2$, hãy tìm tập phổ biến 1-itemset $L_1$ và chỉ ra item nào bị loại.",
+    "answer": "Đếm tần suất xuất hiện của từng item:\n- $sup(\\{pasta\\}) = 4$\n- $sup(\\{lemon\\}) = 3$\n- $sup(\\{bread\\}) = 1$\n- $sup(\\{orange\\}) = 3$\n- $sup(\\{cake\\}) = 2$\nVì $minsup = 2$, item $\\{bread\\}$ có $sup = 1 < 2$ nên bị **LOẠI**.\nTập phổ biến 1-itemset là:\n$$L_1 = \\{\\{pasta\\}, \\{lemon\\}, \\{orange\\}, \\{cake\\}\\}$$",
+    "explanation": "Chi tiết Slide 28-29. Việc loại bỏ {bread} ngay từ vòng 1 sẽ giúp triệt tiêu tất cả các tập ứng viên 2, 3, 4 phần tử có chứa bread ở các vòng sau.",
+    "eli5": "Bread chỉ xuất hiện ở đúng 1 đơn hàng T1, dưới chuẩn 2 đơn nên bị gạch tên ngay từ vòng gửi xe.",
+    "commonMistakes": [
+      "Không loại bread dẫn đến tính toán sai toàn bộ các bước sau"
+    ]
+  },
+  {
+    "id": "ch5_q19",
+    "number": "C5.19",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "calculation",
+    "prompt": "Từ $L_1 = \\{\\{pasta\\}, \\{lemon\\}, \\{orange\\}, \\{cake\\}\\}$ ở trên với $minsup = 2$, hãy sinh tập ứng viên $C_2$, tính support và xác định $L_2$. Itemset nào trong $C_2$ bị loại?",
+    "answer": "- Sinh $C_2$ (tổ hợp chập 2 từ 4 item): $\\binom{4}{2} = 6$ ứng viên:\n  $$\\{\\{pasta, lemon\\}, \\{pasta, orange\\}, \\{pasta, cake\\}, \\{lemon, orange\\}, \\{lemon, cake\\}, \\{orange, cake\\}\\}$$\n- Bước tỉa (Prune): Không có ứng viên nào chứa tập con 1-itemset không phổ biến.\n- Đếm support qua CSDL:\n  - $sup(\\{pasta, lemon\\}) = 3$\n  - $sup(\\{pasta, orange\\}) = 3$\n  - $sup(\\{pasta, cake\\}) = 2$\n  - $sup(\\{lemon, orange\\}) = 2$\n  - $sup(\\{lemon, cake\\}) = 1$ (chỉ có trong T4)\n  - $sup(\\{orange, cake\\}) = 2$\n- Lọc với $minsup = 2$: Itemset $\\{lemon, cake\\}$ bị **LOẠI** vì $sup = 1 < 2$.\n$$L_2 = \\{\\{pasta, lemon\\}, \\{pasta, orange\\}, \\{pasta, cake\\}, \\{lemon, orange\\}, \\{orange, cake\\}\\}$$",
+    "explanation": "Theo Slide 30-33. Việc {lemon, cake} bị loại là thông tin tối quan trọng để tỉa nhánh ở vòng 3.",
+    "eli5": "Ghép đôi 4 món được 6 cặp. Đếm thấy cặp Chanh & Bánh ngọt chỉ đi cùng nhau 1 lần nên bị loại, còn lại 5 cặp đạt chuẩn.",
+    "commonMistakes": [
+      "Quên đếm T4 có cả {pasta, lemon, orange, cake} chứa cặp {lemon, cake}"
+    ]
+  },
+  {
+    "id": "ch5_q20",
+    "number": "C5.20",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "calculation",
+    "prompt": "Ở bước sinh $C_3$, hai ứng viên nào được sinh ra và bước Prune kiểm tra như thế nào? Tại sao thuật toán dừng lại ở kích thước 4 (Slide 34-41)?",
+    "answer": "1. **Sinh $C_3$:** Từ $L_2$, các cặp có cùng phần tử đầu kết hợp sinh ra:\n   - $\\{pasta, lemon, orange\\}$: Tập con gồm $\\{pasta, lemon\\}, \\{pasta, orange\\}, \\{lemon, orange\\}$ đều thuộc $L_2$ $\\Rightarrow$ **GIỮ LẠI** ($sup = 2 \\ge 2$).\n   - $\\{pasta, orange, cake\\}$: Tập con gồm $\\{pasta, orange\\}, \\{pasta, cake\\}, \\{orange, cake\\}$ đều thuộc $L_2$ $\\Rightarrow$ **GIỮ LẠI** ($sup = 2 \\ge 2$).\n   - Ứng viên $\\{pasta, lemon, cake\\}$ có tập con $\\{lemon, cake\\} \\notin L_2$ nên bị **TỈA BỎ NGAY (Pruned)**.\n   - Ứng viên $\\{lemon, orange, cake\\}$ có tập con $\\{lemon, cake\\} \\notin L_2$ nên bị **TỈA BỎ NGAY (Pruned)**.\n2. **Tại sao dừng ở kích thước 4:** \n   - Ứng viên 4-itemset duy nhất có thể sinh từ $L_3$ là $\\{pasta, lemon, orange, cake\\}$.\n   - Tập này chứa tập con $\\{lemon, cake\\} \\notin L_2$ (hoặc $\\{pasta, lemon, cake\\} \\notin L_3$) nên bị tỉa bỏ ở bước Prune.\n   - Không còn ứng viên nào trong $C_4$, do đó thuật toán dừng lại.",
+    "explanation": "Chi tiết Slide 34-41: Tổng hợp các tập phổ biến cuối cùng gồm 4 tập đơn, 5 tập đôi, và 2 tập ba: {pasta, lemon, orange} và {pasta, orange, cake}.",
+    "eli5": "Nhờ biết Chanh & Bánh ngọt bị loại từ vòng trước, ở vòng 3 và vòng 4 bất cứ nhóm nào dính vào 2 món này đều bị loại thẳng tay mà không cần đếm lại.",
+    "commonMistakes": [
+      "Không phát hiện ra {lemon, cake} là tập con không phổ biến của {pasta, lemon, orange, cake}"
+    ]
+  },
+  {
+    "id": "ch5_q21",
+    "number": "C5.21",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "theory",
+    "prompt": "Nêu 2 nhược điểm cốt tử của thuật toán Apriori dẫn đến sự ra đời của thuật toán FP-Growth (Slide 42).",
+    "answer": "Hai nhược điểm lớn của Apriori:\n1. **Quá nhiều lần quét CSDL (Multiple DB Scans):** Với tập phổ biến dài nhất có độ dài $k$, Apriori phải quét lại toàn bộ CSDL ít nhất $k+1$ lần, gây nghẽn I/O nghiêm trọng trên dữ liệu lớn.\n2. **Bùng nổ số lượng ứng viên (Combinatorial Explosion):** Nếu có $n$ item đơn lẻ phổ biến, số lượng ứng viên 2-itemset được sinh ra để kiểm tra xấp xỉ $\\frac{n^2}{2}$. Ví dụ $n = 10^4$, số ứng viên là $\\approx 5 \\times 10^7$, tiêu tốn bộ nhớ khổng lồ.",
+    "explanation": "Theo Slide 42, FP-Growth (Frequent Pattern Growth) do Jiawei Han đề xuất giải quyết triệt để 2 vấn đề này.",
+    "eli5": "Apriori giống như mỗi lần tìm một món lại phải lội lại từ đầu cuốn danh bạ dày cộp (quét CSDL liên tục) và lập danh sách ghép cặp dài hàng triệu trang.",
+    "commonMistakes": [
+      "Nghĩ rằng Apriori chỉ quét CSDL 1 lần"
+    ]
+  },
+  {
+    "id": "ch5_q22",
+    "number": "C5.22",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "theory",
+    "prompt": "Thuật toán FP-Growth khắc phục các nhược điểm của Apriori bằng những cơ chế đột phá nào (Slide 42)?",
+    "answer": "Ba cơ chế đột phá của FP-Growth:\n1. **Chỉ quét CSDL đúng 2 lần:** Lần 1 đếm tần suất item đơn lẻ; Lần 2 nén dữ liệu giao dịch vào cây FP-tree trong bộ nhớ RAM.\n2. **Hoàn toàn không sinh tập ứng viên (No Candidate Generation):** Thay vì sinh hàng triệu ứng viên để kiểm tra, FP-Growth khai phá trực tiếp các mẫu phổ biến từ cây FP-tree bằng kỹ thuật chia để trị (Divide-and-Conquer).\n3. **Cấu trúc nén FP-tree tiết kiệm bộ nhớ:** Gom các tiền tố chung của các giao dịch lại với nhau, giúp kích thước cây nhỏ hơn nhiều lần so với CSDL gốc.",
+    "explanation": "Slide 42 & 46: Nhờ không sinh ứng viên và nén cây FP-tree, FP-Growth chạy nhanh hơn Apriori từ 1 đến 2 bậc độ lớn (order of magnitude).",
+    "eli5": "FP-Growth gom tất cả các đơn hàng trùng nhau lại thành một cái cây thu nhỏ trong bộ nhớ, chỉ cần đọc file đúng 2 lần rồi ngồi trên cây mà tính, không phải đoán mò sinh ứng viên.",
+    "commonMistakes": [
+      "Nghĩ rằng FP-Growth quét CSDL 3 lần hoặc phụ thuộc vào số chiều k"
+    ]
+  },
+  {
+    "id": "ch5_q23",
+    "number": "C5.23",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "theory",
+    "prompt": "Cấu trúc dữ liệu FP-tree gồm những thành phần nào? Vai trò của Header Table (Bảng tiêu đề) là gì?",
+    "answer": "Cấu trúc FP-tree gồm:\n1. **Nút gốc (Root):** Nút rỗng có nhãn 'null'.\n2. **Các nhánh nút con (Item Prefix Subtrees):** Mỗi nút lưu $\\{item\\_name: count\\}$ đại diện cho một item và số lượng giao dịch chia sẻ đường dẫn đó.\n3. **Bảng tiêu đề (Header Table):** Lưu danh sách các item phổ biến đơn lẻ sắp xếp theo tần suất giảm dần, mỗi mục chứa con trỏ liên kết (node-link) trỏ tới nút đầu tiên của item đó trên cây FP-tree, các nút cùng tên trên cây nối tiếp nhau thành một danh sách liên kết đơn (linked list).",
+    "explanation": "Theo Slide 47 và hình ảnh trên Slide 58-59, Header Table giúp thuật toán duyệt nhanh qua toàn bộ các nút của một item bất kỳ trên cây mà không phải duyệt lại toàn cây.",
+    "eli5": "Cây FP-tree giống như mục lục sách: Header Table là danh sách từ khóa, mỗi từ khóa có sợi dây liên kết chỉ thẳng tới tất cả các trang sách có chứa từ đó.",
+    "commonMistakes": [
+      "Bỏ qua Header Table và node-links, nghĩ rằng FP-tree chỉ là cây tiền tố trie thông thường"
+    ]
+  },
+  {
+    "id": "ch5_q24",
+    "number": "C5.24",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "theory",
+    "prompt": "Tại sao trong FP-Growth các item trong một giao dịch bắt buộc phải được sắp xếp theo thứ tự giảm dần của tần suất xuất hiện (frequency-descending order)?",
+    "answer": "Vì 2 lý do kỹ thuật cốt lõi (Slide 50):\n1. **Tối đa hóa mức độ chia sẻ tiền tố chung (Prefix Sharing):** Các item phổ biến nhất sẽ nằm gần gốc cây nhất, cho phép nhiều giao dịch khác nhau dùng chung các nút này, giúp cây FP-tree đạt độ nén tối đa.\n2. **Tính cố định và chuẩn hóa:** Đảm bảo thứ tự khai phá duy nhất từ các item ít phổ biến hơn (ở đáy cây) ngược lên gốc cây.",
+    "explanation": "Theo Slide 50: '{C, A, M} là hợp lệ vì count(C) >= count(A) >= count(M); còn {M, C, A} hay {C, M, A} là không hợp lệ'.",
+    "eli5": "Món nào ai cũng mua thì xếp ở cuống cây để dùng chung cho đỡ tốn chỗ, món nào ít người mua hơn thì mọc thành nhánh nhỏ ở ngoài.",
+    "commonMistakes": [
+      "Sắp xếp theo thứ tự bảng chữ cái A-Z (sai, phải sắp xếp theo thứ tự tần suất giảm dần)"
+    ]
+  },
+  {
+    "id": "ch5_q25",
+    "number": "C5.25",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "calculation",
+    "prompt": "Cho CSDL 5 giao dịch (Slide 49):\n1: F, A, C, D, G, I, M, P\n2: A, B, C, F, L, M, O\n3: B, F, H, J, O\n4: B, C, K, S, P\n5: A, F, C, E, L, P, M, N\nVới $minsup\\_count = 3$, hãy xác định các item đơn lẻ thỏa mãn và sắp xếp chúng theo thứ tự giảm dần của tần suất.",
+    "answer": "Đếm tần suất xuất hiện của tất cả các item (Slide 49):\n- F: 4, C: 4\n- A: 3, B: 3, M: 3, P: 3\n- L: 2, O: 2\n- D, G, I, H, J, K, S, E, N: 1\nVới $minsup\\_count = 3$, chỉ có 6 item có $count \\ge 3$. Thứ tự giảm dần theo tần suất là:\n$$\\mathbf{F: 4, C: 4, A: 3, B: 3, M: 3, P: 3}$$ (hoặc F, C, A, M, P, B tùy thứ tự hòa điểm). Theo slide chuẩn: **F, C, A, B, M, P** (hoặc F, C, A, M, P).",
+    "explanation": "Chi tiết Slide 50: Các item có count < 3 (L, O, D, G, ...) bị loại bỏ hoàn toàn trước khi xây dựng cây FP-tree.",
+    "eli5": "Đếm xem món nào xuất hiện từ 3 lần trở lên thì giữ lại, xếp ai xuất hiện nhiều nhất lên đầu: F(4), C(4), rồi đến A, B, M, P (đều 3 lần).",
+    "commonMistakes": [
+      "Giữ lại các item L và O (chỉ có count = 2 < 3)"
+    ]
+  },
+  {
+    "id": "ch5_q26",
+    "number": "C5.26",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "calculation",
+    "prompt": "Sau khi lọc bỏ các item không phổ biến và sắp xếp theo Header Table $\\{F, C, A, B, M, P\\}$, 5 giao dịch trên được viết lại thành các danh sách nào trước khi chèn vào FP-tree (Slide 51)?",
+    "answer": "Kết quả CSDL sau khi xử lý (Slide 51):\n- Transaction 1: **F, C, A, M, P** (loại D, G, I)\n- Transaction 2: **F, C, A, B, M** (loại L, O)\n- Transaction 3: **F, B** (loại H, J, O)\n- Transaction 4: **C, B, P** (loại K, S)\n- Transaction 5: **F, C, A, M, P** (loại E, L, N)",
+    "explanation": "Chi tiết Slide 51. Transaction 1 và Transaction 5 hoàn toàn trùng khớp (F, C, A, M, P) nên khi chèn vào FP-tree chúng sẽ đi chung một đường dẫn và tăng count từ 1 lên 2.",
+    "eli5": "Bỏ hết đồ ế đi, sắp xếp lại đồ hot theo đúng thứ tự ưu tiên F -> C -> A -> B -> M -> P cho từng đơn hàng.",
+    "commonMistakes": [
+      "Giữ nguyên thứ tự ban đầu của giao dịch thay vì sắp xếp lại theo Header Table"
+    ]
+  },
+  {
+    "id": "ch5_q27",
+    "number": "C5.27",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "theory",
+    "prompt": "Khái niệm Conditional Pattern Base (Cơ sở mẫu có điều kiện - CPB) trong thuật toán FP-Growth là gì?",
+    "answer": "Conditional Pattern Base (CPB) của một item hậu tố (suffix) là tập hợp tất cả các **đường dẫn tiền tố (prefix paths)** trong cây FP-tree đồng xuất hiện cùng với item đó, trong đó mỗi đường dẫn tiền tố đi kèm với số lần xuất hiện (count) bằng chính count của nút hậu tố đó.",
+    "explanation": "Theo Slide 47 & 59: Để tìm các mẫu phổ biến chứa item X, ta lần theo các con trỏ liên kết trong Header Table để tìm tất cả các nút X, rồi đi ngược từ nút X lên nút gốc Root để lấy tiền tố.",
+    "eli5": "Đi từ dưới gốc cành X leo ngược về thân cây xem trên đường đi có những ai, ghi lại cả đoàn đó cùng số lần gặp.",
+    "commonMistakes": [
+      "Lấy cả nút hậu tố X vào đường dẫn tiền tố (prefix path chỉ chứa các nút phía trên X, không chứa chính X)"
+    ]
+  },
+  {
+    "id": "ch5_q28",
+    "number": "C5.28",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "calculation",
+    "prompt": "Từ cây FP-tree ở Slide 58-59, hãy chỉ ra Conditional Pattern Base của hai item ở đáy cây là $P$ và $M$.",
+    "answer": "Từ bảng trên Slide 59:\n- Với item **P** (hậu tố P):\n  $$\\text{CPB}(P) = \\{\\{F, C, A, M : 2\\}, \\{C, B : 1\\}\\}$$\n- Với item **M** (hậu tố M):\n  $$\\text{CPB}(M) = \\{\\{F, C, A : 2\\}, \\{F, C, A, B : 1\\}\\}$$",
+    "explanation": "Giải thích: Trên cây FP-tree, nút P có 2 nhánh: một nhánh đi qua F->C->A->M (count=2) và một nhánh đi qua C->B (count=1).",
+    "eli5": "Nhìn vào các con trỏ trỏ tới P: Nhánh 1 có F,C,A,M đi cùng với count=2; Nhánh 2 có C,B đi cùng với count=1.",
+    "commonMistakes": [
+      "Đếm sai count của các nhánh tiền tố"
+    ]
+  },
+  {
+    "id": "ch5_q29",
+    "number": "C5.29",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "calculation",
+    "prompt": "Với $minsup\\_count = 3$, tại sao đối với item $B$ thì Conditional FP-Tree là rỗng ($-$), trong khi đối với item $P$ thì Conditional FP-Tree chỉ có $\\{C: 3\\}$ (Slide 60-61)?",
+    "answer": "1. **Với item B:** $\\text{CPB}(B) = \\{\\{F:1\\}, \\{C:1\\}, \\{F,C,A:1\\}\\}$.\n   - Tổng số lần xuất hiện của các phần tử: $F: 2, C: 2, A: 1$.\n   - Vì không có item nào có $count \\ge minsup\\_count = 3$, nên không có item nào đủ điều kiện $\\Rightarrow$ Conditional FP-Tree của B là **rỗng ($-$)**.\n2. **Với item P:** $\\text{CPB}(P) = \\{\\{F, C, A, M: 2\\}, \\{C, B: 1\\}\\}$.\n   - Tổng số lần xuất hiện: $F: 2, C: 2 + 1 = 3, A: 2, M: 2, B: 1$.\n   - Chỉ có duy nhất phần tử $C$ có $count = 3 \\ge 3$, các phần tử khác bị loại $\\Rightarrow$ Conditional FP-Tree của P chỉ chứa $\\mathbf{\\{C: 3\\}}$.",
+    "explanation": "Chi tiết Slide 60-61. Từ Conditional FP-Tree {C:3} kết hợp với hậu tố P, ta sinh ra tập phổ biến mới là {C, P} với count = 3.",
+    "eli5": "Chỉ những đứa nào xuất hiện đủ 3 lần trong tiền tố mới được giữ lại. Với B không có đứa nào đủ 3 lần nên rỗng. Với P chỉ có duy nhất C gom được 2+1=3 lần.",
+    "commonMistakes": [
+      "Cộng dồn F được 2 nhưng tưởng nhầm là đủ minsup = 3"
+    ]
+  },
+  {
+    "id": "ch5_q30",
+    "number": "C5.30",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "calculation",
+    "prompt": "Liệt kê danh sách tất cả các tập phổ biến (Frequent Itemsets) cuối cùng theo kích thước được khai phá từ thuật toán FP-Growth ở Slide 62.",
+    "answer": "Các tập phổ biến cuối cùng (Slide 62):\n- **Kích thước 1:** $\\{B\\}, \\{F\\}, \\{C\\}, \\{A\\}, \\{M\\}, \\{P\\}$\n- **Kích thước 2:** $\\{F, C\\}, \\{F, A\\}, \\{C, A\\}, \\{F, M\\}, \\{C, M\\}, \\{A, M\\}, \\{C, P\\}$\n- **Kích thước 3:** $\\{F, C, A\\}, \\{F, C, M\\}, \\{F, A, M\\}, \\{C, A, M\\}$\n- **Kích thước 4:** $\\{F, C, A, M\\}$",
+    "explanation": "Chi tiết Slide 62: Tập phổ biến lớn nhất (Maximal frequent itemset) là {F, C, A, M} với độ dài 4.",
+    "eli5": "FP-Growth gom ra được 6 tập đơn lẻ, 7 tập đôi, 4 tập ba và 1 tập bốn phần tử.",
+    "commonMistakes": [
+      "Sót tập 4 phần tử {F, C, A, M} hoặc sót {C, P}"
+    ]
+  },
+  {
+    "id": "ch5_q31",
+    "number": "C5.31",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "calculation",
+    "prompt": "Trong bài toán ngân hàng ở Slide 63 gồm 5 giao dịch tài chính:\nT1: Credit Card, Personal Loan, Life Insurance, Fixed Deposit\nT2: Fixed Deposit, Credit Card, Car Insurance, Personal Loan\nT3: Credit Card, Personal Loan, Fixed Deposit\nT4: Life Insurance, Credit Card, Personal Loan\nT5: Credit Card, Personal Loan, Fixed Deposit, Life Insurance\nVới $minsup = 2$, cặp sản phẩm nào xuất hiện trong TOÀN BỘ cả 5 giao dịch ($Sup = 100\\%$)?",
+    "answer": "Cặp sản phẩm xuất hiện trong cả 5 giao dịch là: **$\\{\\text{Credit Card}, \\text{Personal Loan}\\}$** (Thẻ tín dụng và Vay tiêu dùng) với $count = 5/5 = 100\\%$.\nNgoài ra, sản phẩm Fixed Deposit xuất hiện trong 4 giao dịch (T1, T2, T3, T5), Life Insurance xuất hiện trong 3 giao dịch (T1, T4, T5).",
+    "explanation": "Theo Slide 63, đây là mẫu hành vi rất phổ biến: Khách hàng vay tiêu dùng cá nhân (Personal Loan) luôn luôn được cấp kèm Thẻ tín dụng (Credit Card).",
+    "eli5": "Cả 5 khách hàng từ T1 đến T5 ai cũng mở Thẻ tín dụng và Vay tiêu dùng, đây là gói combo tuyệt đối 100% của ngân hàng.",
+    "commonMistakes": [
+      "Chọn thêm Life Insurance (chỉ có trong 3 giao dịch)"
+    ]
+  },
+  {
+    "id": "ch5_q32",
+    "number": "C5.32",
+    "chapterId": "ch5",
+    "topic": "fp-growth",
+    "type": "calculation",
+    "prompt": "Trong bài toán công ty chứng khoán ở Slide 64 gồm 6 giao dịch T1-T6 với $minsup = 3$, hãy đếm tần suất của các sản phẩm: Stock Account, Mutual Fund, Personal Loan, Savings Account, Bonds, Credit Card.",
+    "answer": "Tần suất xuất hiện (Slide 64):\n- **Stock Account (Tài khoản cổ phiếu):** Xuất hiện trong T1, T2, T3, T4, T6 $\\Rightarrow count = 5$\n- **Mutual Fund (Chứng chỉ quỹ):** Xuất hiện trong T1, T3, T4, T6 $\\Rightarrow count = 4$\n- **Personal Loan (Vay tiêu dùng / Ký quỹ):** Xuất hiện trong T2, T4, T5, T6 $\\Rightarrow count = 4$\n- **Savings Account (Tiết kiệm):** Xuất hiện trong T1, T3, T5 $\\Rightarrow count = 3$\n- **Credit Card (Thẻ tín dụng):** Xuất hiện trong T1, T3, T5 $\\Rightarrow count = 3$\n- **Bonds (Trái phiếu):** Xuất hiện trong T2, T6 $\\Rightarrow count = 2$ (< minsup=3 $\\Rightarrow$ LOẠI).",
+    "explanation": "Chi tiết Slide 64: Bonds bị loại vì chỉ xuất hiện 2 lần. 5 sản phẩm còn lại đều là frequent 1-itemsets.",
+    "eli5": "Đếm từng món: Cổ phiếu có 5 lần, Quỹ có 4, Vay có 4, Tiết kiệm 3, Thẻ 3. Riêng Trái phiếu chỉ có 2 lần nên bị loại khỏi danh sách.",
+    "commonMistakes": [
+      "Đếm sót Stock Account trong T6"
+    ]
+  },
+  {
+    "id": "ch5_q33",
+    "number": "C5.33",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "theory",
+    "prompt": "Câu chuyện kinh điển 'Bia và Tã giấy' (Beer and Diapers) trong Market Basket Analysis minh họa cho điều gì trong việc ra quyết định kinh doanh?",
+    "answer": "Minh họa cho việc phát hiện các **mối quan hệ liên kết ngầm ẩn bất ngờ (non-obvious association)** mà trực giác con người không nhận ra: Các ông bố trẻ vào chiều thứ Sáu khi đi mua tã giấy cho con thường tiện tay mua thêm bia để thưởng thức cuối tuần. Doanh nghiệp ứng dụng bằng cách đặt 2 quầy hàng gần nhau hoặc tạo combo khuyến mãi để tăng mạnh doanh số chéo.",
+    "explanation": "Đây là ví dụ điển hình nhất trong lịch sử Data Mining về việc dữ liệu khách quan giúp doanh nghiệp tối ưu hóa bố trí quầy kệ siêu thị và chiến dịch Cross-selling.",
+    "eli5": "Không ai nghĩ người mua tã lót cho em bé lại thích mua bia, nhưng máy tính soi dữ liệu thấy vậy nên siêu thị xếp bia cạnh tã để tiện tay mua luôn.",
+    "commonMistakes": [
+      "Nghĩ rằng bia và tã là sản phẩm có quan hệ nguyên nhân - kết quả trực tiếp"
+    ]
+  },
+  {
+    "id": "ch5_q34",
+    "number": "C5.34",
+    "chapterId": "ch5",
+    "topic": "association-rules",
+    "type": "theory",
+    "prompt": "Tại sao trong thực tế ngân hàng và thương mại điện tử, các luật có Confidence rất cao (ví dụ $99\\%$) nhưng Lift $\\le 1$ lại bị coi là 'luật vô dụng' hoặc 'luật đánh lừa'?",
+    "answer": "Bởi vì hậu đề $Y$ là một sản phẩm quá phổ biến (với xác suất tự nhiên $P(Y)$ rất cao, ví dụ $99\\%$ khách hàng đều có tài khoản thanh toán). Khi đó dù khách có mua tiền đề $X$ hay không thì xác suất mua $Y$ vẫn là $99\\%$. Lift $\\le 1$ chứng tỏ tiền đề $X$ hoàn toàn không làm tăng thêm chút xác suất nào cho việc mua $Y$, thậm chí là độc lập ngẫu nhiên.",
+    "explanation": "Ví dụ: Luật {Bút bi} -> {Không khí thở} có Confidence 100% nhưng Lift = 1 vì không khí ai cũng thở. Luật không có giá trị hành động trong tiếp thị.",
+    "eli5": "99% học sinh đến trường đều đeo balo. Nếu nói 'Ai mang bút bi thì 99% sẽ mang balo' nghe tưởng đúng nhưng vô dụng vì vốn dĩ ai chả mang balo.",
+    "commonMistakes": [
+      "Chỉ nhìn vào Confidence cao để quyết định triển khai chiến dịch kinh doanh mà bỏ qua chỉ số Lift"
+    ]
+  },
+  {
+    "id": "ch5_q35",
+    "number": "C5.35",
+    "chapterId": "ch5",
+    "topic": "apriori",
+    "type": "theory",
+    "prompt": "So sánh khi nào nên sử dụng Apriori và khi nào nên sử dụng FP-Growth dựa trên đặc điểm của tập dữ liệu.",
+    "answer": "- **Dùng Apriori khi:** CSDL nhỏ, dữ liệu rất thưa thớt (sparse data, giao dịch ngắn), ngưỡng minsup cao, hoặc hệ thống cần giải thích trực quan từng bước sinh ứng viên dễ hiểu.\n- **Dùng FP-Growth khi:** CSDL lớn (Big Data), dữ liệu dày đặc (dense data với nhiều item trùng lặp), các giao dịch dài, ngưỡng minsup thấp (vì khi minsup thấp, số lượng ứng viên của Apriori bùng nổ làm sập RAM trong khi FP-tree vẫn xử lý mượt mà).",
+    "explanation": "FP-Growth là lựa chọn tiêu chuẩn công nghiệp hiện nay cho các bài toán Market Basket quy mô hàng triệu giao dịch.",
+    "eli5": "Dữ liệu ít và đơn giản thì dùng Apriori cho dễ hiểu. Dữ liệu siêu khủng, nhiều món mua chung thì phải dùng FP-Growth mới không bị đơ máy.",
+    "commonMistakes": [
+      "Nghĩ rằng Apriori luôn chạy nhanh hơn FP-Growth trên mọi loại dữ liệu"
+    ]
+  },
+  {
+    "id": "ch5_q36",
+    "number": "C5.36",
+    "chapterId": "ch5",
+    "topic": "decision-tree",
+    "type": "theory",
+    "prompt": "Dựa vào bảng so sánh ở Slide 65, tiêu chí chọn thuộc tính phân tách (Splitting Criterion) của ID3 và C4.5 khác nhau như thế nào? Tại sao C4.5 lại cải tiến điều này?",
+    "answer": "- **ID3:** Dùng **Information Gain (Độ lợi thông tin)** dựa trên Entropy.\n- **C4.5:** Dùng **Gain Ratio (Tỷ số độ lợi)** bằng cách chuẩn hóa Information Gain chia cho Split Info: $GainRatio(A) = \\frac{Gain(A)}{SplitInfo_A(D)}$.\n- **Lý do cải tiến:** Information Gain bị thiên vị nặng nề đối với các thuộc tính có nhiều giá trị phân biệt riêng lẻ (như số ID, ngày sinh, số điện thoại). C4.5 dùng Gain Ratio để phạt các thuộc tính này, tránh tạo ra cây quá rộng và vô nghĩa.",
+    "explanation": "Chi tiết Slide 65: ID3 dùng Information Gain, C4.5 dùng Gain Ratio. Đây là cải tiến kinh điển của Ross Quinlan từ ID3 (1986) lên C4.5 (1993).",
+    "eli5": "Nếu dùng ID3, nó sẽ chọn trường 'Số CCCD' làm gốc vì mỗi người 1 số riêng biệt (Gain tối đa nhưng vô dụng). C4.5 khôn hơn, dùng Gain Ratio để phạt các trường có quá nhiều nhánh con.",
+    "commonMistakes": [
+      "Nghĩ rằng cả ID3 và C4.5 đều dùng Gini Index (Gini Index là của thuật toán CART)"
+    ]
+  },
+  {
+    "id": "ch5_q37",
+    "number": "C5.37",
+    "chapterId": "ch5",
+    "topic": "decision-tree",
+    "type": "theory",
+    "prompt": "So sánh khả năng hỗ trợ loại dữ liệu và xử lý giá trị khuyết thiếu (Null) giữa ID3 và C4.5 (Slide 65).",
+    "answer": "- **Loại dữ liệu hỗ trợ:**\n  - ID3: **Chỉ hỗ trợ dữ liệu rời rạc (Categorical)**. Không xử lý được dữ liệu liên tục.\n  - C4.5: **Hỗ trợ cả dữ liệu rời rạc và liên tục (Numerical)** bằng cách sắp xếp giá trị và thử các điểm ngưỡng chia đôi (thresholds).\n- **Xử lý giá trị Null / Missing:**\n  - ID3: **Không hỗ trợ** (gặp giá trị Null là báo lỗi hoặc phải tiền xử lý thủ công).\n  - C4.5: **Hỗ trợ trực tiếp** bằng cách gán trọng số xác suất (fractional weights) cho các nhánh tương ứng với phân phối dữ liệu đã biết.",
+    "explanation": "Chi tiết Slide 65: Khả năng xử lý số thực liên tục và dung thứ giá trị thiếu biến C4.5 thành một trong top 10 thuật toán khai phá dữ liệu có tầm ảnh hưởng lớn nhất.",
+    "eli5": "ID3 rất kén ăn: chỉ nhận chữ (rời rạc) và gặp ô trống là lăn ra báo lỗi. C4.5 ăn được cả chữ lẫn số thực, thiếu dữ liệu vẫn tự ước lượng trọng số để chạy tiếp.",
+    "commonMistakes": [
+      "Nghĩ rằng ID3 có thể tự động băm số thực liên tục"
+    ]
+  },
+  {
+    "id": "ch5_q38",
+    "number": "C5.38",
+    "chapterId": "ch5",
+    "topic": "decision-tree",
+    "type": "theory",
+    "prompt": "So sánh cơ chế cắt tỉa cây (Pruning) và khả năng kiểm soát Overfitting giữa ID3 và C4.5 (Slide 65).",
+    "answer": "- **Kỹ thuật cắt tỉa cây:**\n  - ID3: **Không có cơ chế cắt tỉa cây** (phát triển cây cho đến khi thuần khiết hoàn toàn).\n  - C4.5: **Có cơ chế cắt tỉa sau (Post-pruning)** dựa trên độ lỗi ước lượng (Error-based pruning) để gọt bớt các nhánh lá không cần thiết.\n- **Kiểm soát Overfitting (Quá khớp):**\n  - ID3: **Kém** (cây quá sâu, học vẹt dữ liệu nhiễu).\n  - C4.5: **Tốt** (cây gọn gàng, khả năng tổng quát hóa cao khi gặp dữ liệu mới).",
+    "explanation": "Chi tiết Slide 65: Post-pruning giúp biến cây từ một cấu trúc khổng lồ học vẹt thành một mô hình gọn nhẹ, tránh bẫy overfitting.",
+    "eli5": "ID3 để cành lá mọc xum xuê tận cùng nên bị quá khớp. C4.5 có cây kéo cắt tỉa sau (Post-pruning) bấm bớt các nhánh lá rườm rà giúp cây khỏe và gọn gàng.",
+    "commonMistakes": [
+      "Nhầm C4.5 dùng Pre-pruning (C4.5 nổi tiếng với kỹ thuật Post-pruning)"
+    ]
+  },
+  {
+    "id": "ch5_q39",
+    "number": "C5.39",
+    "chapterId": "ch5",
+    "topic": "naive-bayes",
+    "type": "formula",
+    "prompt": "Định lý Bayes và Giả định 'Naive' (Thơ ngây) trong thuật toán Naive Bayes được phát biểu như thế nào (Slide 66)?",
+    "answer": "- **Định lý Bayes:** Tính xác suất hậu nghiệm của lớp $C$ khi biết vector đặc trưng $X = (x_1, x_2, ..., x_d)$:\n$$P(C|X) = \\frac{P(X|C) \\cdot P(C)}{P(X)}$$\n- **Giả định 'Naive' (Độc lập có điều kiện - Class-Conditional Independence):** Giả định rằng tất cả các thuộc tính $x_1, x_2, ..., x_d$ đều **độc lập hoàn toàn với nhau khi đã biết nhãn lớp $C$**:\n$$P(X|C) = P(x_1|C) \\cdot P(x_2|C) \\cdot ... \\cdot P(x_d|C) = \\prod_{i=1}^d P(x_i|C)$$\nĐối tượng $X$ sẽ được gán vào lớp $C_k$ có giá trị $P(C_k) \\prod_{i=1}^d P(x_i|C_k)$ lớn nhất.",
+    "explanation": "Theo Slide 66: Dù trong thực tế các thuộc tính thường có tương quan với nhau, giả định 'ngây thơ' này giúp việc tính toán trở nên cực kỳ đơn giản và nhanh chóng mà mô hình vẫn đạt độ chính xác cao đáng kinh ngạc.",
+    "eli5": "Naive Bayes tính xác suất giống như giả vờ rằng các triệu chứng: sốt, ho, mất vị giác... hoàn toàn không liên quan gì đến nhau khi bị cúm, rồi nhân dồn xác suất lại.",
+    "commonMistakes": [
+      "Quên rằng tính độc lập là 'có điều kiện theo nhãn lớp C', chứ không phải các biến độc lập ngẫu nhiên hoàn toàn"
+    ]
+  },
+  {
+    "id": "ch5_q40",
+    "number": "C5.40",
+    "chapterId": "ch5",
+    "topic": "naive-bayes",
+    "type": "theory",
+    "prompt": "Vấn đề tần suất bằng 0 (Zero-frequency problem) trong Naive Bayes xảy ra khi nào và kỹ thuật Hiệu chỉnh Laplace (Laplacian Correction) giải quyết nó như thế nào?",
+    "answer": "- **Hiện tượng Zero-frequency:** Khi một giá trị thuộc tính $x_i$ chưa từng xuất hiện cùng với lớp $C$ trong tập huấn luyện, ta có $P(x_i|C) = 0$. Vì các xác suất được nhân dồn lại ($\\prod P$), một giá trị 0 sẽ triệt tiêu toàn bộ tích xác suất thành 0, xóa sạch mọi bằng chứng của các thuộc tính còn lại.\n- **Laplacian Correction:** Cộng thêm $1$ vào tử số (số lần xuất hiện) và cộng thêm $q$ (số giá trị có thể có của thuộc tính đó) vào mẫu số:\n$$P(x_i|C) = \\frac{\\text{count}(x_i, C) + 1}{\\text{count}(C) + q}$$\nĐảm bảo mọi xác suất thành phần luôn $> 0$ và tổng xác suất vẫn chuẩn hóa bằng 1.",
+    "explanation": "Laplacian smoothing là một kỹ thuật bắt buộc phải cài đặt khi triển khai Naive Bayes trong thực tế để tránh lỗi dự đoán do dữ liệu thiếu mẫu.",
+    "eli5": "Nếu chỉ vì chưa từng thấy con vịt màu đen mà kết luận 'xác suất vịt đen = 0%' rồi nhân vào làm triệt tiêu cả công thức là sai lầm. Laplace giải quyết bằng cách cộng thêm 1 lượt giả lập cho tất cả các màu.",
+    "commonMistakes": [
+      "Chỉ cộng 1 ở tử số mà quên cộng số lượng phân loại q ở mẫu số"
+    ]
+  },
+  {
+    "id": "ch5_q41",
+    "number": "C5.41",
+    "chapterId": "ch5",
+    "topic": "naive-bayes",
+    "type": "theory",
+    "prompt": "Mạng niềm tin Bayes (Bayesian Belief Network) khắc phục nhược điểm cốt tử nào của Naive Bayes? Cấu trúc của mạng này gồm những thành phần nào (Slide 67)?",
+    "answer": "- **Khắc phục:** Khắc phục giả định độc lập phi thực tế của Naive Bayes bằng cách cho phép **mô hình hóa các mối quan hệ phụ thuộc có điều kiện phức tạp** giữa các biến.\n- **Cấu trúc mạng (Slide 67):**\n  1. **Đồ thị có hướng không chu trình (DAG - Directed Acyclic Graph):** Các nút đại diện cho các biến ngẫu nhiên, các cung có hướng biểu diễn mối quan hệ phụ thuộc nhân quả hoặc thống kê trực tiếp.\n  2. **Bảng xác suất có điều kiện (CPT - Conditional Probability Table):** Gắn liền với mỗi nút, xác định phân phối xác suất của biến đó với mọi tổ hợp giá trị của các nút cha trực tiếp: $P(X_i | Parents(X_i))$.",
+    "explanation": "Theo Slide 67: Mạng Bayes là sự kết hợp hoàn hảo giữa lý thuyết đồ thị và lý thuyết xác suất, ứng dụng sâu trong chẩn đoán y khoa và đánh giá rủi ro tín dụng.",
+    "eli5": "Naive Bayes coi mọi người trong phòng không quen biết nhau, còn Mạng Bayes vẽ sơ đồ quan hệ gia đình (cha - con) để tính xác suất truyền bệnh chính xác hơn.",
+    "commonMistakes": [
+      "Cho rằng đồ thị trong Mạng Bayes có thể chứa chu trình khép kín (vòng lặp luẩn quẩn) - Đồ thị bắt buộc phải là DAG (không chu trình)"
+    ]
+  },
+  {
+    "id": "ch5_q42",
+    "number": "C5.42",
+    "chapterId": "ch5",
+    "topic": "clustering",
+    "type": "theory",
+    "prompt": "Dựa vào Slide 68, hãy so sánh thuật toán K-Means và K-Medoids về: Tâm cụm (Center), Loại dữ liệu hỗ trợ, Ưu điểm và Nhược điểm.",
+    "answer": "Bảng so sánh theo Slide 68:\n| Tiêu chí | K-Means | K-Medoids |\n| :--- | :--- | :--- |\n| **Tâm cụm (Center)** | **Mean** (Trọng tâm ảo, tính bằng trung bình cộng tọa độ) | **Medoid** (Điểm dữ liệu thật, nằm ở vị trí trung tâm nhất của cụm) |\n| **Loại dữ liệu** | Chỉ dữ liệu số (**Numerical**) | Mọi loại dữ liệu (cả Categorical, Text, hỗn hợp) |\n| **Ưu điểm** | Chạy rất nhanh với dữ liệu lớn | Chống nhiễu (Outliers) rất tốt |\n| **Nhược điểm** | Rất nhạy cảm với nhiễu và ngoại lai (**Outliers**) | Chạy rất chậm khi dữ liệu lớn (độ phức tạp $O(K(n-K)^2)$) |",
+    "explanation": "Chi tiết Slide 68. Trọng tâm ảo của K-Means dễ bị một điểm dị biệt (outlier) ở xa kéo lệch hoàn toàn khỏi cụm, trong khi K-Medoids dùng điểm thật nên không bị méo mó.",
+    "eli5": "K-Means tính điểm trung bình cả lớp (1 bạn 100 tuổi sẽ kéo tụt điểm trung bình). K-Medoids chọn bạn học sinh ngồi ở chính giữa lớp làm đại diện nên không sợ dị biệt.",
+    "commonMistakes": [
+      "Nghĩ rằng K-Means dùng điểm thật làm tâm cụm (K-Means dùng trọng tâm ảo Mean, K-Medoids mới dùng điểm thật)"
+    ]
+  },
+  {
+    "id": "ch5_q43",
+    "number": "C5.43",
+    "chapterId": "ch5",
+    "topic": "clustering",
+    "type": "formula",
+    "prompt": "Hàm mục tiêu Sum of Squared Errors (SSE) của thuật toán K-Means được định nghĩa như thế nào? Thuật toán hội tụ khi nào?",
+    "answer": "$$SSE = \\sum_{i=1}^K \\sum_{x \\in C_i} \\|x - m_i\\|^2$$\nTrong đó $m_i$ là trọng tâm (mean) của cụm $C_i$, $x$ là các điểm dữ liệu thuộc cụm $C_i$.\nThuật toán K-Means dừng lại (hội tụ) khi:\n1. Tâm cụm $m_i$ không còn thay đổi vị trí giữa các vòng lặp (hoặc thay đổi dưới ngưỡng $\\epsilon$).\n2. Không còn điểm dữ liệu nào bị chuyển cụm.\n3. Đạt tới số vòng lặp tối đa (Max Iterations).",
+    "explanation": "K-Means tìm cách tối thiểu hóa khoảng cách bình phương từ mỗi điểm đến tâm cụm của nó. Đây là giải thuật heuristic leo đồi (Hill Climbing) hội tụ về cực tiểu cục bộ.",
+    "eli5": "SSE là tổng bình phương độ lệch của các điểm so với nhóm trưởng. Khi nào nhóm trưởng đứng yên không đổi vị trí nữa thì coi như gom cụm xong.",
+    "commonMistakes": [
+      "Nghĩ rằng K-Means luôn đảm bảo tìm được nghiệm tối ưu toàn cục (Global Optimum) - thực tế nó chỉ tìm được cực tiểu cục bộ tùy thuộc vào điểm khởi tạo ban đầu"
+    ]
+  },
+  {
+    "id": "ch5_q44",
+    "number": "C5.44",
+    "chapterId": "ch5",
+    "topic": "clustering",
+    "type": "theory",
+    "prompt": "Làm thế nào để xác định số lượng cụm $K$ tối ưu trong K-Means? Trình bày phương pháp Điểm khuỷu tay (Elbow Method).",
+    "answer": "- **Phương pháp Điểm khuỷu tay (Elbow Method):** Chạy K-Means với các giá trị $K$ tăng dần ($K = 1, 2, 3, ..., 10$), ghi lại giá trị hàm mất mát SSE tương ứng rồi vẽ đồ thị đường.\n- **Cách chọn:** Đồ thị sẽ giảm nhanh khi $K$ còn nhỏ và giảm chậm dần khi $K$ đủ lớn. Điểm mà tại đó tốc độ giảm của SSE chậm lại rõ rệt (tạo thành một 'khuỷu tay' gập khúc trên đồ thị) chính là giá trị **$K$ tối ưu**.\n- Ngoài ra có thể kết hợp với hệ số **Silhouette Score** (chọn $K$ có điểm Silhouette trung bình cao nhất gần 1).",
+    "explanation": "Nếu chọn K quá lớn (ví dụ K = N), SSE = 0 nhưng mô hình hoàn toàn mất ý nghĩa phân nhóm.",
+    "eli5": "Vẽ biểu đồ độ lệch theo số cụm. Giống như cánh tay co lại, chỗ nào gập khúc thành 'cùi chỏ' thì đó là số cụm hợp lý nhất.",
+    "commonMistakes": [
+      "Chọn K lớn nhất có thể vì nghĩ rằng SSE càng thấp càng tốt"
+    ]
+  },
+  {
+    "id": "ch5_q45",
+    "number": "C5.45",
+    "chapterId": "ch5",
+    "topic": "clustering",
+    "type": "theory",
+    "prompt": "Trình bày 4 biến thể quan trọng của thuật toán phân cụm được nêu ở Slide 69: Mini-Batch K-Means, K-Modes, K-Prototypes, và CLARA/CLARANS.",
+    "answer": "Theo Slide 69:\n1. **Mini-Batch K-Means:** Bản nâng cấp tốc độ của K-Means cho Big Data, chạy trên từng nhóm mẫu nhỏ ngẫu nhiên (mini-batches) để tiết kiệm thời gian và bộ nhớ RAM.\n2. **K-Modes:** Bản dành riêng cho dữ liệu định tính (Categorical). Thay phép tính trung bình Mean bằng tần số xuất hiện nhiều nhất **Mode** và dùng khoảng cách bất tương đồng (Hamming distance).\n3. **K-Prototypes:** Thuật toán lai (Hybrid) kết hợp K-Means + K-Modes dùng cho tập dữ liệu hỗn hợp (chứa cả thuộc tính số và thuộc tính chữ).\n4. **CLARA / CLARANS:** Bản lấy mẫu phân tách (Sampling-based) của K-Medoids giúp thuật toán thực thi hiệu quả trên dữ liệu lớn.",
+    "explanation": "Chi tiết Slide 69: Đây là hệ sinh thái các thuật toán giải quyết các ràng buộc về kiểu dữ liệu và giới hạn tài nguyên của K-Means/K-Medoids gốc.",
+    "eli5": "- Mini-batch: bốc từng vốc nhỏ ra tính cho nhanh.\n- K-Modes: chuyên trị chữ.\n- K-Prototypes: vừa số vừa chữ cân tất.\n- CLARA/CLARANS: K-Medoids phiên bản rút mẫu để không bị đơ máy.",
+    "commonMistakes": [
+      "Dùng K-Means trực tiếp cho dữ liệu chuỗi/phân loại thay vì dùng K-Modes"
+    ]
+  },
+  {
+    "id": "ch5_q46",
+    "number": "C5.46",
+    "chapterId": "ch5",
+    "topic": "dbscan",
+    "type": "theory",
+    "prompt": "Nguyên lý hoạt động cơ bản của thuật toán phân cụm dựa trên mật độ DBSCAN là gì? Nêu ý nghĩa của hai tham số quyết định: Eps và MinPts (Slide 70).",
+    "answer": "- **Nguyên lý (Slide 70):** Định nghĩa cụm là vùng có mật độ điểm dữ liệu dày đặc, được ngăn cách nhau bởi các vùng có mật độ thấp (vùng thưa thớt). DBSCAN **không cần biết trước số cụm $K$**.\n- **Hai tham số quyết định:**\n  1. **Eps ($\\epsilon$ - Epsilon):** Bán kính lân cận (phạm vi không gian xung quanh một điểm để quét tìm hàng xóm).\n  2. **MinPts (Minimum Points):** Số lượng điểm tối thiểu phải có nằm trong bán kính Eps (tính cả bản thân điểm đó) để cấu thành một vùng mật độ dày đặc.",
+    "explanation": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise) do Ester et al. đề xuất năm 1996.",
+    "eli5": "DBSCAN gom cụm giống như nhận diện khu dân cư đông đúc: Khoanh một vòng tròn bán kính Eps, nếu bên trong có từ MinPts người trở lên thì coi là khu đông dân.",
+    "commonMistakes": [
+      "Nghĩ rằng DBSCAN bắt buộc người dùng phải chỉ định trước số cụm K như K-Means"
+    ]
+  },
+  {
+    "id": "ch5_q47",
+    "number": "C5.47",
+    "chapterId": "ch5",
+    "topic": "dbscan",
+    "type": "theory",
+    "prompt": "Dựa vào Slide 70, DBSCAN phân loại dữ liệu thành 3 loại điểm nào? Nêu đặc điểm nhận diện của từng loại.",
+    "answer": "Ba loại điểm trong DBSCAN (Slide 70):\n1. **Core Point (Điểm lõi):** Có $\\ge MinPts$ điểm nằm trong vùng lân cận bán kính Eps. Đây là hạt nhân để mở rộng và phát triển cụm.\n2. **Border Point (Điểm biên):** Nằm trong vùng lân cận bán kính Eps của một điểm lõi, nhưng bản thân nó có $< MinPts$ điểm lân cận.\n3. **Noise / Outlier (Điểm nhiễu):** Không phải điểm lõi cũng không phải điểm biên (nằm trơ trọi ở vùng mật độ thấp), bị thuật toán loại bỏ khỏi các cụm.",
+    "explanation": "Chi tiết Slide 70: Sự phân chia rành mạch này giúp DBSCAN có khả năng tự động lọc nhiễu mà không bị méo mó hình dạng cụm.",
+    "eli5": "- Core: Thủ lĩnh đông đệ tử (đủ MinPts).\n- Border: Đệ tử nằm ở rìa khu vực, chơi với thủ lĩnh nhưng thân cô thế cô (< MinPts).\n- Noise: Người lạ ở ẩn một mình một góc, bị coi là rác.",
+    "commonMistakes": [
+      "Nhầm Border Point thành Noise (Border Point vẫn thuộc về cụm vì nằm sát điểm lõi)"
+    ]
+  },
+  {
+    "id": "ch5_q48",
+    "number": "C5.48",
+    "chapterId": "ch5",
+    "topic": "dbscan",
+    "type": "theory",
+    "prompt": "Cơ chế loang mật độ của DBSCAN diễn ra như thế nào? Nêu 2 ưu điểm vượt trội của DBSCAN so với K-Means.",
+    "answer": "- **Cơ chế loang:** Bắt đầu từ một điểm Core ngẫu nhiên, kết nối tất cả các điểm có thể tiếp cận mật độ (Density-reachable) trực tiếp hoặc gián tiếp, tiếp tục lan truyền loang ra cho đến khi không còn Core point nào mới, hoàn thành một cụm.\n- **Hai ưu điểm vượt trội so với K-Means:**\n  1. **Tìm được cụm có hình dạng bất kỳ (Arbitrary Shape):** Cụm hình chữ U, vòng tròn đồng tâm, hình xoắn ốc... mà K-Means hoàn toàn bất lực (K-Means chỉ tìm được hình cầu/lồi).\n  2. **Tự động phát hiện và loại bỏ Outliers:** Không ép các điểm nhiễu phải thuộc về bất kỳ cụm nào, trong khi K-Means bắt buộc mọi điểm phải thuộc về một tâm cụm.",
+    "explanation": "Theo Slide 70: Khả năng tìm cụm hình dạng bất kỳ và miễn nhiễm với nhiễu là hai thế mạnh lớn nhất của DBSCAN.",
+    "eli5": "K-Means chỉ biết gom thành những cục tròn xoe như quả bóng. DBSCAN loang ra như nước chảy, nên cụm hình con rắn hay trăng khuyết nó đều gom vừa vặn, lại tự vứt rác ra ngoài.",
+    "commonMistakes": [
+      "Nghĩ rằng DBSCAN hoạt động tốt trên dữ liệu có mật độ phân bố chênh lệch quá lớn (đó là nhược điểm của DBSCAN khi chỉ dùng 1 bộ tham số Eps duy nhất)"
+    ]
+  },
+  {
+    "id": "ch5_q49",
+    "number": "C5.49",
+    "chapterId": "ch5",
+    "topic": "clustering",
+    "type": "theory",
+    "prompt": "Dựa vào bảng so sánh ở Slide 71, phân biệt Phân cụm phân cấp (Hierarchical Clustering) và Phân cụm lưới (Grid-based Clustering) về: Nguyên lý, Ưu điểm, Nhược điểm và Thuật toán tiêu biểu.",
+    "answer": "Bảng so sánh theo Slide 71:\n| Tiêu chí | Hierarchical Clustering | Grid-based Clustering |\n| :--- | :--- | :--- |\n| **Nguyên lý** | Xây dựng cây phân cấp (Dendrogram) bằng cách gộp dần (Agglomerative) hoặc tách dần (Divisive) | Chia không gian dữ liệu thành các ô lưới (grid cells); tính toán và gom cụm dựa trên các ô lưới này |\n| **Đối tượng xử lý** | Từng điểm dữ liệu riêng lẻ và khoảng cách giữa các cặp điểm | Các ô lưới đã được lượng tử hóa và gom thông tin thống kê |\n| **Ưu điểm** | Trực quan cấu trúc đa tầng bậc rõ ràng; linh hoạt ở nhiều cấp độ | Tốc độ xử lý siêu nhanh, độc lập với số điểm dữ liệu, chuyên trị Big Data |\n| **Nhược điểm** | Chi phí tính toán cao ($O(n^2)$ hoặc $O(n^3)$); bước gộp/chia sai không thể đảo ngược | Độ chính xác ở biên phụ thuộc vào kích thước ô lưới; giảm hiệu quả ở số chiều cao |\n| **Thuật toán tiêu biểu** | AGNES, DIANA, BIRCH, CURE | STING, CLIQUE, WaveCluster |",
+    "explanation": "Chi tiết Slide 71: Hierarchical cho phép quan sát cây gia phả dữ liệu (Dendrogram) nhưng cực chậm, trong khi Grid-based giải quyết bài toán tốc độ cho Big Data.",
+    "eli5": "Hierarchical ghép từng người thành cặp rồi thành họ hàng lớn dần (rất tỉ mỉ nhưng chậm). Grid-based chia bản đồ thành các ô vuông như bàn cờ, đếm mật độ trong từng ô rồi gom các ô lại (siêu nhanh).",
+    "commonMistakes": [
+      "Xếp BIRCH hay CURE vào Grid-based (BIRCH và CURE là thuật toán phân cấp Hierarchical)"
+    ]
+  },
+  {
+    "id": "ch5_q50",
+    "number": "C5.50",
+    "chapterId": "ch5",
+    "topic": "outlier-detection",
+    "type": "theory",
+    "prompt": "Dựa vào Slide 72, hãy so sánh 2 phương pháp phát hiện ngoại lai (Outlier Detection): Statistical-based (Dựa trên thống kê) và Distance-based (Dựa trên khoảng cách).",
+    "answer": "Theo Slide 72:\n1. **Statistical-based (Dựa trên thống kê):**\n   - **Nguyên lý:** Giả định dữ liệu tuân theo một phân phối xác suất nhất định (thường là phân phối Chuẩn/Gaussian $\\mathcal{N}(\\mu, \\sigma^2)$). Các điểm có xác suất xuất hiện cực thấp (nằm ngoài phạm vi $\\pm 3\\sigma$, hoặc ngoài khoảng $[Q_1 - 1.5 IQR, Q_3 + 1.5 IQR]$ của Boxplot) được coi là ngoại lai.\n   - **Đặc điểm:** Tốc độ tính toán rất nhanh, đơn giản, nhưng phụ thuộc nặng nề vào giả định phân phối dữ liệu (kém hiệu quả nếu dữ liệu thực tế không tuân theo phân phối chuẩn).\n2. **Distance-based (Dựa trên khoảng cách):**\n   - **Nguyên lý:** Một đối tượng là ngoại lai nếu nó nằm cách xa hầu hết các điểm dữ liệu khác (dựa trên khoảng cách Euclidean đến $k$ láng giềng gần nhất $k$-NN).\n   - **Đặc điểm:** Không cần giả định phân phối xác suất, phù hợp với dữ liệu đa chiều phức tạp, nhưng chi phí tính toán khoảng cách lớn ($O(n^2)$).",
+    "explanation": "Chi tiết Slide 72: Đây là hai trường phái nền tảng trong bài toán Anomaly / Outlier Detection dùng cho phát hiện gian lận thẻ tín dụng và tấn công mạng.",
+    "eli5": "- Thống kê: Ai có điểm số nằm ngoài chuông phân phối chuẩn (quá 3 độ lệch chuẩn) thì là người bất thường.\n- Khoảng cách: Ai đứng trơ trọi một mình, cách xa hàng xóm gần nhất một quãng dài thì là kẻ ngoại lai.",
+    "commonMistakes": [
+      "Cho rằng phương pháp Distance-based đòi hỏi dữ liệu phải tuân theo phân phối Chuẩn"
+    ]
+  }
+]

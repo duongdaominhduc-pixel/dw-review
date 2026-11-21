@@ -14,9 +14,9 @@
       <div class="flex items-center gap-2">
         <span
           class="text-xs px-2.5 py-1 rounded-lg font-bold border"
-          :class="['ch1', 'ch2', 'ch3', 'ch4'].includes(activeChapterId) ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-slate-200 dark:border-slate-700'"
+          :class="['ch1', 'ch2', 'ch3', 'ch4', 'ch5'].includes(activeChapterId) ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-slate-200 dark:border-slate-700'"
         >
-          {{ activeChapterId === 'ch1' ? 'Chương 1: Hoàn thiện 8/8 bài (Slide 1)' : activeChapterId === 'ch2' ? 'Chương 2: Hoàn thiện 8/8 bài (Slide 2)' : activeChapterId === 'ch3' ? 'Chương 3: Hoàn thiện 8/8 bài (Slide 3)' : activeChapterId === 'ch4' ? 'Chương 4: Hoàn thiện 8/8 bài (Slide 4)' : `Chương ${activeChapter.order}: Đang hoàn thiện` }}
+          {{ activeChapterId === 'ch1' ? 'Chương 1: Hoàn thiện 8/8 bài (Slide 1)' : activeChapterId === 'ch2' ? 'Chương 2: Hoàn thiện 8/8 bài (Slide 2)' : activeChapterId === 'ch3' ? 'Chương 3: Hoàn thiện 8/8 bài (Slide 3)' : activeChapterId === 'ch4' ? 'Chương 4: Hoàn thiện 8/8 bài (Slide 4)' : activeChapterId === 'ch5' ? 'Chương 5: Hoàn thiện 8/8 bài (Slide 5)' : `Chương ${activeChapter.order}: Đang hoàn thiện` }}
         </span>
       </div>
     </div>
@@ -58,13 +58,13 @@
       </button>
 
       <button
-        v-if="['ch1', 'ch2', 'ch3', 'ch4'].includes(activeChapterId)"
+        v-if="['ch1', 'ch2', 'ch3', 'ch4', 'ch5'].includes(activeChapterId)"
         @click="chapterTab = 'slide_questions'"
         class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
         :class="chapterTab === 'slide_questions' ? 'bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
       >
         <span>📋</span>
-        <span>{{ activeChapterId === 'ch1' ? 'Tra cứu 47 câu Slide 1' : activeChapterId === 'ch2' ? 'Tra cứu 50 câu Slide 2' : activeChapterId === 'ch3' ? 'Tra cứu 50 câu Slide 3' : 'Tra cứu 50 câu Slide 4' }}</span>
+        <span>{{ activeChapterId === 'ch1' ? 'Tra cứu 47 câu Slide 1' : activeChapterId === 'ch2' ? 'Tra cứu 50 câu Slide 2' : activeChapterId === 'ch3' ? 'Tra cứu 50 câu Slide 3' : activeChapterId === 'ch4' ? 'Tra cứu 50 câu Slide 4' : 'Tra cứu 50 câu Slide 5' }}</span>
       </button>
     </div>
 
@@ -304,7 +304,7 @@
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">
-              🎯 {{ activeChapterId === 'ch1' ? '47 Câu hỏi ôn tập chi tiết trích từ Slide 1' : activeChapterId === 'ch2' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 2' : activeChapterId === 'ch3' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 3' : '50 Câu hỏi ôn tập chi tiết trích từ Slide 4' }}
+              🎯 {{ activeChapterId === 'ch1' ? '47 Câu hỏi ôn tập chi tiết trích từ Slide 1' : activeChapterId === 'ch2' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 2' : activeChapterId === 'ch3' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 3' : activeChapterId === 'ch4' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 4' : '50 Câu hỏi ôn tập chi tiết trích từ Slide 5' }}
             </h2>
             <p class="text-xs text-slate-500 dark:text-slate-400">
               Phủ kín toàn bộ các slide bài giảng Chương {{ activeChapter.order }} • Giữ nguyên độc lập không ảnh hưởng đề cương 40 câu gốc
@@ -325,7 +325,7 @@
           <input
             v-model="slideSearchQuery"
             type="text"
-            :placeholder="activeChapterId === 'ch4' ? '🔍 Tìm nhanh câu hỏi slide 4 (Accuracy, Z-Score, IQR, Jaccard, SMA, PCA, Binning, Normalization, Entropy...)' : activeChapterId === 'ch3' ? '🔍 Tìm nhanh câu hỏi slide 3 (ELT, CDC, Zero-ETL, Airflow, Snowpipe, dbt, Jinja, Observability...)' : activeChapterId === 'ch2' ? '🔍 Tìm nhanh câu hỏi slide 2 (Kimball, Micro-partitioning, Fact, SCD, Medallion, VARIANT...)' : '🔍 Tìm nhanh câu hỏi slide 1 (RDBMS, Zero-copy, Medallion, S3, Snowflake...)'"
+            :placeholder="activeChapterId === 'ch5' ? '🔍 Tìm nhanh câu hỏi slide 5 (Support, Confidence, Lift, Leverage, Apriori, FP-Growth, C4.5, Naive Bayes, K-Means, DBSCAN...)' : activeChapterId === 'ch4' ? '🔍 Tìm nhanh câu hỏi slide 4 (Accuracy, Z-Score, IQR, Jaccard, SMA, PCA, Binning, Normalization, Entropy...)' : activeChapterId === 'ch3' ? '🔍 Tìm nhanh câu hỏi slide 3 (ELT, CDC, Zero-ETL, Airflow, Snowpipe, dbt, Jinja, Observability...)' : activeChapterId === 'ch2' ? '🔍 Tìm nhanh câu hỏi slide 2 (Kimball, Micro-partitioning, Fact, SCD, Medallion, VARIANT...)' : '🔍 Tìm nhanh câu hỏi slide 1 (RDBMS, Zero-copy, Medallion, S3, Snowflake...)'"
             class="flex-1 min-w-[240px] px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
           />
         </div>
@@ -387,6 +387,7 @@ import chapter1QuestionsData from '../data/chapter1Questions.json';
 import chapter2QuestionsData from '../data/chapter2Questions.json';
 import chapter3QuestionsData from '../data/chapter3Questions.json';
 import chapter4QuestionsData from '../data/chapter4Questions.json';
+import chapter5QuestionsData from '../data/chapter5Questions.json';
 import { Chapter, Lesson, Question } from '../types';
 import FormulaView from '../components/FormulaView.vue';
 import MarkdownView from '../components/MarkdownView.vue';
@@ -400,6 +401,7 @@ const chapter1Questions = chapter1QuestionsData as Question[];
 const chapter2Questions = chapter2QuestionsData as Question[];
 const chapter3Questions = chapter3QuestionsData as Question[];
 const chapter4Questions = chapter4QuestionsData as Question[];
+const chapter5Questions = chapter5QuestionsData as Question[];
 
 // Combined lookup for questions in lessons
 const allQuestionsMap = computed(() => {
@@ -409,6 +411,7 @@ const allQuestionsMap = computed(() => {
   for (const q of chapter2Questions) map.set(q.id, q);
   for (const q of chapter3Questions) map.set(q.id, q);
   for (const q of chapter4Questions) map.set(q.id, q);
+  for (const q of chapter5Questions) map.set(q.id, q);
   return map;
 });
 
@@ -458,12 +461,18 @@ const activeChapterQuestions = computed<Question[]>(() => {
     const relatedOutline = originalQuestions.filter(q => q.chapterId === 'ch4');
     return [...chapter4Questions, ...relatedOutline];
   }
+  if (activeChapterId.value === 'ch5') {
+    // For Chapter 5, combine both the 50 slide questions and relevant outline questions (q27-q30)
+    const relatedOutline = originalQuestions.filter(q => q.chapterId === 'ch5');
+    return [...chapter5Questions, ...relatedOutline];
+  }
   // For other chapters, take questions belonging to that chapter
   return originalQuestions.filter(q => q.chapterId === activeChapterId.value);
 });
 
 // Current slide questions pool for Slide Bank Tab
 const currentSlideQuestions = computed<Question[]>(() => {
+  if (activeChapterId.value === 'ch5') return chapter5Questions;
   if (activeChapterId.value === 'ch4') return chapter4Questions;
   if (activeChapterId.value === 'ch3') return chapter3Questions;
   if (activeChapterId.value === 'ch2') return chapter2Questions;
