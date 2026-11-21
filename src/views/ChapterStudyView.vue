@@ -14,9 +14,9 @@
       <div class="flex items-center gap-2">
         <span
           class="text-xs px-2.5 py-1 rounded-lg font-bold border"
-          :class="['ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8'].includes(activeChapterId) ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-slate-200 dark:border-slate-700'"
+          :class="['ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8', 'ch9'].includes(activeChapterId) ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-slate-200 dark:border-slate-700'"
         >
-          {{ activeChapterId === 'ch1' ? 'Chương 1: Hoàn thiện 8/8 bài (Slide 1)' : activeChapterId === 'ch2' ? 'Chương 2: Hoàn thiện 8/8 bài (Slide 2)' : activeChapterId === 'ch3' ? 'Chương 3: Hoàn thiện 8/8 bài (Slide 3)' : activeChapterId === 'ch4' ? 'Chương 4: Hoàn thiện 8/8 bài (Slide 4)' : activeChapterId === 'ch5' ? 'Chương 5: Hoàn thiện 8/8 bài (Slide 5)' : activeChapterId === 'ch6' ? 'Chương 6: Hoàn thiện 8/8 bài (Slide 6)' : activeChapterId === 'ch7' ? 'Chương 7: Hoàn thiện 8/8 bài (Slide 7)' : activeChapterId === 'ch8' ? 'Chương 8: Hoàn thiện 8/8 bài (Slide 8)' : `Chương ${activeChapter.order}: Đang hoàn thiện` }}
+          {{ activeChapterId === 'ch1' ? 'Chương 1: Hoàn thiện 8/8 bài (Slide 1)' : activeChapterId === 'ch2' ? 'Chương 2: Hoàn thiện 8/8 bài (Slide 2)' : activeChapterId === 'ch3' ? 'Chương 3: Hoàn thiện 8/8 bài (Slide 3)' : activeChapterId === 'ch4' ? 'Chương 4: Hoàn thiện 8/8 bài (Slide 4)' : activeChapterId === 'ch5' ? 'Chương 5: Hoàn thiện 8/8 bài (Slide 5)' : activeChapterId === 'ch6' ? 'Chương 6: Hoàn thiện 8/8 bài (Slide 6)' : activeChapterId === 'ch7' ? 'Chương 7: Hoàn thiện 8/8 bài (Slide 7)' : activeChapterId === 'ch8' ? 'Chương 8: Hoàn thiện 8/8 bài (Slide 8)' : activeChapterId === 'ch9' ? 'Chương 9: Hoàn thiện 8/8 bài (Slide 9)' : `Chương ${activeChapter.order}: Đang hoàn thiện` }}
         </span>
       </div>
     </div>
@@ -58,13 +58,13 @@
       </button>
 
       <button
-        v-if="['ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8'].includes(activeChapterId)"
+        v-if="['ch1', 'ch2', 'ch3', 'ch4', 'ch5', 'ch6', 'ch7', 'ch8', 'ch9'].includes(activeChapterId)"
         @click="chapterTab = 'slide_questions'"
         class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
         :class="chapterTab === 'slide_questions' ? 'bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
       >
         <span>📋</span>
-        <span>{{ activeChapterId === 'ch1' ? 'Tra cứu 47 câu Slide 1' : activeChapterId === 'ch2' ? 'Tra cứu 50 câu Slide 2' : activeChapterId === 'ch3' ? 'Tra cứu 50 câu Slide 3' : activeChapterId === 'ch4' ? 'Tra cứu 50 câu Slide 4' : activeChapterId === 'ch5' ? 'Tra cứu 50 câu Slide 5' : activeChapterId === 'ch6' ? 'Tra cứu 50 câu Slide 6' : activeChapterId === 'ch7' ? 'Tra cứu 50 câu Slide 7' : 'Tra cứu 50 câu Slide 8' }}</span>
+        <span>{{ activeChapterId === 'ch1' ? 'Tra cứu 47 câu Slide 1' : activeChapterId === 'ch2' ? 'Tra cứu 50 câu Slide 2' : activeChapterId === 'ch3' ? 'Tra cứu 50 câu Slide 3' : activeChapterId === 'ch4' ? 'Tra cứu 50 câu Slide 4' : activeChapterId === 'ch5' ? 'Tra cứu 50 câu Slide 5' : activeChapterId === 'ch6' ? 'Tra cứu 50 câu Slide 6' : activeChapterId === 'ch7' ? 'Tra cứu 50 câu Slide 7' : activeChapterId === 'ch8' ? 'Tra cứu 50 câu Slide 8' : 'Tra cứu 50 câu Slide 9' }}</span>
       </button>
     </div>
 
@@ -304,7 +304,7 @@
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">
-              🎯 {{ activeChapterId === 'ch1' ? '47 Câu hỏi ôn tập chi tiết trích từ Slide 1' : activeChapterId === 'ch2' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 2' : activeChapterId === 'ch3' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 3' : activeChapterId === 'ch4' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 4' : activeChapterId === 'ch5' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 5' : activeChapterId === 'ch6' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 6' : activeChapterId === 'ch7' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 7' : '50 Câu hỏi ôn tập chi tiết trích từ Slide 8' }}
+              🎯 {{ activeChapterId === 'ch1' ? '47 Câu hỏi ôn tập chi tiết trích từ Slide 1' : activeChapterId === 'ch2' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 2' : activeChapterId === 'ch3' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 3' : activeChapterId === 'ch4' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 4' : activeChapterId === 'ch5' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 5' : activeChapterId === 'ch6' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 6' : activeChapterId === 'ch7' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 7' : activeChapterId === 'ch8' ? '50 Câu hỏi ôn tập chi tiết trích từ Slide 8' : '50 Câu hỏi ôn tập chi tiết trích từ Slide 9' }}
             </h2>
             <p class="text-xs text-slate-500 dark:text-slate-400">
               Phủ kín toàn bộ các slide bài giảng Chương {{ activeChapter.order }} • Giữ nguyên độc lập không ảnh hưởng đề cương 40 câu gốc
@@ -325,7 +325,7 @@
           <input
             v-model="slideSearchQuery"
             type="text"
-            :placeholder="activeChapterId === 'ch8' ? '🔍 Tìm nhanh câu hỏi slide 8 (Actionable, Object Tables, Embeddings, IVFFLAT, RAG, Hallucination, Text-to-SQL, Kafka, Streaming, Zero Latency, Data Storytelling, Agentic BI...)' : activeChapterId === 'ch7' ? '🔍 Tìm nhanh câu hỏi slide 7 (AI Act, High Risk, Data Lineage, RLS, CLM, Zero-Copy, k-Anonymity, Epsilon, Data Catalog, Bias, HITL, Continuous Auditing...)' : activeChapterId === 'ch6' ? '🔍 Tìm nhanh câu hỏi slide 6 (In-Database ML, CPT+, PageRank, Damping, BigQuery ML, Cortex, Snowpark, Feature Store, MLOps, UDF...)' : activeChapterId === 'ch5' ? '🔍 Tìm nhanh câu hỏi slide 5 (Support, Confidence, Lift, Leverage, Apriori, FP-Growth, C4.5, Naive Bayes, K-Means, DBSCAN...)' : activeChapterId === 'ch4' ? '🔍 Tìm nhanh câu hỏi slide 4 (Accuracy, Z-Score, IQR, Jaccard, SMA, PCA, Binning, Normalization, Entropy...)' : activeChapterId === 'ch3' ? '🔍 Tìm nhanh câu hỏi slide 3 (ELT, CDC, Zero-ETL, Airflow, Snowpipe, dbt, Jinja, Observability...)' : activeChapterId === 'ch2' ? '🔍 Tìm nhanh câu hỏi slide 2 (Kimball, Micro-partitioning, Fact, SCD, Medallion, VARIANT...)' : '🔍 Tìm nhanh câu hỏi slide 1 (RDBMS, Zero-copy, Medallion, S3, Snowflake...)'"
+            :placeholder="activeChapterId === 'ch9' ? '🔍 Tìm nhanh câu hỏi slide 9 (Polyglot, Knowledge Graph, BFS, DFS, Vector, HNSW, IVF, Blockchain, ABI, Merkle Tree, Zero-Copy, Trino, Pushdown, CBO, HA/DR, RTO, RPO...)' : activeChapterId === 'ch8' ? '🔍 Tìm nhanh câu hỏi slide 8 (Actionable, Object Tables, Embeddings, IVFFLAT, RAG, Hallucination, Text-to-SQL, Kafka, Streaming, Zero Latency, Data Storytelling, Agentic BI...)' : activeChapterId === 'ch7' ? '🔍 Tìm nhanh câu hỏi slide 7 (AI Act, High Risk, Data Lineage, RLS, CLM, Zero-Copy, k-Anonymity, Epsilon, Data Catalog, Bias, HITL, Continuous Auditing...)' : activeChapterId === 'ch6' ? '🔍 Tìm nhanh câu hỏi slide 6 (In-Database ML, CPT+, PageRank, Damping, BigQuery ML, Cortex, Snowpark, Feature Store, MLOps, UDF...)' : activeChapterId === 'ch5' ? '🔍 Tìm nhanh câu hỏi slide 5 (Support, Confidence, Lift, Leverage, Apriori, FP-Growth, C4.5, Naive Bayes, K-Means, DBSCAN...)' : activeChapterId === 'ch4' ? '🔍 Tìm nhanh câu hỏi slide 4 (Accuracy, Z-Score, IQR, Jaccard, SMA, PCA, Binning, Normalization, Entropy...)' : activeChapterId === 'ch3' ? '🔍 Tìm nhanh câu hỏi slide 3 (ELT, CDC, Zero-ETL, Airflow, Snowpipe, dbt, Jinja, Observability...)' : activeChapterId === 'ch2' ? '🔍 Tìm nhanh câu hỏi slide 2 (Kimball, Micro-partitioning, Fact, SCD, Medallion, VARIANT...)' : '🔍 Tìm nhanh câu hỏi slide 1 (RDBMS, Zero-copy, Medallion, S3, Snowflake...)'"
             class="flex-1 min-w-[240px] px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
           />
         </div>
@@ -391,6 +391,7 @@ import chapter5QuestionsData from '../data/chapter5Questions.json';
 import chapter6QuestionsData from '../data/chapter6Questions.json';
 import chapter7QuestionsData from '../data/chapter7Questions.json';
 import chapter8QuestionsData from '../data/chapter8Questions.json';
+import chapter9QuestionsData from '../data/chapter9Questions.json';
 import { Chapter, Lesson, Question } from '../types';
 import FormulaView from '../components/FormulaView.vue';
 import MarkdownView from '../components/MarkdownView.vue';
@@ -408,6 +409,7 @@ const chapter5Questions = chapter5QuestionsData as Question[];
 const chapter6Questions = chapter6QuestionsData as Question[];
 const chapter7Questions = chapter7QuestionsData as Question[];
 const chapter8Questions = chapter8QuestionsData as Question[];
+const chapter9Questions = chapter9QuestionsData as Question[];
 
 // Combined lookup for questions in lessons
 const allQuestionsMap = computed(() => {
@@ -421,6 +423,7 @@ const allQuestionsMap = computed(() => {
   for (const q of chapter6Questions) map.set(q.id, q);
   for (const q of chapter7Questions) map.set(q.id, q);
   for (const q of chapter8Questions) map.set(q.id, q);
+  for (const q of chapter9Questions) map.set(q.id, q);
   return map;
 });
 
@@ -490,12 +493,18 @@ const activeChapterQuestions = computed<Question[]>(() => {
     const relatedOutline = originalQuestions.filter(q => ['q35', 'q36', 'q39'].includes(q.id));
     return [...chapter8Questions, ...relatedOutline];
   }
+  if (activeChapterId.value === 'ch9') {
+    // For Chapter 9, combine both the 50 slide questions and relevant outline questions (q33b BFS, q35 Blockchain, q36 IVFFLAT)
+    const relatedOutline = originalQuestions.filter(q => ['q33b', 'q35', 'q36'].includes(q.id));
+    return [...chapter9Questions, ...relatedOutline];
+  }
   // For other chapters, take questions belonging to that chapter
   return originalQuestions.filter(q => q.chapterId === activeChapterId.value);
 });
 
 // Current slide questions pool for Slide Bank Tab
 const currentSlideQuestions = computed<Question[]>(() => {
+  if (activeChapterId.value === 'ch9') return chapter9Questions;
   if (activeChapterId.value === 'ch8') return chapter8Questions;
   if (activeChapterId.value === 'ch7') return chapter7Questions;
   if (activeChapterId.value === 'ch6') return chapter6Questions;

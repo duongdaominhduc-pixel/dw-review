@@ -157,7 +157,7 @@
           M8: Khung Chương học (Chapter Study)
         </h3>
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
-          Cấu trúc 8 chương theo chuẩn đề cương, chia nhỏ Bài > Phần, có bài mẫu hoàn thiện và tích hợp bài kiểm tra nhỏ.
+          Cấu trúc 9 chương chuẩn hóa theo Slide bài giảng (TS. Nguyễn Thôn Dã), chia nhỏ Bài &gt; Phần, có bài mẫu hoàn thiện và tích hợp bài kiểm tra nhỏ.
         </p>
       </router-link>
 

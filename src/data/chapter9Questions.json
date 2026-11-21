@@ -1,0 +1,1052 @@
+[
+  {
+    "id": "ch9_q01",
+    "number": "C9.1",
+    "chapterId": "ch9",
+    "topic": "polyglot-persistence",
+    "type": "theory",
+    "prompt": "Thuật ngữ **Polyglot Persistence** trong kiến trúc dữ liệu hiện đại mang ý nghĩa cốt lõi nào sau đây?",
+    "options": [
+      "A. Bắt buộc toàn bộ hệ thống doanh nghiệp chỉ sử dụng một hệ quản trị cơ sở dữ liệu duy nhất",
+      "B. Áp dụng đồng thời nhiều công nghệ lưu trữ khác nhau (SQL, NoSQL, Graph, Vector) trong cùng một hệ thống dựa trên triết lý 'One size does not fit all'",
+      "C. Chuyển dịch toàn bộ cơ sở dữ liệu quan hệ truyền thống sang lưu trữ dạng tập tin phẳng (Flat files)",
+      "D. Đồng bộ hóa dữ liệu theo thời gian thực giữa hai máy chủ có cùng một cấu hình phần cứng"
+    ],
+    "answer": "B. Áp dụng đồng thời nhiều công nghệ lưu trữ khác nhau (SQL, NoSQL, Graph, Vector) trong cùng một hệ thống dựa trên triết lý 'One size does not fit all'",
+    "explanation": "Theo Slide 9 (trang 3), Polyglot Persistence là thuật ngữ chỉ việc áp dụng đồng thời nhiều công nghệ lưu trữ khác nhau (SQL, NoSQL) trong cùng một kiến trúc hệ thống để xử lý các dạng dữ liệu khác nhau. Triết lý cốt lõi là 'One size does not fit all' – không có một CSDL duy nhất nào tối ưu cho mọi loại tác vụ.",
+    "eli5": "Ví dụ: Đồ ăn mặn dùng đĩa, canh dùng bát, trà sữa dùng ly. Không thể ép tất cả các món ăn vào chung một chiếc đĩa.",
+    "commonMistakes": [
+      "Nghĩ rằng Polyglot Persistence có nghĩa là dùng một CSDL vạn năng cho tất cả mọi thứ."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q02",
+    "number": "C9.2",
+    "chapterId": "ch9",
+    "topic": "polyglot-persistence",
+    "type": "theory",
+    "prompt": "Trong mô hình phân nhiệm thành phần của Polyglot Persistence (Slide 9 trang 3), hệ cơ sở dữ liệu quan hệ **RDBMS (SQL)** đảm nhận vai trò trọng yếu nào?",
+    "options": [
+      "A. Lưu trữ bộ nhớ đệm (Caching) và quản lý phiên làm việc tạm thời",
+      "B. Lưu trữ các hồ sơ thực thể phi cấu trúc có schema thay đổi liên tục",
+      "C. Đảm nhận dữ liệu giao dịch cốt lõi đòi hỏi tính toàn vẹn tuyệt đối tuân thủ chuẩn ACID",
+      "D. Quét các vector số chiều cao để tìm kiếm tương đồng ngữ nghĩa"
+    ],
+    "answer": "C. Đảm nhận dữ liệu giao dịch cốt lõi đòi hỏi tính toàn vẹn tuyệt đối tuân thủ chuẩn ACID",
+    "explanation": "Theo Slide 9 trang 3: RDBMS (SQL) đảm nhận dữ liệu giao dịch cốt lõi đòi hỏi tính toàn vẹn tuyệt đối (ACID) như tài khoản ngân hàng, hóa đơn thanh toán; Document Store lưu hồ sơ schema-less; Key-Value Store phục vụ caching và session.",
+    "eli5": "Tiền nong và giao dịch bắt buộc phải chính xác 100%, không được mất mát dù hệ thống mất điện, nên luôn cần RDBMS với chuẩn ACID.",
+    "commonMistakes": [
+      "Nhầm RDBMS với Key-Value Store chuyên làm bộ nhớ đệm."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q03",
+    "number": "C9.3",
+    "chapterId": "ch9",
+    "topic": "polyglot-persistence",
+    "type": "theory",
+    "prompt": "Cơ sở dữ liệu **Key-Value Store** (như Redis, Memcached) được ưu tiên sử dụng cho mục đích nào trong kiến trúc tích hợp đa mô hình?",
+    "options": [
+      "A. Chạy các truy vấn phân tích tổng hợp OLAP với hàng triệu dòng dữ liệu",
+      "B. Truy xuất tốc độ cực cao với độ trễ sub-millisecond cho tầng bộ nhớ đệm (Caching) và quản lý phiên (Session)",
+      "C. Phân tích đồ thị mạng xã hội nhiều bậc liên kết",
+      "D. Quản lý các hợp đồng thông minh bất biến"
+    ],
+    "answer": "B. Truy xuất tốc độ cực cao với độ trễ sub-millisecond cho tầng bộ nhớ đệm (Caching) và quản lý phiên (Session)",
+    "explanation": "Theo Slide 9 trang 3: Key-Value Store phục vụ truy xuất tốc độ cao cho tầng bộ nhớ đệm (Caching) và phiên làm việc (Session), với độ phức tạp tìm kiếm O(1).",
+    "eli5": "Key-Value như tủ đồ đánh số chìa khóa: đưa đúng số tủ là lấy đồ ra ngay tức khắc trong 1 phần nghìn giây.",
+    "commonMistakes": [
+      "Dùng Key-Value Store để chạy các lệnh JOIN phức tạp nhiều điều kiện."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q04",
+    "number": "C9.4",
+    "chapterId": "ch9",
+    "topic": "polyglot-persistence",
+    "type": "theory",
+    "prompt": "Khi tích hợp các nguồn NoSQL vào kho dữ liệu Data Warehouse theo định lý CAP (Slide 9 trang 4), kiến trúc sư hệ thống áp dụng nguyên lý nào?",
+    "options": [
+      "A. Đòi hỏi Strong Consistency tuyệt đối trên toàn bộ hệ sinh thái NoSQL phân tán",
+      "B. Chấp nhận tính Eventual Consistency ở các tầng NoSQL vệ tinh để đổi lấy tốc độ và tính sẵn sàng, nhưng đảm bảo Strong Consistency tại kho trung tâm",
+      "C. Loại bỏ hoàn toàn tính Partition Tolerance để đạt cả C và A",
+      "D. Tắt toàn bộ cơ chế ghi nhận nhật ký giao dịch để tăng tốc"
+    ],
+    "answer": "B. Chấp nhận tính Eventual Consistency ở các tầng NoSQL vệ tinh để đổi lấy tốc độ và tính sẵn sàng, nhưng đảm bảo Strong Consistency tại kho trung tâm",
+    "explanation": "Theo Slide 9 trang 4: Định lý CAP: Chấp nhận tính Eventual Consistency (nhất quán cuối cùng) ở các tầng NoSQL vệ tinh để đổi lấy tốc độ và tính sẵn sàng (Availability), nhưng đảm bảo Strong Consistency tại kho trung tâm (Data Warehouse).",
+    "eli5": "Tại app bán hàng, khách comment đánh giá có thể chậm vài giây mới hiện lên máy người khác (Eventual Consistency), nhưng khi chốt đơn và doanh thu vào Data Warehouse thì số liệu phải khớp tuyệt đối (Strong Consistency).",
+    "commonMistakes": [
+      "Nghĩ rằng định lý CAP cho phép đạt được cả 3 yếu tố C, A và P cùng lúc."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q05",
+    "number": "C9.5",
+    "chapterId": "ch9",
+    "topic": "polyglot-persistence",
+    "type": "theory",
+    "prompt": "Kỹ thuật **Hybrid Schema Mapping** trong tích hợp dữ liệu NoSQL vào Data Warehouse (Slide 9 trang 4) thực hiện nhiệm vụ gì?",
+    "options": [
+      "A. Chuyển đổi mã nguồn SQL sang ngôn ngữ Assembly",
+      "B. Sử dụng Data Pipelines để trích xuất, làm phẳng (flatten) các trường dữ liệu động, lồng nhau (nested JSON/BSON) thành dạng bảng (Tables) phục vụ OLAP",
+      "C. Ép toàn bộ cấu trúc bảng quan hệ thành một chuỗi văn bản không định dạng",
+      "D. Xóa bỏ tất cả các trường dữ liệu không có trong schema ban đầu"
+    ],
+    "answer": "B. Sử dụng Data Pipelines để trích xuất, làm phẳng (flatten) các trường dữ liệu động, lồng nhau (nested JSON/BSON) thành dạng bảng (Tables) phục vụ OLAP",
+    "explanation": "Theo Slide 9 trang 4: Hybrid Schema Mapping: Sử dụng Data Pipelines để trích xuất, làm phẳng các trường dữ liệu động từ NoSQL thành dạng Tables có cấu trúc phục vụ OLAP và báo cáo BI.",
+    "eli5": "Một document JSON chứa mảng `items: [{id: 1, qty: 2}, {id: 2, qty: 5}]` được bung phẳng (unnest/flatten) thành các dòng riêng biệt trong bảng dữ liệu quan hệ.",
+    "commonMistakes": [
+      "Nghĩ rằng NoSQL đưa vào DWH giữ nguyên dạng chuỗi string nhị phân không xử lý."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q06",
+    "number": "C9.6",
+    "chapterId": "ch9",
+    "topic": "polyglot-persistence",
+    "type": "theory",
+    "prompt": "Tại sao trong kiến trúc Microservices hiện đại, mỗi dịch vụ lại sở hữu một cơ sở dữ liệu riêng biệt (Microservices Storage - Slide 9 trang 4)?",
+    "options": [
+      "A. Nhằm tăng tối đa chi phí bản quyền phần mềm cho doanh nghiệp",
+      "B. Cô lập tầng lưu trữ đằng sau các dịch vụ độc lập, giao tiếp qua API để tránh phụ thuộc dữ liệu lẫn nhau và dễ mở rộng",
+      "C. Để buộc các dịch vụ phải chia sẻ chung connection pool",
+      "D. Giúp DBA quản lý tất cả các bảng trong cùng một schema tập trung"
+    ],
+    "answer": "B. Cô lập tầng lưu trữ đằng sau các dịch vụ độc lập, giao tiếp qua API để tránh phụ thuộc dữ liệu lẫn nhau và dễ mở rộng",
+    "explanation": "Theo Slide 9 trang 4: Microservices Storage: Các tầng lưu trữ được cô lập đằng sau các dịch vụ độc lập, giao tiếp qua API để tránh phụ thuộc lẫn nhau (loose coupling) và cho phép từng dịch vụ tự do chọn công nghệ lưu trữ tối ưu.",
+    "eli5": "Đội làm giỏ hàng thích dùng Redis, đội sản phẩm thích dùng MongoDB, đội thanh toán dùng PostgreSQL. Mỗi người tự quản đồ của mình qua API, không ai đụng trực tiếp vào database của ai.",
+    "commonMistakes": [
+      "Nghĩ rằng microservices vẫn nên dùng chung 1 database khổng lồ duy nhất."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q07",
+    "number": "C9.7",
+    "chapterId": "ch9",
+    "topic": "polyglot-persistence",
+    "type": "theory",
+    "prompt": "Đặc điểm nổi bật của **Document Store** (như MongoDB, Couchbase) khiến nó phù hợp để lưu trữ hồ sơ người dùng trong hệ thống bán lẻ là:",
+    "options": [
+      "A. Yêu cầu định nghĩa cấu trúc bảng (schema) cực kỳ chặt chẽ trước khi nạp dữ liệu",
+      "B. Cấu trúc linh hoạt (Schema-less), cho phép các tài liệu chứa các trường thuộc tính động khác nhau dưới định dạng JSON/BSON",
+      "C. Không hỗ trợ bất kỳ thao tác đánh chỉ mục nào",
+      "D. Chỉ lưu trữ được các giá trị số nguyên"
+    ],
+    "answer": "B. Cấu trúc linh hoạt (Schema-less), cho phép các tài liệu chứa các trường thuộc tính động khác nhau dưới định dạng JSON/BSON",
+    "explanation": "Theo Slide 9 trang 3: Document Store lưu trữ các hồ sơ thực thể có cấu trúc thay đổi liên tục (Schema-less), phù hợp với hồ sơ khách hàng nơi mỗi người có thể có các thuộc tính tùy biến khác nhau mà không cần chạy migration sửa đổi schema bảng.",
+    "eli5": "Khách hàng VIP có thêm trường `the_thanh_vien`, khách thông thường không có, MongoDB lưu ngon lành mà không cần cột NULL thừa thãi.",
+    "commonMistakes": [
+      "Cho rằng Document Store có hiệu năng phân tích OLAP mạnh hơn Data Warehouse chuyên dụng."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q08",
+    "number": "C9.8",
+    "chapterId": "ch9",
+    "topic": "knowledge-graphs",
+    "type": "theory",
+    "prompt": "Tư duy đột phá cốt lõi của **Knowledge Graphs** (Đồ thị Tri thức) so với CSDL quan hệ truyền thống là gì (Slide 9 trang 7)?",
+    "options": [
+      "A. Chuyển toàn bộ dữ liệu thành dạng số nguyên",
+      "B. Ưu tiên mối quan hệ (Relationship-First): Mối quan hệ giữa các dữ liệu được lưu trữ trực tiếp như một thực thể hạng nhất, thay vì phải tính toán online qua lệnh JOIN",
+      "C. Loại bỏ hoàn toàn các thực thể nút (Nodes)",
+      "D. Bắt buộc dữ liệu phải được lưu theo dạng hàng và cột"
+    ],
+    "answer": "B. Ưu tiên mối quan hệ (Relationship-First): Mối quan hệ giữa các dữ liệu được lưu trữ trực tiếp như một thực thể hạng nhất, thay vì phải tính toán online qua lệnh JOIN",
+    "explanation": "Theo Slide 9 trang 7: Tư duy đột phá của Knowledge Graphs là Ưu tiên mối quan hệ (Relationship-First). Mối quan hệ (Edges) được lưu trữ trực tiếp như một thực thể hạng nhất (First-class entity / Index-free Adjacency) với con trỏ trực tiếp, thay vì phải dò tìm và tính toán online qua các phép SQL JOIN tốn kém tài nguyên.",
+    "eli5": "Trong SQL, muốn biết ai là bạn của ai phải dò bảng trung gian JOIN chéo mất công. Trong Graph, giữa 2 người có sẵn sợi dây nối nối trực tiếp, chỉ cần lần theo sợi dây là xong ngay tức thì.",
+    "commonMistakes": [
+      "Nghĩ rằng Graph DB cũng dùng foreign key rồi JOIN ngầm dưới nền tảng."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q09",
+    "number": "C9.9",
+    "chapterId": "ch9",
+    "topic": "knowledge-graphs",
+    "type": "theory",
+    "prompt": "Kỹ thuật **Entity Disambiguation** (Khử nhập nhằng thực thể) trong Knowledge Graph (Slide 9 trang 8) giải quyết bài toán nào sau đây?",
+    "options": [
+      "A. Nhận diện và hợp nhất các thực thể thực tế bị trùng lặp hoặc viết sai định dạng trên các hệ thống nguồn khác nhau về một nút duy nhất",
+      "B. Xóa bỏ các đỉnh có bậc kết nối lớn hơn 100",
+      "C. Băm mật mã các thông tin nhạy cảm của người dùng",
+      "D. Tự động dịch mã truy vấn Cypher sang SQL"
+    ],
+    "answer": "A. Nhận diện và hợp nhất các thực thể thực tế bị trùng lặp hoặc viết sai định dạng trên các hệ thống nguồn khác nhau về một nút duy nhất",
+    "explanation": "Theo Slide 9 trang 8: Entity Disambiguation là kỹ thuật nhận diện và hợp nhất các thực thể thực tế bị trùng lặp hoặc viết sai định dạng trên các hệ thống nguồn khác nhau (ví dụ: 'Apple Inc.', 'Apple Computer' và mã chứng khoán 'AAPL' đều quy về một thực thể công ty).",
+    "eli5": "Cùng là một khách hàng nhưng hệ thống CRM ghi 'Nguyễn Văn A', hệ thống giao hàng ghi 'A. Nguyen Van', Entity Disambiguation sẽ gộp 2 hồ sơ này thành 1 người thật trên đồ thị.",
+    "commonMistakes": [
+      "Nhầm Entity Disambiguation với Semantic Labeling."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q10",
+    "number": "C9.10",
+    "chapterId": "ch9",
+    "topic": "knowledge-graphs",
+    "type": "theory",
+    "prompt": "Khái niệm **Semantic Labeling** trong Đồ thị Tri thức (Slide 9 trang 8) đề cập đến việc gì?",
+    "options": [
+      "A. Đặt nhãn giá tiền cho từng bản ghi dữ liệu",
+      "B. Áp dụng các mô hình Ontology để định nghĩa rõ ràng bản chất và ngữ nghĩa của các mối quan hệ (ví dụ: Customer  [WORKS_AT]  Organization)",
+      "C. Mã hóa dữ liệu bằng thuật toán RSA",
+      "D. Chia nhỏ đồ thị thành các phần bằng nhau"
+    ],
+    "answer": "B. Áp dụng các mô hình Ontology để định nghĩa rõ ràng bản chất và ngữ nghĩa của các mối quan hệ (ví dụ: Customer  [WORKS_AT]  Organization)",
+    "explanation": "Theo Slide 9 trang 8: Semantic Labeling là việc áp dụng các mô hình Ontology để định nghĩa mối quan hệ (ví dụ: Customer  [WORKS_AT]  Organization, Supplier  [SUPPLIES]  Product).",
+    "eli5": "Gắn nhãn rõ ràng cho từng sợi dây liên kết để máy tính hiểu được: người này 'LÀM VIỆC TẠI' công ty đó, chứ không phải 'SỞ HỮU' hay 'LÀ KHÁCH HÀNG'.",
+    "commonMistakes": [
+      "Nghĩ rằng Semantic Labeling chỉ là đổi tên thuộc tính trong bảng SQL."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q11",
+    "number": "C9.11",
+    "chapterId": "ch9",
+    "topic": "knowledge-graphs",
+    "type": "theory",
+    "prompt": "Khả năng **Graph Traversal** (Duyệt đồ thị đa cấp - N-degree) trong Knowledge Graph mang lại giá trị đặc biệt nào trong lĩnh vực FinTech và ngân hàng?",
+    "options": [
+      "A. Tăng dung lượng lưu trữ đĩa cứng",
+      "B. Truy vết các mối liên kết ngầm sâu nhiều tầng để phát hiện các đường dây gian lận tài chính (Fraud Rings) hoặc rửa tiền (AML)",
+      "C. Thay thế hoàn toàn thuật toán mã hóa SHA-256",
+      "D. Tự động tính lãi suất tiền gửi tiết kiệm"
+    ],
+    "answer": "B. Truy vết các mối liên kết ngầm sâu nhiều tầng để phát hiện các đường dây gian lận tài chính (Fraud Rings) hoặc rửa tiền (AML)",
+    "explanation": "Theo Slide 9 trang 8: Graph Traversal: Khả năng truy vấn sâu N-cấp (N-degree) để tìm ra các mối liên kết ngầm, phục vụ cho bài toán phát hiện gian lận tài chính (Fraud Ring Detection) hoặc đứt gãy chuỗi cung ứng mà SQL JOIN đa bảng không thể xử lý nổi.",
+    "eli5": "Kẻ lừa đảo tạo 5 tài khoản ảo chuyển tiền vòng vèo qua 5 ngân hàng khác nhau. Graph Traversal lần theo các mắt xích 5-cấp và tóm gọn cả đường dây trong tích tắc.",
+    "commonMistakes": [
+      "Cho rằng SQL thông thường với lệnh JOIN 10 bảng vẫn có tốc độ ngang ngửa đồ thị."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q12",
+    "number": "C9.12",
+    "chapterId": "ch9",
+    "topic": "knowledge-graphs",
+    "type": "theory",
+    "prompt": "Hệ quản trị cơ sở dữ liệu đồ thị nào sau đây được nhắc đến trong Slide 9 (trang 12) cùng ngôn ngữ truy vấn Cypher?",
+    "options": [
+      "A. Redis",
+      "B. Neo4j",
+      "C. Cassandra",
+      "D. SQLite"
+    ],
+    "answer": "B. Neo4j",
+    "explanation": "Theo Slide 9 trang 12: Đưa ra ví dụ demo import và phân tích Graph Database trong Neo4j. Ngôn ngữ truy vấn chuẩn cho Neo4j là Cypher Query Language.",
+    "eli5": "Neo4j là CSDL đồ thị phổ biến nhất thế giới hiện nay, dùng ngôn ngữ Cypher trực quan dạng `(u:User)-[:FRIEND]->(f:User)`.",
+    "commonMistakes": [
+      "Nhầm Neo4j với Cassandra (thuộc họ Wide-column NoSQL)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q13",
+    "number": "C9.13",
+    "chapterId": "ch9",
+    "topic": "knowledge-graphs",
+    "type": "theory",
+    "prompt": "Trong ngôn ngữ truy vấn đồ thị Cypher (Neo4j), cú pháp `MATCH (c:Customer)-[:PURCHASED]->(p:Product)` thể hiện điều gì?",
+    "options": [
+      "A. Xóa bảng Customer và bảng Product",
+      "B. Tìm kiếm các thực thể Customer có mối quan hệ PURCHASED trỏ đến thực thể Product",
+      "C. Tạo mới một khóa chính giữa Customer và Product",
+      "D. Đổi tên mối quan hệ thành PURCHASED"
+    ],
+    "answer": "B. Tìm kiếm các thực thể Customer có mối quan hệ PURCHASED trỏ đến thực thể Product",
+    "explanation": "Trong Cypher, `()` biểu diễn Node, `[]` biểu diễn Edge/Relationship. `MATCH (c:Customer)-[:PURCHASED]->(p:Product)` là mẫu truy vấn tìm các khách hàng đã mua sản phẩm.",
+    "eli5": "Cú pháp Cypher vẽ như hình vẽ trực quan: Nút khách hàng nối mũi tên 'PURCHASED' trỏ tới Nút sản phẩm.",
+    "commonMistakes": [
+      "Nghĩ rằng MATCH trong Cypher hoạt động giống lệnh UPDATE trong SQL."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q14",
+    "number": "C9.14",
+    "chapterId": "ch9",
+    "topic": "knowledge-graphs",
+    "type": "theory",
+    "prompt": "Khái niệm **Index-Free Adjacency** trong cơ sở dữ liệu đồ thị bản địa (Native Graph Database) có nghĩa là gì?",
+    "options": [
+      "A. Đồ thị không thể tạo được bất kỳ chỉ mục nào",
+      "B. Mỗi nút (node) lưu trữ trực tiếp con trỏ bộ nhớ tới các nút láng giềng kề cận, cho phép duyệt đồ thị với thời gian O(1) trên mỗi bước nhảy mà không cần tra cứu B-Tree index toàn cục",
+      "C. Tất cả dữ liệu đồ thị đều được lưu tự do không có khóa chính",
+      "D. Hệ thống tự động xóa chỉ mục khi đồ thị đầy bộ nhớ"
+    ],
+    "answer": "B. Mỗi nút (node) lưu trữ trực tiếp con trỏ bộ nhớ tới các nút láng giềng kề cận, cho phép duyệt đồ thị với thời gian O(1) trên mỗi bước nhảy mà không cần tra cứu B-Tree index toàn cục",
+    "explanation": "Index-Free Adjacency là đặc trưng kỹ thuật phân biệt Native Graph DB với Graph chạy trên RDBMS: mỗi node lưu con trỏ trỏ trực tiếp đến các node kề của nó, duyệt đồ thị phụ thuộc vào số lượng liên kết cục bộ thay vì kích thước toàn bộ đồ thị.",
+    "eli5": "Giống như danh bạ trong máy có bấm nút gọi thẳng tới bạn bè, không cần phải chạy ra bưu điện tra cuốn danh bạ cả nước để tìm số.",
+    "commonMistakes": [
+      "Hiểu nhầm 'Index-Free' là hệ thống bị chậm do không có chỉ mục."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q15",
+    "number": "C9.15",
+    "chapterId": "ch9",
+    "topic": "graph-traversal",
+    "type": "theory",
+    "prompt": "Thuật toán **BFS (Breadth-First Search - Tìm kiếm theo chiều rộng)** duyệt đồ thị theo nguyên lý và sử dụng cấu trúc dữ liệu nào (Slide 9 trang 9)?",
+    "options": [
+      "A. Duyệt theo từng cấp độ (Level by level), mở rộng theo chiều ngang; sử dụng Hàng đợi (Queue) - cơ chế FIFO",
+      "B. Duyệt sâu đi theo một nhánh đến cùng rồi quay lui; sử dụng Ngăn xếp (Stack) - cơ chế LIFO",
+      "C. Duyệt ngẫu nhiên không cần cấu trúc dữ liệu bổ trợ",
+      "D. Duyệt theo thứ tự bảng chữ cái sử dụng B-Tree"
+    ],
+    "answer": "A. Duyệt theo từng cấp độ (Level by level), mở rộng theo chiều ngang; sử dụng Hàng đợi (Queue) - cơ chế FIFO",
+    "explanation": "Theo Slide 9 trang 9: BFS (Breadth-First Search): Duyệt theo từng cấp độ (Level by level). Mở rộng theo chiều ngang. Cấu trúc dữ liệu: Sử dụng Queue - FIFO (First In First Out).",
+    "eli5": "BFS như vết dầu loang trên mặt nước: loang đều ra xung quanh từng vòng một. Xếp hàng đến trước vào trước (Queue FIFO).",
+    "commonMistakes": [
+      "Nhầm BFS dùng Stack (LIFO) thay vì Queue (FIFO)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q16",
+    "number": "C9.16",
+    "chapterId": "ch9",
+    "topic": "graph-traversal",
+    "type": "calculation",
+    "prompt": "Cho đồ thị với các đỉnh $A, B, C, D, E, F, G$ và các cung như trong Slide 9 (trang 9-10). Xuất phát từ đỉnh $A$, các đỉnh kề của $A$ là $B, D, G$; các đỉnh kề của $B$ là $E, F$; đỉnh kề của $E, F$ là $C$. Thứ tự duyệt các đỉnh theo **BFS** là:",
+    "options": [
+      "A. A, B, E, G, F, C, D",
+      "B. A, B, D, G, E, F, C",
+      "C. A, G, D, B, C, E, F",
+      "D. A, B, C, D, E, F, G"
+    ],
+    "answer": "B. A, B, D, G, E, F, C",
+    "explanation": "Theo Slide 9 trang 9: Quá trình chạy BFS từ A:\n1. Queue: [A] => lấy A ra, thăm A. Kề A là B, D, G đưa vào Queue: [B, D, G].\n2. Lấy B ra, thăm B. Kề B là E, F đưa vào Queue: [D, G, E, F].\n3. Lấy D ra, thăm D. (kề D là F đã có trong Queue nên bỏ qua).\n4. Lấy G ra, thăm G. (kề G là E đã có trong Queue nên bỏ qua).\n5. Lấy E và F ra, thăm E, F. Kề chúng là C đưa vào Queue: [C].\n6. Lấy C ra, thăm C. Queue rỗng => Kết thúc.\nOutput chính xác: A, B, D, G, E, F, C.",
+    "eli5": "Tầng 0: A. Tầng 1: B, D, G. Tầng 2: E, F. Tầng 3: C. Thứ tự lần lượt: A -> B, D, G -> E, F -> C.",
+    "commonMistakes": [
+      "Nhầm thứ tự BFS với thứ tự DFS (A, B, E, G, F, C, D)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q17",
+    "number": "C9.17",
+    "chapterId": "ch9",
+    "topic": "graph-traversal",
+    "type": "theory",
+    "prompt": "Thuật toán **DFS (Depth-First Search - Tìm kiếm theo chiều sâu)** duyệt đồ thị theo nguyên lý và sử dụng cấu trúc dữ liệu nào (Slide 9 trang 10)?",
+    "options": [
+      "A. Duyệt theo từng tầng ngang; sử dụng Hàng đợi (Queue) - FIFO",
+      "B. Duyệt sâu đi theo một nhánh cho đến khi cụt đường thì mới quay lui (Backtracking); sử dụng Ngăn xếp (Stack) - cơ chế LIFO hoặc Đệ quy",
+      "C. Quét toàn bộ đồ thị theo bảng băm (Hash Table)",
+      "D. Chia đôi đồ thị liên tục theo phương pháp Binary Search"
+    ],
+    "answer": "B. Duyệt sâu đi theo một nhánh cho đến khi cụt đường thì mới quay lui (Backtracking); sử dụng Ngăn xếp (Stack) - cơ chế LIFO hoặc Đệ quy",
+    "explanation": "Theo Slide 9 trang 10: DFS (Depth-First Search): Duyệt sâu đi theo một nhánh cho đến khi cụt đường thì mới quay lui. Sử dụng Stack - LIFO (Last In First Out) hoặc dùng Đệ quy.",
+    "eli5": "DFS như đi khám phá mê cung: cứ đâm đầu đi thẳng một ngõ cho tới khi chạm bức tường cụt thì mới quay lùi lại ngã ba gần nhất để thử ngõ khác.",
+    "commonMistakes": [
+      "Nghĩ rằng DFS duyệt theo từng tầng ngang giống BFS."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q18",
+    "number": "C9.18",
+    "chapterId": "ch9",
+    "topic": "graph-traversal",
+    "type": "calculation",
+    "prompt": "Với đồ thị trong Slide 9 (trang 10), xuất phát từ đỉnh $A$, quy tắc ưu tiên đi theo thứ tự bảng chữ cái khi có nhiều hướng rẽ. Thứ tự duyệt các đỉnh theo **DFS** là:",
+    "options": [
+      "A. A, B, D, G, E, F, C",
+      "B. A, B, E, G, F, C, D",
+      "C. A, C, D, E, F, G, B",
+      "D. A, D, G, B, E, F, C"
+    ],
+    "answer": "B. A, B, E, G, F, C, D",
+    "explanation": "Theo Slide 9 trang 10:\n1. Thăm A, đưa A vào Stack: [A]\n2. Thăm kề B, đưa B vào Stack: [A, B]\n3. Từ B có 2 hướng (E, F), chọn E (theo bảng chữ cái), thăm E: [A, B, E]\n4. Từ E đi tiếp tới G, thăm G: [A, B, E, G]\n5. G cụt đường => Pop G, quay lui về E. E hết đường => Pop E, quay về B.\n6. Từ B rẽ sang hướng còn lại là F, thăm F: [A, B, F]\n7. Từ F có C và D, đi tiếp tới C (theo bảng chữ cái), thăm C: [A, B, F, C]\n8. C cụt đường => Pop C, quay về F. Đi tiếp tới D, thăm D: [A, B, F, D]\n9. D cụt đường => Pop D, quay lui và rút hết F, B, A ra khỏi Stack.\nOutput chính xác: A, B, E, G, F, C, D.",
+    "eli5": "Nhánh 1 đi sâu: A -> B -> E -> G (cụt). Quay lại B rẽ sang F: F -> C (cụt). Quay lại F rẽ sang D (cụt). Thứ tự duyệt: A, B, E, G, F, C, D.",
+    "commonMistakes": [
+      "Quên không quay lui (backtrack) từ G về B để đi tiếp nhánh F."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q19",
+    "number": "C9.19",
+    "chapterId": "ch9",
+    "topic": "graph-traversal",
+    "type": "theory",
+    "prompt": "Trong các ứng dụng thực tế của Knowledge Graph (Slide 9 trang 11), tác vụ nào sau đây **thích hợp nhất với thuật toán BFS** thay vì DFS?",
+    "options": [
+      "A. Duyệt cây phân cấp taxonomy để tìm các khái niệm con sâu nhất",
+      "B. Tìm đường đi ngắn nhất (Shortest Path) giữa 2 thực thể và đề xuất bạn bè láng giềng gần (Nearest Neighbors, 1-hop, 2-hop)",
+      "C. Thu thập toàn bộ thông tin sâu của một nhánh chủ đề trước khi chuyển sang nhánh khác",
+      "D. Tìm các chuỗi liên kết dài ngoằn ngoèo không giới hạn độ sâu"
+    ],
+    "answer": "B. Tìm đường đi ngắn nhất (Shortest Path) giữa 2 thực thể và đề xuất bạn bè láng giềng gần (Nearest Neighbors, 1-hop, 2-hop)",
+    "explanation": "Theo Slide 9 trang 11: BFS trong Knowledge Graph chuyên dụng cho: Tìm thực thể liên quan gần nhất, hệ thống gợi ý sản phẩm, tìm đường đi ngắn nhất giữa hai thực thể, đề xuất kết nối mới mạng xã hội theo từng cấp độ.",
+    "eli5": "Tìm đường ngắn nhất hoặc người quen ở gần nhất thì phải quét lan dần từ gần ra xa (BFS), nếu dùng DFS nó sẽ đi tuốt sang bên kia thế giới rồi mới quay lại.",
+    "commonMistakes": [
+      "Dùng DFS để tìm đường đi ngắn nhất trong đồ thị không trọng số."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q20",
+    "number": "C9.20",
+    "chapterId": "ch9",
+    "topic": "graph-traversal",
+    "type": "theory",
+    "prompt": "Trường hợp nào sau đây trong Knowledge Graph là thế mạnh vượt trội của thuật toán **DFS** (Slide 9 trang 11)?",
+    "options": [
+      "A. Tìm láng giềng ngay cạnh ở khoảng cách 1-hop",
+      "B. Duyệt ontology theo chiều sâu để tìm các khái niệm con, xây dựng cây phân cấp (Taxonomy) và khám phá các chuỗi liên kết dài giữa các thực thể",
+      "C. Đảm bảo tìm thấy đỉnh gần nhất trong thời gian ít bước nhất",
+      "D. Tính toán đường kính tối thiểu của mạng lưới"
+    ],
+    "answer": "B. Duyệt ontology theo chiều sâu để tìm các khái niệm con, xây dựng cây phân cấp (Taxonomy) và khám phá các chuỗi liên kết dài giữa các thực thể",
+    "explanation": "Theo Slide 9 trang 11: DFS trong Knowledge Graph chuyên dụng cho: Khám phá các mối quan hệ sâu nhiều tầng, duyệt ontology tìm khái niệm con, xây dựng cây phân cấp (taxonomy), tìm các chuỗi liên kết dài giữa các thực thể.",
+    "eli5": "Cây phả hệ hay cây phân loại sinh học (Giới -> Ngành -> Lớp -> Bộ -> Họ -> Chi -> Loài) cần đi sâu vào từng nhánh tới tận cùng, nên DFS là lựa chọn hoàn hảo.",
+    "commonMistakes": [
+      "Cho rằng BFS và DFS hoàn toàn tương đương nhau trong mọi bài toán đồ thị."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q21",
+    "number": "C9.21",
+    "chapterId": "ch9",
+    "topic": "vector-indexing",
+    "type": "theory",
+    "prompt": "Bản chất của việc chuyển đổi dữ liệu phi cấu trúc thành **Vector Embeddings** (Slide 9 trang 14) là:",
+    "options": [
+      "A. Chuyển đổi dữ liệu phi cấu trúc (văn bản, ảnh, âm thanh) thành các chuỗi số thực nhiều chiều thông qua các mô hình AI/Deep Learning, sao cho các thực thể có ý nghĩa tương đồng sẽ nằm gần nhau trong không gian hình học",
+      "B. Nén dữ liệu thành tập tin zip để tiết kiệm dung lượng đĩa",
+      "C. Mã hóa một chiều không thể giải mã để bảo mật mật khẩu",
+      "D. Chuyển đổi mã HTML thành mã SQL thuần túy"
+    ],
+    "answer": "A. Chuyển đổi dữ liệu phi cấu trúc (văn bản, ảnh, âm thanh) thành các chuỗi số thực nhiều chiều thông qua các mô hình AI/Deep Learning, sao cho các thực thể có ý nghĩa tương đồng sẽ nằm gần nhau trong không gian hình học",
+    "explanation": "Theo Slide 9 trang 14: Bản chất Không gian Vector: Chuyển đổi dữ liệu phi cấu trúc thành các chuỗi số thực gọi là Vector Embeddings (thường 768 - 1536 chiều). Các thực thể có ý nghĩa tương đồng nhau sẽ nằm gần nhau trong không gian toán học này.",
+    "eli5": "Từ 'vua' và 'hoàng đế' tuy chữ viết khác nhau hoàn toàn, nhưng sau khi biến thành vector thì 2 điểm tọa độ của chúng nằm sát cạnh nhau trong không gian.",
+    "commonMistakes": [
+      "Nghĩ rằng vector embeddings chỉ là mã ASCII của từ."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q22",
+    "number": "C9.22",
+    "chapterId": "ch9",
+    "topic": "vector-indexing",
+    "type": "theory",
+    "prompt": "Hiện tượng **Curse of Dimensionality** (Lời nguyền số chiều) trong tìm kiếm vector gây ra hậu quả tiêu cực nào (Slide 9 trang 15)?",
+    "options": [
+      "A. Làm mất dữ liệu ngẫu nhiên trong ổ cứng",
+      "B. Khi số chiều lên tới hàng trăm, hàng ngàn chiều, việc quét tuần tự (Flat/Exact kNN) để tính khoảng cách toán học trên hàng triệu vector khiến CPU bị quá tải nghiêm trọng và độ trễ tăng vọt",
+      "C. Gây xung đột khóa chính trong cơ sở dữ liệu",
+      "D. Khiến mô hình AI bị quên dữ liệu cũ"
+    ],
+    "answer": "B. Khi số chiều lên tới hàng trăm, hàng ngàn chiều, việc quét tuần tự (Flat/Exact kNN) để tính khoảng cách toán học trên hàng triệu vector khiến CPU bị quá tải nghiêm trọng và độ trễ tăng vọt",
+    "explanation": "Theo Slide 9 trang 15: Thách thức hiệu năng: Quét khoảng cách toán học trên hàng triệu Vector có số chiều cao gây quá tải CPU do Lỗi Curse of Dimensionality. Độ phức tạp O(N*D) với N lớn và D lớn là không khả thi cho real-time search.",
+    "eli5": "Tìm 1 hạt cát giống nhất giữa 10 triệu hạt cát trong không gian 1536 chiều bằng cách đo từng hạt một thì máy tính chạy cả tiếng mới xong 1 truy vấn.",
+    "commonMistakes": [
+      "Nghĩ rằng tăng số chiều vector luôn giúp tăng tốc độ tìm kiếm."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q23",
+    "number": "C9.23",
+    "chapterId": "ch9",
+    "topic": "vector-indexing",
+    "type": "theory",
+    "prompt": "Giải pháp **ANN (Approximate Nearest Neighbor - Láng giềng gần đúng)** được áp dụng để giải quyết bài toán gì trong Vector Search?",
+    "options": [
+      "A. Chấp nhận hy sinh một tỷ lệ chính xác rất nhỏ (ví dụ đạt 95-99% recall) để đổi lấy tốc độ tìm kiếm tăng gấp hàng trăm lần, phản hồi trong vài mili-giây",
+      "B. Luôn đảm bảo tìm ra 100% vector chính xác tuyệt đối nhưng tốn nhiều thời gian hơn",
+      "C. Xóa các vector không có nhãn phân loại",
+      "D. Làm tròn tất cả số thực về số nguyên chẵn"
+    ],
+    "answer": "A. Chấp nhận hy sinh một tỷ lệ chính xác rất nhỏ (ví dụ đạt 95-99% recall) để đổi lấy tốc độ tìm kiếm tăng gấp hàng trăm lần, phản hồi trong vài mili-giây",
+    "explanation": "Theo Slide 9 trang 15: Giải pháp Approximate Nearest Neighbor (ANN) đánh đổi độ chính xác tuyệt đối để lấy tốc độ vượt trội (sub-millisecond latency) thông qua các thuật toán lập chỉ mục thông minh.",
+    "eli5": "Thay vì tìm người giống bạn 100% mất 1 tiếng, ANN tìm người giống bạn 99% chỉ trong 2 mili-giây, hoàn toàn đáp ứng tốt nhu cầu tìm kiếm thực tế.",
+    "commonMistakes": [
+      "Nghĩ rằng ANN là thuật toán tìm kiếm chính xác tuyệt đối 100%."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q24",
+    "number": "C9.24",
+    "chapterId": "ch9",
+    "topic": "vector-indexing",
+    "type": "theory",
+    "prompt": "Thuật toán chỉ mục vector **HNSW (Hierarchical Navigable Small World)** hoạt động dựa trên cấu trúc đồ thị nào sau đây (Slide 9 trang 15)?",
+    "options": [
+      "A. Đồ thị phẳng đơn tầng duyệt theo thứ tự DFS",
+      "B. Cấu trúc đồ thị phân cấp nhiều tầng (Multi-layer Skip Graph), các tầng trên thưa thớt để nhảy vùng nhanh, tầng dưới dày đặc để tìm kiếm chi tiết",
+      "C. Cây nhị phân tìm kiếm chuẩn AVL",
+      "D. Bảng băm đóng không cho phép mở rộng"
+    ],
+    "answer": "B. Cấu trúc đồ thị phân cấp nhiều tầng (Multi-layer Skip Graph), các tầng trên thưa thớt để nhảy vùng nhanh, tầng dưới dày đặc để tìm kiếm chi tiết",
+    "explanation": "Theo Slide 9 trang 15: HNSW xây dựng cấu trúc đồ thị phân cấp mạng lưới để nhảy vùng tìm kiếm láng giềng gần nhất với tốc độ mili-giây. Nó hoạt động tương tự Skip List mở rộng sang không gian đồ thị nhiều chiều.",
+    "eli5": "HNSW như đi máy bay: từ Hà Nội muốn đến một con phố ở TP.HCM, đầu tiên bay chuyến bay lớn liên tỉnh (tầng cao), hạ cánh Tân Sơn Nhất rồi đi taxi vào quận (tầng giữa), cuối cùng đi bộ vào số nhà (tầng thấp).",
+    "commonMistakes": [
+      "Nhầm HNSW với IVF (phân cụm Voronoi)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q25",
+    "number": "C9.25",
+    "chapterId": "ch9",
+    "topic": "vector-indexing",
+    "type": "theory",
+    "prompt": "Chỉ mục **IVF (Inverted File Index / IVFFLAT)** trong câu 36 đề cương và Slide 9 trang 15 hoạt động theo cơ chế nào?",
+    "options": [
+      "A. Sắp xếp các vector theo thứ tự tăng dần của độ dài vector",
+      "B. Phân chia không gian vector thành các cụm (Voronoi cells) thông qua k-means; khi truy vấn chỉ quét các vector nằm trong các ô láng giềng gần tâm nhất (probes)",
+      "C. Nén vector thành ảnh đen trắng",
+      "D. Chuyển đổi vector số thực thành mã QR"
+    ],
+    "answer": "B. Phân chia không gian vector thành các cụm (Voronoi cells) thông qua k-means; khi truy vấn chỉ quét các vector nằm trong các ô láng giềng gần tâm nhất (probes)",
+    "explanation": "Theo Slide 9 trang 15 và câu 36 đề cương: IVF phân cụm không gian vector thành các phân vùng (Voronoi cells) với các tâm cụm (centroids). Khi tìm kiếm chỉ cần so sánh với các tâm cụm để chọn ra `nprobe` cụm gần nhất và quét các vector trong cụm đó.",
+    "eli5": "Thay vì tìm một cuốn sách trong cả thư viện, thủ thư phân sách vào 100 kệ. Khi bạn hỏi, họ chỉ tìm trong 2-3 kệ chứa chủ đề gần nhất.",
+    "commonMistakes": [
+      "Nghĩ rằng IVF bắt buộc phải duyệt qua toàn bộ tất cả các vector trong cơ sở dữ liệu."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q26",
+    "number": "C9.26",
+    "chapterId": "ch9",
+    "topic": "vector-indexing",
+    "type": "theory",
+    "prompt": "Kỹ thuật **Quantization (Lượng tử hóa, ví dụ Product Quantization - PQ)** trong xử lý dữ liệu vector (Slide 9 trang 15) có tác dụng gì?",
+    "options": [
+      "A. Tăng gấp đôi số chiều của vector",
+      "B. Nén kích thước lưu trữ của Vector (ví dụ nén float32 thành byte/int8) giúp giảm tới 80-90% dung lượng bộ nhớ, đưa toàn bộ chỉ mục vào RAM",
+      "C. Làm cho thuật toán chạy trên máy tính lượng tử",
+      "D. Chuyển đổi vector thành văn bản tiếng Anh"
+    ],
+    "answer": "B. Nén kích thước lưu trữ của Vector (ví dụ nén float32 thành byte/int8) giúp giảm tới 80-90% dung lượng bộ nhớ, đưa toàn bộ chỉ mục vào RAM",
+    "explanation": "Theo Slide 9 trang 15: Quantization: Nén kích thước lưu trữ của Vector (ví dụ Product Quantization - PQ) để đưa toàn bộ chỉ mục vào bộ nhớ RAM, giảm bớt chi phí phần cứng đắt đỏ.",
+    "eli5": "Mỗi số thực float32 tốn 4 byte, PQ nén lại chỉ còn 1 byte (hoặc ít hơn) giống như nén ảnh PNG xuống JPEG nhưng vẫn giữ được độ nét cơ bản.",
+    "commonMistakes": [
+      "Tưởng Quantization là công nghệ điện toán lượng tử (Quantum Computing)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q27",
+    "number": "C9.27",
+    "chapterId": "ch9",
+    "topic": "vector-indexing",
+    "type": "theory",
+    "prompt": "Thư viện và hệ thống CSDL Vector nào sau đây thường được triển khai cho tác vụ Vector Indexing trong thực tế (Slide 9 trang 16)?",
+    "options": [
+      "A. Microsoft Access",
+      "B. Faiss (Meta), Milvus, Pinecone, pgvector (PostgreSQL)",
+      "C. SQLite3 cơ bản",
+      "D. FoxPro"
+    ],
+    "answer": "B. Faiss (Meta), Milvus, Pinecone, pgvector (PostgreSQL)",
+    "explanation": "Theo tài liệu thực hành Vector Search đi kèm Slide 9: Các công cụ chuẩn ngành gồm thư viện Faiss của Meta, các CSDL chuyên dụng Milvus, Pinecone, ChromaDB và extension pgvector của PostgreSQL.",
+    "eli5": "Đây là các cỗ máy tìm kiếm vector chuyên nghiệp được sử dụng rộng rãi trong các hệ thống GenAI và RAG doanh nghiệp hiện nay.",
+    "commonMistakes": [
+      "Nhầm MS Access có hỗ trợ sẵn Vector Indexing chuyên sâu."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q28",
+    "number": "C9.28",
+    "chapterId": "ch9",
+    "topic": "blockchain-integration",
+    "type": "theory",
+    "prompt": "Trong đề cương (câu 35) và Slide 9 (trang 18), **dữ liệu thô trên Blockchain** tồn tại ở dạng nào và có đặc điểm gì?",
+    "options": [
+      "A. Dạng bảng quan hệ với khóa chính tự tăng trong MySQL",
+      "B. Có tính minh bạch tuyệt đối nhưng tồn tại dưới dạng byte/hex phi cấu trúc và phân tán trên hàng ngàn nút mạng (Nodes)",
+      "C. Dạng file Excel có mật khẩu bảo vệ",
+      "D. Dạng đồ thị có gắn nhãn sẵn ngữ nghĩa tiếng Việt"
+    ],
+    "answer": "B. Có tính minh bạch tuyệt đối nhưng tồn tại dưới dạng byte/hex phi cấu trúc và phân tán trên hàng ngàn nút mạng (Nodes)",
+    "explanation": "Theo Slide 9 trang 18 và câu 35 đề cương: Bản chất On-Chain Data: Dữ liệu thô trên Blockchain có tính minh bạch tuyệt đối nhưng tồn tại dưới dạng byte/hex phi cấu trúc và phân tán trên hàng ngàn nút (Nodes).",
+    "eli5": "Ai cũng xem được sổ cái giao dịch trên mạng, nhưng nhìn vào chỉ thấy toàn dãy số thập lục phân '0x7f83b...'. Cần phải giải mã mới đọc được.",
+    "commonMistakes": [
+      "Cho rằng dữ liệu trên Blockchain đã được tổ chức sẵn thành bảng SQL chuẩn."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q29",
+    "number": "C9.29",
+    "chapterId": "ch9",
+    "topic": "blockchain-integration",
+    "type": "theory",
+    "prompt": "Bước đầu tiên trong quy trình trích xuất dữ liệu Blockchain ETL là **Node Ingestion** (Slide 9 trang 19). Bước này thực hiện công việc gì?",
+    "options": [
+      "A. Kết nối liên tục với các nút mạng (Ethereum/Bitcoin Nodes) thông qua giao thức RPC/WebSocket để bắt các khối (Blocks) mới sinh thời gian thực",
+      "B. Tính toán số tiền lãi của người dùng",
+      "C. In ấn các chứng từ giao dịch ra giấy",
+      "D. Khóa tài khoản của người dùng có dấu hiệu gian lận"
+    ],
+    "answer": "A. Kết nối liên tục với các nút mạng (Ethereum/Bitcoin Nodes) thông qua giao thức RPC/WebSocket để bắt các khối (Blocks) mới sinh thời gian thực",
+    "explanation": "Theo Slide 9 trang 19: Node Ingestion: Kết nối liên tục với các nút mạng (Ethereum/Bitcoin Nodes) thông qua giao thức RPC để bắt các khối (Blocks) mới sinh thời gian thực.",
+    "eli5": "Giống như cắm ăng-ten bắt sóng trực tiếp từ đài truyền hình: mỗi khi mạng lưới đóng gói một khối (block) mới là hệ thống tải về ngay.",
+    "commonMistakes": [
+      "Nghĩ rằng lấy dữ liệu Blockchain chỉ cần tải một file CSV tĩnh cuối tháng."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q30",
+    "number": "C9.30",
+    "chapterId": "ch9",
+    "topic": "blockchain-integration",
+    "type": "theory",
+    "prompt": "Tệp **ABI (Application Binary Interface)** đóng vai trò quyết định như thế nào trong bước **Event Decoding** của Blockchain ETL (Slide 9 trang 19)?",
+    "options": [
+      "A. Dùng để nén khối dữ liệu",
+      "B. Dùng làm từ điển dịch các chuỗi dữ liệu Hex nhị phân trong phần Event Logs thành tên hàm và tham số cụ thể (ví dụ: Người gửi, Người nhận, Số tiền)",
+      "C. Dùng để tạo mật khẩu đăng nhập ví cá nhân",
+      "D. Tự động thanh toán phí gas cho thợ đào"
+    ],
+    "answer": "B. Dùng làm từ điển dịch các chuỗi dữ liệu Hex nhị phân trong phần Event Logs thành tên hàm và tham số cụ thể (ví dụ: Người gửi, Người nhận, Số tiền)",
+    "explanation": "Theo Slide 9 trang 19: Event Decoding: Sử dụng tệp giao diện ứng dụng nhị phân ABI (Application Binary Interface) để dịch các chuỗi dữ liệu Hex trong phần Logs thành tên hàm và tham số cụ thể (ví dụ: Người gửi, Người nhận, Số tiền).",
+    "eli5": "ABI như cuốn từ điển phiên dịch: dịch một chuỗi mã máy vô nghĩa '0xa9059cbb...' thành câu lệnh dễ hiểu: 'Hàm Transfer gửi 50 USDT từ ví A sang ví B'.",
+    "commonMistakes": [
+      "Nhầm ABI với API (Application Programming Interface)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q31",
+    "number": "C9.31",
+    "chapterId": "ch9",
+    "topic": "blockchain-integration",
+    "type": "theory",
+    "prompt": "Tại sao trong bước **Data Normalization** của Blockchain ETL (Slide 9 trang 19) lại phải chia đơn vị giao dịch cho $10^{18}$?",
+    "options": [
+      "A. Vì đây là tỷ lệ lạm phát của mạng lưới",
+      "B. Vì các Smart Contracts (như Ethereum) lưu trữ số dư bằng đơn vị nguyên nhỏ nhất là Wei ($1 \\text{ ETH} = 10^{18} \\text{ Wei}$) để tránh lỗi làm tròn số thực",
+      "C. Do giới hạn kích thước gói tin mạng",
+      "D. Để trừ đi phí hoa hồng của nhà sàn"
+    ],
+    "answer": "B. Vì các Smart Contracts (như Ethereum) lưu trữ số dư bằng đơn vị nguyên nhỏ nhất là Wei ($1 \\text{ ETH} = 10^{18} \\text{ Wei}$) để tránh lỗi làm tròn số thực",
+    "explanation": "Theo Slide 9 trang 19: Data Normalization: Chuyển đổi các đơn vị số nguyên lớn (như 18 chữ số thập phân của Wei sang Ether: 1 Ether = 10^18 Wei) và đồng bộ định dạng Timestamp epoch Unix về chuẩn UTC của kho dữ liệu.",
+    "eli5": "Máy tính trong Smart Contract không dùng số thập phân (float) vì dễ bị lệch vài cent, nó lưu số tiền dạng xu nhỏ nhất (Wei). Khi nạp vào Data Warehouse, ta chia cho 10^18 để ra số Ether quen thuộc.",
+    "commonMistakes": [
+      "Nghĩ rằng Blockchain lưu trực tiếp số thực dạng float64."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q32",
+    "number": "C9.32",
+    "chapterId": "ch9",
+    "topic": "blockchain-integration",
+    "type": "theory",
+    "prompt": "Công cụ hoặc dịch vụ nào sau đây chuyên phục vụ phân tích dữ liệu on-chain và chỉ mục hóa sự kiện Blockchain được nhắc đến trong hệ sinh thái dữ liệu hiện đại?",
+    "options": [
+      "A. Adobe Photoshop",
+      "B. The Graph (Subgraphs), Dune Analytics, BigQuery Public Crypto Datasets",
+      "C. Notepad++",
+      "D. WinRAR"
+    ],
+    "answer": "B. The Graph (Subgraphs), Dune Analytics, BigQuery Public Crypto Datasets",
+    "explanation": "Theo Slide 9 trang 20: Các công cụ chuẩn ngành cho phân tích dữ liệu Blockchain gồm giao thức The Graph (truy vấn GraphQL), nền tảng Dune Analytics và kho dữ liệu BigQuery Public Crypto Datasets của Google Cloud.",
+    "eli5": "The Graph hay Dune Analytics giúp bạn viết câu lệnh SQL/GraphQL để truy vấn trực tiếp hàng triệu khối blockchain như một database thông thường.",
+    "commonMistakes": [
+      "Nghĩ rằng phân tích Blockchain bắt buộc phải tự lập trình cào từng block bằng tay."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q33",
+    "number": "C9.33",
+    "chapterId": "ch9",
+    "topic": "blockchain-integration",
+    "type": "theory",
+    "prompt": "Giao thức truyền thông nào là tiêu chuẩn để các ứng dụng ETL giao tiếp và lấy dữ liệu thô từ một Full Node Blockchain?",
+    "options": [
+      "A. FTP / SFTP",
+      "B. JSON-RPC qua HTTP hoặc WebSocket",
+      "C. SMTP qua cổng 25",
+      "D. Bluetooth 5.0"
+    ],
+    "answer": "B. JSON-RPC qua HTTP hoặc WebSocket",
+    "explanation": "Các nút mạng Blockchain (Geth, Nethermind, Bitcoin Core) cung cấp API giao tiếp chuẩn thông qua giao thức JSON-RPC (Remote Procedure Call) qua kết nối HTTP POST hoặc WebSocket (cho streaming real-time blocks).",
+    "eli5": "Ứng dụng gửi một gói tin JSON yêu cầu 'eth_getBlockByNumber', máy chủ nút mạng phản hồi gói tin JSON chứa toàn bộ dữ liệu khối.",
+    "commonMistakes": [
+      "Tưởng Blockchain có giao diện ODBC/JDBC cắm trực tiếp như SQL Server."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q34",
+    "number": "C9.34",
+    "chapterId": "ch9",
+    "topic": "blockchain-integration",
+    "type": "theory",
+    "prompt": "Mục tiêu cuối cùng của việc tích hợp dữ liệu Blockchain vào Enterprise Data Warehouse là gì?",
+    "options": [
+      "A. Thay thế hoàn toàn toàn bộ phần mềm kế toán nội bộ",
+      "B. Chuyển dịch dữ liệu dòng chảy phi cấu trúc từ Blockchain về dạng cấu trúc bảng (Relational Tables) để kết hợp với dữ liệu nội bộ (CRM, ERP) phục vụ BI/Fintech",
+      "C. Đào tiền ảo trực tiếp bằng máy chủ Data Warehouse",
+      "D. Công khai toàn bộ thông tin lương thưởng của nhân viên lên mạng"
+    ],
+    "answer": "B. Chuyển dịch dữ liệu dòng chảy phi cấu trúc từ Blockchain về dạng cấu trúc bảng (Relational Tables) để kết hợp với dữ liệu nội bộ (CRM, ERP) phục vụ BI/Fintech",
+    "explanation": "Theo Slide 9 trang 18: Mục tiêu phân tích: Chuyển dịch dữ liệu dòng chảy phi cấu trúc từ Blockchain về dạng cấu trúc bảng (Relational Tables) để chạy các thuật toán BI/Fintech và đối soát với dữ liệu khách hàng nội bộ.",
+    "eli5": "Giúp giám đốc xem trên cùng 1 biểu đồ: Khách hàng VIP trong CRM đã giao dịch bao nhiêu tiền token trên chuỗi khối của doanh nghiệp.",
+    "commonMistakes": [
+      "Nghĩ rằng tích hợp blockchain vào DWH là để tham gia đào coin."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q35",
+    "number": "C9.35",
+    "chapterId": "ch9",
+    "topic": "blockchain-integrity",
+    "type": "theory",
+    "prompt": "Vấn đề bảo mật cốt lõi trong hệ thống thông tin truyền thống nào đã thúc đẩy việc áp dụng **Blockchain để quản lý Metadata Audit Logs** (Slide 9 trang 22)?",
+    "options": [
+      "A. Tốc độ ổ cứng quá chậm",
+      "B. Người quản trị cơ sở dữ liệu (DBA) có quyền tối cao (root/superuser) và có thể chỉnh sửa hoặc xóa bảng Audit Logs để xóa dấu vết gian lận hoặc sai sót",
+      "C. Người dùng quên mật khẩu quá thường xuyên",
+      "D. Không thể xuất báo cáo ra file PDF"
+    ],
+    "answer": "B. Người quản trị cơ sở dữ liệu (DBA) có quyền tối cao (root/superuser) và có thể chỉnh sửa hoặc xóa bảng Audit Logs để xóa dấu vết gian lận hoặc sai sót",
+    "explanation": "Theo Slide 9 trang 22: Bài toán thực tế: Trong các hệ thống thông tin truyền thống, DBA có quyền tối cao tối mật và có thể sửa đổi hoặc xóa Audit Logs để xóa dấu vết gian lận. Do đó cần một bên thứ ba độc lập, bất biến như Blockchain để lưu giữ bằng chứng.",
+    "eli5": "Nếu người canh giữ kho lại có chìa khóa sửa cuốn sổ ghi chép xuất nhập kho, họ có thể lấy trộm đồ rồi sửa sổ xóa dấu vết. Cần cuốn sổ bất biến mà ai cũng thấy nhưng không ai tẩy xóa được.",
+    "commonMistakes": [
+      "Nghĩ rằng phân quyền trong RDBMS đã đủ để ngăn chặn DBA cấp cao nhất gian lận."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q36",
+    "number": "C9.36",
+    "chapterId": "ch9",
+    "topic": "blockchain-integrity",
+    "type": "theory",
+    "prompt": "Giá trị cốt lõi lớn nhất khi sử dụng sổ cái bất biến Blockchain để lưu trữ Metadata Audit Logs (Slide 9 trang 22) là:",
+    "options": [
+      "A. Giảm chi phí tiền điện của trung tâm dữ liệu",
+      "B. Đảm bảo tính không thể phủ nhận (Non-repudiation) và tính minh bạch tuyệt đối cho siêu dữ liệu kiểm toán",
+      "C. Tăng tốc độ ghi dữ liệu của máy chủ lên gấp 10 lần",
+      "D. Miễn trừ trách nhiệm pháp lý cho doanh nghiệp"
+    ],
+    "answer": "B. Đảm bảo tính không thể phủ nhận (Non-repudiation) và tính minh bạch tuyệt đối cho siêu dữ liệu kiểm toán",
+    "explanation": "Theo Slide 9 trang 22: Giá trị cốt lõi: Đảm bảo tính không thể phủ nhận (Non-repudiation) và tính minh bạch tuyệt đối cho siêu dữ liệu (Metadata). Bất kỳ hành vi thay đổi dữ liệu nào đều để lại bằng chứng toán học không thể chối cãi.",
+    "eli5": "Non-repudiation nghĩa là 'đã ký vào đây thì không bao giờ chối cãi được là tôi không làm'. Mọi vết tích đều được ghi vào sổ cái bất biến.",
+    "commonMistakes": [
+      "Nhầm Non-repudiation (không thể phủ nhận) với Data Confidentiality (bí mật dữ liệu)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q37",
+    "number": "C9.37",
+    "chapterId": "ch9",
+    "topic": "blockchain-integrity",
+    "type": "theory",
+    "prompt": "Tại sao trong kiến trúc **Data Anchoring** (Slide 9 trang 23), doanh nghiệp **không lưu toàn bộ dữ liệu thô** trực tiếp lên Blockchain?",
+    "options": [
+      "A. Do Blockchain không hỗ trợ lưu trữ ký tự chữ",
+      "B. Để tiết kiệm chi phí giao dịch (Gas fee) cực đắt đỏ và tránh rò rỉ dữ liệu nhạy cảm ra mạng lưới công khai",
+      "C. Do các thuật toán mã hóa của Blockchain không an toàn",
+      "D. Vì dữ liệu thô sẽ tự động biến mất sau 24 giờ trên Blockchain"
+    ],
+    "answer": "B. Để tiết kiệm chi phí giao dịch (Gas fee) cực đắt đỏ và tránh rò rỉ dữ liệu nhạy cảm ra mạng lưới công khai",
+    "explanation": "Theo Slide 9 trang 23: Để tiết kiệm chi phí và bảo mật thông tin, hệ thống không lưu toàn bộ dữ liệu thô lên Blockchain. Dữ liệu thay đổi sẽ được băm (Cryptographic Hashing SHA-256) thành mã băm đại diện duy nhất.",
+    "eli5": "Lưu 1MB dữ liệu lên Ethereum tốn hàng ngàn USD tiền gas và ai cũng đọc trộm được. Thay vào đó, ta chỉ lưu 1 chuỗi băm 32 byte (tốn vài cent) làm 'con dấu chứng nhận'.",
+    "commonMistakes": [
+      "Nghĩ rằng đưa dữ liệu lên Blockchain là copy paste toàn bộ file database lên đó."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q38",
+    "number": "C9.38",
+    "chapterId": "ch9",
+    "topic": "blockchain-integrity",
+    "type": "theory",
+    "prompt": "Cấu trúc dữ liệu **Merkle Tree** (Cây Merkle) trong nguyên lý Data Anchoring (Slide 9 trang 23) hoạt động như thế nào?",
+    "options": [
+      "A. Là một cây nén dự đoán chuỗi giao dịch CPT",
+      "B. Gom hàng ngàn mã băm nhật ký trong ngày theo dạng cây nhị phân để tạo ra một mã băm gốc duy nhất (Merkle Root Hash) đại diện cho toàn bộ tập dữ liệu",
+      "C. Là cây quyết định phân loại khách hàng",
+      "D. Cây phân cấp taxonomy trong duyệt DFS"
+    ],
+    "answer": "B. Gom hàng ngàn mã băm nhật ký trong ngày theo dạng cây nhị phân để tạo ra một mã băm gốc duy nhất (Merkle Root Hash) đại diện cho toàn bộ tập dữ liệu",
+    "explanation": "Theo Slide 9 trang 23: Merkle Tree: Gom hàng ngàn mã băm nhật ký trong ngày thành một mã băm gốc duy nhất (Merkle Root Hash). Chỉ cần 1 bản ghi bị sửa đổi dù 1 ký tự, Merkle Root Hash sẽ biến đổi hoàn toàn.",
+    "eli5": "Cứ 2 mã băm con gộp lại băm ra 1 mã băm cha, leo dần lên ngọn cây tạo thành đúng 1 chuỗi băm Root Hash duy nhất chốt sổ cuối ngày.",
+    "commonMistakes": [
+      "Nhầm Merkle Tree với Decision Tree (cây quyết định)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q39",
+    "number": "C9.39",
+    "chapterId": "ch9",
+    "topic": "blockchain-integrity",
+    "type": "theory",
+    "prompt": "Quá trình **Data Anchoring** (Neo dữ liệu) lên Blockchain (Slide 9 trang 23) được thực hiện như thế nào khi phát sinh tranh chấp hoặc kiểm toán?",
+    "options": [
+      "A. Tải lại toàn bộ dữ liệu từ Blockchain về máy chủ",
+      "B. Ghi nhận Merkle Root Hash lên mạng Blockchain qua Smart Contract; khi có tranh chấp, chỉ cần băm lại dữ liệu hiện tại để đối chiếu với mã băm đã lưu trên chuỗi",
+      "C. Gọi điện cho nhà cung cấp dịch vụ máy chủ",
+      "D. Khởi động lại hệ điều hành của toàn bộ máy trạm"
+    ],
+    "answer": "B. Ghi nhận Merkle Root Hash lên mạng Blockchain qua Smart Contract; khi có tranh chấp, chỉ cần băm lại dữ liệu hiện tại để đối chiếu với mã băm đã lưu trên chuỗi",
+    "explanation": "Theo Slide 9 trang 23: Anchoring: Ghi nhận Root Hash lên mạng lưới Blockchain thông qua một Smart Contract. Khi có tranh chấp, chỉ cần băm lại dữ liệu hiện tại để đối chiếu với mã băm trên chuỗi; nếu khớp tức là dữ liệu nguyên bản, nếu lệch tức là dữ liệu đã bị can thiệp trái phép.",
+    "eli5": "Giống như nộp con dấu niêm phong lên két sắt của ngân hàng. Sau này mở ra, đóng dấu lại vào tờ giấy, nếu khớp y chang con dấu trong két thì chứng minh giấy tờ chưa từng bị sửa.",
+    "commonMistakes": [
+      "Nghĩ rằng khi kiểm toán phải khôi phục dữ liệu từ Blockchain."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q40",
+    "number": "C9.40",
+    "chapterId": "ch9",
+    "topic": "blockchain-integrity",
+    "type": "calculation",
+    "prompt": "Nếu một hacker thâm nhập vào Data Warehouse và sửa đổi một con số trong hàng triệu bản ghi nhật ký đã được neo bằng Merkle Root Hash, điều gì sẽ xảy ra khi chạy kiểm toán đối soát?",
+    "options": [
+      "A. Hệ thống không phát hiện ra do con số sửa đổi quá nhỏ",
+      "B. Mã băm SHA-256 của khối chứa bản ghi bị thay đổi, dẫn đến sự lan truyền làm thay đổi Merkle Root Hash, gây lệch hoàn toàn so với Root Hash bất biến trên Blockchain",
+      "C. Mạng Blockchain sẽ tự động bị dừng hoạt động",
+      "D. Hacker sẽ được cấp quyền root vĩnh viễn"
+    ],
+    "answer": "B. Mã băm SHA-256 của khối chứa bản ghi bị thay đổi, dẫn đến sự lan truyền làm thay đổi Merkle Root Hash, gây lệch hoàn toàn so với Root Hash bất biến trên Blockchain",
+    "explanation": "Tính chất tuyết lở (Avalanche effect) của hàm băm mật mã học đảm bảo: chỉ cần 1 bit dữ liệu thay đổi, toàn bộ mã băm sẽ thay đổi hoàn toàn, làm Merkle Root mới tính lại khác biệt hoàn toàn với mã băm đã đóng dấu bất biến trên Blockchain.",
+    "eli5": "Dù chỉ sửa 1 dấu chấm phẩy, con dấu Root Hash tạo ra sẽ hoàn toàn sai lệch và lập tức bị phát hiện gian lận.",
+    "commonMistakes": [
+      "Cho rằng sửa một ký tự nhỏ sẽ không làm ảnh hưởng đến mã băm gốc của cây Merkle."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q41",
+    "number": "C9.41",
+    "chapterId": "ch9",
+    "topic": "federated-querying",
+    "type": "theory",
+    "prompt": "Bản chất của kiến trúc **Zero-Copy Architecture** trong **Federated Querying** (Slide 9 trang 24) là gì?",
+    "options": [
+      "A. Không cho phép người dùng sao chép câu lệnh SQL",
+      "B. Cơ chế cho phép viết một câu lệnh SQL duy nhất nhưng đồng thời lấy và liên kết dữ liệu từ nhiều nền tảng (SQL, Graph, Blockchain) mà không cần di chuyển dữ liệu thô",
+      "C. Tự động xóa dữ liệu sau khi truy vấn xong",
+      "D. Bắt buộc phải sao chép 100% dữ liệu về một máy chủ trung tâm trước khi truy vấn"
+    ],
+    "answer": "B. Cơ chế cho phép viết một câu lệnh SQL duy nhất nhưng đồng thời lấy và liên kết dữ liệu từ nhiều nền tảng (SQL, Graph, Blockchain) mà không cần di chuyển dữ liệu thô",
+    "explanation": "Theo Slide 9 trang 24: Bản chất của Zero-Copy Architecture: Federated Querying là cơ chế cho phép người dùng viết một câu lệnh SQL duy nhất nhưng có thể đồng thời lấy và liên kết dữ liệu từ nhiều nền tảng lưu trữ khác nhau (SQL, Graph, Blockchain) mà không cần di chuyển dữ liệu thô.",
+    "eli5": "Thay vì chở toàn bộ hàng hóa từ 3 kho về chung 1 nhà kho lớn (ETL tốn kém), bạn ngồi tại bàn làm việc gọi điện kiểm tra số liệu tại cả 3 kho cùng lúc (Zero-Copy Virtualization).",
+    "commonMistakes": [
+      "Nghĩ rằng Zero-Copy có nghĩa là không được phép trả về kết quả cho người dùng."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q42",
+    "number": "C9.42",
+    "chapterId": "ch9",
+    "topic": "federated-querying",
+    "type": "theory",
+    "prompt": "Lợi ích kinh tế và công nghệ vượt trội của việc chuyển dịch từ ETL truyền thống sang **Query Virtualization (Federated Querying)** (Slide 9 trang 24) là:",
+    "options": [
+      "A. Tiết kiệm chi phí lưu trữ gấp nhiều lần (tránh nhân bản dữ liệu thừa) và đảm bảo tính thời gian thực (Real-time data access)",
+      "B. Giảm bớt số lượng nhân viên bảo vệ văn phòng",
+      "C. Loại bỏ hoàn toàn sự cần thiết của mạng internet",
+      "D. Giúp máy chủ chạy mà không cần cấp điện"
+    ],
+    "answer": "A. Tiết kiệm chi phí lưu trữ gấp nhiều lần (tránh nhân bản dữ liệu thừa) và đảm bảo tính thời gian thực (Real-time data access)",
+    "explanation": "Theo Slide 9 trang 24: Thay vì gom toàn bộ dữ liệu về một chỗ (ETL truyền thống tốn tài nguyên), hệ thống giữ dữ liệu tại nguồn và chỉ lấy kết quả khi cần. Lợi ích kinh tế: Tiết kiệm chi phí lưu trữ gấp nhiều lần và đảm bảo tính thời gian thực.",
+    "eli5": "Không phải mua thêm ổ cứng chứa bản copy trùng lặp, và khi nguồn thay đổi thì câu truy vấn thấy ngay dữ liệu mới nhất mà không phải đợi pipeline ETL chạy qua đêm.",
+    "commonMistakes": [
+      "Cho rằng Federated Querying luôn có tốc độ nhanh hơn dữ liệu đã được gom sẵn vào local SSD."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q43",
+    "number": "C9.43",
+    "chapterId": "ch9",
+    "topic": "federated-querying",
+    "type": "theory",
+    "prompt": "Các bộ máy **Connector / Wrapper Engines** như Trino, Presto hoặc BigQuery Omni (Slide 9 trang 25) thực hiện nhiệm vụ gì trong kiến trúc Federated Querying?",
+    "options": [
+      "A. Chuyển đổi giao diện người dùng sang tiếng Việt",
+      "B. Đóng vai trò trung gian, tiếp nhận câu lệnh SQL tổng và tự động dịch thành ngôn ngữ của nguồn tương ứng (ví dụ: dịch thành Cypher cho Graph, RPC cho Blockchain)",
+      "C. Tắt các dịch vụ khi quá giờ làm việc",
+      "D. Quét virus cho các tập tin đính kèm"
+    ],
+    "answer": "B. Đóng vai trò trung gian, tiếp nhận câu lệnh SQL tổng và tự động dịch thành ngôn ngữ của nguồn tương ứng (ví dụ: dịch thành Cypher cho Graph, RPC cho Blockchain)",
+    "explanation": "Theo Slide 9 trang 25: Connector/Wrapper Engines: Các bộ máy như Presto, Trino hoặc BigQuery Omni đóng vai trò trung gian, tiếp nhận lệnh SQL tổng và tự động dịch thành ngôn ngữ của nguồn tương ứng (VD: dịch thành Cypher cho Graph, RPC cho Blockchain, MQL cho MongoDB).",
+    "eli5": "Trino/Presto như người phiên dịch đa ngôn ngữ: Bạn nói tiếng SQL, nó dịch sang tiếng Cypher nói chuyện với Neo4j, dịch sang RPC nói chuyện với Ethereum, rồi gom câu trả lời lại cho bạn.",
+    "commonMistakes": [
+      "Nghĩ rằng Neo4j và Blockchain tự động hiểu trực tiếp cú pháp SQL chuẩn ANSI."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q44",
+    "number": "C9.44",
+    "chapterId": "ch9",
+    "topic": "federated-querying",
+    "type": "theory",
+    "prompt": "Kỹ thuật tối ưu hóa **Predicate Pushdown** (Đẩy vị từ xuống nguồn - Slide 9 trang 25) mang lại tác dụng sống còn nào cho hệ thống Federated Querying?",
+    "options": [
+      "A. Đẩy toàn bộ dữ liệu thô về máy chủ người dùng để người dùng tự lọc",
+      "B. Đẩy các điều kiện lọc WHERE xuống thẳng cơ sở dữ liệu nguồn để chúng tự lọc dữ liệu thô, chỉ trả về tập kết quả nhỏ qua đường truyền mạng",
+      "C. Tự động xóa các mệnh đề WHERE trong câu truy vấn",
+      "D. Làm tăng gấp 10 lần lưu lượng băng thông truyền tải mạng"
+    ],
+    "answer": "B. Đẩy các điều kiện lọc WHERE xuống thẳng cơ sở dữ liệu nguồn để chúng tự lọc dữ liệu thô, chỉ trả về tập kết quả nhỏ qua đường truyền mạng",
+    "explanation": "Theo Slide 9 trang 25: Predicate Pushdown: Trình tối ưu sẽ đẩy các điều kiện lọc WHERE xuống thẳng các cơ sở dữ liệu nguồn để chúng tự lọc dữ liệu thô, chỉ trả về tập kết quả nhỏ qua đường truyền mạng, tránh gây nghẽn cổ chai mạng.",
+    "eli5": "Nếu muốn tìm 10 khách hàng ở Hà Nội trong kho 10 triệu người: Đẩy lệnh lọc cho kho Hà Nội tự nhặt ra 10 người gửi về, thay vì kéo cả 10 triệu người qua mạng rồi mới lọc.",
+    "commonMistakes": [
+      "Nghĩ rằng Predicate Pushdown kéo toàn bộ dữ liệu về máy chủ Trino rồi mới chạy mệnh đề WHERE."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q45",
+    "number": "C9.45",
+    "chapterId": "ch9",
+    "topic": "federated-querying",
+    "type": "theory",
+    "prompt": "Thành phần **Global Catalog** (Slide 9 trang 25) trong Federated Querying nắm giữ thông tin trọng yếu nào?",
+    "options": [
+      "A. Danh sách số điện thoại của tất cả nhân viên IT",
+      "B. Bảng từ điển dữ liệu chung (Metadata Catalog) để biết rõ cột nào, kiểu dữ liệu nào nằm ở hệ thống lưu trữ nào",
+      "C. Giá cổ phiếu của công ty theo thời gian thực",
+      "D. Lịch bảo trì định kỳ của tòa nhà"
+    ],
+    "answer": "B. Bảng từ điển dữ liệu chung (Metadata Catalog) để biết rõ cột nào, kiểu dữ liệu nào nằm ở hệ thống lưu trữ nào",
+    "explanation": "Theo Slide 9 trang 25: Global Catalog: Hệ thống duy trì một bảng từ điển dữ liệu chung để biết rõ bảng nào, cột nào nằm ở cơ sở dữ liệu nào (PostgreSQL, MongoDB, Neo4j, v.v.).",
+    "eli5": "Global Catalog như bản đồ trung tâm thương mại: nhìn vào là biết quầy quần áo ở tầng 1, đồ ăn ở tầng 2, rạp phim ở tầng 3.",
+    "commonMistakes": [
+      "Nhầm Global Catalog với cơ sở dữ liệu chứa dữ liệu người dùng."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q46",
+    "number": "C9.46",
+    "chapterId": "ch9",
+    "topic": "multi-model-optimization",
+    "type": "theory",
+    "prompt": "Thách thức lớn nhất đối với Bộ tối ưu hóa truy vấn (Query Optimizer) trong hệ thống đa mô hình (Slide 9 trang 28) là gì?",
+    "options": [
+      "A. Ngôn ngữ SQL quá dài",
+      "B. Thiếu số liệu thống kê (Statistics) đầy đủ về kích thước, phân phối dữ liệu và chỉ mục của các hệ thống đối tác ngoại vi, dễ dẫn đến quyết định sai lầm gây nghẽn cổ chai mạng",
+      "C. Máy chủ không hỗ trợ xử lý đa luồng",
+      "D. Hệ điều hành tự động ngắt kết nối sau 5 phút"
+    ],
+    "answer": "B. Thiếu số liệu thống kê (Statistics) đầy đủ về kích thước, phân phối dữ liệu và chỉ mục của các hệ thống đối tác ngoại vi, dễ dẫn đến quyết định sai lầm gây nghẽn cổ chai mạng",
+    "explanation": "Theo Slide 9 trang 28: Thách thức: Trình tối ưu hóa (Optimizer) của kho dữ liệu rất dễ đưa ra quyết định sai lầm do không có đầy đủ số liệu thống kê (Statistics) về kích thước và chỉ mục của hệ thống đối tác. Hậu quả: Gây nghẽn cổ chai đường truyền mạng hoặc làm tràn bộ nhớ RAM.",
+    "eli5": "Giống như người điều phối giao thông nhưng không có camera xem đường bên kia đang kẹt xe hay thông thoáng, nên rất dễ điều xe đi vào ngõ cụt tắc nghẽn.",
+    "commonMistakes": [
+      "Cho rằng Optimizer luôn có số liệu thống kê hoàn hảo xuyên suốt mọi hệ thống."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q47",
+    "number": "C9.47",
+    "chapterId": "ch9",
+    "topic": "multi-model-optimization",
+    "type": "theory",
+    "prompt": "Chiến lược **Broadcast Join** trong tối ưu hóa truy vấn liên kết phân tán (Slide 9 trang 29) được ưu tiên thực hiện khi nào?",
+    "options": [
+      "A. Khi cả hai bảng tham gia phép JOIN đều có dung lượng hàng tỷ dòng",
+      "B. Khi một trong hai bảng có kích thước nhỏ (ví dụ vài MB), hệ thống sẽ sao chép bảng nhỏ này sang tất cả các máy chủ chứa các phân mảnh của bảng lớn để JOIN tại chỗ",
+      "C. Khi không có kết nối mạng internet",
+      "D. Khi muốn xóa toàn bộ dữ liệu bảng nhỏ"
+    ],
+    "answer": "B. Khi một trong hai bảng có kích thước nhỏ (ví dụ vài MB), hệ thống sẽ sao chép bảng nhỏ này sang tất cả các máy chủ chứa các phân mảnh của bảng lớn để JOIN tại chỗ",
+    "explanation": "Theo Slide 9 trang 29: Hybrid Join Strategies: Quyết định xem nên kéo bảng nhỏ sang máy chủ chứa bảng lớn (Broadcast Join) hay băm nhỏ cả hai bảng (Hash Join) dựa trên dung lượng thực tế.",
+    "eli5": "Thay vì bắt 1.000 học sinh (bảng lớn) đi sang lớp khác, ta photo 1 tờ đề cương (bảng nhỏ) phát cho từng lớp (Broadcast) rồi làm bài tại chỗ.",
+    "commonMistakes": [
+      "Sử dụng Broadcast Join cho bảng lớn hàng Terabyte làm tràn RAM toàn bộ các máy trạm."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q48",
+    "number": "C9.48",
+    "chapterId": "ch9",
+    "topic": "multi-model-optimization",
+    "type": "theory",
+    "prompt": "Kỹ thuật **Query Hints** (Slide 9 trang 29) cho phép lập trình viên hoặc kỹ sư dữ liệu làm gì?",
+    "options": [
+      "A. Để lại bình luận gợi ý cho người đọc code",
+      "B. Chủ động viết các chỉ thị điều hướng ẩn bên trong câu lệnh SQL để ép hệ thống thực thi theo đúng kế hoạch kiến trúc tối ưu khi máy tính bị thiếu thông tin thống kê",
+      "C. Thay đổi mật khẩu người dùng mà không cần đăng nhập",
+      "D. Làm chậm tốc độ truy vấn để tiết kiệm điện"
+    ],
+    "answer": "B. Chủ động viết các chỉ thị điều hướng ẩn bên trong câu lệnh SQL để ép hệ thống thực thi theo đúng kế hoạch kiến trúc tối ưu khi máy tính bị thiếu thông tin thống kê",
+    "explanation": "Theo Slide 9 trang 29: Query Hints: Chủ động viết các chỉ thị điều hướng ẩn bên trong câu lệnh (ví dụ `/*+ BROADCAST(t) */`) để ép hệ thống thực thi theo đúng ý đồ kiến trúc khi máy tính bị thiếu thông tin thống kê.",
+    "eli5": "Giống như tài xế quen đường chủ động bảo Google Maps: 'Hãy đi đường vành đai, đừng đi vào đường làng' vì biết chắc đường làng đang đào cống.",
+    "commonMistakes": [
+      "Nghĩ rằng Query Hints chỉ là comment vô thưởng vô phạt không ảnh hưởng đến Execution Plan."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q49",
+    "number": "C9.49",
+    "chapterId": "ch9",
+    "topic": "ha-dr",
+    "type": "theory",
+    "prompt": "Trong cam kết mức độ dịch vụ (SLA) về khắc phục sự cố (Slide 9 trang 30), hai chỉ số **RTO** và **RPO** mang ý nghĩa chính xác là:",
+    "options": [
+      "A. RTO là số tiền bồi thường, RPO là số lượng nhân viên trực ca",
+      "B. RTO (Recovery Time Objective) là thời gian tối đa để khôi phục hệ thống hoạt động trở lại; RPO (Recovery Point Objective) là lượng dữ liệu tối đa chấp nhận bị mất (tính bằng phút/giờ)",
+      "C. RTO là số lượt truy cập mỗi giây, RPO là dung lượng RAM máy chủ",
+      "D. RTO và RPO hoàn toàn có ý nghĩa giống hệt nhau"
+    ],
+    "answer": "B. RTO (Recovery Time Objective) là thời gian tối đa để khôi phục hệ thống hoạt động trở lại; RPO (Recovery Point Objective) là lượng dữ liệu tối đa chấp nhận bị mất (tính bằng phút/giờ)",
+    "explanation": "Theo Slide 9 trang 30: Hai chỉ số SLA chính: RTO (Recovery Time Objective) là thời gian tối đa chấp nhận để khôi phục hệ thống hoạt động trở lại sau sự cố; RPO (Recovery Point Objective) là lượng dữ liệu tối đa chấp nhận được bị mất đi (tính bằng phút/giờ) trong quá trình xảy ra sự cố.",
+    "eli5": "RTO = 'Bao lâu thì sửa xong web?' (ví dụ 15 phút). RPO = 'Mất bao nhiêu dữ liệu?' (ví dụ sao lưu mỗi 5 phút một lần nghĩa là tối đa mất 5 phút dữ liệu gần nhất).",
+    "commonMistakes": [
+      "Đảo lộn ý nghĩa giữa RTO (thời gian khôi phục) và RPO (mức độ mất dữ liệu)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch9_q50",
+    "number": "C9.50",
+    "chapterId": "ch9",
+    "topic": "ha-dr",
+    "type": "theory",
+    "prompt": "Cơ chế **Automated Failover** kết hợp **Multi-Region Replication** (Slide 9 trang 31) đảm bảo tính sẵn sàng cao (High Availability) như thế nào?",
+    "options": [
+      "A. Tự động tắt máy chủ khi phát hiện nhiệt độ phòng máy tăng cao",
+      "B. Sao chép dữ liệu liên tục sang phân vùng dự phòng (Secondary/DR Region); nếu vùng chính mất tín hiệu quá 30 giây (Health Check fail), hệ thống tự động bẻ hướng toàn bộ luồng truy cập sang vùng dự phòng",
+      "C. Yêu cầu quản trị viên thức trực 24/7 để bấm nút chuyển đổi bằng tay",
+      "D. Xóa bớt các bản ghi cũ để giảm tải cho máy chủ"
+    ],
+    "answer": "B. Sao chép dữ liệu liên tục sang phân vùng dự phòng (Secondary/DR Region); nếu vùng chính mất tín hiệu quá 30 giây (Health Check fail), hệ thống tự động bẻ hướng toàn bộ luồng truy cập sang vùng dự phòng",
+    "explanation": "Theo Slide 9 trang 31: Thiết kế Kiến trúc HA/DR: Multi-Region Replication sao chép liên tục sang Secondary Region; Automated Failover thiết lập bộ giám sát (Health Check), nếu vùng chính mất tín hiệu quá 30s sẽ tự động bẻ hướng lưu lượng người dùng sang vùng dự phòng.",
+    "eli5": "Như hệ thống máy phát điện bệnh viện: mất điện lưới quá 30 giây, rơ-le tự động đóng mạch kích hoạt máy phát điện phụ, không để bệnh viện bị gián đoạn.",
+    "commonMistakes": [
+      "Nghĩ rằng Automated Failover vẫn đòi hỏi kỹ sư phải phê duyệt thủ công từng bước."
+    ],
+    "needsSlideCheck": false
+  }
+]
