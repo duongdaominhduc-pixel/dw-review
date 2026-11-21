@@ -1,0 +1,755 @@
+[
+  {
+    "id": "ch2_q01",
+    "number": "C2.1",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Triết lý cốt lõi nào của phương pháp luận Kimball vẫn được duy trì nguyên vẹn khi dịch chuyển sang kiến trúc Cloud Data Warehouse?",
+    "answer": "Duy trì triết lý User-centric (lấy người dùng kinh doanh làm trung tâm) trong thiết kế.",
+    "explanation": "Dù hạ tầng công nghệ chuyển dịch từ máy chủ cục bộ (On-premises) lên Đám mây (Cloud), phương pháp luận Kimball vẫn kiên định với tôn chỉ: Kho dữ liệu sinh ra là để phục vụ người dùng nghiệp vụ ra quyết định, do đó mô hình dữ liệu phải trực quan, dễ hiểu và phản ánh đúng quy trình kinh doanh.",
+    "eli5": "Dù chiếc xe chuyển từ chạy xăng sang chạy điện, mục đích tối thượng vẫn là chở người ngồi bên trong đến đích một cách thuận tiện và an toàn nhất.",
+    "commonMistakes": [
+      "Nhầm lẫn rằng lên Cloud là bỏ hoàn toàn Kimball để quay về mô hình 3NF của Inmon.",
+      "Nghĩ rằng lên Cloud thì người dùng không cần bận tâm đến cấu trúc bảng nữa."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q02",
+    "number": "C2.2",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Khi chuyển dịch lên Cloud, mô hình Kimball đã thích nghi với những đặc tính vượt trội nào của hạ tầng đám mây?",
+    "answer": "Thích nghi với khả năng lưu trữ gần như vô hạn (Infinite Storage) và khả năng tính toán co giãn linh hoạt (Elastic Compute) của Cloud.",
+    "explanation": "Trước đây trên on-premise, dung lượng ổ đĩa và RAM bị giới hạn chặt chẽ. Trên Cloud, lưu trữ Object Storage giá cực rẻ và điện toán phân tán có thể mở rộng hàng trăm node trong vài giây, giúp thiết kế mô hình cởi bỏ các rào cản vật lý.",
+    "eli5": "Giống như việc bạn chuyển từ phòng trọ chật hẹp chỉ kê vừa một cái bàn sang một căn biệt thự thênh thang: bạn tha hồ bày biện đồ đạc mà không sợ hết chỗ.",
+    "commonMistakes": [
+      "Cho rằng trên Cloud vẫn phải tiết kiệm từng megabyte ổ cứng như thập niên 1990."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q03",
+    "number": "C2.3",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Tư duy tối ưu hóa trong thiết kế mô hình dữ liệu đã có sự dịch chuyển căn bản như thế nào giữa On-premises và Cloud DWH?",
+    "answer": "Chuyển từ việc tối ưu hóa không gian lưu trữ (Storage) sang tối ưu hóa hiệu suất truy vấn (Query Performance).",
+    "explanation": "Trong kỷ nguyên cũ, ổ cứng đắt đỏ nên người ta phải chuẩn hóa dữ liệu cao (3NF) để tránh trùng lặp dữ liệu. Trên Cloud, lưu trữ rẻ như cho, chi phí đắt nằm ở thời gian CPU quét và tính toán, vì vậy thiết kế ưu tiên tối đa tốc độ truy vấn.",
+    "eli5": "Thay vì gấp quần áo thật nhỏ nhét chật vali để tiết kiệm diện tích (nhưng mất công tìm và ủi), ta treo sẵn từng bộ lên mắc áo: tốn diện tích hơn một chút nhưng cần mặc là lấy ngay lập tức.",
+    "commonMistakes": [
+      "Cho rằng thiết kế trên Cloud vẫn ưu tiên chuẩn hóa 3NF để giảm thiểu dung lượng đĩa."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q04",
+    "number": "C2.4",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Hệ thống Cloud DWH hiện đại hỗ trợ loại dữ liệu nào trực tiếp ngay trong Schema mà không cần phân rã trước khi nạp?",
+    "answer": "Hỗ trợ tốt hơn cho các loại dữ liệu bán cấu trúc (Semi-structured data như JSON, Parquet, Avro) trực tiếp trong Schema thông qua các kiểu dữ liệu đặc thù như VARIANT.",
+    "explanation": "Trước đây dữ liệu JSON bắt buộc phải qua pipeline bóc tách thành các bảng quan hệ. Nay Cloud DWH lưu nguyên chuỗi JSON vào cột VARIANT và cho phép truy vấn trực tiếp bằng cú pháp SQL chấm (dot notation).",
+    "eli5": "Giống như chiếc vali đa năng có ngăn co giãn: nhét nguyên một kiện hàng nguyên vẹn vào vali mà không cần phải bóc từng món ra phân loại trước.",
+    "commonMistakes": [
+      "Nghĩ rằng kho dữ liệu quan hệ chỉ chấp nhận kiểu dữ liệu cấu trúc cố định (Int, Varchar, Date)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q05",
+    "number": "C2.5",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Tại sao thiết kế DWH trên Cloud lại giảm bớt sự phụ thuộc vào các kỹ thuật Indexing vật lý phức tạp của On-premise?",
+    "answer": "Vì Cloud DWH sử dụng cơ chế lưu trữ dạng cột (Columnar Storage), tự động Micro-partitioning và cắt tỉa dữ liệu (Data Pruning) dựa trên metadata Min/Max thay vì phải bảo trì các chỉ mục B-tree hay Bitmap thủ công.",
+    "explanation": "Trên On-premise, DBA phải mất rất nhiều công sức tạo Index, Re-index, điều chỉnh kích thước file. Trên Cloud như Snowflake/BigQuery, hệ thống tự động đánh chỉ mục ngầm và loại bỏ phân vùng không liên quan mà người dùng không cần quản lý index.",
+    "eli5": "Giống như chuyển từ việc thủ thư phải viết tay từng tấm phiếu chỉ mục thư viện sang hệ thống máy quét tự động tìm sách siêu tốc.",
+    "commonMistakes": [
+      "Cho rằng trên Cloud vẫn phải chạy lệnh CREATE INDEX trên từng cột như trong Oracle hay MySQL."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q06",
+    "number": "C2.6",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Liệt kê chính xác 4 bước trong Quy trình thiết kế Dimensional Design 4 bước kinh điển của Kimball?",
+    "answer": "1. Chọn Business Process (Quy trình nghiệp vụ) -> 2. Xác định Grain (Mức độ chi tiết của dữ liệu) -> 3. Xác định Dimensions (Các chiều mô tả sự kiện) -> 4. Xác định Facts (Các sự kiện định lượng đo lường).",
+    "explanation": "Đây là quy trình nền tảng không bao giờ thay đổi: Phải đi từ quy trình thực tế của doanh nghiệp (Bán hàng, Đơn hàng), định nghĩa 1 dòng là gì (Grain), xác định ai/ở đâu/khi nào (Dimensions), và cuối cùng là số tiền/số lượng (Facts).",
+    "eli5": "Nhớ thần chú: 'Quy trình - Chi tiết - Chiều - Đo' (Process - Grain - Dimension - Fact).",
+    "commonMistakes": [
+      "Xác định Fact trước khi xác định Grain (Dẫn đến sai lầm chết người là trộn lẫn nhiều mức chi tiết vào cùng một bảng Fact).",
+      "Đảo lộn thứ tự các bước."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q07",
+    "number": "C2.7",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Vai trò tối quan trọng của Conformed Dimensions trong phương pháp luận Kimball là gì?",
+    "answer": "Đảm bảo tính nhất quán giữa các quy trình kinh doanh khác nhau và giúp xây dựng một 'Single Version of Truth' (Phiên bản sự thật duy nhất) cho toàn doanh nghiệp.",
+    "explanation": "Conformed Dimension là một bảng chiều (ví dụ: Dim_Customer, Dim_Date) có cấu trúc và ý nghĩa nhất quán được dùng chung qua nhiều bảng Fact (Bán hàng, Bảo hành, Giao hàng). Nếu mỗi phòng ban dùng một danh sách khách hàng khác nhau thì không thể đối soát số liệu.",
+    "eli5": "Conformed Dimension giống như chiếc đồng hồ chuẩn treo ở sảnh chung của tòa nhà: tất cả các phòng ban đều nhìn vào chiếc đồng hồ đó để thống nhất thời gian, không ai cãi nhau.",
+    "commonMistakes": [
+      "Nghĩ rằng Conformed Dimension chỉ dùng riêng cho một bảng Fact duy nhất."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q08",
+    "number": "C2.8",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Trong kiến trúc tách rời Compute và Storage, tại sao Flat Tables (Bảng phẳng, phi chuẩn hóa) lại được khuyến khích sử dụng?",
+    "answer": "Được dùng để giảm thiểu tối đa các phép JOIN phức tạp và tốn kém tài nguyên tính toán giữa các bảng lớn.",
+    "explanation": "Phép JOIN giữa các bảng hàng tỷ dòng (Shuffle Join trên mạng phân tán) là tác vụ ngốn CPU và RAM nhất. Bằng cách gộp sẵn dữ liệu vào Flat Table (tận dụng lưu trữ rẻ), câu truy vấn quét thẳng hàng cột mà không cần kết nối dữ liệu qua lại.",
+    "eli5": "Thay vì mỗi lần ăn cơm phải sang nhà hàng xóm mượn bát, sang tiệm tạp hóa mua đũa (phép JOIN), ta dọn sẵn tất cả lên một mâm cơm đầy đủ (Flat Table): bưng ra là ăn ngay.",
+    "commonMistakes": [
+      "Nghĩ rằng Flat Table dùng để tiết kiệm dung lượng lưu trữ (thực chất nó tốn dung lượng hơn nhưng tiết kiệm Compute)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q09",
+    "number": "C2.9",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Tại sao Denormalization (phi chuẩn hóa) lại là chiến lược ưu tiên hàng đầu để tận dụng Columnar Scanning?",
+    "answer": "Vì trong hệ thống Columnar, truy vấn chỉ quét các cột được chọn trong câu lệnh SQL; Denormalization gộp dữ liệu lại mà không làm chậm tốc độ đọc cột, đồng thời triệt tiêu chi phí Join bảng.",
+    "explanation": "Ở cơ sở dữ liệu hàng (Row-based), bảng càng nhiều cột thì đọc càng chậm. Nhưng ở Columnar Storage, dù bảng có 200 cột thì câu lệnh `SELECT col1, col2` chỉ đọc đúng 2 cột đó trên đĩa. Do đó, phi chuẩn hóa mang lại lợi thế tốc độ áp đảo.",
+    "eli5": "Giống như một cuốn danh bạ in sẵn mọi thông tin: khi bạn cần tra số điện thoại, bạn chỉ cần lướt ngón tay dọc theo cột 'Số điện thoại' mà không cần quan tâm đến cột địa chỉ hay nghề nghiệp.",
+    "commonMistakes": [
+      "Áp dụng tư duy RDBMS truyền thống: sợ bảng nhiều cột sẽ làm chậm truy vấn."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q10",
+    "number": "C2.10",
+    "chapterId": "ch2",
+    "topic": "kimball-cloud",
+    "type": "theory",
+    "prompt": "Trong kiến trúc Data Mesh hiện đại, vai trò của phương pháp luận Kimball dịch chuyển như thế nào?",
+    "answer": "Quyền thiết kế mô hình được chuyển giao từ IT sang cho từng Miền nghiệp vụ (Domain); Kimball trở thành 'ngôn ngữ chung' (Federated Conformed Dimensions) để các miền giao tiếp và xây dựng Data Product tự chủ.",
+    "explanation": "Thay vì một nhóm Data tập trung phải ngồi vẽ schema cho toàn công ty, từng Domain (Bán hàng, Chuỗi cung ứng, Marketing) tự chịu trách nhiệm về Fact và Dimension của mình, nhưng cùng sử dụng các tiêu chuẩn chung của Kimball để tích hợp dữ liệu liên miền.",
+    "eli5": "Thay vì một ông tổng quản nấu ăn cho cả làng, mỗi gia đình tự nấu món của mình nhưng đều dùng chung một bộ thìa dĩa và chuẩn an toàn thực phẩm.",
+    "commonMistakes": [
+      "Nghĩ rằng Data Mesh phủ nhận hoàn toàn mô hình Kimball.",
+      "Cho rằng các Domain trong Data Mesh được tự do đặt tên và cấu trúc dữ liệu tùy tiện mà không theo chuẩn chung."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q11",
+    "number": "C2.11",
+    "chapterId": "ch2",
+    "topic": "micro-partitioning",
+    "type": "theory",
+    "prompt": "Bản chất của kỹ thuật Micro-partitioning là gì và kích thước trung bình của mỗi phân vùng nén là bao nhiêu?",
+    "answer": "Hệ thống tự động chia nhỏ các bảng dữ liệu thành các tệp tin lưu trữ nhỏ; mỗi phân vùng thường chứa từ 50MB đến 500MB dữ liệu nén được tổ chức theo định dạng Columnar.",
+    "explanation": "Trong Snowflake, bảng dữ liệu không phải là một file khổng lồ mà được tự động chia thành hàng triệu file nhỏ (Micro-partitions) có dung lượng từ 50MB đến 500MB nén. Người dùng không cần can thiệp thủ công.",
+    "eli5": "Thay vì đóng một chiếc thùng gỗ nặng 10 tấn, người ta chia hàng hóa vào hàng nghìn chiếc hộp các-tông nhỏ có dán nhãn từ 50kg đến 500kg để bốc xếp và vận chuyển cực nhanh.",
+    "commonMistakes": [
+      "Nhớ sai kích thước phân vùng (ví dụ: nhầm thành 5MB-50MB hoặc 1GB-5GB)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q12",
+    "number": "C2.12",
+    "chapterId": "ch2",
+    "topic": "micro-partitioning",
+    "type": "theory",
+    "prompt": "Metadata của mỗi Micro-partition lưu trữ thông tin gì để phục vụ cho bộ tối ưu hóa truy vấn?",
+    "answer": "Lưu trữ giá trị nhỏ nhất và lớn nhất (Min/Max values), số lượng giá trị NULL và các thuộc tính thống kê của mỗi cột bên trong phân vùng đó.",
+    "explanation": "Nhờ bảng Metadata này, khi nhận câu truy vấn SQL `WHERE order_date = '2024-05-01'`, bộ tối ưu hóa chỉ cần nhìn vào bảng Metadata Min/Max để biết phân vùng nào chứa ngày này, phân vùng nào không chứa thì bỏ qua hoàn toàn.",
+    "eli5": "Giống như nhãn dán bên ngoài gáy mỗi tập tài liệu: 'Hồ sơ từ A đến C', 'Hồ sơ từ D đến G'. Cần tìm hồ sơ chữ V thì liếc nhãn là bỏ qua ngay 2 tập đầu mà không cần mở ra đọc.",
+    "commonMistakes": [
+      "Nghĩ rằng metadata lưu toàn bộ danh sách các giá trị chi tiết của từng dòng (dẫn đến tốn bộ nhớ vô ích)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q13",
+    "number": "C2.13",
+    "chapterId": "ch2",
+    "topic": "micro-partitioning",
+    "type": "theory",
+    "prompt": "Cơ chế Data Pruning (Cắt tỉa dữ liệu) mang lại hai lợi ích lớn nhất nào cho người dùng Cloud DWH?",
+    "answer": "1. Tăng tốc độ phản hồi truy vấn (nhờ giảm khối lượng dữ liệu cần đọc từ đĩa về RAM); 2. Giảm chi phí Compute Credit (do quét ít byte dữ liệu hơn trong mô hình tính phí theo dung lượng quét).",
+    "explanation": "Data Pruning loại bỏ việc phải đọc toàn bộ bảng (Full Table Scan). Nếu bảng có 10.000 micro-partitions mà query chỉ cần đọc 5 micro-partitions, thời gian chạy giảm từ vài phút xuống vài mili-giây và tiết kiệm 99.9% chi phí điện toán.",
+    "eli5": "Pruning giống như việc tỉa bớt những cành cây khô không cần thiết: vừa đỡ tốn nhựa cây (tài nguyên), vừa làm cây ra hoa nhanh và đẹp hơn.",
+    "commonMistakes": [
+      "Cho rằng Data Pruning là hành động xóa vĩnh viễn dữ liệu cũ khỏi kho (thực chất nó chỉ là bỏ qua không đọc khi truy vấn)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q14",
+    "number": "C2.14",
+    "chapterId": "ch2",
+    "topic": "micro-partitioning",
+    "type": "theory",
+    "prompt": "Trong chiến lược Clustering, tiêu chí quan trọng nhất khi lựa chọn một hoặc nhiều cột làm Clustering Key là gì?",
+    "answer": "Chọn các cột có độ chọn lọc cao (High Cardinality) và thường xuyên xuất hiện trong các điều kiện lọc (WHERE, JOIN, GROUP BY hoặc Range Queries).",
+    "explanation": "Nếu chọn cột có độ chọn lọc quá thấp (như Giới tính: Nam/Nữ), gần như mọi phân vùng đều có cả Nam lẫn Nữ nên không Pruning được gì. Cột có độ chọn lọc cao và phạm vi dải ngày tháng giúp các micro-partitions có khoảng giá trị hẹp và tách biệt rõ rệt.",
+    "eli5": "Sắp xếp hồ sơ theo 'Năm sinh' hoặc 'Tỉnh thành' thì dễ lọc hơn rất nhiều so với việc sắp xếp theo 'Có đeo kính hay không'.",
+    "commonMistakes": [
+      "Chọn cột có độ chọn lọc quá thấp (Low Cardinality như Giới tính, Status 0/1) làm Clustering Key duy nhất."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q15",
+    "number": "C2.15",
+    "chapterId": "ch2",
+    "topic": "micro-partitioning",
+    "type": "theory",
+    "prompt": "Chỉ số Clustering Depth (Độ sâu phân cụm) đo lường điều gì và có mối liên hệ như thế nào với hiệu năng truy vấn?",
+    "answer": "Đo mức độ chồng lấn (overlap) giữa các Micro-partitions; Clustering Depth càng thấp thì mức độ chồng lấn càng ít, khả năng Pruning càng triệt để và hiệu suất truy vấn càng cao.",
+    "explanation": "Nếu Clustering Depth = 1 đối với một cột, nghĩa là không có hai phân vùng nào chứa cùng một dải giá trị của cột đó (hoàn toàn không chồng lấn). Một câu query lọc giá trị cụ thể sẽ chỉ cần quét chính xác 1 phân vùng duy nhất.",
+    "eli5": "Độ sâu chồng lấn giống như việc bạn xếp sách lên kệ: nếu sách xếp ngăn nắp theo thứ tự chữ cái (Depth thấp), bạn nhắm đúng ngăn là rút được sách; nếu sách để lộn xộn ngăn nào cũng có chữ A (Depth cao), bạn phải lục tung cả giá sách.",
+    "commonMistakes": [
+      "Nghĩ rằng Clustering Depth càng cao thì dữ liệu được phân cụm càng tốt (ngược lại: depth càng thấp mới càng tốt)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q16",
+    "number": "C2.16",
+    "chapterId": "ch2",
+    "topic": "micro-partitioning",
+    "type": "theory",
+    "prompt": "Tính năng Tự động hóa Re-clustering (Automatic Clustering) trong Cloud DWH hoạt động theo nguyên lý nào?",
+    "answer": "Hệ thống tự động sắp xếp lại dữ liệu ngầm mà không làm gián đoạn truy vấn, sử dụng tài nguyên tính toán riêng biệt và tự động kích hoạt khi phát hiện sự suy giảm hiệu năng do nạp dữ liệu mới.",
+    "explanation": "Khi dữ liệu mới được nạp liên tục (DML: Insert, Update), các micro-partitions mới có thể bị phân mảnh và làm tăng Clustering Depth. Dịch vụ Automatic Clustering chạy ngầm để gộp và sắp xếp lại các file, đảm bảo các Dashboard thời gian thực luôn duy trì tốc độ cao.",
+    "eli5": "Giống như cô lao công quét dọn sắp xếp lại sách trong thư viện vào ban đêm: sáng hôm sau độc giả đến đọc sách thấy mọi thứ ngăn nắp mà không hề bị làm phiền lúc đang đọc.",
+    "commonMistakes": [
+      "Nghĩ rằng Re-clustering sẽ khóa bảng (Table Lock) và làm ngừng các câu truy vấn của người dùng."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q17",
+    "number": "C2.17",
+    "chapterId": "ch2",
+    "topic": "fact-design",
+    "type": "theory",
+    "prompt": "Đặc điểm nhận diện nổi bật của Transaction Fact Tables (Bảng Fact Giao dịch) là gì?",
+    "answer": "Lưu trữ dữ liệu ở mức nguyên tử (Atomic level), ghi lại từng sự kiện riêng lẻ ngay khi phát sinh, có số lượng dòng lớn nhất và là nguồn dữ liệu gốc để xây dựng các loại Fact khác.",
+    "explanation": "Ví dụ: Mỗi lần quẹt thẻ tín dụng tại POS, mỗi lần quét mã vạch một món hàng tại quầy thanh toán là một dòng trong Transaction Fact Table. Bảng này không bao giờ sửa đổi dữ liệu đã ghi và hỗ trợ phân tích chi tiết (Drill-down).",
+    "eli5": "Giống như cuộn giấy in hóa đơn tính tiền: mỗi món hàng bạn mua đều được in ra thành một dòng rõ ràng chi tiết.",
+    "commonMistakes": [
+      "Nghĩ rằng Transaction Fact Table chỉ lưu dữ liệu tổng hợp theo ngày hoặc theo tháng."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q18",
+    "number": "C2.18",
+    "chapterId": "ch2",
+    "topic": "fact-design",
+    "type": "theory",
+    "prompt": "Periodic Snapshot Fact Tables (Bảng Fact Ảnh chụp định kỳ) được thiết kế cho mục đích gì? Cho ví dụ điển hình?",
+    "answer": "Lưu trữ tình trạng của một quy trình tại các thời điểm cố định đều đặn (ví dụ: cuối ngày, cuối tháng) nhằm phục vụ phân tích xu hướng (Trend Analysis); Ví dụ: Số dư tài khoản ngân hàng cuối ngày, tồn kho cuối tuần.",
+    "explanation": "Nếu muốn biết số dư tài khoản ngân hàng của 1 triệu khách hàng vào cuối mỗi ngày trong năm, việc cộng dồn từ hàng tỷ giao dịch là bất khả thi. Thay vào đó, mỗi cuối ngày hệ thống 'chụp một bức ảnh' số dư lưu vào Periodic Snapshot Fact.",
+    "eli5": "Giống như việc chụp ảnh kỷ yếu mỗi năm một lần: so sánh các bức ảnh chụp qua các năm để thấy bạn đã cao lớn và thay đổi như thế nào.",
+    "commonMistakes": [
+      "Nghĩ rằng Periodic Snapshot Fact ghi nhận từng sự kiện khi có khách nạp rút tiền."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q19",
+    "number": "C2.19",
+    "chapterId": "ch2",
+    "topic": "fact-design",
+    "type": "theory",
+    "prompt": "Accumulating Snapshot Fact Tables (Bảng Fact Ảnh chụp tích lũy) phù hợp nhất cho ngữ cảnh nào?",
+    "answer": "Phù hợp để theo dõi tiến độ của một quy trình kinh doanh có nhiều giai đoạn liên tiếp từ lúc bắt đầu đến khi kết thúc (ví dụ: Quy trình xử lý đơn hàng từ lúc đặt, đóng gói, xuất kho đến khi giao hàng).",
+    "explanation": "Khác với các Fact khác chỉ thêm dòng mới (Insert-only), Accumulating Snapshot cập nhật (Update) chính dòng dữ liệu của thực thể đó mỗi khi nó hoàn thành một mốc thời gian, giúp tính toán Lead Time giữa các công đoạn.",
+    "eli5": "Giống như bảng theo dõi bưu phẩm của Shopee: từ 'Đã đặt hàng' -> 'Đã đóng gói' -> 'Đã giao bưu cục' -> 'Đang giao' -> 'Đã nhận hàng', mỗi bước đều cập nhật mốc giờ tương ứng trên cùng một mã vận đơn.",
+    "commonMistakes": [
+      "Nghĩ rằng Accumulating Snapshot chỉ lưu trữ dữ liệu bất biến không được cập nhật."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q20",
+    "number": "C2.20",
+    "chapterId": "ch2",
+    "topic": "fact-design",
+    "type": "theory",
+    "prompt": "Quy tắc vàng bắt buộc phải tuân thủ về Grain (Mức độ chi tiết) khi thiết kế bảng Fact là gì?",
+    "answer": "'Tất cả các Fact (số đo định lượng) trong cùng một bảng Fact phải có cùng một mức chi tiết (Grain)'.",
+    "explanation": "Tuyệt đối không được phép đưa số tiền doanh số tổng hợp theo tháng và số tiền của từng hóa đơn lẻ vào cùng một bảng Fact. Trộn lẫn Grain sẽ dẫn đến việc cộng dồn sai lệch nghiêm trọng (Double Counting).",
+    "eli5": "Không thể để chung quả táo (chi tiết) và cả giỏ táo (tổng hợp) lên cùng một đĩa cân rồi cộng bừa vào nhau được.",
+    "commonMistakes": [
+      "Thiết kế bảng Fact chứa cả dòng chi tiết từng mặt hàng và dòng tổng cộng hóa đơn ở cuối."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q21",
+    "number": "C2.21",
+    "chapterId": "ch2",
+    "topic": "fact-design",
+    "type": "theory",
+    "prompt": "Factless Fact Table là gì và được ứng dụng trong trường hợp thực tế nào?",
+    "answer": "Là bảng Fact không chứa bất kỳ cột số đo định lượng nào, chỉ chứa các khóa ngoại Dimension; dùng để ghi lại sự kiện xuất hiện (Event Tracking) hoặc phân tích những gì không diễn ra (Coverage / Absence).",
+    "explanation": "Ví dụ: Bảng điểm danh sinh viên (chỉ cần biết ai có mặt vào ngày nào tại lớp nào, không có số đo doanh thu); hoặc bảng chương trình khuyến mãi (sản phẩm nào nằm trong khuyến mãi vào ngày nào để tìm ra sản phẩm nào không bán được).",
+    "eli5": "Giống như việc điểm danh giơ tay: 'Có mặt!' - không cần đo xem bạn nặng bao nhiêu cân hay có bao nhiêu tiền trong túi, chỉ cần xác nhận sự kiện bạn có mặt.",
+    "commonMistakes": [
+      "Cho rằng bảng Fact bắt buộc phải có ít nhất một cột số đo tính toán như Revenue hay Quantity."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q22",
+    "number": "C2.22",
+    "chapterId": "ch2",
+    "topic": "fact-design",
+    "type": "theory",
+    "prompt": "Chức năng của Bridge Table (Bảng cầu nối) là gì và kỹ sư dữ liệu cần thận trọng điều gì khi sử dụng?",
+    "answer": "Chức năng là giải quyết mối quan hệ Nhiều - Nhiều (Many-to-Many / M-M) giữa Fact và Dimension; Cần thận trọng vì có thể gây bùng nổ dữ liệu (Cartesian Explosion) làm suy giảm nghiêm trọng hiệu năng truy vấn.",
+    "explanation": "Ví dụ: Một tài khoản ngân hàng có thể có nhiều đồng chủ sở hữu, và một khách hàng có thể sở hữu nhiều tài khoản. Bridge Table đứng giữa để ánh xạ tỷ lệ phần trăm sở hữu. Nếu dùng sai, phép Join sẽ nhân số dòng lên gấp bội và tính toán sai tổng doanh số.",
+    "eli5": "Bridge Table giống như chiếc cầu chữ Y nối hai bờ sông phức tạp: nếu không phân luồng giao thông tốt, xe cộ sẽ kẹt cứng và tắc nghẽn toàn bộ cây cầu.",
+    "commonMistakes": [
+      "Lạm dụng Bridge Table ở khắp nơi mà không cân nhắc việc gộp thuộc tính hoặc dùng cấu trúc mảng lồng nhau."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q23",
+    "number": "C2.23",
+    "chapterId": "ch2",
+    "topic": "dimension-scd",
+    "type": "theory",
+    "prompt": "Tại sao trong thiết kế Dimension Table trên Cloud DWH lại ưu tiên sử dụng Surrogate Keys thay cho Natural Keys?",
+    "answer": "Để đảm bảo tính độc lập giữa kho dữ liệu và hệ thống nguồn, hỗ trợ theo dõi lịch sử biến động (SCD Type 2), giải quyết xung đột mã khi tích hợp đa nguồn và tối ưu hóa hiệu năng tính toán với khóa Integer.",
+    "explanation": "Natural Key (như mã CCCD, mã SKU) thuộc quyền quản lý của hệ thống nguồn và có thể bị sửa, xóa, hoặc trùng lặp giữa các hệ thống sáp nhập. Surrogate Key là số nguyên tự tăng (1, 2, 3...) hoàn toàn do Data Warehouse làm chủ.",
+    "eli5": "Natural Key giống như số chứng minh nhân dân cũ của bạn (có thể bị cấp đổi hoặc trùng lặp khi đổi hộ khẩu); Surrogate Key giống như mã số thẻ thư viện do trường học cấp riêng cho bạn khi bước chân vào cổng.",
+    "commonMistakes": [
+      "Dùng trực tiếp mã khóa của hệ thống nguồn (Natural Key) làm khóa chính trong Dimension Table."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q24",
+    "number": "C2.24",
+    "chapterId": "ch2",
+    "topic": "dimension-scd",
+    "type": "theory",
+    "prompt": "Khái niệm 'Verbose Attributes' trong thiết kế Dimension Table có ý nghĩa gì?",
+    "answer": "Yêu cầu các thuộc tính phải mang tính mô tả đầy đủ, rõ ràng bằng từ ngữ kinh doanh có nghĩa, hạn chế tối đa việc sử dụng các mã code viết tắt khó hiểu đối với người dùng cuối.",
+    "explanation": "Thay vì lưu cột `Status` là 'A', 'I', 'P', thiết kế tốt phải lưu rõ ràng: 'Active', 'Inactive', 'Pending Approval'. Điều này giúp người dùng kéo thả lên Dashboard hiểu ngay mà không cần tra cứu tài liệu giải mã.",
+    "eli5": "Thay vì ghi trên biển báo 'Quy định 102/B', hãy ghi rõ: 'Cấm đỗ xe từ 7h đến 18h'. Người đọc hiểu ngay trong 1 giây.",
+    "commonMistakes": [
+      "Lưu mã số kỹ thuật (0, 1, 2) trong bảng chiều để tiết kiệm vài byte lưu trữ."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q25",
+    "number": "C2.25",
+    "chapterId": "ch2",
+    "topic": "dimension-scd",
+    "type": "theory",
+    "prompt": "Phân biệt cơ chế xử lý thay đổi dữ liệu giữa SCD Type 1 và SCD Type 2?",
+    "answer": "SCD Type 1: Ghi đè trực tiếp dữ liệu mới lên dữ liệu cũ (không lưu vết lịch sử); SCD Type 2: Thêm một dòng mới kèm các cột mốc thời gian (Start_Date, End_Date, Is_Current) để lưu giữ lịch sử chính xác tại từng thời điểm.",
+    "explanation": "Khi khách hàng đổi địa chỉ từ Hà Nội vào TP.HCM: Type 1 xóa 'Hà Nội' thay bằng 'TP.HCM' (các đơn hàng cũ trước đây giờ báo cáo đều tính về TP.HCM); Type 2 đóng dòng 'Hà Nội' với End_Date hôm nay, tạo dòng mới 'TP.HCM' với Start_Date hôm nay, giúp phân tích chuẩn xác theo từng mốc thời gian.",
+    "eli5": "Type 1 giống như dùng bút tẩy xóa chữ cũ viết đè chữ mới; Type 2 giống như viết tiếp một dòng nhật ký mới sang trang tiếp theo.",
+    "commonMistakes": [
+      "Nghĩ rằng SCD Type 1 có thể khôi phục lại dữ liệu cũ đã bị ghi đè."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q26",
+    "number": "C2.26",
+    "chapterId": "ch2",
+    "topic": "dimension-scd",
+    "type": "theory",
+    "prompt": "Bản chất của chiến lược SCD Type 4 là gì và mang lại lợi ích gì cho hiệu năng?",
+    "answer": "Tách biệt thành hai bảng: Bảng hiện tại (Current Table) chỉ lưu trạng thái mới nhất và Bảng lịch sử (History Table) lưu toàn bộ biến động; giúp bảng chính luôn gọn nhẹ và tối ưu hóa tối đa hiệu năng truy vấn.",
+    "explanation": "Đa phần 95% các báo cáo hàng ngày chỉ quan tâm đến dữ liệu hiện tại. Bằng cách tách riêng bảng lịch sử, bảng Dimension chính không bị phình to bởi các dòng lịch sử cũ, giúp câu lệnh JOIN với bảng Fact chạy cực nhanh.",
+    "eli5": "Giống như việc cất album ảnh thời thơ ấu vào nhà kho (History Table), chỉ để tấm ảnh chân dung mới nhất trong ví (Current Table): ví luôn mỏng nhẹ và dễ rút ra xem.",
+    "commonMistakes": [
+      "Nhầm SCD Type 4 với SCD Type 3 (Type 3 thêm cột trong cùng một bảng, Type 4 tách hẳn bảng riêng)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q27",
+    "number": "C2.27",
+    "chapterId": "ch2",
+    "topic": "dimension-scd",
+    "type": "theory",
+    "prompt": "Junk Dimension và Degenerate Dimension khác nhau như thế nào về vị trí lưu trữ và công dụng?",
+    "answer": "Junk Dimension gom nhóm nhiều mã cờ/trạng thái rời rạc thành một bảng chiều duy nhất để giảm số phép Join trong Fact; Degenerate Dimension lưu mã nghiệp vụ (như số hóa đơn) trực tiếp ngay trong bảng Fact mà không cần bảng chiều riêng.",
+    "explanation": "Nếu bảng Fact có 10 cờ boolean (Is_Gift, Is_Promo...), thay vì tạo 10 bảng chiều nhỏ ta tạo 1 Junk Dimension chứa các tổ hợp. Ngược lại, Order_Number không có thuộc tính mô tả nào khác ngoài chính nó, ta để luôn trong Fact gọi là Degenerate Dimension.",
+    "eli5": "Junk Dimension giống như hộp đựng đồ linh tinh (gom chìa khóa, kim băng, bật lửa vào 1 hộp); Degenerate Dimension giống như số căn cước in thẳng lên mặt áo thi đấu, không cần phát thêm thẻ đeo cổ.",
+    "commonMistakes": [
+      "Tạo một bảng Dimension riêng chỉ để lưu duy nhất một cột Order_ID (lãng phí phép Join vô nghĩa)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q28",
+    "number": "C2.28",
+    "chapterId": "ch2",
+    "topic": "dimension-scd",
+    "type": "theory",
+    "prompt": "Role-Playing Dimension là gì? Nêu một ví dụ thực tế trong doanh nghiệp?",
+    "answer": "Là một bảng Dimension duy nhất nhưng được cùng một bảng Fact liên kết nhiều lần với các vai trò nghiệp vụ khác nhau; Ví dụ: Bảng Dim_Date được dùng đồng thời cho Order_Date, Ship_Date và Delivery_Date.",
+    "explanation": "Ta chỉ cần xây dựng và bảo trì duy nhất 1 bảng chiều thời gian `Dim_Date`. Trong câu lệnh SQL hoặc mô hình Semantic, ta tạo ra các View hoặc Alias: `Dim_Order_Date`, `Dim_Ship_Date` cùng trỏ về `Dim_Date`.",
+    "eli5": "Giống như một diễn viên tài năng (bảng Dim_Date) có thể đóng nhiều vai diễn khác nhau trong cùng một vở kịch: lúc thì đóng vai người đưa thư (Ship Date), lúc thì đóng vai người mua vé (Order Date).",
+    "commonMistakes": [
+      "Nhân bản bảng Dim_Date thành 3 bảng vật lý riêng biệt (Dim_Order_Date, Dim_Ship_Date, Dim_Delivery_Date) gây tốn công bảo trì."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q29",
+    "number": "C2.29",
+    "chapterId": "ch2",
+    "topic": "medallion",
+    "type": "theory",
+    "prompt": "Tầng Bronze trong kiến trúc Medallion đóng vai trò gì và dữ liệu được lưu trữ với những đặc điểm nào?",
+    "answer": "Là tầng đổ bộ dữ liệu thô (Raw Layer) từ các nguồn mà không qua bất kỳ biến đổi nào; lưu trữ ở định dạng thô (JSON, Parquet), tuân thủ tính bất biến (Immutability), hỗ trợ Schema-on-read và nạp tăng dần (Incremental Load).",
+    "explanation": "Tầng Bronze là bản sao nguyên bản 100% của dữ liệu nguồn. Dữ liệu nạp vào được gắn thêm Ingestion_Timestamp và Source_ID, giúp hệ thống có khả năng 'quay ngược thời gian' để tái xử lý dữ liệu khi cần.",
+    "eli5": "Tầng Bronze giống như kho chứa rau củ vừa hái từ nông trại về: còn nguyên bùn đất rơm rạ, chưa sơ chế hay rửa sạch, nhưng là nguyên liệu gốc chân thực nhất.",
+    "commonMistakes": [
+      "Thực hiện làm sạch hoặc lọc bỏ dữ liệu lỗi ngay tại tầng Bronze (làm mất dữ liệu gốc không khôi phục lại được)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q30",
+    "number": "C2.30",
+    "chapterId": "ch2",
+    "topic": "medallion",
+    "type": "theory",
+    "prompt": "Tại sao tính chất Bất biến (Immutability) tại tầng Bronze lại là yêu cầu sống còn của hệ thống Data Lakehouse?",
+    "answer": "Vì nó đảm bảo khả năng tái xử lý (Reprocess / Replay) toàn bộ dữ liệu lịch sử từ đầu bất cứ khi nào logic nghiệp vụ, quy tắc làm sạch hoặc mô hình AI thay đổi.",
+    "explanation": "Nếu logic tính KPI của doanh nghiệp bị phát hiện sai sau 2 năm, nếu bạn đã ghi đè hoặc xóa dữ liệu thô ở tầng Bronze thì bạn sẽ không bao giờ sửa lại được lịch sử. Dữ liệu bất biến giúp ta chỉ việc chạy lại pipeline từ Bronze lên Silver.",
+    "eli5": "Giống như việc giữ lại băng ghi âm gốc của cuộc họp: dù biên bản tóm tắt có bị viết nhầm thì ta vẫn có thể mở lại cuộn băng gốc để nghe lại bất cứ lúc nào.",
+    "commonMistakes": [
+      "Cho phép cập nhật ghi đè (UPDATE / DELETE) trực tiếp dữ liệu thô trong tầng Bronze."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q31",
+    "number": "C2.31",
+    "chapterId": "ch2",
+    "topic": "medallion",
+    "type": "theory",
+    "prompt": "Nhiệm vụ trọng tâm của tầng Silver trong kiến trúc Medallion là gì?",
+    "answer": "Làm sạch dữ liệu, xử lý giá trị khuyết (Imputation), chuẩn hóa kiểu dữ liệu, áp dụng Data Quality Gate để loại bỏ bản ghi lỗi, và Join các nguồn tạo ra các bảng thực thể chuẩn mực (Curated Layer).",
+    "explanation": "Dữ liệu tầng Silver vẫn giữ mức độ chi tiết nguyên tử (Atomic level) nhưng đã sạch sẽ, đáng tin cậy và tuân thủ các quy tắc ACID nhờ Delta Lake hoặc Apache Iceberg. Đây là nguồn dữ liệu vàng cho các bài toán Feature Engineering của AI.",
+    "eli5": "Tầng Silver giống như rau củ đã được rửa sạch bùn đất, nhặt bỏ lá sâu, thái miếng vừa ăn và xếp gọn gàng vào hộp trong tủ lạnh: sạch sẽ và sẵn sàng để nấu nướng.",
+    "commonMistakes": [
+      "Nghĩ rằng tầng Silver là các bảng báo cáo đã tổng hợp theo tháng (tổng hợp thuộc về tầng Gold)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q32",
+    "number": "C2.32",
+    "chapterId": "ch2",
+    "topic": "medallion",
+    "type": "theory",
+    "prompt": "Tầng Gold trong kiến trúc Medallion được thiết kế nhằm phục vụ đối tượng nào và tổ chức dữ liệu theo mô hình nào?",
+    "answer": "Phục vụ người dùng kinh doanh, báo cáo BI và các quyết định thời gian thực; dữ liệu được tổ chức theo Star Schema hoặc Wide Tables với các chỉ số kinh doanh (Metrics/KPIs) đã tổng hợp và phê duyệt.",
+    "explanation": "Tầng Gold chỉ lưu trữ dữ liệu đã qua kiểm định nghiêm ngặt. Tại đây, dữ liệu được mô hình hóa theo Data Marts (Phòng Bán hàng, Tài chính, Nhân sự) và tích hợp sẵn điểm dự báo của AI (ví dụ: Churn Score) để hành động ngay.",
+    "eli5": "Tầng Gold giống như món ăn sơn hào hải vị đã nấu chín hoàn chỉnh và bày lên bàn tiệc sang trọng: thực khách (người dùng kinh doanh) chỉ việc thưởng thức.",
+    "commonMistakes": [
+      "Cho phép người dùng kéo dữ liệu thô chưa kiểm duyệt ở Bronze/Silver thẳng lên báo cáo tài chính của Hội đồng quản trị."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q33",
+    "number": "C2.33",
+    "chapterId": "ch2",
+    "topic": "semantic-layer",
+    "type": "theory",
+    "prompt": "Semantic Layer (Tầng ngữ nghĩa) trong Modern Data Lakehouse giải quyết vấn đề nhức nhối nào của người dùng kinh doanh?",
+    "answer": "Trừu tượng hóa sự phức tạp của cấu trúc dữ liệu vật lý, chuyển đổi tên bảng/cột kỹ thuật thành thuật ngữ nghiệp vụ dễ hiểu, định nghĩa sẵn phép Join tập trung để tránh người dùng tự Join sai logic.",
+    "explanation": "Người dùng không cần biết bảng `tbl_cust_dim_v3` liên kết với `fact_ord_line_part` bằng khóa ngoại nào. Họ chỉ cần chọn trường 'Tên khách hàng' và 'Tổng doanh thu', Semantic Layer tự động sinh câu lệnh SQL chuẩn ngầm bên dưới.",
+    "eli5": "Giống như thực đơn trong nhà hàng: bạn chỉ cần chọn món 'Bò bít tết sốt tiêu', không cần phải chui vào bếp xem đầu bếp dùng chảo nào hay gia vị nhãn hiệu gì.",
+    "commonMistakes": [
+      "Nghĩ rằng Semantic Layer là một cơ sở dữ liệu vật lý riêng biệt lưu trữ thêm một bản sao dữ liệu nữa."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q34",
+    "number": "C2.34",
+    "chapterId": "ch2",
+    "topic": "semantic-layer",
+    "type": "theory",
+    "prompt": "Hiện tượng 'Silo Logic' trong báo cáo doanh nghiệp là gì và Semantic Layer dập tắt hiện tượng này như thế nào?",
+    "answer": "Là hiện tượng mỗi công cụ phân tích (PowerBI, Tableau, Excel) lại tự định nghĩa một công thức tính chỉ số khác nhau dẫn đến sai lệch số liệu; Semantic Layer dập tắt bằng cách định nghĩa công thức tập trung tại một nơi duy nhất.",
+    "explanation": "Ví dụ: Phòng Kinh doanh dùng PowerBI tính 'Doanh thu' gồm cả phí ship, phòng Tài chính dùng Tableau tính 'Doanh thu' trừ thuế và ship. Khi họp, hai phòng cãi nhau vì số liệu vênh. Semantic Layer bắt buộc mọi công cụ đều gọi chung một định nghĩa `Revenue`.",
+    "eli5": "Giống như việc dùng một chiếc thước đo tiêu chuẩn quốc tế: không ai có thể tự chế ra chiếc thước của riêng mình để đo rồi cãi nhau ai dài hơn.",
+    "commonMistakes": [
+      "Cho phép từng cá nhân tự viết công thức tính DAX hoặc Calculated Field riêng rẽ trên từng file PowerBI độc lập."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q35",
+    "number": "C2.35",
+    "chapterId": "ch2",
+    "topic": "semantic-layer",
+    "type": "theory",
+    "prompt": "Triết lý 'Headless BI' trong việc xây dựng Metric Catalog tập trung được hiểu như thế nào?",
+    "answer": "Tách rời hoàn toàn tầng định nghĩa chỉ số và logic nghiệp vụ (Metrics) ra khỏi tầng giao diện trực quan hóa (Front-end BI), đưa logic số liệu thành mã nguồn (Code) dùng chung cho mọi ứng dụng.",
+    "explanation": "Trước đây logic nằm chết trong từng file `.pbix` hay Dashboard. Headless BI (như Cube, dbt Semantic Layer) định nghĩa metrics bằng tệp YAML tập trung. Dù truy vấn qua PowerBI, Web App, Jupyter Notebook hay Streamlit thì số liệu trả về đều giống nhau từng chữ số.",
+    "eli5": "'Headless' nghĩa là 'không có đầu' (không bị gắn chặt vào một giao diện cụ thể nào): bạn muốn đội chiếc mũ PowerBI hay Tableau lên trên thân hình đó đều được.",
+    "commonMistakes": [
+      "Nghĩ rằng Headless BI là công cụ trực quan hóa biểu đồ mới thay thế PowerBI."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q36",
+    "number": "C2.36",
+    "chapterId": "ch2",
+    "topic": "semantic-layer",
+    "type": "theory",
+    "prompt": "Tại sao Semantic Layer lại là chìa khóa then chốt để các AI Agents và GenAI truy vấn dữ liệu mà không bị 'ảo tưởng' (Hallucination)?",
+    "answer": "Vì Semantic Layer cung cấp 'Bản đồ tri thức' (Knowledge Map) và Metadata ngữ nghĩa chính xác, hỗ trợ cơ chế RAG để AI hiểu đúng ý nghĩa số liệu và sinh câu lệnh SQL chuẩn xác thay vì đoán mò cấu trúc bảng.",
+    "explanation": "Nếu cho LLM nhìn trực tiếp vào 500 bảng database với các cột viết tắt như `c_stat`, `dt_exp`, mô hình rất dễ tự bịa ra câu lệnh SQL sai. Nhờ Semantic Layer giải thích rõ ngữ nghĩa và mối quan hệ, AI tự tin dịch yêu cầu bằng ngôn ngữ tự nhiên thành truy vấn chính xác 100%.",
+    "eli5": "Giống như việc đưa cho hướng dẫn viên du lịch một cuốn cẩm nang bản đồ chính xác từng mét: họ sẽ dẫn bạn đi đúng đường mà không bao giờ chỉ nhầm đường cụt.",
+    "commonMistakes": [
+      "Nghĩ rằng chỉ cần quăng toàn bộ bảng cơ sở dữ liệu thô cho LLM là AI tự hiểu và tự trả lời đúng số liệu."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q37",
+    "number": "C2.37",
+    "chapterId": "ch2",
+    "topic": "variant-json",
+    "type": "theory",
+    "prompt": "Hiện tượng Schema Drift trong các luồng dữ liệu hiện đại là gì và gây khó khăn gì cho RDBMS truyền thống?",
+    "answer": "Là hiện tượng cấu trúc dữ liệu nguồn liên tục thay đổi bất ngờ (thêm trường mới, đổi kiểu dữ liệu, mảng lồng nhau); khiến các bảng RDBMS với schema cố định (Schema-on-write) bị lỗi gãy pipeline nạp dữ liệu.",
+    "explanation": "Hôm nay đối tác gửi JSON có 5 trường, ngày mai họ tự ý thêm trường `discount_code` và lồng mảng `tags`. RDBMS truyền thống sẽ báo lỗi và từ chối nạp, làm gián đoạn toàn bộ hệ thống báo cáo.",
+    "eli5": "Giống như chiếc khuôn làm bánh cố định hình vuông: nếu nguyên liệu chảy ra hình tam giác, chiếc khuôn sẽ bị vỡ hoặc không thể đúc được bánh.",
+    "commonMistakes": [
+      "Nghĩ rằng Schema Drift chỉ xảy ra một lần khi khởi tạo dự án."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q38",
+    "number": "C2.38",
+    "chapterId": "ch2",
+    "topic": "variant-json",
+    "type": "theory",
+    "prompt": "Kiểu dữ liệu VARIANT trên Cloud DWH (như Snowflake) có khả năng vượt trội nào?",
+    "answer": "Cho phép lưu trữ toàn bộ tài liệu bán cấu trúc (JSON, XML, Avro, Parquet) trong một cột duy nhất với hiệu năng truy vấn nhanh tương đương dữ liệu có cấu trúc truyền thống nhờ cơ chế tối ưu bộ nhớ cột.",
+    "explanation": "Hệ thống tự động phân tách các cặp key-value thường xuyên xuất hiện trong cột VARIANT thành các cột con (Sub-columnar storage) ngầm bên dưới, nên câu lệnh `SELECT v:customer.id` có tốc độ nhanh như đọc một cột Integer độc lập.",
+    "eli5": "Giống như chiếc túi thần kỳ của Doraemon: nhét mọi thứ đồ vật linh tinh vào đó, nhưng khi cần lấy cái gì ra là thò tay rút trúng ngay trong tích tắc.",
+    "commonMistakes": [
+      "Nghĩ rằng VARIANT chỉ là một chuỗi văn bản dài (Text/Varchar thông thường) và phải quét chuỗi từ đầu đến cuối."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q39",
+    "number": "C2.39",
+    "chapterId": "ch2",
+    "topic": "variant-json",
+    "type": "theory",
+    "prompt": "Kỹ thuật Flattening (Làm phẳng) đối với cột dữ liệu VARIANT được sử dụng nhằm mục đích gì?",
+    "answer": "Dùng để chuyển đổi (bung nở) các phần tử trong một mảng lồng nhau (Nested Array) thành các dòng dữ liệu riêng biệt để thực hiện phép phân tích và tổng hợp SQL.",
+    "explanation": "Ví dụ một đơn hàng có mảng `items` gồm 3 món hàng nằm trong 1 dòng. Hàm `FLATTEN(v:items)` sẽ nhân dòng đó thành 3 dòng riêng biệt, mỗi dòng chứa thông tin của một món hàng để tính tổng số lượng hoặc đơn giá.",
+    "eli5": "Giống như việc mở một gói kẹo lớn ra và đổ từng viên kẹo xếp thành một hàng dài trên bàn để đếm xem có bao nhiêu viên.",
+    "commonMistakes": [
+      "Nghĩ rằng Flattening làm mất dữ liệu mảng gốc."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q40",
+    "number": "C2.40",
+    "chapterId": "ch2",
+    "topic": "variant-json",
+    "type": "theory",
+    "prompt": "Chiến lược Materialization (Vật chất hóa) cho dữ liệu trong cột VARIANT nên được áp dụng khi nào?",
+    "answer": "Khi một trường thông tin bên trong cột VARIANT được truy vấn thường xuyên và là tiêu chí lọc (WHERE) hoặc nhóm (GROUP BY) chủ yếu của các Dashboard báo cáo hàng ngày.",
+    "explanation": "Khi một thuộc tính (như `device_id` trong JSON log) được 100 truy vấn gọi mỗi phút, việc trích xuất nó thành một cột vật lý riêng biệt sẽ giúp hệ thống áp dụng cơ chế nén tối ưu, chỉ mục và Data Pruning tốt hơn nhiều so với việc trích xuất động trong lúc query.",
+    "eli5": "Nếu ngày nào bạn cũng cần dùng chiếc kéo trong hộp đồ nghề, hãy lấy cây kéo đó cắm sẵn vào ống bút trên bàn làm việc để cần là cầm được ngay.",
+    "commonMistakes": [
+      "Trích xuất tất cả mọi trường trong JSON thành cột vật lý (gây lãng phí công sức và đánh mất tính linh hoạt của Schema-on-read)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q41",
+    "number": "C2.41",
+    "chapterId": "ch2",
+    "topic": "variant-json",
+    "type": "theory",
+    "prompt": "Vai trò của Virtual Views khi làm việc với kiểu dữ liệu VARIANT là gì?",
+    "answer": "Cung cấp giao diện bảng quan hệ chuẩn (gồm các cột truyền thống) cho người dùng phân tích SQL mà không cần thay đổi hay sao chép cấu trúc lưu trữ gốc của tài liệu JSON.",
+    "explanation": "Ta tạo một `VIEW v_orders AS SELECT v:order_id::int AS order_id, v:total::float AS total FROM raw_table`. Người dùng SQL chỉ cần SELECT từ VIEW như một bảng thông thường, hệ thống tự động ánh xạ vào cột VARIANT mà không tốn thêm dung lượng lưu trữ.",
+    "eli5": "Giống như tấm kính màu đặt lên bức vẽ: bạn nhìn qua tấm kính thấy hình ảnh rõ ràng theo màu bạn muốn mà không cần vẽ lại bức tranh.",
+    "commonMistakes": [
+      "Nghĩ rằng Virtual View tốn thêm dung lượng lưu trữ gấp đôi bảng gốc."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q42",
+    "number": "C2.42",
+    "chapterId": "ch2",
+    "topic": "ai-schema",
+    "type": "theory",
+    "prompt": "Sự khác biệt căn bản giữa mục tiêu thiết kế của BI Schema và AI Schema về mức độ chi tiết (Granularity) là gì?",
+    "answer": "BI Schema tập trung vào việc tóm tắt, tổng hợp số liệu theo xu hướng cấp cao; trong khi AI Schema yêu cầu dữ liệu ở mức độ chi tiết nhất (nguyên tử) để thuật toán học được các mẫu đặc trưng tiềm ẩn.",
+    "explanation": "Giám đốc xem BI chỉ cần biết tháng này doanh thu tổng bao nhiêu. Nhưng mô hình Machine Learning cần biết từng lần click chuột, khoảng cách giữa 2 lần bấm, thời điểm mua hàng chính xác đến từng giây để phát hiện hành vi gian lận.",
+    "eli5": "BI giống như nhìn khu rừng từ trên trực thăng (thấy toàn cảnh tán cây); AI giống như nhà sinh vật học soi kính hiển vi vào từng chiếc lá và thớ gỗ.",
+    "commonMistakes": [
+      "Dùng bảng Fact tổng hợp tháng của BI để đưa vào huấn luyện mô hình Machine Learning (mô hình sẽ bị mất hết thông tin chi tiết)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q43",
+    "number": "C2.43",
+    "chapterId": "ch2",
+    "topic": "ai-schema",
+    "type": "theory",
+    "prompt": "Tại sao kiến trúc Wide Tables (Bảng rộng) lại được ưu tiên vượt trội hơn Star Schema khi huấn luyện mô hình Machine Learning?",
+    "answer": "Vì Wide Tables gom sẵn hàng trăm đặc trưng vào một bảng phẳng duy nhất, loại bỏ hoàn toàn chi phí tính toán cực lớn của các phép JOIN dữ liệu lớn trong quá trình huấn luyện lặp đi lặp lại.",
+    "explanation": "Huấn luyện AI thường lặp qua dữ liệu hàng chục epoch. Nếu mỗi epoch đều phải thực hiện JOIN 10 bảng Dimension với bảng Fact, cụm tính toán sẽ bị nghẽn mạng (Network shuffle) và chi phí Compute tăng phi mã. Wide Table đọc thẳng dữ liệu vào ma trận bộ nhớ.",
+    "eli5": "Giống như việc chuẩn bị sẵn một tập hồ sơ đầy đủ mọi giấy tờ kẹp chung một kẹp: giám khảo chỉ việc lật từng trang chấm điểm, không phải chạy đi tìm từng tờ giấy ở các phòng khác nhau.",
+    "commonMistakes": [
+      "Bắt mô hình AI phải tự thực hiện câu lệnh JOIN 15 bảng mỗi lần đọc batch huấn luyện."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q44",
+    "number": "C2.44",
+    "chapterId": "ch2",
+    "topic": "ai-schema",
+    "type": "theory",
+    "prompt": "Tại sao Schema phục vụ huấn luyện AI cần đặc biệt chú trọng lưu trữ dữ liệu theo định dạng Time-series (Chuỗi thời gian)?",
+    "answer": "Để mô hình Machine Learning có thể nắm bắt và học được thứ tự, chuỗi biến đổi hành vi của thực thể (khách hàng, cảm biến) theo dòng thời gian thực tế.",
+    "explanation": "Hành vi mua sắm của con người phụ thuộc vào chuỗi hành động trước đó (vào xem trang A -> so sánh giá trang B -> quay lại trang A mua). Lưu trữ chuỗi thời gian giúp mô hình trích xuất các đặc trưng như tần suất, tốc độ thay đổi và xu hướng ngắn hạn.",
+    "eli5": "Giống như xem một đoạn video clip chuyển động liên tục thay vì chỉ xem một bức ảnh tĩnh chụp tại đích đến.",
+    "commonMistakes": [
+      "Chỉ lưu trữ trạng thái hiện tại (Snapshot) mà làm mất dấu toàn bộ trình tự thời gian của các hành động quá khứ."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q45",
+    "number": "C2.45",
+    "chapterId": "ch2",
+    "topic": "ai-schema",
+    "type": "theory",
+    "prompt": "Yêu cầu về Tính cân bằng dữ liệu (Data Balance) trong thiết kế dữ liệu cho bài toán phân loại AI đòi hỏi điều gì?",
+    "answer": "Cần lưu trữ và thu thập đầy đủ cả các mẫu dữ liệu tích cực (Positive class) và mẫu dữ liệu tiêu cực (Negative class) để mô hình không bị thiên lệch trong quá trình học.",
+    "explanation": "Ví dụ trong bài toán phát hiện gian lận: nếu kho dữ liệu chỉ lưu các giao dịch gian lận mà không lưu hàng triệu giao dịch bình thường (hoặc ngược lại), mô hình phân loại sẽ bị mất cân bằng trầm trọng và không thể học được ranh giới phân lớp.",
+    "eli5": "Nếu bạn muốn dạy một đứa trẻ phân biệt con chó và con mèo, bạn phải cho nó xem cả ảnh con chó lẫn ảnh con mèo; nếu chỉ cho xem ảnh con chó thì nó sẽ coi mọi con vật trên đời đều là chó.",
+    "commonMistakes": [
+      "Chỉ lưu trữ các bản ghi thành công và xóa bỏ các bản ghi giao dịch thất bại hoặc bị hủy."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q46",
+    "number": "C2.46",
+    "chapterId": "ch2",
+    "topic": "ai-schema",
+    "type": "theory",
+    "prompt": "Feature Engineering trực tiếp tại Lakehouse mang lại hai lợi thế lớn nhất nào so với việc trích xuất dữ liệu sang Python/máy chủ ngoài?",
+    "answer": "1. Tận dụng sức mạnh tính toán song song quy mô lớn của Lakehouse để xử lý dữ liệu khổng lồ ngay tại nơi lưu trữ; 2. Giảm thiểu chi phí và thời gian truyền tải mạng (Network latency) khi di chuyển hàng Terabyte dữ liệu.",
+    "explanation": "Các phép biến đổi như Chuẩn hóa (Normalization), Mã hóa (One-hot/Label Encoding), Rời rạc hóa (Binning) hoàn toàn có thể chạy bằng câu lệnh SQL chuẩn phân tán trên kho dữ liệu trong vài giây, thay vì kéo cả bảng về máy cá nhân làm tràn bộ nhớ (Out of Memory).",
+    "eli5": "Sơ chế và nấu thức ăn ngay tại cánh đồng rồi chở món ăn đóng hộp về thành phố, thay vì chở cả tấn đất cát rơm rạ về nhà bếp chật chội để nhặt từng cọng rau.",
+    "commonMistakes": [
+      "Kéo toàn bộ hàng trăm triệu dòng dữ liệu thô về máy tính cục bộ rồi dùng Pandas để tính trung bình và chuẩn hóa."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q47",
+    "number": "C2.47",
+    "chapterId": "ch2",
+    "topic": "ai-schema",
+    "type": "theory",
+    "prompt": "Làm thế nào để loại bỏ hiện tượng Train-Serve Skew (Lệch pha giữa huấn luyện và dự báo) trong hệ thống AI?",
+    "answer": "Định nghĩa và thực hiện logic Feature Engineering bằng ngôn ngữ SQL chuẩn trực tiếp tại kho dữ liệu, đảm bảo mã tạo đặc trưng dùng để huấn luyện và mã dùng để dự báo thực tế là một.",
+    "explanation": "Train-Serve Skew xảy ra khi lúc học Data Scientist viết code tạo đặc trưng bằng Python, nhưng khi lên hệ thống thật kỹ sư lại viết lại bằng C# hoặc SQL và công thức bị sai lệch một chút. Viết một logic duy nhất tại Database sẽ triệt tiêu hoàn toàn sự lệch pha này.",
+    "eli5": "Dùng chung một chiếc thước đo khi may áo và khi thử áo cho khách: chắc chắn chiếc áo sẽ vừa vặn, không bị ngắn hay dài bất thường.",
+    "commonMistakes": [
+      "Để nhóm nghiên cứu AI tự viết code tính toán đặc trưng một kiểu, rồi nhóm kỹ sư sản phẩm tự viết lại một kiểu khác."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q48",
+    "number": "C2.48",
+    "chapterId": "ch2",
+    "topic": "ai-schema",
+    "type": "theory",
+    "prompt": "Kỹ thuật SQL nào là công cụ hữu hiệu nhất để tính toán các đặc trưng động theo cửa sổ thời gian (như tổng chi tiêu 30 ngày qua)?",
+    "answer": "Sử dụng các hàm cửa sổ trong SQL (SQL Window Functions với mệnh đề OVER (PARTITION BY ... ORDER BY ... ROWS/RANGE BETWEEN ...)).",
+    "explanation": "Window Functions cho phép tính toán các giá trị lũy kế, giá trị trung bình trượt (Moving Average) và độ trễ (LAG/LEAD) mà không cần phải tự viết nhiều vòng lặp hay tự Join bảng lại chính nó.",
+    "eli5": "Giống như khung kính trượt dọc theo dòng thời gian: khung kính đi đến đâu, ta nhìn thấy và tính tổng các sự kiện nằm gọn bên trong khung kính đó.",
+    "commonMistakes": [
+      "Tự viết phép Self-join bảng với chính nó nhiều lần để tính tổng lũy kế (làm câu query chậm gấp trăm lần)."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q49",
+    "number": "C2.49",
+    "chapterId": "ch2",
+    "topic": "ai-schema",
+    "type": "theory",
+    "prompt": "Hiểm họa của hiện tượng Data Leakage (Rò rỉ dữ liệu) trong huấn luyện mô hình AI là gì và nguyên nhân do đâu?",
+    "answer": "Mô hình vô tình học từ dữ liệu phát sinh trong tương lai (sau mốc thời gian dự báo), dẫn đến kết quả kiểm thử đạt độ chính xác ảo cực cao nhưng thất bại hoàn toàn khi đem vào vận hành thực tế.",
+    "explanation": "Ví dụ: Dự đoán xem khách hàng có hoàn tiền hay không vào ngày 1/1, nhưng trong tập dữ liệu huấn luyện lại chứa cột 'Lý do hoàn tiền vào ngày 15/1'. Mô hình chỉ cần nhìn vào cột đó là đoán trúng 100%, nhưng ngoài đời thực vào ngày 1/1 cột đó chưa hề tồn tại!",
+    "eli5": "Giống như học sinh biết trước đề thi và đáp án: đi thi thử được 10 điểm tuyệt đối, nhưng khi ra đời gặp bài toán thực tế thì hoàn toàn bất lực.",
+    "commonMistakes": [
+      "Tính toán đặc trưng trên toàn bộ tập dữ liệu trước khi phân chia tập Train và tập Test."
+    ],
+    "needsSlideCheck": false
+  },
+  {
+    "id": "ch2_q50",
+    "number": "C2.50",
+    "chapterId": "ch2",
+    "topic": "ai-schema",
+    "type": "theory",
+    "prompt": "Khái niệm 'Point-in-time Correctness' (Tính chính xác theo mốc thời gian) và Feature Store đóng vai trò gì trong việc ngăn chặn Data Leakage?",
+    "answer": "Point-in-time Correctness đảm bảo chỉ sử dụng dữ liệu đã biết tại thời điểm lịch sử đó; Feature Store quản lý phiên bản, kiểm soát dòng đời và tái tạo chính xác trạng thái của đặc trưng tại bất kỳ mốc quá khứ nào nhờ Time Travel hoặc SCD Type 2.",
+    "explanation": "Feature Store lưu trữ lịch sử biến thiên của từng đặc trưng theo thời gian. Khi tạo tập dữ liệu huấn luyện cho một sự kiện xảy ra ngày 10/10/2023, Feature Store tự động 'quay ngược thời gian' lấy đúng giá trị của khách hàng tại ngày 10/10/2023, loại bỏ hoàn toàn nguy cơ rò rỉ dữ liệu tương lai.",
+    "eli5": "Feature Store giống như cỗ máy thời gian đưa bạn trở về đúng ngày 10/10/2023: bạn chỉ được nhìn thấy những tờ báo đã xuất bản trước ngày đó, không thể biết trước những sự kiện của ngày mai.",
+    "commonMistakes": [
+      "Lấy giá trị đặc trưng hiện tại của khách hàng gán ngược vào các sự kiện giao dịch xảy ra từ 2 năm trước."
+    ],
+    "needsSlideCheck": false
+  }
+]

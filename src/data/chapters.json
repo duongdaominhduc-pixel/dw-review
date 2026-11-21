@@ -367,45 +367,372 @@
   },
   {
     "id": "ch2",
-    "title": "Chương 2: Mô hình hóa Chiều dữ liệu (Dimensional Modeling)",
+    "title": "Chương 2: Mô hình hóa dữ liệu cho Cloud Warehousing (Slide 2)",
     "order": 2,
     "objectives": [
-      "Hiểu Micro-partitioning và cơ chế Data Pruning",
-      "Nắm vững kỹ thuật chọn Clustering Key",
-      "Phân biệt các loại Fact Table: Accumulating Snapshot Fact Table",
-      "Ứng dụng Bridge Table cho quan hệ nhiều-nhiều",
-      "Hiểu lợi ích của Flat Tables trong kỷ nguyên Cloud"
+      "Nắm vững phương pháp luận Kimball trên Cloud, quy trình 4 bước Dimensional Design và Conformed Dimensions",
+      "Hiểu sâu kỹ thuật Micro-partitioning (50MB-500MB), cơ chế Data Pruning và chiến lược Clustering (Clustering Depth, Auto Re-clustering)",
+      "Thành thạo thiết kế 3 loại Fact Tables nâng cao: Transaction, Periodic Snapshot và Accumulating Snapshot",
+      "Nắm vững quy tắc vàng về Grain trong Fact Table, Factless Fact Tables và Bridge Tables",
+      "Hiểu nguyên lý thiết kế Dimension Tables: Surrogate Keys, Verbose Attributes và quản lý SCD (Type 1 -> Type 6)",
+      "Nắm vững kiến trúc Medallion (Bronze, Silver, Gold), tính bất biến Immutability và kiểm soát chất lượng dữ liệu",
+      "Hiểu vai trò của Semantic Layer, triết lý Headless BI, Metric Catalog tập trung và ứng dụng cho AI Agents / GenAI",
+      "Thành thạo mô hình hóa dữ liệu bán cấu trúc với kiểu dữ liệu VARIANT, kỹ thuật Flattening và Materialization",
+      "Tối ưu hóa Schema cho Data Mining & AI: Wide Tables, Feature Engineering tại DB, Point-in-time Correctness và Feature Stores"
     ],
     "lessons": [
       {
         "id": "les-2-1",
-        "title": "Bài 1: Micro-partitioning và Chiến lược Clustering",
-        "status": "empty",
-        "sections": [],
+        "title": "Bài 1: Phương pháp luận Kimball trong kỷ nguyên Cloud",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu sự chuyển dịch của phương pháp luận Kimball khi bước sang kỷ nguyên Cloud",
+              "Nắm vững quy trình thiết kế Dimensional Design 4 bước chuẩn mực",
+              "Hiểu tác động của việc tách rời Compute & Storage đối với chuẩn hóa và Flat Tables",
+              "Nắm vững chiến lược Denormalization để tối ưu hóa Columnar Scanning",
+              "Hiểu tương lai của Kimball trong kiến trúc phân tán Data Mesh"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Sự chuyển dịch của Kimball sang Cloud\nPhương pháp luận Kimball (thiết kế theo mô hình chiều - Dimensional Modeling) ra đời từ những năm 1990 nhưng khi chuyển lên đám mây (Cloud), nó đã có những bước tiến hóa mạnh mẽ:\n- **Duy trì triết lý User-centric**: Thiết kế vẫn lấy người dùng nghiệp vụ và bài toán ra quyết định làm trung tâm, đảm bảo dữ liệu trực quan, dễ truy vấn.\n- **Thích nghi với hạ tầng vô hạn**: Tận dụng khả năng lưu trữ không giới hạn (Infinite Storage) và năng lực tính toán co giãn linh hoạt (Elastic Compute) của Cloud.\n- **Thay đổi tư duy tối ưu**: Chuyển từ việc *tối ưu hóa không gian lưu trữ (tiết kiệm dung lượng đĩa)* sang *tối ưu hóa hiệu suất truy vấn (tốc độ phản hồi)*.\n- **Hỗ trợ bán cấu trúc**: Lưu trữ và truy vấn trực tiếp dữ liệu JSON, XML, Parquet ngay trong Schema bảng thông qua kiểu `VARIANT`.\n- **Giảm phụ thuộc Index vật lý**: Không còn phải cấu hình các chỉ mục B-tree, Bitmap Index hay phân vùng vật lý thủ công như thời kỳ On-premise.\n- **Thích ứng Agile & DevOps**: Mô hình dữ liệu linh hoạt, dễ dàng thay đổi cấu trúc lặp đi lặp lại mà không làm tê liệt toàn bộ hệ thống.\n\n---\n\n### 2. Quy trình thiết kế Dimensional Design 4 bước kinh điển\nĐể xây dựng một Data Mart hoặc Data Warehouse chuẩn chỉnh theo Kimball, quy trình bắt buộc gồm 4 bước theo đúng thứ tự:\n1. **Bước 1: Chọn Quy trình nghiệp vụ (Business Process)**: Xác định hoạt động kinh doanh cụ thể cần đo lường (ví dụ: Tiếp nhận đơn hàng, Thanh toán, Quản lý kho).\n2. **Bước 2: Xác định Mức độ chi tiết (Grain)**: Quyết định chính xác một dòng dữ liệu trong bảng Fact đại diện cho cái gì (ví dụ: Một dòng cho mỗi sản phẩm trong một đơn hàng).\n3. **Bước 3: Xác định các Chiều dữ liệu (Dimensions)**: Trả lời các câu hỏi bối cảnh: *Ai mua? Mua cái gì? Mua ở đâu? Khi nào?* (Khách hàng, Sản phẩm, Cửa hàng, Thời gian).\n4. **Bước 4: Xác định các Số đo định lượng (Facts)**: Các giá trị số đo có thể cộng dồn hoặc tính toán gắn liền với sự kiện (ví dụ: Số lượng bán, Doanh thu, Thuế, Tiền giảm giá).\n- **Conformed Dimensions**: Đảm bảo tính nhất quán của các bảng chiều dùng chung (như Khách hàng, Thời gian) xuyên suốt các quy trình kinh doanh khác nhau, tạo nên **Single Version of Truth** cho toàn doanh nghiệp.\n\n---\n\n### 3. Tác động của việc tách rời Compute và Storage\n- **Không cần chuẩn hóa quá mức (Over-normalization)**: Lưu trữ trên Cloud rất rẻ, không cần ép bảng về dạng chuẩn 3NF để tiết kiệm đĩa.\n- **Khuyến khích sử dụng Flat Tables (Bảng phẳng)**: Gộp sẵn dữ liệu vào các bảng rộng để giảm thiểu tối đa các phép JOIN tốn kém tài nguyên tính toán giữa các bảng lớn.\n- **Lưu trữ dữ liệu thô (Raw Data)**: Cho phép lưu trữ bản sao dữ liệu gốc thoải mái mà không làm chậm hệ thống báo cáo do hệ thống báo cáo chạy trên cụm Compute tách biệt.\n- **Tăng tốc độ Ingestion**: Kiến trúc MPP (Massively Parallel Processing) cho phép nạp dữ liệu song song từ hàng trăm luồng mà không lo nghẽn cổ chai.\n- **Phục hồi qua phiên bản (Time Travel)**: Dữ liệu được lưu trữ dạng bất biến (Immutable files), cho phép truy vấn lại trạng thái quá khứ bất cứ lúc nào.\n- **Tối ưu hóa chi phí**: Chỉ trả tiền điện toán khi thực sự có câu lệnh truy vấn chạy (Pay-per-query).\n\n---\n\n### 4. Denormalization và Columnar Scanning\n- **Chiến lược ưu tiên hàng đầu**: Trong kho dữ liệu dạng cột (Columnar DWH như Snowflake, BigQuery), truy vấn chỉ quét đúng các cột được gọi trong câu lệnh SQL. Phi chuẩn hóa gộp các thuộc tính lại giúp loại bỏ chi phí Join bảng mà không làm tăng thời gian đọc cột.\n- **Giảm độ phức tạp SQL**: Câu lệnh ngắn gọn, người dùng kinh doanh và chuyên viên BI dễ dàng viết truy vấn mà không bị nhầm lẫn giữa các bảng liên kết.\n- **Tăng tốc cho BI và Data Mining**: Cung cấp các tập dữ liệu phẳng sẵn sàng cho trực quan hóa Dashboard và các thuật toán học máy.\n- **Hỗ trợ phân tích chuỗi thời gian (Time Series)**: Dễ dàng tổng hợp dữ liệu giao dịch theo các dải thời gian liên tục.\n- **Trách nhiệm then chốt**: Kỹ sư dữ liệu cần quản lý chặt chẽ sự nhất quán của dữ liệu (Data Consistency) khi dữ liệu bị lặp lại ở nhiều nơi.\n\n---\n\n### 5. Tương lai của Kimball trong kiến trúc Data Mesh\n- **Phân cấp quyền thiết kế**: Quyền sở hữu và mô hình hóa dữ liệu được chuyển giao từ đội IT tập trung sang cho từng **Miền nghiệp vụ (Domain)**.\n- **Domain tự chủ**: Mỗi Domain tự chịu trách nhiệm về chất lượng, cấu trúc bảng Fact và Dimension của miền mình như một **Sản phẩm dữ liệu (Data Product)**.\n- **Federated Conformed Dimensions**: Sử dụng các chiều chuẩn hóa liên kết để kết nối dữ liệu giữa các Domain mà không cần một kho dữ liệu khổng lồ tập trung duy nhất.\n- **Ngôn ngữ chung**: Phương pháp luận Kimball trở thành ngôn ngữ giao tiếp tiêu chuẩn giữa các đơn vị kinh doanh và đội ngũ kỹ thuật."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ thực tế**:\nMột sàn thương mại điện tử trước đây áp dụng mô hình Inmon (chuẩn hóa 3NF) với hơn 80 bảng liên kết chặt chẽ. Khi muốn xuất báo cáo \"Top 10 khách hàng chi tiêu nhiều nhất theo từng ngành hàng\", chuyên viên BI phải viết câu lệnh SQL JOIN qua 8 bảng khác nhau, câu truy vấn chạy mất 15 phút.\nKhi chuyển đổi sang **Cloud DWH với mô hình Kimball Denormalized (Flat Table)**:\n- Toàn bộ thông tin đơn hàng, sản phẩm, ngành hàng và khách hàng được phi chuẩn hóa sẵn vào một bảng rộng `fact_sales_wide`.\n- Nhờ lưu trữ Columnar, câu lệnh chỉ quét đúng 3 cột (`customer_name`, `category`, `total_amount`), thời gian phản hồi giảm xuống còn **1.2 giây**!"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Điểm thi trọng tâm**:\n> 1. Quy trình thiết kế Dimensional Design gồm **4 bước**: Chọn Business Process -> Chọn Grain -> Chọn Dimensions -> Chọn Facts.\n> 2. **Flat Tables** trên Cloud được khuyến khích sử dụng nhằm mục đích chính là **giảm thiểu phép tính JOIN** (Câu 10 đề cương)."
+          }
+        ],
         "miniQuiz": [
-          "q6",
-          "q7",
-          "q10"
+          "ch2_q01",
+          "ch2_q03",
+          "ch2_q06",
+          "ch2_q08"
         ],
         "relatedQuestionIds": [
-          "q6",
-          "q7",
+          "ch2_q01",
+          "ch2_q02",
+          "ch2_q03",
+          "ch2_q04",
+          "ch2_q05",
+          "ch2_q06",
+          "ch2_q07",
+          "ch2_q08",
+          "ch2_q09",
+          "ch2_q10",
           "q10"
         ],
         "labIds": []
       },
       {
         "id": "les-2-2",
-        "title": "Bài 2: Thiết kế Fact Tables nâng cao và Bridge Tables",
-        "status": "empty",
-        "sections": [],
+        "title": "Bài 2: Kỹ thuật Micro-partitioning và Clustering trong lưu trữ dữ liệu",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững bản chất và kích thước của Micro-partitioning (50MB - 500MB)",
+              "Hiểu cơ chế Data Pruning và hai lợi ích lớn nhất đối với hiệu năng và chi phí",
+              "Nắm vững chiến lược Clustering và cách lựa chọn Clustering Key tối ưu",
+              "Hiểu cách đo lường mức độ chồng lấn thông qua chỉ số Clustering Depth",
+              "Nắm cơ chế vận hành của tính năng Tự động hóa Re-clustering"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bản chất của Micro-partitioning\nMicro-partitioning là công nghệ lưu trữ cốt lõi trong các hệ thống Cloud Data Warehouse hiện đại (tiêu biểu như Snowflake):\n- **Tự động hóa hoàn toàn**: Hệ thống tự động chia nhỏ các bảng dữ liệu thành các tệp tin lưu trữ nhỏ mà người dùng không cần định nghĩa hay bảo trì thủ công.\n- **Kích thước phân vùng nén**: Mỗi phân vùng thường chứa từ **50MB đến 500MB dữ liệu nén** (tương đương vài triệu dòng dữ liệu thô).\n- **Tổ chức dạng cột (Columnar)**: Dữ liệu bên trong mỗi micro-partition được tổ chức và nén theo từng cột riêng biệt.\n- **Metadata Min/Max**: Với mỗi phân vùng, hệ thống tự động ghi nhận giá trị nhỏ nhất (Min) và lớn nhất (Max) của từng cột, số lượng giá trị NULL và các thông tin thống kê.\n- **Nền tảng quét siêu tốc**: Là cơ sở kỹ thuật giúp công cụ tối ưu hóa truy vấn có thể xác định chính xác dữ liệu cần đọc mà không phải quét toàn bộ bảng (Full Table Scan).\n\n---\n\n### 2. Cơ chế Data Pruning (Cắt tỉa dữ liệu)\n- **Nguyên lý hoạt động**: Khi nhận câu truy vấn SQL có điều kiện lọc (mệnh đề `WHERE` hoặc `JOIN`), hệ thống đối chiếu điều kiện lọc với Metadata Min/Max của từng Micro-partition. Phân vùng nào chắc chắn không chứa dữ liệu cần tìm sẽ bị **bỏ qua hoàn toàn (Pruned)**.\n- **Hai lợi ích sống còn**:\n  1. **Tăng tốc độ phản hồi**: Giảm khối lượng dữ liệu khổng lồ cần đọc từ tầng lưu trữ (Storage) nạp lên bộ nhớ tính toán (RAM/Compute).\n  2. **Tiết kiệm chi phí Compute Credit**: Trong mô hình Cloud tính tiền theo dung lượng quét (Bytes Scanned), Pruning giúp người dùng tiết kiệm đến 99% chi phí điện toán.\n- **Điều kiện tối ưu**: Pruning đạt hiệu quả cao nhất khi dữ liệu được sắp xếp tốt theo các cột thường xuyên được dùng để lọc hoặc kết nối.\n\n---\n\n### 3. Chiến lược Clustering và Lựa chọn Clustering Key\n- **Bản chất Clustering**: Sắp xếp vật lý các dòng dữ liệu trong các Micro-partitions dựa trên một hoặc nhiều cột khóa chỉ định (Clustering Key).\n- **Mục tiêu**: Làm cho dải giá trị của các cột trong mỗi micro-partition trở nên hẹp nhất có thể và hạn chế tối đa việc chồng lấn phạm vi giá trị giữa các phân vùng.\n- **Tối ưu hóa Range Queries**: Cực kỳ hiệu quả cho các câu truy vấn lọc theo khoảng thời gian (`date BETWEEN ... AND ...`) hoặc dải mã định danh.\n- **Tiêu chí chọn Clustering Key**:\n  - Chọn các cột có **độ chọn lọc cao (High Cardinality)** (ví dụ: ngày giao dịch, mã khách hàng, mã khu vực).\n  - Chọn các cột **thường xuyên xuất hiện trong các bộ lọc** `WHERE`, `JOIN` và `GROUP BY`.\n  - Tránh chọn các cột có độ chọn lọc quá thấp (Low Cardinality như Giới tính Nam/Nữ) vì phân vùng nào cũng chứa cả hai giá trị, không Pruning được gì.\n- **Giảm Data Skew**: Giúp phân bổ dữ liệu đồng đều, tránh hiện tượng lệch dữ liệu làm một số node tính toán bị quá tải.\n\n---\n\n### 4. Đánh giá hiệu quả qua Clustering Depth\n- **Định nghĩa**: Clustering Depth là chỉ số đo **mức độ chồng lấn phạm vi giá trị (Overlap)** giữa các Micro-partitions đối với một tập hợp cột xác định.\n- **Ý nghĩa chỉ số**:\n  - **Clustering Depth càng thấp (tiến gần về 1)**: Mức độ chồng lấn càng ít, dữ liệu được sắp xếp càng hoàn hảo, khả năng Pruning càng triệt để -> **Hiệu suất truy vấn càng cao**.\n  - **Clustering Depth cao**: Dữ liệu bị phân mảnh lộn xộn, nhiều phân vùng cùng chứa chung một dải giá trị, hệ thống buộc phải đọc nhiều phân vùng -> Truy vấn chậm và tốn credit.\n- **Hàm hệ thống**: Các Cloud DWH cung cấp các hàm chuyên dụng (như `SYSTEM$CLUSTERING_DEPTH` trong Snowflake) để kiểm tra và theo dõi chỉ số này.\n\n---\n\n### 5. Tự động hóa Re-clustering (Automatic Clustering)\n- **Sắp xếp ngầm không gián đoạn**: Hệ thống tự động gộp và sắp xếp lại các micro-partitions bị phân mảnh trong nền mà hoàn toàn không ảnh hưởng hay khóa các truy vấn đang chạy của người dùng.\n- **Tài nguyên độc lập**: Sử dụng tài nguyên tính toán riêng biệt (Serverless Compute), không tiêu tốn tài nguyên Virtual Warehouse phục vụ báo cáo.\n- **Tự động kích hoạt**: Kích hoạt khi phát hiện lượng dữ liệu mới nạp vào (DML Insert/Update) làm tăng Clustering Depth và suy giảm hiệu năng.\n- **Kiểm soát chi phí**: Quản trị viên có thể bật/tắt hoặc giới hạn ngân sách credit hàng tháng cho tính năng Re-clustering này."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ trực quan về Data Pruning**:\nGiả sử bảng `Orders` có 100 triệu dòng được chia thành 10.000 micro-partitions:\n- Phân vùng #1: Min `Order_Date` = '2023-01-01', Max `Order_Date` = '2023-01-05'.\n- Phân vùng #2: Min `Order_Date` = '2023-01-06', Max `Order_Date` = '2023-01-10'.\n- ...\n- Phân vùng #100: Min `Order_Date` = '2024-05-01', Max `Order_Date` = '2024-05-05'.\n\nKhi người dùng chạy câu lệnh:\n```sql\nSELECT SUM(total_amount) FROM Orders WHERE Order_Date = '2024-05-02';\n```\nHệ thống kiểm tra metadata: Trong 10.000 phân vùng, chỉ có **duy nhất Phân vùng #100** thỏa mãn dải ngày.\n-> Hệ thống lập tức **Prune (bỏ qua) 9.999 phân vùng còn lại**, chỉ đọc đúng 1 phân vùng duy nhất! Câu lệnh hoàn thành trong **0.08 giây** thay vì mất vài phút quét toàn bộ bảng."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Hai câu hỏi chắc chắn gặp trong đề thi**:\n> 1. Kích thước dữ liệu nén trong mỗi Micro-partition: **từ 50MB đến 500MB** (Câu 6 đề cương).\n> 2. Trong chiến lược Clustering, Clustering Key được chọn dựa trên: **Cột có độ chọn lọc cao (High Cardinality) và thường xuyên xuất hiện trong điều kiện lọc** (Câu 7 đề cương)."
+          }
+        ],
         "miniQuiz": [
+          "ch2_q11",
+          "ch2_q13",
+          "ch2_q14",
+          "ch2_q15"
+        ],
+        "relatedQuestionIds": [
+          "ch2_q11",
+          "ch2_q12",
+          "ch2_q13",
+          "ch2_q14",
+          "ch2_q15",
+          "ch2_q16",
+          "q6",
+          "q7"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-2-3",
+        "title": "Bài 3: Thiết kế Fact Tables nâng cao: Transaction, Periodic & Accumulating",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững đặc điểm và ứng dụng của Transaction Fact Tables",
+              "Hiểu nguyên lý Periodic Snapshot Fact Tables trong phân tích xu hướng",
+              "Thành thạo Accumulating Snapshot Fact Tables cho quy trình nhiều giai đoạn",
+              "Nắm vững Quy tắc vàng về Grain trong thiết kế bảng Fact",
+              "Hiểu rõ bản chất Factless Fact Tables và giải pháp Bridge Tables cho quan hệ Many-to-Many"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Phân loại 3 mẫu Fact Table cốt lõi\nTrong phương pháp luận Kimball, có 3 dạng bảng Fact cơ bản phản ánh các hành vi nghiệp vụ khác nhau:\n\n#### A. Transaction Fact Tables (Bảng Fact Giao dịch)\n- **Mức độ chi tiết (Grain)**: Lưu trữ ở mức nguyên tử thấp nhất (**Atomic level**), ghi nhận từng sự kiện riêng lẻ ngay khi phát sinh.\n- **Đặc điểm**:\n  - Thường có số lượng dòng lớn nhất trong toàn bộ kho dữ liệu (hàng tỷ dòng).\n  - Bản ghi mang tính bất biến (Insert-only), không bao giờ sửa đổi dữ liệu đã ghi nhận trong quá khứ.\n  - Chứa nhiều khóa ngoại liên kết tới các bảng Dimension, cho phép phân tích đa chiều linh hoạt.\n  - Là **nguồn dữ liệu gốc** để xây dựng và tổng hợp nên các loại Fact Table khác.\n- **Ứng dụng**: Phù hợp nhất cho các bài toán phân tích chi tiết tận gốc rễ (**Drill-down**), như kiểm tra từng giao dịch quẹt thẻ tín dụng, từng lượt click chuột.\n\n#### B. Periodic Snapshot Fact Tables (Bảng Fact Ảnh chụp định kỳ)\n- **Mức độ chi tiết (Grain)**: Lưu trữ trạng thái hoặc tình trạng của một quy trình tại các thời điểm cố định đều đặn (cuối ngày, cuối tuần, cuối tháng).\n- **Đặc điểm**:\n  - Không ghi lại từng sự kiện mà \"chụp một bức ảnh\" tổng hợp trạng thái tại mốc thời gian đó.\n  - Dữ liệu snapshot trong quá khứ là bất biến, giúp dễ dàng so sánh hiệu năng qua các kỳ báo cáo.\n  - Tiết kiệm chi phí tính toán lại từ hàng tỷ dòng giao dịch khổng lồ.\n- **Ứng dụng**: Phân tích xu hướng (**Trend Analysis**), ví dụ: Số dư tài khoản ngân hàng cuối ngày, số lượng tồn kho cuối tuần, công nợ khách hàng cuối tháng.\n\n#### C. Accumulating Snapshot Fact Tables (Bảng Fact Ảnh chụp tích lũy)\n- **Mức độ chi tiết (Grain)**: Mỗi dòng đại diện cho một thực thể hoặc một vòng đời quy trình hoàn chỉnh có nhiều giai đoạn liên tiếp từ khi bắt đầu đến khi kết thúc.\n- **Đặc điểm**:\n  - Dòng dữ liệu **được cập nhật (Updated) nhiều lần** qua thời gian khi thực thể bước qua các cột mốc mới.\n  - Chứa nhiều cột mốc thời gian (Dates) ứng với các giai đoạn của quy trình.\n  - Cho phép đo lường thời gian hoàn thành từng bước (**Lead Time / Cycle Time**).\n- **Ứng dụng**: Tối ưu hóa chuỗi cung ứng và vận hành: Theo dõi đơn hàng (Đặt hàng -> Thanh toán -> Đóng gói -> Giao vận -> Hoàn tất), quy trình duyệt hồ sơ vay vốn, xử lý khiếu nại bảo hiểm.\n\n---\n\n### 2. Quy tắc vàng về Grain trong Fact Table\n- **Khái niệm Grain**: Là mức độ chi tiết nhỏ nhất mà một dòng trong bảng Fact đại diện.\n- **Tầm quan trọng**: Việc xác định Grain là bước quan trọng nhất vì nó quyết định tính chính xác của toàn bộ kho dữ liệu, các chiều Dimension được phép tham gia và kích thước bảng.\n- **Quy tắc vàng bắt buộc**: *\"Tất cả các Fact (số đo định lượng) trong cùng một bảng Fact phải có cùng một mức chi tiết (Grain)\"*.\n- **Hệ quả của vi phạm**: Nếu trộn lẫn dòng chi tiết sản phẩm và dòng tổng cộng đơn hàng vào cùng một bảng, việc chạy hàm `SUM()` trên cột doanh số sẽ làm dữ liệu bị cộng dồn trùng lặp (Double Counting), dẫn đến sai lệch báo cáo tài chính nghiêm trọng.\n- **Nguyên lý phân tích**: Grain càng thấp (càng chi tiết ở mức nguyên tử) thì khả năng lọc, phân nhóm và khám phá dữ liệu của người dùng càng rộng và mạnh mẽ.\n\n---\n\n### 3. Factless Fact Tables và Bridge Tables\n\n#### A. Factless Fact Tables (Bảng Fact không có số đo)\n- **Bản chất**: Là bảng Fact **không chứa bất kỳ cột số đo định lượng nào** (không có tiền, không có số lượng), chỉ chứa các cột khóa ngoại tham chiếu đến các bảng Dimension.\n- **Ứng dụng thực tế**:\n  1. **Ghi nhận sự kiện xảy ra (Event Tracking)**: Ví dụ bảng điểm danh sinh viên (sinh viên nào, lớp nào, ngày nào có mặt).\n  2. **Phân tích những gì không diễn ra (Coverage / Absence)**: Ví dụ bảng chương trình khuyến mãi (sản phẩm nào tham gia khuyến mãi ở cửa hàng nào vào ngày nào) để tìm ra sản phẩm nào được khuyến mãi nhưng **không phát sinh giao dịch bán hàng**.\n\n#### B. Bridge Tables (Bảng cầu nối)\n- **Bản chất**: Dùng để giải quyết mối quan hệ **Nhiều - Nhiều (Many-to-Many / M-M)** giữa bảng Fact và bảng Dimension.\n- **Ví dụ điển hình**: Một tài khoản ngân hàng có thể có nhiều chủ sở hữu, và một khách hàng có thể sở hữu nhiều tài khoản. Bridge Table đứng ở giữa để ánh xạ tỷ lệ sở hữu.\n- **Cảnh báo kỹ thuật**: Phải hết sức thận trọng khi sử dụng Bridge Table vì nó có thể gây bùng nổ số lượng bản ghi (Cartesian Explosion), làm các câu truy vấn JOIN trở nên cực kỳ nặng nề và dễ tính sai tổng số đo nếu không chia tỷ lệ (Allocation Weight)."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Bảng so sánh 3 loại Fact Table cốt lõi**:\n\n| Tiêu chí so sánh | Transaction Fact | Periodic Snapshot | Accumulating Snapshot |\n| :--- | :--- | :--- | :--- |\n| **Mức độ chi tiết (Grain)** | 1 dòng cho mỗi giao dịch đơn lẻ | 1 dòng cho mỗi khoảng thời gian định kỳ | 1 dòng cho toàn bộ vòng đời quy trình |\n| **Hành vi cập nhật** | Chỉ thêm mới (Insert-only) | Chỉ thêm mới (Insert-only) | Cập nhật dòng cũ (Update in-place) |\n| **Số cột ngày tháng** | 1 cột ngày giao dịch | 1 cột ngày snapshot | Nhiều cột ngày mốc (Milestone dates) |\n| **Chỉ số đo lường chính** | Doanh số, số lượng tức thời | Số dư, tồn kho tại thời điểm | Thời gian trễ (Lead Time, Cycle Time) |\n| **Ví dụ điển hình** | Quẹt thẻ tín dụng tại POS | Tồn kho cuối ngày Chủ Nhật | Quy trình xử lý đơn hàng Shopee |"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Điểm thi trọng tâm**:\n> 1. **Accumulating Snapshot Fact Tables** phù hợp nhất cho: **Quy trình nhiều giai đoạn có thời gian bắt đầu và kết thúc xác định** (Câu 8 đề cương).\n> 2. **Chức năng của Bridge Table**: **Giải quyết mối quan hệ Nhiều - Nhiều (Many-to-Many)** giữa Fact và Dimension (Câu 9 đề cương)."
+          }
+        ],
+        "miniQuiz": [
+          "ch2_q17",
+          "ch2_q18",
+          "ch2_q19",
+          "ch2_q20"
+        ],
+        "relatedQuestionIds": [
+          "ch2_q17",
+          "ch2_q18",
+          "ch2_q19",
+          "ch2_q20",
+          "ch2_q21",
+          "ch2_q22",
           "q8",
           "q9"
         ],
+        "labIds": []
+      },
+      {
+        "id": "les-2-4",
+        "title": "Bài 4: Dimension Tables và Chiến lược Quản lý SCD hiện đại",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Nắm vững nguyên lý thiết kế Dimension Tables (Surrogate Keys, Verbose Attributes, Conformed Dimensions)",
+              "Phân biệt và thành thạo các chiến lược SCD (Type 1 đến Type 6)",
+              "Hiểu cách dbt tự động hóa quản lý SCD Type 2 qua Snapshots",
+              "Nắm vững các kỹ thuật Dimension nâng cao: Junk, Degenerate, Mini-dimensions và Role-Playing",
+              "Tối ưu hóa hiệu năng bảng chiều với khóa Integer và Column Ordering"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Nguyên lý thiết kế Dimension Table\nBảng chiều (Dimension Table) cung cấp bối cảnh (Context) giải thích cho các sự kiện số đo trong bảng Fact, đóng vai trò là \"điểm lọc\" (`WHERE`) và \"điểm nhóm\" (`GROUP BY`):\n- **Ưu tiên cấu trúc Denormalization**: Khác với RDBMS chuẩn hóa 3NF thành nhiều bảng phân cấp, bảng chiều trên Cloud DWH ưu tiên phi chuẩn hóa phẳng để tận dụng tối đa cơ chế Columnar Scanning.\n- **Surrogate Keys thay thế Natural Keys**: Khóa chính của bảng chiều bắt buộc phải là khóa nhân tạo (Surrogate Key - số nguyên tự tăng 1, 2, 3...) thay vì dùng mã khóa nghiệp vụ từ nguồn (Natural Key). Điều này giúp kho dữ liệu độc lập với hệ thống nguồn, hỗ trợ theo dõi lịch sử thay đổi (SCD) và tránh xung đột khi tích hợp đa hệ thống.\n- **Tương thích mức Grain**: Mức Grain của Dimension phải tương thích tuyệt đối với mức chi tiết thấp nhất của Fact Table liên kết.\n- **Verbose Attributes (Thuộc tính mô tả rõ ràng)**: Giá trị và tiêu đề cột phải rõ ràng, mang tính mô tả trực quan (ví dụ: 'Đang hoạt động' thay vì mã 'A'; 'Khách hàng thân thiết' thay vì 'Tier 1').\n- **Conformed Dimensions**: Xây dựng các bảng chiều chuẩn hóa dùng chung xuyên suốt toàn bộ hệ thống để đảm bảo tính nhất quán của \"Single Version of Truth\".\n\n---\n\n### 2. Các chiến lược Slowly Changing Dimensions (SCD) hiện đại\nDữ liệu trong bảng chiều không cố định mà biến đổi chậm theo thời gian (khách hàng đổi địa chỉ, nhân viên chuyển phòng ban). Các chiến lược xử lý:\n- **SCD Type 1 (Ghi đè trực tiếp)**: Cập nhật đè giá trị mới lên giá trị cũ. Không lưu vết lịch sử. Phù hợp cho việc sửa lỗi chính tả hoặc các thuộc tính không có nhu cầu phân tích lịch sử.\n- **SCD Type 2 (Thêm dòng mới)**: Thêm một dòng mới hoàn toàn với Surrogate Key mới, đi kèm các cột quản lý thời gian (`Start_Date`, `End_Date`, `Is_Current`). Đây là giải pháp chuẩn mực để phục vụ báo cáo chính xác theo từng mốc thời gian (**Point-in-time Reporting**).\n- **SCD Type 3 (Thêm cột mới)**: Thêm các cột riêng biệt trong cùng một dòng để lưu giá trị trước đó (ví dụ: `Current_City`, `Previous_City`). Chỉ theo dõi được số lượng thay đổi hữu hạn.\n- **SCD Type 4 (Tách bảng Hiện tại & Lịch sử)**: Tách riêng thành 2 bảng: một bảng chỉ lưu trạng thái hiện tại (`Dim_Customer_Current`) và một bảng lưu toàn bộ lịch sử biến động (`Dim_Customer_History`), giúp bảng chính luôn gọn nhẹ và truy vấn siêu tốc.\n- **SCD Type 5 (Mini-dimension + Type 1)**: Kết hợp bảng phụ Mini-dimension (lưu các thuộc tính thay đổi nhanh) với logic Type 1, cho phép ánh xạ trạng thái hiện tại mà không làm phình to bảng chính.\n- **SCD Type 6 (1 + 2 + 3 = 6)**: Giải pháp lai kết hợp cả 3 loại: vừa thêm dòng mới (Type 2), vừa có cột lưu giá trị cũ (Type 3), vừa ghi đè cột giá trị hiện tại lên tất cả các dòng lịch sử (Type 1) để tiện cho truy vấn.\n- **Quản trị tự động bằng dbt**: Công cụ **dbt (data build tool)** cung cấp tính năng `dbt snapshot` tự động nhận diện thay đổi và tạo logic SCD Type 2 chuẩn mực, xóa bỏ hoàn toàn rủi ro sai sót khi viết code thủ công.\n\n---\n\n### 3. Các kỹ thuật Dimension nâng cao\n- **Junk Dimensions (Chiều gom nhóm)**: Gom nhiều mã trạng thái, cờ boolean (Yes/No, Active/Inactive) rời rạc vào một bảng chiều duy nhất để giảm bớt số lượng khóa ngoại và số phép JOIN trong bảng Fact.\n- **Degenerate Dimensions (Chiều thoái hóa)**: Lưu trữ các khóa nhận diện nghiệp vụ (như Số hóa đơn, Mã vận đơn, Mã phiếu thu) trực tiếp ngay trong bảng Fact mà không cần tạo bảng chiều riêng biệt vì nó không có thuộc tính mô tả nào khác.\n- **Mini-dimensions**: Tách các thuộc tính biến động nhanh (như nhóm thu nhập, mức chi tiêu, điểm tín dụng) sang một bảng phụ riêng để ngăn không cho bảng chiều chính (chứa hàng triệu bản ghi) bị phình to quá mức do áp dụng SCD Type 2.\n- **Role-Playing Dimensions (Chiều đa vai trò)**: Một bảng chiều duy nhất nhưng được cùng một bảng Fact tham chiếu nhiều lần với các vai trò nghiệp vụ khác nhau (Ví dụ: bảng chiều `Dim_Date` được dùng làm Ngày đặt hàng, Ngày thanh toán, Ngày xuất kho).\n- **Khóa kiểu Integer (Số nguyên)**: Ưu tiên dùng số nguyên cho các Surrogate Key để CPU tính toán phép Join nhanh nhất và tối ưu hóa tỷ lệ nén cột.\n- **Tối ưu hóa thứ tự cột (Column Ordering)**: Sắp xếp các cột thường xuyên lọc hoặc có độ nén cao lên trước để hỗ trợ cơ chế nén dữ liệu và Data Pruning hiệu quả nhất."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Minh họa SCD Type 2**:\nKhách hàng Nguyễn Văn A (Mã tự nhiên: `KH001`) chuyển nhà từ Hà Nội vào Đà Nẵng ngày 15/05/2024:\n\n| Customer_SK (Surrogate) | Customer_NK (Natural) | Full_Name | City | Start_Date | End_Date | Is_Current |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| **101** | KH001 | Nguyễn Văn A | Hà Nội | 2020-01-01 | **2024-05-15** | **FALSE** |\n| **102** | KH001 | Nguyễn Văn A | Đà Nẵng | **2024-05-15** | 9999-12-31 | **TRUE** |\n\n- Khi phân tích doanh số năm 2023: Đơn hàng của ông A liên kết với `Customer_SK = 101` -> Doanh thu tính về **Hà Nội** (chính xác lịch sử).\n- Khi phân tích đơn hàng hôm nay: Đơn hàng liên kết với `Customer_SK = 102` -> Doanh thu tính về **Đà Nẵng**."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Tóm tắt mẹo nhớ các loại Dimension**:\n> - **Junk Dimension**: Hộp đựng cờ linh tinh (gộp cờ flag giảm Join).\n> - **Degenerate Dimension**: Mã hóa đơn nằm luôn trong Fact (không có bảng chiều riêng).\n> - **Role-Playing Dimension**: 1 bảng ngày đóng nhiều vai (Order Date, Ship Date)."
+          }
+        ],
+        "miniQuiz": [
+          "ch2_q23",
+          "ch2_q25",
+          "ch2_q27",
+          "ch2_q28"
+        ],
         "relatedQuestionIds": [
-          "q8",
-          "q9"
+          "ch2_q23",
+          "ch2_q24",
+          "ch2_q25",
+          "ch2_q26",
+          "ch2_q27",
+          "ch2_q28"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-2-5",
+        "title": "Bài 5: Kiến trúc Medallion: Bronze, Silver và Gold trên Lakehouse",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu bản chất và đặc điểm lưu trữ của tầng Bronze (Raw Layer)",
+              "Nắm vững các bước làm sạch và kiểm soát chất lượng tại tầng Silver (Curated Layer)",
+              "Hiểu cách tổ chức dữ liệu phục vụ quyết định kinh doanh tại tầng Gold (Consumption Layer)",
+              "Nắm vững nguyên lý Immutability và tích hợp kết quả dự báo AI vào mô hình"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bản chất Kiến trúc Medallion\nKiến trúc Medallion (Huy chương: Đồng, Bạc, Vàng) là mô hình tổ chức dữ liệu tiêu chuẩn trong Modern Data Lakehouse, mô tả dòng chảy chất lượng dữ liệu từ dạng thô sơ đến dạng sẵn sàng cho phân tích cấp cao:\n\n```\n[ Nguồn Dữ Liệu ] (API, ERP, IoT, Hugging Face)\n       │\n       ▼\n┌──────────────────────────────────────────────┐\n│  BRONZE LAYER (Raw Data / Landing Zone)      │\n│  - Dữ liệu thô nguyên bản, bất biến (Append) │\n│  - Schema-on-read, định dạng JSON / Parquet  │\n└──────────────────────────────────────────────┘\n       │ (Data Quality Gate, Cleaning, Imputation)\n       ▼\n┌──────────────────────────────────────────────┐\n│  SILVER LAYER (Curated / Cleaned Data)       │\n│  - Làm sạch, chuẩn hóa kiểu, khử trùng lặp   │\n│  - Mức Grain nguyên tử (Atomic), ACID table  │\n└──────────────────────────────────────────────┘\n       │ (Aggregation, Business Metrics, AI Features)\n       ▼\n┌──────────────────────────────────────────────┐\n│  GOLD LAYER (Consumption / Business Marts)   │\n│  - Star Schema / Wide Tables, tính KPI sẵn   │\n│  - Tích hợp Churn Score / AI Predictions     │\n└──────────────────────────────────────────────┘\n       │\n       ▼\n[ BI Dashboard, Executive Reports & Real-time Apps ]\n```\n\n---\n\n### 2. Tầng Bronze - Điểm đổ bộ dữ liệu thô (Raw Layer)\n- **Tiếp nhận dữ liệu gốc**: Thu nạp dữ liệu từ các hệ thống nguồn (Hugging Face, API, ERP, IoT) mà không qua bất kỳ phép biến đổi logic hay lọc bỏ nào.\n- **Định dạng thô**: Thường lưu dưới dạng file JSON, Parquet, Avro hỗ trợ khả năng **Schema-on-read** linh hoạt.\n- **Tính bất biến (Immutability)**: Dữ liệu tại tầng Bronze chỉ được nạp nối tiếp (Append-only) và không bao giờ bị ghi đè hay xóa bỏ. Điều này đảm bảo hệ thống có thể **tái xử lý (Reprocess / Replay)** toàn bộ dữ liệu lịch sử từ đầu khi logic nghiệp vụ thay đổi.\n- **Gắn Metadata quan trọng**: Mỗi bản ghi bắt buộc phải gắn kèm thời gian nạp (`Ingestion_Timestamp`) và mã định danh hệ thống nguồn (`Source_System_ID`).\n- **Data Lake cho Nhà khoa học dữ liệu**: Đóng vai trò là nguồn tài nguyên phong phú phục vụ các Data Scientist khám phá dữ liệu ban đầu.\n- **Incremental Load**: Sử dụng cơ chế nạp tăng dần để giảm tải cho hệ thống nguồn và tối ưu băng thông mạng.\n\n---\n\n### 3. Tầng Silver - Chuẩn hóa và Tích hợp (Curated Layer)\n- **Làm sạch và khử lỗi**: Thực hiện lọc bản ghi rác, xử lý giá trị khuyết (Imputation) và chuẩn hóa kiểu dữ liệu đồng nhất.\n- **Data Quality Gate**: Áp dụng các quy tắc kiểm thử chất lượng nghiêm ngặt (như dbt tests, Great Expectations) để tự động ngăn chặn hoặc cách ly bản ghi vi phạm.\n- **Tích hợp liên nguồn**: Thực hiện các phép JOIN giữa các nguồn dữ liệu khác nhau để tạo ra các bảng thực thể chủ chốt (Khách hàng, Đơn hàng, Sản phẩm).\n- **Duy trì mức Atomic**: Dữ liệu tại tầng này vẫn duy trì mức độ chi tiết nguyên tử nhưng đã có cấu trúc rõ ràng và hoàn toàn đáng tin cậy.\n- **Bệ phóng cho AI/ML**: Là nguồn cung cấp dữ liệu chính cho các nhà khoa học dữ liệu thực hiện trích xuất và kiến tạo đặc trưng (**Feature Extraction**).\n- **Bảo đảm ACID**: Sử dụng các định dạng bảng mở tiên tiến như Delta Lake hoặc Apache Iceberg để đảm bảo tính toàn vẹn giao dịch ACID.\n\n---\n\n### 4. Tầng Gold - Sẵn sàng cho Quyết định (Consumption Layer)\n- **Tổ chức theo mô hình phân tích**: Dữ liệu được mô hình hóa theo dạng **Star Schema (Kimball)** hoặc **Wide Tables** để tối đa hóa tốc độ truy vấn cho người dùng cuối.\n- **Chứa các chỉ số nghiệp vụ đã tổng hợp**: Các chỉ số kinh doanh cốt lõi (Metrics/KPIs như Doanh thu tuần, Tỷ lệ rời bỏ khách hàng) đã được tính toán sẵn theo các chiều phân tích quan trọng.\n- **Phê duyệt nghiệp vụ (Business-approved)**: Chỉ lưu trữ dữ liệu đã qua thẩm định và xác nhận, đảm bảo không có sự mâu thuẫn số liệu giữa các báo cáo doanh nghiệp.\n- **Data Marts chuyên biệt**: Thiết kế các tập con dữ liệu riêng biệt cho từng phòng ban (Tài chính, Bán hàng, Nhân sự) giúp tăng tốc độ phản hồi.\n- **Tích hợp kết quả dự báo AI**: Ghi nhận trực tiếp các điểm số dự báo từ mô hình AI (như Điểm xác suất rời bỏ Churn Score, Điểm tín dụng) vào các bảng chiều để phục vụ hành động tức thời.\n- **Tương tác trực tiếp**: Là tầng tiếp xúc trực tiếp với các công cụ BI hiện đại (PowerBI, Tableau) và các ứng dụng vận hành tự động."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ dòng chảy dữ liệu Medallion**:\n1. **Bronze**: Nhận file JSON thô từ App gửi về: `{\"event\": \"click\", \"user\": \"U123\", \"ts\": 1716000000, \"extra\": \"...\"}` -> Lưu nguyên vẹn vào `bronze_events`.\n2. **Silver**: Ép kiểu `ts` sang định dạng DateTime chuẩn, lọc bỏ các bản ghi không có `user`, Join với bảng người dùng để xác định vị trí địa lý -> Lưu vào `silver_user_activity` (bảng Delta/Iceberg).\n3. **Gold**: Tổng hợp thành bảng `gold_daily_active_users` tính số lượng người dùng tích cực theo từng tỉnh thành mỗi ngày, đồng thời gắn kèm nhãn dự báo `ai_churn_risk: High/Medium/Low` để đội Marketing gửi voucher kích cầu."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Ghi nhớ nhanh đặc trưng 3 tầng Medallion**:\n> - **Bronze (Đồng)**: Thô nguyên bản, bất biến (Immutable), Schema-on-read.\n> - **Silver (Bạc)**: Sạch sẽ, chuẩn hóa (Curated), mức nguyên tử (Atomic), nguồn cho Feature Engineering.\n> - **Gold (Vàng)**: Sẵn sàng cho quyết định (Consumption), Star Schema / Wide Tables, KPIs đã duyệt."
+          }
+        ],
+        "miniQuiz": [
+          "ch2_q29",
+          "ch2_q30",
+          "ch2_q31",
+          "ch2_q32"
+        ],
+        "relatedQuestionIds": [
+          "ch2_q29",
+          "ch2_q30",
+          "ch2_q31",
+          "ch2_q32"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-2-6",
+        "title": "Bài 6: Semantic Layer và Metric Catalog thống nhất (Headless BI)",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu vai trò của Semantic Layer trong việc trừu tượng hóa dữ liệu cho người dùng kinh doanh",
+              "Nắm vững triết lý Headless BI và lợi ích của Metric Catalog tập trung",
+              "Xóa bỏ hiện tượng Silo Logic và mâu thuẫn số liệu giữa các công cụ phân tích",
+              "Hiểu vai trò của Semantic Layer như một Bản đồ tri thức cho AI Agents và GenAI (RAG, Text-to-SQL)"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Vai trò của Semantic Layer trong Data Lakehouse\nSemantic Layer (Tầng ngữ nghĩa) đóng vai trò là cây cầu nối trừu tượng hóa giữa tầng lưu trữ dữ liệu vật lý phức tạp và người dùng kinh doanh:\n- **Trừu tượng hóa cấu trúc vật lý**: Giấu đi các chi tiết kỹ thuật phức tạp (tên bảng mã hóa, kiểu dữ liệu, các phép nối phức tạp), thay bằng các khái niệm nghiệp vụ gần gũi.\n- **Chuyển đổi thuật ngữ kinh doanh**: Biến các cột kỹ thuật như `c_stat_cd_v2` thành `Trạng thái khách hàng`, `amt_cur_usd` thành `Doanh thu thuần (USD)`.\n- **Định nghĩa quan hệ tập trung**: Mối quan hệ giữa các bảng Fact và Dimension được định nghĩa một lần duy nhất, ngăn chặn việc người dùng nghiệp vụ tự viết các câu lệnh JOIN sai logic gây nhân bản dữ liệu.\n- **Xóa bỏ Silo Logic**: Ngăn chặn tình trạng mỗi công cụ BI lại tự định nghĩa một công thức tính chỉ số khác nhau, đảm bảo mọi phòng ban đều nhìn thấy chung một con số.\n- **Bảo mật đồng nhất**: Cho phép thiết lập các chính sách bảo mật cấp dòng (Row-level security - RLS) và cấp cột (Column-level security - CLS) tập trung ngay tại tầng ngữ nghĩa.\n\n---\n\n### 2. Xây dựng Metric Catalog tập trung (Headless BI)\n- **Triết lý Headless BI**: Tách rời hoàn toàn tầng định nghĩa chỉ số và logic phân tích (Metrics/KPIs) ra khỏi tầng hiển thị biểu đồ của các công cụ BI (PowerBI, Tableau, Looker).\n- **Định nghĩa một nơi - Dùng ở mọi nơi**: Công thức tính toán của mọi chỉ số kinh doanh được viết dưới dạng mã nguồn (Code-as-Configuration như YAML trong dbt Semantic Layer hoặc Cube).\n- **Nhất quán 100%**: Cho dù giám đốc xem trên PowerBI, chuyên viên xem trên Tableau hay kỹ sư AI gọi qua Python/Streamlit, số liệu trả về đều giống nhau tuyệt đối.\n- **Quản lý vòng đời chỉ số**: Hỗ trợ quy trình kiểm thử, đánh giá phiên bản và phê duyệt chỉ số trước khi đưa vào báo cáo chính thức.\n- **Lineage từ ngọn đến gốc**: Cho phép người dùng truy vết ngược con số trên báo cáo cuối cùng về tận các bảng dữ liệu gốc ở tầng Bronze/Silver.\n- **Tra cứu trực tiếp**: Người dùng có thể đọc định nghĩa nghiệp vụ và cách tính của chỉ số ngay trên giao diện phân tích.\n\n---\n\n### 3. Tương lai của Semantic Layer và AI Agents\n- **Bản đồ tri thức (Knowledge Graph)**: Semantic Layer cung cấp bối cảnh đầy đủ về cấu trúc, mối quan hệ và quy tắc kinh doanh, giúp các AI Agents hiểu được bản chất số liệu của doanh nghiệp.\n- **Hỗ trợ cơ chế RAG (Retrieval-Augmented Generation)**: Cung cấp Metadata chuẩn xác cho mô hình ngôn ngữ lớn (LLM), giúp AI trả lời các câu hỏi về số liệu mà **không bị ảo tưởng (Hallucination)**.\n- **Chuyển đổi Text-to-SQL chính xác**: Dịch các câu hỏi bằng ngôn ngữ tự nhiên thành các câu truy vấn SQL phức tạp với độ chính xác cao nhờ dựa trên Metadata ngữ nghĩa đã định nghĩa sẵn.\n- **Trải nghiệm Chat-with-your-data**: Giúp các nhà quản trị có thể tương tác trực tiếp bằng lời nói hoặc câu hỏi chat (\"Doanh thu tuần này tại TP.HCM tăng hay giảm bao nhiêu % so với tuần trước?\"), nhận về câu trả lời và biểu đồ tức thời."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ bài toán giải quyết Silo Logic**:\n- **Không có Semantic Layer**:\n  - Phòng Sales mở PowerBI: Tính `Doanh thu = SUM(amount)` -> Ra 10 tỷ.\n  - Phòng Finance mở Excel: Tính `Doanh thu = SUM(amount) - SUM(tax) - SUM(discount)` -> Ra 8.5 tỷ.\n  - Kết quả: Hai giám đốc tranh cãi suốt cuộc họp vì không biết ai đúng.\n- **Có Semantic Layer (Headless BI)**:\n  - Chỉ số `Net_Revenue` được định nghĩa tập trung bằng mã YAML: `formula: sum(amount) - sum(tax) - sum(discount)`.\n  - Cả PowerBI và Excel đều gọi chỉ số `Net_Revenue` từ Semantic Layer -> Cả hai phòng cùng nhìn thấy con số **8.5 tỷ**."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!NOTE]\n> **Tầm nhìn tương lai**: Semantic Layer không chỉ phục vụ báo cáo BI truyền thống, mà chính là **ngôn ngữ trung gian** để các hệ thống GenAI và AI Agents tự động hóa việc ra quyết định trong doanh nghiệp."
+          }
+        ],
+        "miniQuiz": [
+          "ch2_q33",
+          "ch2_q34",
+          "ch2_q35",
+          "ch2_q36"
+        ],
+        "relatedQuestionIds": [
+          "ch2_q33",
+          "ch2_q34",
+          "ch2_q35",
+          "ch2_q36"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-2-7",
+        "title": "Bài 7: Mô hình hóa Dữ liệu Semi-structured với kiểu dữ liệu VARIANT",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu đặc thù của dữ liệu bán cấu trúc và hiện tượng Schema Drift trong Cloud DWH",
+              "Nắm vững sức mạnh của kiểu dữ liệu VARIANT và cơ chế tối ưu bộ nhớ cột",
+              "Thành thạo kỹ thuật Flattening để bung nở mảng dữ liệu lồng nhau",
+              "Nắm vững chiến lược Materialization và Virtual Views để cân bằng giữa linh hoạt và hiệu năng"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Đặc thù dữ liệu bán cấu trúc trong Cloud DWH\n- **Sự bùng nổ của Semi-structured data**: Dữ liệu hiện đại từ Web logs, cảm biến IoT, tin nhắn API, ứng dụng mạng xã hội phần lớn có định dạng JSON, Avro, Parquet với cấu trúc phân cấp linh hoạt.\n- **Hiện tượng Schema Drift**: Cấu trúc dữ liệu nguồn liên tục thay đổi (thêm trường mới, bớt trường cũ, thay đổi kiểu dữ liệu lồng nhau). Trong các hệ thống RDBMS truyền thống (Schema-on-write), hiện tượng này sẽ làm sập (fail) toàn bộ pipeline nạp dữ liệu.\n- **Kiểu dữ liệu VARIANT**: Các Cloud DWH hiện đại (tiêu biểu như Snowflake) cung cấp kiểu dữ liệu `VARIANT`, cho phép lưu trữ toàn bộ một tài liệu JSON bán cấu trúc phức tạp trong một cột duy nhất.\n- **Tối ưu hóa bộ nhớ cột**: Dù lưu dạng JSON, hệ thống tự động phân tích và tối ưu hóa bộ nhớ theo cột con (Sub-columnar storage) ngầm bên dưới, giúp tốc độ truy vấn các trường bên trong VARIANT nhanh tương đương dữ liệu bảng có cấu trúc truyền thống.\n\n---\n\n### 2. Kỹ thuật Flattening và Truy vấn dữ liệu VARIANT\n- **Truy cập trực tiếp bằng toán tử dấu hai chấm / chấm**: Dễ dàng trích xuất các trường thông tin lồng nhau mà không cần viết hàm phân tích cú pháp phức tạp:\n  ```sql\n  SELECT raw_json:customer.id::int AS cust_id,\n         raw_json:order_details.amount::float AS amount\n  FROM raw_sales;\n  ```\n- **Kỹ thuật Flattening (Làm phẳng mảng)**: Khi tài liệu JSON chứa các mảng lồng nhau (Nested Arrays, ví dụ một đơn hàng có danh sách 5 món hàng), hàm `FLATTEN` được sử dụng để bung nở các phần tử trong mảng thành các dòng dữ liệu riêng biệt.\n- **Join trực tiếp bán cấu trúc với bảng quan hệ**: Cho phép thực hiện phép JOIN trực tiếp giữa một trường dữ liệu nằm sâu trong cột VARIANT với một bảng Dimension quan hệ chuẩn trong cùng một câu lệnh SQL.\n- **Tối ưu hóa công sức ETL**: Đưa việc định nghĩa cấu trúc dữ liệu xuống giai đoạn truy vấn (**Schema-on-read**), giúp nạp dữ liệu vào kho ngay lập tức mà không cần chuẩn bị trước.\n\n---\n\n### 3. Chiến lược Materialization cho dữ liệu VARIANT\n- **Khi nào cần Materialization?**: Khi một trường thông tin nằm trong cột VARIANT được truy vấn thường xuyên và là tiêu chí lọc (`WHERE`) hoặc nhóm (`GROUP BY`) chủ yếu của các Dashboard báo cáo hàng ngày, nên trích xuất nó thành một cột vật lý độc lập.\n- **Lợi ích**: Tận dụng tối đa chỉ mục, tối ưu hóa tỷ lệ nén và cơ chế Data Pruning để tăng tốc độ phản hồi truy vấn lên mức tối đa.\n- **Virtual Views**: Sử dụng các Virtual View để cung cấp giao diện bảng quan hệ chuẩn cho người dùng BI mà không cần tốn thêm dung lượng lưu trữ bản sao dữ liệu.\n- **Cân bằng linh hoạt và hiệu năng**: Giữ nguyên cột VARIANT gốc để duy trì tính linh hoạt, đồng thời trích xuất các cột vật lý quan trọng để phục vụ tầng Silver và Gold."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ truy vấn và Flatten JSON trong Snowflake**:\nGiả sử cột `payload` có kiểu `VARIANT` chứa dữ liệu đơn hàng:\n```json\n{\n  \"order_id\": 9988,\n  \"items\": [\n    {\"prod\": \"Bút bi\", \"price\": 10},\n    {\"prod\": \"Sổ tay\", \"price\": 50}\n  ]\n}\n```\nSử dụng cú pháp `FLATTEN` để chuyển thành bảng phân tích:\n```sql\nSELECT\n    payload:order_id::int AS order_id,\n    value:prod::varchar AS product_name,\n    value:price::int AS product_price\nFROM orders,\nLATERAL FLATTEN(input => payload:items);\n```\nKết quả sinh ra 2 dòng riêng biệt:\n- Dòng 1: `order_id = 9988`, `product_name = 'Bút bi'`, `product_price = 10`\n- Dòng 2: `order_id = 9988`, `product_name = 'Sổ tay'`, `product_price = 50`"
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!TIP]\n> **Nguyên tắc thiết kế vàng**: Sử dụng `VARIANT` ở tầng Bronze để đón nhận dữ liệu nhanh nhất, sau đó dùng `FLATTEN` và `Materialization` ở tầng Silver để tạo các bảng quan hệ chuẩn mực."
+          }
+        ],
+        "miniQuiz": [
+          "ch2_q37",
+          "ch2_q38",
+          "ch2_q39",
+          "ch2_q40"
+        ],
+        "relatedQuestionIds": [
+          "ch2_q37",
+          "ch2_q38",
+          "ch2_q39",
+          "ch2_q40",
+          "ch2_q41"
+        ],
+        "labIds": []
+      },
+      {
+        "id": "les-2-8",
+        "title": "Bài 8: Tối ưu hóa Schema cho Data Mining và Huấn luyện Mô hình AI",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Hiểu sự khác biệt căn bản giữa BI Schema và AI Schema (Mức độ Granularity, Wide Tables)",
+              "Nắm vững kỹ thuật Feature Engineering trực tiếp tại Lakehouse bằng SQL",
+              "Loại bỏ hiện tượng Train-Serve Skew bằng cách thống nhất logic đặc trưng",
+              "Hiểu hiểm họa của Data Leakage và giải pháp Point-in-time Correctness / Feature Store"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Dịch chuyển từ BI Schema sang AI Schema\nMô hình hóa dữ liệu phục vụ Trí tuệ nhân tạo (AI/ML) và Data Mining có những yêu cầu hoàn toàn khác biệt so với báo cáo quản trị BI truyền thống:\n- **Độ chi tiết dữ liệu (Granularity)**: Báo cáo BI tập trung vào tóm tắt xu hướng cấp cao (doanh thu theo tháng, theo quý). Ngược lại, thuật toán AI đòi hỏi dữ liệu ở mức độ chi tiết nguyên tử nhất (từng cú click chuột, thời gian dừng màn hình, tọa độ GPS) để học các đặc trưng tiềm ẩn.\n- **Star Schema vs Wide Tables**: Star Schema tối ưu cho BI người dùng kéo thả. Nhưng khi huấn luyện mô hình học máy lặp lại hàng trăm epoch, việc JOIN liên tục nhiều bảng Dimension sẽ làm nghẽn cụm tính toán. Do đó, **Wide Tables (Bảng rộng phẳng)** là cấu trúc ưu tiên số một cho AI.\n- **Lưu trữ chuỗi thời gian (Time-series)**: Dữ liệu cần được lưu kèm mốc thời gian chặt chẽ để mô hình học được chuỗi hành vi và nhịp điệu tương tác của thực thể.\n- **Tính cân bằng dữ liệu (Data Balance)**: Cần lưu trữ đầy đủ cả các mẫu dữ liệu tích cực (giao dịch thành công) và mẫu dữ liệu tiêu cực (giao dịch gian lận, khách hủy dịch vụ) để thuật toán không bị thiên lệch khi phân loại.\n- **Hỗ trợ phân tách dữ liệu**: Schema thiết kế sẵn các khóa băm (Hash keys) để phân chia dữ liệu ngẫu nhiên thành các tập Train, Validation và Test mà không làm rò rỉ thông tin.\n\n---\n\n### 2. Feature Engineering trực tiếp tại Lakehouse\n- **Sức mạnh tính toán song song**: Thay vì kéo hàng Terabyte dữ liệu thô về máy chủ Python gây nghẽn mạng và tràn RAM, kỹ sư tận dụng sức mạnh tính toán song song phân tán của Lakehouse để biến đổi đặc trưng ngay tại nơi lưu trữ.\n- **Xử lý đặc trưng bằng SQL chuẩn**:\n  - Chuẩn hóa dữ liệu (Min-Max Scaling, Z-score).\n  - Mã hóa biến phân loại (One-Hot Encoding, Label Encoding).\n  - Rời rạc hóa (Discretization / Binning) chia giỏ dữ liệu.\n- **Lưu trữ đặc trưng tổng hợp vào tầng Gold**: Tính toán sẵn các đặc trưng phức tạp (như Tần suất mua hàng 90 ngày qua, Tỷ lệ trả hàng) và lưu vào tầng Gold để mọi mô hình tái sử dụng.\n- **Xóa bỏ Train-Serve Skew**: Bằng cách định nghĩa logic tạo đặc trưng bằng SQL tại Database, mô hình lúc học và lúc dự báo ngoài đời thực đều sử dụng chung một mã nguồn tính toán, triệt tiêu hoàn toàn sự lệch pha kết quả.\n- **Sức mạnh của Window Functions**: Sử dụng các hàm cửa sổ trong SQL (`OVER (PARTITION BY ... ORDER BY ... ROWS BETWEEN ...)`) để tính toán các đặc trưng động theo các cửa sổ thời gian trượt cực kỳ nhanh chóng.\n\n---\n\n### 3. Point-in-time Correctness và Feature Stores\n- **Hiểm họa Data Leakage (Rò rỉ dữ liệu)**: Xảy ra khi mô hình vô tình sử dụng các thông tin phát sinh trong tương lai (sau mốc thời gian dự báo) để học. Kết quả kiểm thử đạt điểm ảo rất cao (99.9% accuracy) nhưng khi đem vào vận hành thực tế thì thất bại hoàn toàn.\n- **Point-in-time Correctness**: Yêu cầu cốt tử đảm bảo tại thời điểm lịch sử $T$ của sự kiện huấn luyện, mô hình chỉ được phép nhìn thấy và sử dụng các giá trị đặc trưng đã tồn tại trước mốc thời gian $T$.\n- **Tái hiện lịch sử qua Time Travel và SCD Type 2**: Sử dụng tính năng Time Travel của Lakehouse hoặc các cột mốc thời gian của SCD Type 2 để tái hiện lại trạng thái chính xác của dữ liệu tại bất kỳ thời điểm nào trong quá khứ.\n- **Vai trò của Feature Store**:\n  - Quản lý phiên bản và dòng đời của các đặc trưng học máy.\n  - Đảm bảo tính nhất quán giữa môi trường huấn luyện ngoại tuyến (Offline Training) và phục vụ dự báo trực tuyến (Online Inference).\n  - Theo dõi sự suy giảm phân phối dữ liệu (**Data Drift**) theo thời gian để kích hoạt việc tái huấn luyện mô hình kịp thời."
+          },
+          {
+            "kind": "example",
+            "markdown": "**Ví dụ minh họa ngăn ngừa Data Leakage bằng Point-in-time**:\nBài toán: Dự báo xác suất khách hàng rời bỏ dịch vụ vào ngày **01/03/2024**:\n- ❌ **Sai lầm (Data Leakage)**: Lấy cột \"Tổng số lần khiếu nại tính đến ngày hôm nay (tháng 6/2024)\" để huấn luyện. Mô hình thấy khách khiếu nại nhiều vào tháng 4 nên đoán khách rời bỏ vào tháng 3 -> Đoán trúng vì nhìn trộm tương lai!\n- ✔️ **Đúng (Point-in-time Correctness)**: Hệ thống sử dụng Feature Store/SCD Type 2 quay ngược thời gian về ngày 01/03/2024 để chỉ lấy số lần khiếu nại phát sinh **trước ngày 01/03/2024**."
+          },
+          {
+            "kind": "note",
+            "markdown": "> [!IMPORTANT]\n> **Khái niệm then chốt trong kỷ nguyên AI Lakehouse**:\n> 1. **Wide Tables** giúp loại bỏ chi phí Join bảng khi huấn luyện Machine Learning.\n> 2. **Point-in-time Correctness** và **Feature Store** ngăn chặn hiện tượng rò rỉ dữ liệu tương lai (Data Leakage)."
+          }
+        ],
+        "miniQuiz": [
+          "ch2_q42",
+          "ch2_q43",
+          "ch2_q46",
+          "ch2_q49"
+        ],
+        "relatedQuestionIds": [
+          "ch2_q42",
+          "ch2_q43",
+          "ch2_q44",
+          "ch2_q45",
+          "ch2_q46",
+          "ch2_q47",
+          "ch2_q48",
+          "ch2_q49",
+          "ch2_q50"
         ],
         "labIds": []
       }
