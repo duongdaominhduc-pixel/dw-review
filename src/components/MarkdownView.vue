@@ -15,6 +15,14 @@ const renderedHtml = computed(() => {
   if (!props.content) return '';
   let text = props.content;
 
+  // Preserve and protect raw <svg>...</svg> blocks from marked (which mistakenly turns 4-space indented lines inside SVGs into <pre><code> blocks)
+  const svgBlocks: string[] = [];
+  text = text.replace(/<svg[\s\S]*?<\/svg>/gi, (match) => {
+    const id = `%%%SVGBLOCK_${svgBlocks.length}%%%`;
+    svgBlocks.push(match);
+    return id;
+  });
+
   // Preserve and render $$ ... $$ display math
   const mathBlocks: string[] = [];
   text = text.replace(/\$\$([\s\S]*?)\$\$/g, (_, math) => {
@@ -41,6 +49,12 @@ const renderedHtml = computed(() => {
 
   // Convert markdown to HTML
   let html = marked.parse(text, { async: false, breaks: true, gfm: true }) as string;
+
+  // Restore SVG blocks
+  for (let i = 0; i < svgBlocks.length; i++) {
+    html = html.replace(`<p>%%%SVGBLOCK_${i}%%%</p>`, svgBlocks[i]);
+    html = html.replace(`%%%SVGBLOCK_${i}%%%`, svgBlocks[i]);
+  }
 
   // Restore math
   for (let i = 0; i < mathBlocks.length; i++) {
