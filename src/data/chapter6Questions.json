@@ -1,0 +1,702 @@
+[
+  {
+    "id": "ch6_q01",
+    "number": "C6.1",
+    "chapterId": "ch6",
+    "topic": "in-database-ml",
+    "type": "theory",
+    "prompt": "So sánh sự khác biệt cơ bản giữa cách tiếp cận Machine Learning truyền thống (Traditional ML) và kiến trúc In-Database Machine Learning (Slide 4).",
+    "answer": "- **Traditional ML:** Dữ liệu lớn phải trích xuất (extract) từ Data Warehouse qua mạng Internet/mạng nội bộ rồi nạp vào máy chủ ML riêng biệt (như Python server, Spark cluster) để huấn luyện. Hệ quả: Tốn băng thông, độ trễ cao, nguy cơ rò rỉ dữ liệu.\n- **In-Database ML:** Dữ liệu được **giữ nguyên tại chỗ** (in-place). Thuật toán ML được đóng gói và đẩy trực tiếp vào thực thi ngay trên hạ tầng tính toán song song của chính Data Warehouse. Ưu điểm: Triệt tiêu chi phí dịch chuyển dữ liệu, độ trễ cực thấp, đảm bảo tuân thủ bảo mật dữ liệu tập trung.",
+    "explanation": "Theo Slide 4: Khẩu hiệu cốt lõi của In-Database ML là 'Move the compute to data, not data to compute' (chuyển tính toán đến dữ liệu, không chuyển dữ liệu đến tính toán).",
+    "eli5": "Thay vì chở 1.000 tấn gạo từ kho về nhà bếp bên ngoài để nấu rồi chở cơm quay lại kho (vừa tốn tiền xe vừa sợ ôi thiu), ta mang đầu bếp vào tận trong kho để nấu tại chỗ.",
+    "commonMistakes": [
+      "Nghĩ rằng In-Database ML bắt buộc phải xuất dữ liệu ra file CSV trước khi chạy"
+    ]
+  },
+  {
+    "id": "ch6_q02",
+    "number": "C6.2",
+    "chapterId": "ch6",
+    "topic": "in-database-ml",
+    "type": "theory",
+    "prompt": "Trình bày 3 lợi ích vượt trội về mặt hệ thống của In-Database ML được nêu ở Slide 5: Scalability, Governance và Simplicity.",
+    "answer": "Theo Slide 5:\n1. **Scalability (Khả năng mở rộng):** Tận dụng kiến trúc tính toán song song quy mô lớn (MPP) và cơ chế tự động mở rộng (auto-scaling) của DWH để xử lý hàng Terabyte dữ liệu mà không cần cấu hình cụm Spark/Hadoop phức tạp.\n2. **Governance (Quản trị & Bảo mật):** Áp dụng đồng nhất cơ chế phân quyền dựa trên vai trò (RBAC) và mã hóa dữ liệu sẵn có của DWH. Quyền truy cập mô hình ML được kiểm soát nghiêm ngặt giống hệt phân quyền trên bảng dữ liệu thô.\n3. **Simplicity (Sự đơn giản hóa):** Tích hợp trực tiếp các bước huấn luyện và dự báo vào các luồng dữ liệu tự động (ELT Pipelines) sẵn có của doanh nghiệp mà không cần duy trì hạ tầng riêng biệt.",
+    "explanation": "Chi tiết Slide 5: Giúp bộ phận Data Engineering và Data Science dùng chung một nền tảng thống nhất, tránh xung đột quyền truy cập.",
+    "eli5": "Khỏi tốn công dựng thêm máy chủ riêng (Scalability), dùng luôn chìa khóa bảo mật của kho cũ (Governance), và nối thẳng vào đường ống nước tự động có sẵn (Simplicity).",
+    "commonMistakes": [
+      "Cho rằng DWH không đủ năng lực tính toán để xử lý các mô hình ML quy mô lớn"
+    ]
+  },
+  {
+    "id": "ch6_q03",
+    "number": "C6.3",
+    "chapterId": "ch6",
+    "topic": "in-database-ml",
+    "type": "theory",
+    "prompt": "Tại sao việc dịch chuyển dữ liệu lớn (Data Movement) ra ngoài kho dữ liệu trong Traditional ML lại là 'cơn ác mộng' đối với các quy định bảo vệ dữ liệu như GDPR hay HIPAA?",
+    "answer": "Khi xuất dữ liệu thô ra khỏi Data Warehouse vào máy chủ ML cá nhân hoặc cụm điện toán ngoài:\n1. Dữ liệu mất đi các lớp bảo vệ kiểm soát truy cập (RBAC, MFA), ghi nhật ký kiểm toán (Audit Logs) và mã hóa tự động của DWH.\n2. Dễ xuất hiện các bản sao dữ liệu trôi nổi (Shadow Data / Data Sprawl) trên máy trạm của lập trình viên, vi phạm nghiêm trọng quyền riêng tư khách hàng và nguyên tắc 'Dữ liệu không được rời khỏi vùng an toàn' (Data Sovereignty).",
+    "explanation": "In-Database ML giữ dữ liệu trong ranh giới bảo mật nghiêm ngặt của DWH, đảm bảo 100% tuân thủ các chuẩn kiểm toán quốc tế.",
+    "eli5": "Dữ liệu mật cất trong két sắt ngân hàng, mỗi lần làm mô hình lại copy ra ổ cứng mang về nhà thì rất dễ bị lộ và bị phạt tiền tỷ.",
+    "commonMistakes": [
+      "Nghĩ rằng chỉ cần mã hóa file khi truyền qua mạng là đã giải quyết xong bài toán quản trị"
+    ]
+  },
+  {
+    "id": "ch6_q04",
+    "number": "C6.4",
+    "chapterId": "ch6",
+    "topic": "in-database-ml",
+    "type": "theory",
+    "prompt": "Kiến trúc tính toán tách rời Compute và Storage trên Modern Cloud DWH (như Snowflake, BigQuery) hỗ trợ In-Database ML như thế nào?",
+    "answer": "Cho phép cấp phát riêng một cụm tính toán chuyên dụng (Compute Warehouse / Virtual Warehouse) cho tác vụ huấn luyện ML nặng mà **hoàn toàn không làm ảnh hưởng hay làm chậm** các truy vấn báo cáo Dashboard/BI của các phòng ban khác đang đọc trên cùng một tầng dữ liệu Storage dùng chung.",
+    "explanation": "Nhờ nguyên lý tách rời Compute & Storage, DWH có thể bật một cụm tài nguyên lớn trong 10 phút để huấn luyện mô hình rồi tự động tắt đi (Auto-suspend) để tối ưu chi phí.",
+    "eli5": "Giống như thuê thêm một nhóm thợ làm việc độc lập trong kho, làm xong việc trả tiền theo phút rồi về, không làm phiền nhóm bán hàng đang giao dịch.",
+    "commonMistakes": [
+      "Nghĩ rằng chạy ML trong database sẽ làm treo hệ thống báo cáo BI của toàn công ty"
+    ]
+  },
+  {
+    "id": "ch6_q05",
+    "number": "C6.5",
+    "chapterId": "ch6",
+    "topic": "in-database-ml",
+    "type": "theory",
+    "prompt": "Trong một luồng ELT Pipeline hiện đại, mô hình In-Database Machine Learning thường được đặt ở tầng nào?",
+    "answer": "Mô hình được đặt ở **tầng T (Transform)** ngay bên trong Data Warehouse, thường được kích hoạt sau khi dữ liệu đã được làm sạch và chuẩn hóa ở tầng Silver/Gold, giúp tự động sinh ra các cột dự báo (ví dụ `churn_probability`, `fraud_score`) vào thẳng các bảng dữ liệu đích.",
+    "explanation": "In-Database ML biến bước dự báo thành một câu lệnh SQL trong ELT pipeline (như DBT hoặc Stored Procedure), chạy định kỳ hoàn toàn tự động.",
+    "eli5": "Sau khi nước đã lọc sạch ở tầng lọc cát và lọc than, nước chảy qua máy khử khuẩn tự động (mô hình ML) trước khi đóng chai xuất xưởng.",
+    "commonMistakes": [
+      "Nghĩ rằng ML phải chạy ở tầng E (Extract) ngoài rìa trước khi nạp vào kho"
+    ]
+  },
+  {
+    "id": "ch6_q06",
+    "number": "C6.6",
+    "chapterId": "ch6",
+    "topic": "ml-concepts",
+    "type": "theory",
+    "prompt": "Phân biệt Supervised Learning (Học có giám sát) và Unsupervised Learning (Học không giám sát) trong kho dữ liệu (Slide 6). Nêu ví dụ cho từng loại.",
+    "answer": "- **Supervised Learning (Slide 6):** Huấn luyện trên tập dữ liệu đã có nhãn (Labeled Data). Mô hình học ánh xạ từ đặc trưng đầu vào $X$ sang nhãn mục tiêu $Y$.\n  - *Classification:* Dự đoán nhãn danh mục rời rạc (ví dụ: Khách hàng rời bỏ hay ở lại, Giao dịch gian lận hay hợp lệ).\n  - *Regression:* Dự đoán giá trị số thực liên tục (ví dụ: Doanh thu tháng tới, Giá nhà, Nhiệt độ).\n- **Unsupervised Learning (Slide 6):** Khám phá cấu trúc, mẫu ngầm ẩn từ dữ liệu chưa được gán nhãn (Unlabeled Data).\n  - *Clustering:* Phân nhóm khách hàng theo hành vi tương tự (K-Means, DBSCAN).\n  - *Anomaly Detection:* Phát hiện bản ghi dị biệt, bất thường trong hệ thống.",
+    "explanation": "Chi tiết Slide 6: Hai nhóm bài toán kinh điển giải quyết hơn 90% nhu cầu phân tích dự đoán trong doanh nghiệp.",
+    "eli5": "Học có giám sát giống như học có sách giải (biết trước đáp án để sửa sai). Học không giám sát giống như tự vào rừng quan sát muông thú để gom chúng thành các loài.",
+    "commonMistakes": [
+      "Xếp Clustering vào Supervised Learning"
+    ]
+  },
+  {
+    "id": "ch6_q07",
+    "number": "C6.7",
+    "chapterId": "ch6",
+    "topic": "ml-concepts",
+    "type": "theory",
+    "prompt": "Quy trình tiền xử lý dữ liệu và phân tích học máy trên sơ đồ Slide 7 gồm những công đoạn then chốt nào?",
+    "answer": "Theo sơ đồ Slide 7:\n1. **Data Pre-process:**\n   - Lọc bỏ tập dữ liệu do phương sai quá thấp hoặc quá nhiều giá trị khuyết thiếu (Dataset filtering).\n   - Ước lượng và điền giá trị thiếu (Estimation of missing values).\n   - Xử lý các giá trị ngoại lai (Handling of outliers).\n   - Mã hóa One-Hot Encoding cho các biến định loại (Categorical variables).\n   - Tách tập dữ liệu thành Training dataset và Testing dataset.\n2. **Data Analysis:**\n   - Áp dụng kiểm thử chéo K-Fold Cross Validation với $k = 5$.\n   - Huấn luyện trên các mô hình Deep Learning (DNN) hoặc Machine Learning (Decision Tree, Random Forest, SVM, ANN) để xuất kết quả dự báo.",
+    "explanation": "Sơ đồ kiến trúc thực nghiệm chuẩn từ nghiên cứu khoa học được TS. Nguyễn Thôn Dã trích dẫn tại Slide 7.",
+    "eli5": "Các bước chuẩn bị nguyên liệu: lọc bỏ đồ hỏng, nhặt sạn, rửa sạch, thái nhỏ, ướp gia vị rồi mới cho vào nồi nấu (huấn luyện mô hình).",
+    "commonMistakes": [
+      "Chạy mô hình trực tiếp trên dữ liệu thô chưa qua làm sạch và One-Hot Encoding"
+    ]
+  },
+  {
+    "id": "ch6_q08",
+    "number": "C6.8",
+    "chapterId": "ch6",
+    "topic": "ml-concepts",
+    "type": "theory",
+    "prompt": "Kỹ thuật K-Fold Cross Validation với $k = 5$ (Slide 7) hoạt động như thế nào và mang lại lợi ích gì?",
+    "answer": "- **Cơ chế:** Chia ngẫu nhiên tập dữ liệu thành 5 phần bằng nhau (folds). Quá trình huấn luyện diễn ra qua 5 lượt: mỗi lượt dùng 4 phần để huấn luyện và 1 phần làm tập kiểm thử (validation). Điểm đánh giá cuối cùng là trung bình cộng của cả 5 lượt.\n- **Lợi ích:** Đảm bảo mọi bản ghi đều được kiểm thử đúng 1 lần; đánh giá độ ổn định của mô hình khách quan và hạn chế tối đa rủi ro Overfitting so với việc chỉ chia tập Train/Test cố định một lần duy nhất.",
+    "explanation": "K-fold với k=5 hoặc k=10 là tiêu chuẩn vàng trong đánh giá mô hình học máy.",
+    "eli5": "Chia đề cương thành 5 phần, thi thử 5 lần, mỗi lần lấy 1 phần khác nhau ra làm đề thi, cuối cùng lấy điểm trung bình.",
+    "commonMistakes": [
+      "Nghĩ rằng tập test trong K-Fold được dùng để huấn luyện mô hình"
+    ]
+  },
+  {
+    "id": "ch6_q09",
+    "number": "C6.9",
+    "chapterId": "ch6",
+    "topic": "ml-concepts",
+    "type": "theory",
+    "prompt": "Mã hóa One-Hot Encoding (Slide 7) là gì? Khi nào cần áp dụng nó cho thuộc tính dữ liệu?",
+    "answer": "Là kỹ thuật biến đổi một thuộc tính định loại (Categorical) có $m$ giá trị phân biệt thành $m$ cột nhị phân mới (chỉ chứa 0 hoặc 1). Mỗi dòng sẽ nhận giá trị 1 tại cột tương ứng với nhóm của nó và 0 ở tất cả các cột còn lại. Cần áp dụng khi đưa các thuộc tính chữ/nhóm không có thứ bậc (như `Quốc_gia`, `Màu_sắc`, `Hình_thức_thanh_toán`) vào các thuật toán học máy chỉ nhận đầu vào dạng số.",
+    "explanation": "Nếu dùng Label Encoding gán 1, 2, 3 cho các nhóm không có thứ bậc, mô hình tuyến tính hay mạng nơ-ron sẽ hiểu lầm là có quan hệ lớn hơn - nhỏ hơn.",
+    "eli5": "Thuộc tính 'Phương tiện' có Xe máy, Ô tô, Xe buýt. Tạo ra 3 cột: nếu đi xe máy thì điền [1, 0, 0], đi ô tô thì điền [0, 1, 0].",
+    "commonMistakes": [
+      "Áp dụng One-Hot Encoding cho thuộc tính có hàng triệu giá trị phân biệt làm bùng nổ số chiều dữ liệu (Curse of Dimensionality)"
+    ]
+  },
+  {
+    "id": "ch6_q10",
+    "number": "C6.10",
+    "chapterId": "ch6",
+    "topic": "ml-concepts",
+    "type": "theory",
+    "prompt": "Trong bài toán phân lớp nhị phân không cân bằng (Imbalanced Data), tại sao chỉ số Accuracy (Độ chính xác tổng thể) lại đánh lừa người làm dữ liệu, và nên thay thế bằng chỉ số nào?",
+    "answer": "Nếu tập dữ liệu có $99\\%$ giao dịch bình thường và chỉ $1\\%$ giao dịch gian lận, một mô hình 'ngu ngốc' đoán tất cả là bình thường sẽ đạt Accuracy $99\\%$, nhưng lại bỏ lọt $100\\%$ gian lận. Do đó Accuracy hoàn toàn vô dụng. Cần thay thế bằng các độ đo:\n- **Precision (Độ chuẩn xác):** Đo tỷ lệ đoán đúng trong số những ca mô hình báo gian lận.\n- **Recall (Độ nhạy):** Đo tỷ lệ phát hiện được bao nhiêu phần trăm tổng số ca gian lận thực tế.\n- **F1-Score:** Trung bình điều hòa giữa Precision và Recall.\n- **ROC-AUC:** Diện tích dưới đường cong ROC đo năng lực phân biệt giữa hai lớp.",
+    "explanation": "Trong ngân hàng và phát hiện gian lận (Slide 23), chỉ số ROC-AUC và F1-Score là hai chỉ số bắt buộc được dùng để đánh giá mô hình.",
+    "eli5": "Khám bệnh cho 100 người chỉ có 1 người ung thư. Bác sĩ đoán bừa 'ai cũng khỏe' đạt độ chính xác 99% nhưng giết chết bệnh nhân.",
+    "commonMistakes": [
+      "Chỉ dùng Accuracy để nghiệm thu mô hình phân loại gian lận"
+    ]
+  },
+  {
+    "id": "ch6_q11",
+    "number": "C6.11",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "theory",
+    "prompt": "Thuật toán CPT / CPT+ (Compact Prediction Tree+) do ai đề xuất vào năm nào (Slide 9)? Thuật toán này được thiết kế chuyên biệt để giải quyết bài toán gì?",
+    "answer": "Thuật toán CPT+ do **Philippe Fournier-Viger và cộng sự** đề xuất vào năm **2015** (công bố tại hội nghị quốc tế PAKDD 2015). CPT+ được thiết kế chuyên biệt cho bài toán **Dự đoán chuỗi tuần tự (Sequence Prediction / Next-item Prediction)**: Cho một chuỗi các hành vi đã xảy ra trong quá khứ của người dùng, dự đoán chính xác sự kiện hoặc trang web tiếp theo mà họ sẽ truy cập.",
+    "explanation": "Chi tiết Slide 9 & 21: CPT+ cải tiến từ CPT bằng cách nén cây tốt hơn và loại bỏ nhiễu trong chuỗi dài.",
+    "eli5": "Thuật toán chuyên đoán hành vi tiếp theo: Khách đã xem trang A rồi xem trang B, máy tính đoán xem tiếp theo khách sẽ bấm vào trang nào.",
+    "commonMistakes": [
+      "Nhầm CPT với Cây quyết định Decision Tree (Decision Tree dùng cho Classification trên bảng dữ liệu, CPT dùng cho dữ liệu chuỗi thời gian tuần tự)"
+    ]
+  },
+  {
+    "id": "ch6_q12",
+    "number": "C6.12",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "theory",
+    "prompt": "Nêu định nghĩa chuỗi tuần tự $s$ và chuỗi hậu tố $P_y(s)$ kích cỡ $y$ theo công thức ở Slide 10.",
+    "answer": "Theo Slide 10:\n- Cho chuỗi tuần tự gồm $n$ phần tử $s = \\langle i_1, i_2, ..., i_n \\rangle$.\n- Chuỗi **hậu tố của $s$ kích cỡ $y$** (với $1 \\le y \\le n$) là chuỗi con gồm $y$ phần tử cuối cùng của $s$, được định nghĩa theo công thức:\n$$P_y(s) = \\langle i_{n - y + 1}, i_{n - y + 2}, ..., i_n \\rangle$$",
+    "explanation": "Ví dụ: Nếu chuỗi $s = \\langle A, B, C, D \\rangle$ và $y = 2$, thì hậu tố kích cỡ 2 là $P_2(s) = \\langle C, D \\rangle$.",
+    "eli5": "Hậu tố kích cỡ y là y hành vi gần đây nhất của người dùng.",
+    "commonMistakes": [
+      "Lấy y phần tử đầu tiên thay vì y phần tử cuối cùng"
+    ]
+  },
+  {
+    "id": "ch6_q13",
+    "number": "C6.13",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "theory",
+    "prompt": "Trình bày 3 cấu trúc dữ liệu cốt lõi cấu thành nên thuật toán CPT (Compact Prediction Tree) như minh họa ở Slide 13.",
+    "answer": "Theo Slide 13, CPT gồm 3 cấu trúc dữ liệu liên kết chặt chẽ:\n1. **Prediction Tree (Cây dự đoán):** Cây nén lưu trữ toàn bộ các chuỗi tuần tự của tập huấn luyện. Mỗi nhánh từ gốc (root) đến lá biểu diễn một chuỗi tuần tự. Các chuỗi có cùng tiền tố sẽ dùng chung các nút.\n2. **Inverted Index (Chỉ mục đảo):** Bảng ánh xạ nhị phân (Bitset matrix) ghi nhận mỗi phần tử (item: A, B, C...) xuất hiện trong những chuỗi tuần tự nào ($s_1, s_2, ...$). Giúp tìm kiếm các chuỗi chứa item cực nhanh với độ phức tạp $O(1)$.\n3. **Lookup Table (Bảng tra cứu):** Bảng chứa con trỏ chỉ thẳng từ mã định danh chuỗi ($s_i$) tới nút lá cuối cùng của chuỗi đó trên Prediction Tree, giúp duyệt ngược từ lá lên gốc.",
+    "explanation": "Chi tiết Slide 13: Ba cấu trúc này kết hợp giúp CPT dự đoán cực nhanh mà không bị mất mát thông tin thứ tự như các mô hình Markov bậc thấp.",
+    "eli5": "- Cây dự đoán: sơ đồ cây gia phả.\n- Chỉ mục đảo: danh bạ tìm nhanh xem chữ cái đó có trong trang nào.\n- Bảng tra cứu: tấm bản đồ chỉ đường đi thẳng tới ngọn cây.",
+    "commonMistakes": [
+      "Nghĩ rằng CPT chỉ có cây Prediction Tree mà quên mất Inverted Index và Lookup Table"
+    ]
+  },
+  {
+    "id": "ch6_q14",
+    "number": "C6.14",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "theory",
+    "prompt": "Trình bày 4 bước trong ý tưởng dự đoán phần tử kế tiếp của thuật toán CPT (Slide 11).",
+    "answer": "Theo Slide 11:\n1. **Bước 1:** Tìm các chuỗi dài nhất xuất hiện sau chuỗi cần dự đoán $s$ để hình thành hậu tố $s$ kích cỡ $y$.\n2. **Bước 2:** Xác định tập các phần tử ứng viên dự đoán (Candidate Items) là các phần tử khác nhau từng đôi một nằm trong hậu tố $s$ kích cỡ $y$.\n3. **Bước 3:** Tính điểm dự đoán bằng cách tính số lần xuất hiện của từng phần tử ứng viên trong hậu tố $s$ kích cỡ $y$.\n4. **Bước 4:** Điểm dự đoán của các ứng viên được lưu trong bảng **Count Table (CT)**. Phần tử có điểm cao nhất trong Count Table được chọn làm kết quả dự đoán.",
+    "explanation": "Ý tưởng cốt lõi là đếm xem sau khi người dùng làm chuỗi hành động $s$, những món nào xuất hiện nhiều nhất ở các chuỗi tương tự trong lịch sử.",
+    "eli5": "Tìm các khách hàng cũ từng làm hành động giống khách này -> Xem sau đó họ bấm vào đâu -> Bỏ phiếu bình chọn, món nào được nhiều người bấm nhất thì gợi ý.",
+    "commonMistakes": [
+      "Lấy các phần tử xuất hiện TRƯỚC chuỗi s làm ứng viên dự đoán"
+    ]
+  },
+  {
+    "id": "ch6_q15",
+    "number": "C6.15",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "calculation",
+    "prompt": "Cho CSDL tuần tự gồm 4 chuỗi (Slide 12):\n$s_1 = \\langle A, B, C, D, F \\rangle$\n$s_2 = \\langle D, C, B, E \\rangle$\n$s_3 = \\langle E, A, D, C, B \\rangle$\n$s_4 = \\langle E, G, A, D, B, C \\rangle$\nCần dự đoán phần tử kế tiếp của chuỗi $s = \\langle A, D \\rangle$. Hãy tra Inverted Index và chỉ ra những chuỗi nào chứa cả hai phần tử $A$ và $D$.",
+    "answer": "Tra Inverted Index từ Slide 13:\n- Phần tử $A$ xuất hiện trong các chuỗi: $s_1, s_3, s_4$ (chuỗi $s_2$ không có $A$).\n- Phần tử $D$ xuất hiện trong: $s_1, s_2, s_3, s_4$.\nGiao của hai tập hợp: $\\{s_1, s_3, s_4\\} \\cap \\{s_1, s_2, s_3, s_4\\} = \\{s_1, s_3, s_4\\}$.\nDo đó, các chuỗi tương tự chứa cả $A$ và $D$ là: **$s_1, s_3, s_4$**.",
+    "explanation": "Chi tiết Slide 12-14: Chuỗi $s_2$ bị loại ngay lập tức từ bước tra Inverted Index vì hoàn toàn không chứa ký tự A.",
+    "eli5": "Tìm xem chuỗi nào có đủ cả 2 chữ cái A và D: s1 có, s3 có, s4 có. Riêng s2 thiếu chữ A nên bị gạch tên.",
+    "commonMistakes": [
+      "Đếm cả chuỗi s2 vào danh sách"
+    ]
+  },
+  {
+    "id": "ch6_q16",
+    "number": "C6.16",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "calculation",
+    "prompt": "Từ 3 chuỗi tương tự $\\{s_1, s_3, s_4\\}$ ở trên, hãy xác định chuỗi hậu tố (mệnh đề kết quả) xuất hiện sau $\\{A, D\\}$ trong từng chuỗi (Slide 14).",
+    "answer": "Theo Slide 14:\n1. Trong $s_1 = \\langle A, B, C, D, F \\rangle$: Sau khi xuất hiện đủ cả $A$ và $D$, phần tử xuất hiện sau là $\\mathbf{\\langle F \\rangle}$.\n2. Trong $s_3 = \\langle E, A, D, C, B \\rangle$: Sau khi xuất hiện đủ cả $A$ và $D$, phần tử xuất hiện sau là $\\mathbf{\\langle C, B \\rangle}$.\n3. Trong $s_4 = \\langle E, G, A, D, B, C \\rangle$: Sau khi xuất hiện đủ cả $A$ và $D$, phần tử xuất hiện sau là $\\mathbf{\\langle B, C \\rangle}$.\nDo đó, tập các phần tử ứng viên dự đoán là: $\\mathbf{\\{C, B, F\\}}$.",
+    "explanation": "Chi tiết Slide 14-15: Hậu tố là chuỗi con nằm sau vị trí xuất hiện của phần tử cuối cùng trong chuỗi s.",
+    "eli5": "Nhìn sau cặp A và D trong từng câu: ở câu 1 có chữ F; ở câu 3 có C và B; ở câu 4 có B và C. Tập ứng viên gồm 3 chữ cái: B, C, F.",
+    "commonMistakes": [
+      "Lấy cả các chữ cái đứng trước A và D (như E hoặc G)"
+    ]
+  },
+  {
+    "id": "ch6_q17",
+    "number": "C6.17",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "calculation",
+    "prompt": "Theo lưu ý ở Slide 15: 'Mẫu số trong các phép tính ước lượng phần tử chính là số nhánh chứa chuỗi hậu tố'. Hãy tính điểm xác suất trong Count Table cho các phần tử $\\{C, B, F\\}$ và đưa ra kết luận dự đoán.",
+    "answer": "Vì có **$3$ nhánh** chứa chuỗi hậu tố thỏa mãn ($s_1, s_3, s_4$), mẫu số ước lượng là **$3$**.\nĐếm số nhánh xuất hiện của từng phần tử ứng viên (Slide 15):\n- Phần tử **C**: Xuất hiện trong hậu tố của $s_3$ và $s_4$ $\\implies P(\\{C\\} | P_y(s)) = \\frac{2}{3} \\approx 0.667$.\n- Phần tử **B**: Xuất hiện trong hậu tố của $s_3$ và $s_4$ $\\implies P(\\{B\\} | P_y(s)) = \\frac{2}{3} \\approx 0.667$.\n- Phần tử **F**: Xuất hiện trong hậu tố của $s_1$ $\\implies P(\\{F\\} | P_y(s)) = \\frac{1}{3} \\approx 0.333$.\n**Kết luận:** Phần tử kế tiếp của chuỗi $s = \\langle A, D \\rangle$ được dự đoán khả dĩ nhất là **B hoặc C** (với số điểm cao nhất đạt $0.667$).",
+    "explanation": "Chi tiết Slide 15: Cả B và C đều đạt điểm số cao nhất là 2/3 (66.7%), vượt trội so với F (33.3%).",
+    "eli5": "Có 3 nhánh hợp lệ. B xuất hiện ở 2 nhánh (điểm 2/3). C xuất hiện ở 2 nhánh (điểm 2/3). F xuất hiện ở 1 nhánh (điểm 1/3). Kết luận: đoán B hoặc C.",
+    "commonMistakes": [
+      "Lấy mẫu số là 4 (chia cho tổng số chuỗi trong CSDL) thay vì chia cho số nhánh chứa chuỗi hậu tố là 3"
+    ]
+  },
+  {
+    "id": "ch6_q18",
+    "number": "C6.18",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "calculation",
+    "prompt": "Giải bài tập ở Slide 16: 'Hãy dự đoán phần tử kế tiếp của chuỗi $\\langle A, B \\rangle$' dựa trên cây CPT cho sẵn trên hình.",
+    "answer": "Từ cây CPT ở Slide 16:\n- Cây có các nhánh:\n  1. $Root \\to A \\to B \\to C$\n  2. $Root \\to A \\to B \\to D \\to C$\n  3. $Root \\to B \\to C$\n  4. $Root \\to B \\to D \\to E$\n- Các nhánh chứa chuỗi tiền đề $\\langle A, B \\rangle$ là nhánh 1 và nhánh 2 (tổng cộng 2 nhánh $\\implies$ mẫu số = 2).\n- Xác định phần tử xuất hiện sau $\\langle A, B \\rangle$:\n  - Ở nhánh 1: sau $A, B$ có $\\langle C \\rangle$.\n  - Ở nhánh 2: sau $A, B$ có $\\langle D, C \\rangle$.\n- Đếm số lần xuất hiện của các ứng viên:\n  - Ứng viên **C**: Xuất hiện ở cả nhánh 1 và nhánh 2 $\\implies P(C) = \\frac{2}{2} = 1.0 = 100\\%$.\n  - Ứng viên **D**: Chỉ xuất hiện ở nhánh 2 $\\implies P(D) = \\frac{1}{2} = 0.5 = 50\\%$.\n**Kết luận:** Phần tử kế tiếp được dự đoán chắc chắn nhất là **C** (với xác suất tuyệt đối $1.0$).",
+    "explanation": "Chi tiết bài tập Slide 16. Phần tử C xuất hiện trong tất cả các đường đi sau cặp <A, B> nên đạt điểm tối đa 1.0.",
+    "eli5": "Cứ đi qua đoạn đường A -> B thì cả 2 nhánh đều dẫn đến điểm C. Vậy 100% người tiếp theo sẽ đến C.",
+    "commonMistakes": [
+      "Đếm cả nhánh 3 và nhánh 4 (vốn không có nút A đi trước B)"
+    ]
+  },
+  {
+    "id": "ch6_q19",
+    "number": "C6.19",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "theory",
+    "prompt": "Ưu điểm lớn nhất của thuật toán CPT+ so với mô hình Markov bậc 1 (First-order Markov Chain) trong bài toán dự đoán chuỗi là gì?",
+    "answer": "Mô hình Markov bậc 1 chỉ nhớ duy nhất 1 trạng thái liền trước (Memoryless), làm mất toàn bộ ngữ cảnh lịch sử dài phía trước. Ngược lại, **CPT+ lưu trữ toàn bộ chuỗi tuần tự không giới hạn độ dài** trong cây Prediction Tree và dùng Inverted Index để tìm kiếm vết lịch sử đầy đủ mà không làm bùng nổ không gian trạng thái.",
+    "explanation": "Markov bậc cao ($k > 1$) bị bùng nổ hàm mũ $|S|^k$, trong khi CPT+ nén cây hiệu quả và hỗ trợ chuỗi có độ dài tùy ý.",
+    "eli5": "Markov giống người đãng trí chỉ nhớ việc vừa làm 1 giây trước. CPT+ nhớ toàn bộ chuỗi hành trình từ đầu đến cuối nên đoán chuẩn hơn nhiều.",
+    "commonMistakes": [
+      "Nghĩ rằng CPT+ có độ phức tạp cao hơn Markov bậc cao"
+    ]
+  },
+  {
+    "id": "ch6_q20",
+    "number": "C6.20",
+    "chapterId": "ch6",
+    "topic": "cpt",
+    "type": "theory",
+    "prompt": "Trong bài báo nghiên cứu được trích dẫn ở Slide 19-20 (IJIKM 2019), thuật toán CPT được kết hợp với thuật toán nào để nâng cao độ chính xác dự đoán truy cập trang web?",
+    "answer": "Thuật toán CPT được kết hợp với **thuật toán Google PageRank** (Sequence Prediction kết hợp PageRank Algorithm) để nâng cao độ chính xác dự đoán truy cập trang web (Improving Webpage Access Predictions).",
+    "explanation": "Chi tiết Slide 19: Kết hợp giữa mô hình chuỗi thời gian cá nhân hóa (CPT) và độ quan trọng toàn cục của trang web (PageRank).",
+    "eli5": "Vừa nhìn vào thói quen riêng của từng khách (CPT), vừa nhìn vào độ hot chung của trang web trên toàn thế giới (PageRank) để đưa ra gợi ý hoàn hảo.",
+    "commonMistakes": [
+      "Nghĩ rằng CPT được kết hợp với thuật toán Apriori"
+    ]
+  },
+  {
+    "id": "ch6_q21",
+    "number": "C6.21",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "theory",
+    "prompt": "Thuật toán PageRank do ai phát minh tại Đại học Stanford? Ý tưởng cốt lõi của PageRank là gì?",
+    "answer": "Thuật toán PageRank do **Larry Page và Sergey Brin** phát minh vào năm **1998** tại Đại học Stanford (nền tảng của công cụ tìm kiếm Google). Ý tưởng cốt lõi: Coi mỗi liên kết (Hyperlink) từ trang $A$ trỏ đến trang $B$ như một **phiếu bầu (vote) tín nhiệm** cho trang $B$. Trang web nào nhận được càng nhiều liên kết từ các trang web uy tín khác thì điểm xếp hạng PageRank của trang đó càng cao.",
+    "explanation": "PageRank đo lường tầm quan trọng khách quan của các trang web dựa hoàn toàn trên cấu trúc đồ thị liên kết của mạng Internet.",
+    "eli5": "Giống như bầu cử: Bạn được càng nhiều người uy tín bỏ phiếu giới thiệu thì uy tín của bạn càng lớn.",
+    "commonMistakes": [
+      "Nghĩ rằng PageRank đếm số từ khóa xuất hiện trên trang web (PageRank dựa trên cấu trúc liên kết, không phải nội dung từ khóa)"
+    ]
+  },
+  {
+    "id": "ch6_q22",
+    "number": "C6.22",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "formula",
+    "prompt": "Viết công thức tổng quát của thuật toán PageRank theo mô hình người lướt web ngẫu nhiên (Random Surfer Model). Giải thích các thành phần trong công thức.",
+    "answer": "$$PR(A) = 1 - df + df \\sum_{i=1}^n \\frac{PR(T_i)}{C(T_i)}$$\nTrong đó:\n- $PR(A)$: Điểm PageRank của trang $A$.\n- $df$: Hệ số suy giảm (Damping Factor), thường chọn là **$0.85$**.\n- $1 - df$: Xác suất người dùng không bấm link mà ngẫu nhiên gõ một địa chỉ URL mới trên thanh trình duyệt (thường là $1 - 0.85 = 0.15$).\n- $T_i$: Các trang web có liên kết trỏ tới trang $A$.\n- $PR(T_i)$: Điểm PageRank hiện tại của trang $T_i$.\n- $C(T_i)$: Tổng số liên kết đi ra (Out-degrees) của trang $T_i$.",
+    "explanation": "Theo Slide 18 và câu hỏi 31, 40 đề cương: Mỗi trang chia đều số điểm tín nhiệm của mình cho tất cả các liên kết mà nó trỏ tới.",
+    "eli5": "Điểm của bạn = 15% may mắn ngẫu nhiên + 85% tổng số điểm mà các trang khác chia đều sang cho bạn.",
+    "commonMistakes": [
+      "Quên chia cho C(Ti), tức lấy nguyên vẹn PR(Ti) mà không san sẻ theo số link trỏ ra"
+    ]
+  },
+  {
+    "id": "ch6_q23",
+    "number": "C6.23",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "theory",
+    "prompt": "Tại sao trong công thức PageRank bắt buộc phải có hệ số Damping Factor $df$ (thường bằng $0.85$)? Nó giải quyết hai vấn đề toán học nào trên đồ thị web?",
+    "answer": "Damping factor giải quyết 2 bài toán bế tắc trên đồ thị liên kết:\n1. **Rank Sink (Hố đen liên kết / Vòng lặp kín):** Một nhóm trang chỉ trỏ link luẩn quẩn cho nhau mà không trỏ ra ngoài. Nếu không có $df$, điểm PageRank sẽ tích tụ hết vào nhóm này đến vô cùng.\n2. **Dangling Nodes / Dead Ends (Nút cụt):** Các trang web không có bất kỳ liên kết đi ra nào ($C = 0$), khiến điểm PageRank bị 'rơi mất' khỏi hệ thống qua từng vòng lặp.\nNhờ có xác suất ngẫu nhiên $1 - df = 0.15$, người lướt web luôn có thể thoát khỏi hố đen bằng cách nhảy sang một trang bất kỳ.",
+    "explanation": "Về mặt toán học, Damping factor đảm bảo ma trận chuyển vị Markov có tính chất không thể phân rã (Irreducible) và phi tuần hoàn (Aperiodic), đảm bảo thuật toán luôn hội tụ.",
+    "eli5": "Nếu đi vào ngõ cụt hoặc vòng xoay luẩn quẩn, luôn có 15% khả năng người dùng đóng tab mở trang mới, giúp dòng chảy điểm số không bị tắc.",
+    "commonMistakes": [
+      "Nghĩ rằng Damping factor là một hệ số tùy tiện không có cơ sở xác suất"
+    ]
+  },
+  {
+    "id": "ch6_q24",
+    "number": "C6.24",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "calculation",
+    "prompt": "Dựa vào bài toán ở Slide 18: Cho đồ thị gồm các trang, xét Node $F$ chỉ nhận được duy nhất 1 link từ Node $E$. Node $E$ trỏ link ra 3 nơi: $B, D, F$. Ban đầu khởi tạo $PR_0 = 1$ cho tất cả các trang, với $df = 0.85$. Hãy tính $PR_1(F)$ ở vòng lặp 1.",
+    "answer": "Theo Slide 18:\n- Số liên kết đi ra của $E$ là: $C(E) = 3$.\n- Ban đầu $PR_0(E) = 1$.\n- Áp dụng công thức:\n  $$PR_1(F) = 1 - df + df \\times \\frac{PR_0(E)}{C(E)}$$\n  $$PR_1(F) = 1 - 0.85 + 0.85 \\times \\frac{1}{3} = 0.15 + 0.2833 = 0.4333 \\approx 0.43$$",
+    "explanation": "Chi tiết Slide 18: Kết quả vòng 1 là 0.43.",
+    "eli5": "Điểm F nhận được = 0.15 điểm sàn ngẫu nhiên + 85% nhân với một phần ba số điểm của E (1/3) = 0.43.",
+    "commonMistakes": [
+      "Lấy 0.85 nhân với 1 mà quên chia cho C(E) = 3"
+    ]
+  },
+  {
+    "id": "ch6_q25",
+    "number": "C6.25",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "calculation",
+    "prompt": "Cũng trong bài toán ở Slide 18, điều kiện dừng của thuật toán PageRank là gì và sau khoảng 50 vòng lặp giá trị $PR(F)$ hội tụ về bao nhiêu?",
+    "answer": "- **Điều kiện dừng:** Thuật toán tiếp tục lặp lại các vòng cho đến khi độ chênh lệch điểm PageRank giữa 2 vòng lặp liên tiếp nhỏ hơn ngưỡng sai số $\\epsilon$ (thường quy định $\\epsilon = 0.0001$):\n  $$|PR_{k+1} - PR_k| \\le 0.0001$$\n- **Giá trị hội tụ:** Theo Slide 18, sau khoảng **50 vòng lặp**, giá trị điểm xếp hạng của Node $F$ hội tụ về **$PR(F) = 3.9$**.",
+    "explanation": "Chi tiết Slide 18: Trên hình vẽ đồ thị, Node F đạt kích thước điểm là 3.9, Node B đạt 38.4, Node C đạt 34.3.",
+    "eli5": "Lặp đi lặp lại 50 lần cho đến khi điểm số gần như đứng yên không nhúc nhích nữa (sai số dưới 0.0001), điểm cuối cùng của F là 3.9.",
+    "commonMistakes": [
+      "Nghĩ rằng PageRank chỉ chạy 1 vòng lặp là xong"
+    ]
+  },
+  {
+    "id": "ch6_q26",
+    "number": "C6.26",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "calculation",
+    "prompt": "Cho đồ thị liên kết gồm 5 trang A, B, C, D, E (câu 31a đề cương). Trang E nhận liên kết từ A và B. Biết $PR_0 = 1$ cho tất cả các trang, A trỏ ra 2 trang, B trỏ ra 4 trang. Với $df = 0.85$, hãy tính $PR_1(E)$.",
+    "answer": "- $C(A) = 2$, $C(B) = 4$.\n- $PR_0(A) = 1$, $PR_0(B) = 1$.\n- Áp dụng công thức:\n  $$PR_1(E) = 1 - df + df \\times \\left( \\frac{PR_0(A)}{C(A)} + \\frac{PR_0(B)}{C(B)} \\right)$$\n  $$PR_1(E) = 1 - 0.85 + 0.85 \\times \\left( \\frac{1}{2} + \\frac{1}{4} \\right) = 0.15 + 0.85 \\times 0.75 = 0.15 + 0.6375 = 0.7875$$",
+    "explanation": "Chi tiết câu hỏi 31a trong đề cương ôn tập. Trang E nhận dòng điểm từ cả 2 nguồn A và B.",
+    "eli5": "A có 1 điểm chia đôi cho E nhận 0.5. B có 1 điểm chia tư cho E nhận 0.25. Tổng nhận = 0.75. Nhân 0.85 rồi cộng 0.15 ra 0.7875.",
+    "commonMistakes": [
+      "Tính cộng trực tiếp PR của A và B mà không chia cho số liên kết đi ra C(A) và C(B)"
+    ]
+  },
+  {
+    "id": "ch6_q27",
+    "number": "C6.27",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "calculation",
+    "prompt": "Nếu một trang web $X$ không nhận được bất kỳ liên kết nào từ các trang khác trỏ tới nó, điểm PageRank của $X$ ở vòng lặp tiếp theo có bằng 0 không? Tính giá trị đó với $df = 0.85$.",
+    "answer": "Điểm PageRank của $X$ **KHÔNG bằng 0**.\nVì không có trang nào trỏ tới, tổng $\\sum = 0$. Áp dụng công thức:\n$$PR(X) = 1 - df + df \\times 0 = 1 - 0.85 = 0.15$$\nNghĩa là mọi trang web trên Internet luôn được đảm bảo một mức điểm sàn tối thiểu là $1 - df = 0.15$ nhờ xác suất người dùng gõ ngẫu nhiên URL.",
+    "explanation": "Đây là tính chất toán học quan trọng của mô hình Random Surfer: không có trang web nào bị điểm PageRank bằng 0 tuyệt đối.",
+    "eli5": "Dù không ai quen biết giới thiệu bạn, bạn vẫn luôn được nhà nước trợ cấp 0.15 điểm sàn để tồn tại.",
+    "commonMistakes": [
+      "Nghĩ rằng không có ai trỏ tới thì điểm PageRank bằng 0"
+    ]
+  },
+  {
+    "id": "ch6_q28",
+    "number": "C6.28",
+    "chapterId": "ch6",
+    "topic": "graph-search",
+    "type": "theory",
+    "prompt": "So sánh 2 thuật toán tìm kiếm và duyệt đồ thị cơ bản: BFS (Breadth-First Search) và DFS (Depth-First Search) về cấu trúc dữ liệu sử dụng và nguyên lý hoạt động.",
+    "answer": "- **BFS (Tìm kiếm theo chiều rộng - Breadth-First Search):**\n  - Cấu trúc dữ liệu: **Hàng đợi (Queue - FIFO)**.\n  - Nguyên lý: Duyệt loang theo từng tầng láng giềng. Thăm tất cả các đỉnh kề trực tiếp với đỉnh hiện tại trước khi chuyển sang các đỉnh ở tầng xa hơn. Luôn tìm được đường đi ngắn nhất trên đồ thị không trọng số.\n- **DFS (Tìm kiếm theo chiều sâu - Depth-First Search):**\n  - Cấu trúc dữ liệu: **Ngăn xếp (Stack - LIFO)** hoặc Đệ quy (Recursion).\n  - Nguyên lý: Đi sâu nhất có thể theo từng nhánh cho đến khi chạm nút cụt (không còn đi tiếp được nữa) rồi mới quay lui (Backtracking) để khám phá các nhánh khác.",
+    "explanation": "Chi tiết câu hỏi 33b và 34 trong đề cương: BFS dùng Queue, DFS dùng Stack.",
+    "eli5": "- BFS: Đi tìm đồ rơi theo vòng tròn đồng tâm mở rộng dần.\n- DFS: Đi vào mê cung cắm đầu đi thẳng một mạch đến ngõ cụt thì mới lùi lại rẽ lối khác.",
+    "commonMistakes": [
+      "Nhầm lẫn: BFS dùng Stack và DFS dùng Queue (sai, BFS dùng Queue, DFS dùng Stack)"
+    ]
+  },
+  {
+    "id": "ch6_q29",
+    "number": "C6.29",
+    "chapterId": "ch6",
+    "topic": "graph-search",
+    "type": "theory",
+    "prompt": "Trong ứng dụng phân tích mạng xã hội và phân tích đồ thị liên kết web của DWH, khi nào người ta ưu tiên dùng BFS và khi nào dùng DFS?",
+    "answer": "- **Dùng BFS khi:** Cần tìm đường đi ngắn nhất giữa hai người dùng (ví dụ tính khoảng cách bạn bè 'Degrees of Separation' trên LinkedIn/Facebook), hoặc quét các trang web gần trong bán kính $k$ bước (Web Crawling).\n- **Dùng DFS khi:** Cần kiểm tra tính liên thông, phát hiện chu trình (Cycle Detection), sắp xếp topo (Topological Sort trong kiểm tra phụ thuộc luồng DAG của Airflow/DBT), hoặc giải các bài toán mê cung tìm kiếm đường đi toàn diện.",
+    "explanation": "BFS tối ưu cho bài toán đường đi ngắn nhất, còn DFS tối ưu cho việc duyệt sâu và phân tích cấu trúc vòng lặp DAG.",
+    "eli5": "Muốn tìm người quen gần nhất thì dùng BFS lan dần ra. Muốn kiểm tra hệ thống đường ống có bị tắc vòng lặp kín không thì dùng DFS đi hết nhánh.",
+    "commonMistakes": [
+      "Dùng DFS để tìm đường đi ngắn nhất trên đồ thị không trọng số (DFS không đảm bảo tìm đường đi ngắn nhất)"
+    ]
+  },
+  {
+    "id": "ch6_q30",
+    "number": "C6.30",
+    "chapterId": "ch6",
+    "topic": "pagerank",
+    "type": "theory",
+    "prompt": "Làm thế nào để áp dụng thuật toán PageRank vào bài toán gợi ý sản phẩm (Product Recommendation) hoặc phát hiện tài khoản gian lận trong Data Warehouse?",
+    "answer": "Bằng cách chuyển đổi CSDL quan hệ sang **đồ thị hai phía (Bipartite Graph)**:\n- Nút là Khách hàng và Sản phẩm, cạnh nối thể hiện hành vi mua hàng hoặc giao dịch chuyển tiền.\n- Áp dụng thuật toán **Personalized PageRank (PPR)** bắt đầu từ một nút khách hàng cụ thể: Các sản phẩm nhận được điểm PageRank cao nhất chính là các sản phẩm phù hợp nhất để gợi ý cho khách hàng đó.\n- Trong phát hiện gian lận: Tiền bẩn chảy qua nhiều tài khoản trung gian sẽ hội tụ điểm PageRank cao bất thường tại các nút rửa tiền.",
+    "explanation": "PageRank hiện đại không chỉ dùng cho web mà là công cụ đồ thị vạn năng trên Big Data Graph Database.",
+    "eli5": "Xem dòng tiền chạy như dòng liên kết web: Tài khoản nào nhận được tiền từ nhiều kẻ lừa đảo sẽ bị gán điểm rủi ro cao nhất.",
+    "commonMistakes": [
+      "Nghĩ rằng PageRank chỉ dùng được cho các trang web có liên kết HTML"
+    ]
+  },
+  {
+    "id": "ch6_q31",
+    "number": "C6.31",
+    "chapterId": "ch6",
+    "topic": "sql-ml",
+    "type": "theory",
+    "prompt": "Trình bày 3 câu lệnh SQL cốt lõi trong Google BigQuery ML (Slide 23): CREATE MODEL, ML.EVALUATE và ML.PREDICT.",
+    "answer": "Theo Slide 23:\n1. **`CREATE MODEL`:** Khởi tạo và bắt đầu huấn luyện mô hình học máy trực tiếp bằng câu lệnh SQL. Cú pháp chỉ định loại mô hình (ví dụ `OPTIONS(model_type='LOGISTIC_REG')` hoặc `LINEAR_REG`) và cột nhãn mục tiêu.\n2. **`ML.EVALUATE`:** Trích xuất nhanh các chỉ số đánh giá hiệu năng mô hình (như ROC-AUC, Precision, Recall, F1-Score, Log Loss) bằng một câu lệnh `SELECT * FROM ML.EVALUATE(...)`.\n3. **`ML.PREDICT`:** Áp dụng mô hình đã huấn luyện để dự báo trực tiếp trên các bảng dữ liệu mới đang lưu trữ trong kho dữ liệu.",
+    "explanation": "Chi tiết Slide 23: BigQuery ML biến toàn bộ quy trình Data Science phức tạp thành 3 câu lệnh SQL chuẩn.",
+    "eli5": "- `CREATE MODEL`: Bấm nút học.\n- `ML.EVALUATE`: Báo cáo điểm thi.\n- `ML.PREDICT`: Mang ra thực tế làm bài tập dự đoán.",
+    "commonMistakes": [
+      "Nghĩ rằng BigQuery ML đòi hỏi người dùng phải tự code thuật toán Gradient Descent"
+    ]
+  },
+  {
+    "id": "ch6_q32",
+    "number": "C6.32",
+    "chapterId": "ch6",
+    "topic": "sql-ml",
+    "type": "theory",
+    "prompt": "Viết một ví dụ câu lệnh SQL hoàn chỉnh để huấn luyện mô hình phân loại Logistic Regression dự đoán khách hàng rời bỏ (Churn) trong BigQuery ML.",
+    "answer": "```sql\nCREATE OR REPLACE MODEL `my_project.analytics.churn_model`\nOPTIONS(\n  model_type = 'LOGISTIC_REG',\n  input_label_cols = ['is_churned'],\n  auto_class_weights = TRUE\n) AS\nSELECT\n  tenure_months,\n  monthly_charges,\n  total_charges,\n  contract_type,\n  payment_method,\n  is_churned\nFROM `my_project.analytics.customer_features`;\n```",
+    "explanation": "Cú pháp chuẩn của BigQuery ML: Sử dụng tùy chọn `input_label_cols` để khai báo nhãn mục tiêu và `auto_class_weights` để cân bằng dữ liệu.",
+    "eli5": "Chỉ một câu lệnh SQL SELECT quen thuộc kẹp thêm tiêu đề `CREATE MODEL` là xong toàn bộ việc huấn luyện máy học.",
+    "commonMistakes": [
+      "Quên chỉ định input_label_cols khiến BigQuery ML không biết cột nào là nhãn cần dự đoán"
+    ]
+  },
+  {
+    "id": "ch6_q33",
+    "number": "C6.33",
+    "chapterId": "ch6",
+    "topic": "sql-ml",
+    "type": "theory",
+    "prompt": "Nêu hai nhóm tính năng AI/ML tiên tiến của Snowflake Cortex được giới thiệu ở Slide 24: Cortex ML Functions và Cortex LLM Functions.",
+    "answer": "Theo Slide 24:\n1. **Cortex ML Functions:** Cung cấp các hàm học máy đóng gói sẵn, tự động tối ưu hóa cho các bài toán doanh nghiệp:\n   - *Forecasting:* Tự động dự báo chuỗi thời gian (doanh số, nhu cầu hàng tồn kho, lượng truy cập).\n   - *Anomaly Detection:* Tự động phát hiện các điểm dữ liệu dị biệt, bất thường trong vận hành.\n2. **Cortex LLM Functions:** Tích hợp trực tiếp các mô hình ngôn ngữ lớn (LLMs như Llama 3, Mistral) để xử lý văn bản phi cấu trúc ngay trong SQL:\n   - `SUMMARIZE`: Tóm tắt văn bản dài.\n   - `TRANSLATE`: Dịch thuật đa ngôn ngữ.\n   - `COMPLETE`: Sinh văn bản và trả lời câu hỏi nghiệp vụ.\n   - `EXTRACT`: Tự động trích xuất thực thể và thông tin có cấu trúc.",
+    "explanation": "Chi tiết Slide 24: Cho phép người dùng SQL khai thác sức mạnh của GenAI mà không cần quản lý GPU hay dựng API phức tạp.",
+    "eli5": "Cortex ML giải quyết bài toán số (dự báo số lượng, bắt lỗi bất thường). Cortex LLM giải quyết bài toán chữ (tóm tắt báo cáo, dịch tiếng Anh, hỏi đáp).",
+    "commonMistakes": [
+      "Nghĩ rằng Snowflake Cortex chỉ hỗ trợ các thuật toán thống kê cổ điển mà không hỗ trợ LLM"
+    ]
+  },
+  {
+    "id": "ch6_q34",
+    "number": "C6.34",
+    "chapterId": "ch6",
+    "topic": "sql-ml",
+    "type": "theory",
+    "prompt": "Viết câu lệnh SQL gọi hàm `SNOWFLAKE.CORTEX.SUMMARIZE` để tóm tắt ý kiến phản hồi của khách hàng trong bảng dữ liệu.",
+    "answer": "```sql\nSELECT\n  feedback_id,\n  customer_id,\n  feedback_text,\n  SNOWFLAKE.CORTEX.SUMMARIZE(feedback_text) AS summary_text\nFROM customer_reviews\nWHERE feedback_text IS NOT NULL;\n```",
+    "explanation": "Theo Slide 24: Hàm LLM được gọi trực tiếp giống như một hàm vô hướng (scalar function) SQL bình thường trên từng dòng dữ liệu.",
+    "eli5": "Gọi hàm `SUMMARIZE(cột_chữ)` trong câu lệnh SELECT giống như gọi hàm `UPPER()` hay `ROUND()` trong SQL.",
+    "commonMistakes": [
+      "Cố gắng gọi hàm tóm tắt trên cột dạng số (hàm nhận tham số đầu vào là chuỗi String/Varchar)"
+    ]
+  },
+  {
+    "id": "ch6_q35",
+    "number": "C6.35",
+    "chapterId": "ch6",
+    "topic": "sql-ml",
+    "type": "theory",
+    "prompt": "Lợi ích lớn nhất của việc sử dụng SQL ML (như BigQuery ML hoặc Snowflake Cortex) đối với đội ngũ phân tích dữ liệu (Data Analysts) là gì?",
+    "answer": "Giúp xóa nhòa rào cản kỹ thuật giữa Data Analyst và Data Scientist. Hàng ngàn chuyên viên phân tích chỉ cần thành thạo ngôn ngữ SQL có thể tự mình xây dựng, đánh giá và triển khai các mô hình dự báo phục vụ kinh doanh trong vài phút mà **không bắt buộc phải học sâu về Python, PyTorch, Cuda hay kỹ thuật DevOps phức tạp**.",
+    "explanation": "Đây là xu hướng dân chủ hóa dữ liệu (Data Democratization) và AI công nghiệp trong các tập đoàn lớn hiện nay.",
+    "eli5": "Biến mọi người biết viết lệnh SQL thành chuyên gia máy học mà không cần phải đi học lập trình Python 6 tháng.",
+    "commonMistakes": [
+      "Nghĩ rằng SQL ML sẽ thay thế hoàn toàn các dự án nghiên cứu AI chuyên sâu (nó phục vụ cho các bài toán kinh doanh phổ biến)"
+    ]
+  },
+  {
+    "id": "ch6_q36",
+    "number": "C6.36",
+    "chapterId": "ch6",
+    "topic": "snowpark",
+    "type": "theory",
+    "prompt": "Khái niệm Snowpark là gì? Cơ chế thực thi của Snowpark khác gì so với việc dùng thư viện `pandas` chạy trên máy cá nhân (Slide 25)?",
+    "answer": "- **Khái niệm (Slide 25):** Snowpark là bộ thư viện lập trình (Developer Framework) cung cấp API trực quan (Dataframe API) cho phép các kỹ sư viết mã bằng Python, Java, Scala mà không cần chuyển dữ liệu ra ngoài.\n- **Sự khác biệt cơ chế:** Khi chạy `pandas` trên máy trạm, toàn bộ dữ liệu phải tải về RAM máy cá nhân (dễ gây tràn RAM nếu data lớn). Với Snowpark, mã Python được biên dịch ngầm thành cây biểu thức logic và đẩy trực tiếp xuống **thực thi phân tán song song ngay trên cụm máy chủ của Snowflake (Query Pushdown)**. Chỉ có kết quả cuối cùng mới được trả về.",
+    "explanation": "Chi tiết Slide 25: Mang lại trải nghiệm lập trình Python quen thuộc nhưng vận hành với sức mạnh vô hạn của hạ tầng Cloud DWH.",
+    "eli5": "Viết code Python như bình thường, nhưng máy tính của bạn chỉ gửi mệnh lệnh, còn toàn bộ việc gánh nặng tính toán do dàn siêu máy chủ đám mây thực hiện.",
+    "commonMistakes": [
+      "Nghĩ rằng Snowpark tải toàn bộ Terabyte dữ liệu về máy cá nhân để tính"
+    ]
+  },
+  {
+    "id": "ch6_q37",
+    "number": "C6.37",
+    "chapterId": "ch6",
+    "topic": "snowpark",
+    "type": "theory",
+    "prompt": "Trình bày 3 đặc điểm quan trọng của môi trường thực thi Runtime của Snowpark được nêu ở Slide 26: Thư viện Anaconda, Cơ chế Sandboxing, và Python Worksheets.",
+    "answer": "Theo Slide 26:\n1. **Tích hợp sẵn kho Anaconda:** Hỗ trợ trực tiếp hàng ngàn thư viện Data Science phổ biến (như `scikit-learn`, `numpy`, `pandas`, `scipy`, `xgboost`) mà không cần cài đặt thủ công và không gặp xung đột phụ thuộc (dependency conflict).\n2. **Cơ chế Secure Sandboxing:** Mã Python/R được chạy bên trong môi trường cô lập tuyệt đối (Secure Sandbox), chặn mọi hành vi truy cập mạng trái phép và ngăn mã độc xâm nhập hạ tầng dữ liệu.\n3. **Python Worksheets:** Cung cấp giao diện trực quan trên Web UI của kho dữ liệu, cho phép viết, chạy thử nghiệm và vẽ biểu đồ trực tiếp trên trình duyệt mà không cần cài IDE (như VS Code/Jupyter) về máy.",
+    "explanation": "Chi tiết Slide 26: Giải quyết triệt để vấn đề bảo mật an toàn thông tin doanh nghiệp khi tích hợp mã Python.",
+    "eli5": "- Anaconda: có sẵn cả kho đồ chơi không cần tải.\n- Sandbox: phòng kính cách ly an toàn, có virus cũng không lây ra ngoài.\n- Python Worksheets: mở web lên là gõ code chạy luôn.",
+    "commonMistakes": [
+      "Tự ý dùng lệnh `pip install` cài các thư viện ngoài không được chứng thực bảo mật trong môi trường DWH"
+    ]
+  },
+  {
+    "id": "ch6_q38",
+    "number": "C6.38",
+    "chapterId": "ch6",
+    "topic": "snowpark",
+    "type": "theory",
+    "prompt": "Khái niệm Lazy Evaluation (Đánh giá lười) trong Snowpark Dataframe API hoạt động như thế nào và đem lại lợi ích gì?",
+    "answer": "- **Cơ chế:** Khi bạn gọi các phép biến đổi dữ liệu trên Snowpark DataFrame (như `.filter()`, `.select()`, `.with_column()`), Snowpark **chưa thực thi tính toán ngay**. Nó chỉ ghi nhận và xây dựng một đồ thị thực thi tối ưu (DAG).\n- **Lợi ích:** Chỉ khi nào bạn gọi các hàm kích hoạt (Action như `.collect()`, `.show()`, `.save_as_table()`), công cụ tối ưu truy vấn mới gom tất cả các bước lại, tối ưu hóa câu lệnh SQL tổng thể để đạt tốc độ thực thi nhanh nhất và tốn ít tài nguyên nhất.",
+    "explanation": "Tương tự như cơ chế Catalyst Optimizer trong Apache Spark, giúp loại bỏ các phép tính trung gian thừa.",
+    "eli5": "Giống như người phục vụ ghi hết danh sách món ăn của cả bàn rồi mới vào bếp một lượt, chứ không chạy đi chạy lại cho từng món.",
+    "commonMistakes": [
+      "Nghĩ rằng mỗi dòng code Snowpark đều kích hoạt một câu truy vấn riêng biệt xuống database"
+    ]
+  },
+  {
+    "id": "ch6_q39",
+    "number": "C6.39",
+    "chapterId": "ch6",
+    "topic": "snowpark",
+    "type": "theory",
+    "prompt": "Thế nào là Snowpark Stored Procedure (Thủ tục lưu trữ) và khi nào nên dùng nó thay vì UDF?",
+    "answer": "- **Snowpark Stored Procedure:** Là một hàm Python được lưu trữ trên DWH có quyền thực thi các tác vụ quản trị, thay đổi cấu trúc bảng (DDL/DML), điều phối pipeline và huấn luyện mô hình ML từ đầu đến cuối.\n- **Khác với UDF:** UDF là hàm thuần túy (Pure Function) nhận giá trị vào và trả kết quả ra trên từng dòng dữ liệu (dùng trong câu lệnh `SELECT`), không được phép thay đổi trạng thái database. Stored Procedure được dùng cho các tác vụ điều khiển luồng dữ liệu tự động (ETL/ELT Orchestration) và định kỳ Retrain mô hình.",
+    "explanation": "UDF dùng cho Scoring/Inference; Stored Procedure dùng cho Batch Training và Quản trị pipeline.",
+    "eli5": "UDF giống máy tính bỏ túi (nhập số tính ra kết quả). Stored Procedure giống người quản đốc (có quyền ra lệnh tạo bảng, xóa bảng, bấm nút chạy dây chuyền).",
+    "commonMistakes": [
+      "Dùng UDF để thực hiện các câu lệnh `DROP TABLE` hoặc `INSERT INTO` (bị hệ thống cấm)"
+    ]
+  },
+  {
+    "id": "ch6_q40",
+    "number": "C6.40",
+    "chapterId": "ch6",
+    "topic": "snowpark",
+    "type": "theory",
+    "prompt": "Tại sao cơ chế Sandboxing trong kho dữ liệu lại chặn quyền truy cập Internet (Network Egress) của mã Python theo mặc định?",
+    "answer": "Để ngăn chặn nguy cơ **Thất thoát dữ liệu (Data Exfiltration)**: Nếu một thư viện bên thứ ba chứa mã độc, nó có thể âm thầm đọc các dữ liệu nhạy cảm của khách hàng trong kho rồi gửi ra máy chủ hacker qua Internet. Chặn truy cập Internet đảm bảo mã Python chỉ tương tác với dữ liệu trong ranh giới an toàn của DWH.",
+    "explanation": "Đây là tiêu chuẩn an ninh bắt buộc trong các ngành ngân hàng, y tế và bảo hiểm.",
+    "eli5": "Cắt mạng Internet trong phòng thí nghiệm mật để không ai có thể tuồn dữ liệu mật ra bên ngoài.",
+    "commonMistakes": [
+      "Nghĩ rằng chặn Internet là do lỗi kỹ thuật của nhà cung cấp Cloud"
+    ]
+  },
+  {
+    "id": "ch6_q41",
+    "number": "C6.41",
+    "chapterId": "ch6",
+    "topic": "feature-store",
+    "type": "theory",
+    "prompt": "Khái niệm Feature Store trong doanh nghiệp là gì (Slide 27)? Nêu lý do thực tế dẫn đến sự cần thiết của Feature Store.",
+    "answer": "- **Khái niệm (Slide 27):** Feature Store là một thư viện/kho lưu trữ tập trung có nhiệm vụ quản lý, lưu trữ và phân phối các đặc trưng dữ liệu (features) đã được tính toán sẵn cho nhiều mô hình ML khác nhau tái sử dụng.\n- **Lý do thực tế:** Trong các dự án ML, công đoạn Feature Engineering chiếm tới 70-80% thời gian. Nếu không có kho tập trung, các phòng ban sẽ bị: tính toán trùng lặp lãng phí tài nguyên, sai lệch logic định nghĩa giữa các nhóm, và không có nơi quản lý vòng đời đặc trưng.",
+    "explanation": "Chi tiết Slide 27: Các Feature Store nổi tiếng gồm Feast, Hopsworks, Tecton, Databricks Feature Store.",
+    "eli5": "Thay vì mỗi đầu bếp tự đi vắt nước cam từ đầu, nhà hàng làm sẵn một bình nước cam nguyên chất chuẩn vị đặt ở quầy bar trung tâm để mọi người cùng lấy dùng.",
+    "commonMistakes": [
+      "Nghĩ rằng Feature Store chỉ lưu trữ bảng dữ liệu thô ban đầu"
+    ]
+  },
+  {
+    "id": "ch6_q42",
+    "number": "C6.42",
+    "chapterId": "ch6",
+    "topic": "feature-store",
+    "type": "theory",
+    "prompt": "Phân tích 3 lợi ích lớn của Feature Store được nêu ở Slide 27: Discovery, Consistency và Lineage.",
+    "answer": "Theo Slide 27:\n1. **Discovery (Dễ dàng khám phá & Tái sử dụng):** Các nhà khoa học dữ liệu có thể dễ dàng tìm kiếm xem đặc trưng mình cần đã có ai tính trước chưa, kèm tài liệu mô tả logic, tránh công việc lặp lại.\n2. **Consistency (Đảm bảo tính nhất quán):** Đảm bảo logic tính toán đặc trưng hoàn toàn giống nhau giữa các mô hình và phòng ban, loại bỏ hiện tượng sai lệch.\n3. **Lineage (Truy vết nguồn gốc):** Biết chính xác đặc trưng được tạo ra từ bảng dữ liệu nguồn nào, tính toán bằng công thức nào và đang được những mô hình nào sử dụng.",
+    "explanation": "Chi tiết Slide 27: Ba trụ cột quản trị dữ liệu đặc trưng cho AI.",
+    "eli5": "- Discovery: Tìm kiếm nhanh như tra Google.\n- Consistency: Cùng một công thức tính, không ai làm lệch.\n- Lineage: Truy xuất nguồn gốc như quét mã vạch thực phẩm.",
+    "commonMistakes": [
+      "Bỏ qua tính năng Lineage khi thiết kế hệ thống đặc trưng"
+    ]
+  },
+  {
+    "id": "ch6_q43",
+    "number": "C6.43",
+    "chapterId": "ch6",
+    "topic": "feature-store",
+    "type": "theory",
+    "prompt": "Hiện tượng Lệch pha giữa Huấn luyện và Phục vụ (Training-Serving Skew) là gì? Feature Store giải quyết nó như thế nào?",
+    "answer": "- **Training-Serving Skew:** Là hiện tượng mô hình đạt độ chính xác rất cao trong lúc thử nghiệm (Training) nhưng bị sai lệch nghiêm trọng khi đưa vào chạy thực tế (Serving). Nguyên nhân do đặc trưng lúc huấn luyện được tính bằng code SQL theo lô (batch), nhưng lúc chạy thực tế lại được viết lại bằng Python/Java API thời gian thực với logic hơi khác một chút, hoặc bị trễ thời gian.\n- **Giải pháp của Feature Store:** Dùng chung **một định nghĩa đặc trưng duy nhất (Single Source of Truth)**. Feature Store tự động đồng bộ giá trị sang cả 2 môi trường: Offline Store (cho Training) và Online Store (cho Serving), đảm bảo tính toán giống nhau 100%.",
+    "explanation": "Training-Serving Skew là nguyên nhân hàng đầu khiến các dự án Machine Learning thất bại khi lên Production.",
+    "eli5": "Lúc học bài một kiểu, lúc đi thi lại phát đề một kiểu khác. Feature Store đảm bảo 'học gì thi nấy' chuẩn chỉ 100%.",
+    "commonMistakes": [
+      "Nghĩ rằng Training-Serving Skew là do thuật toán chọn sai siêu tham số"
+    ]
+  },
+  {
+    "id": "ch6_q44",
+    "number": "C6.44",
+    "chapterId": "ch6",
+    "topic": "feature-store",
+    "type": "theory",
+    "prompt": "Phân biệt kiến trúc hai tầng của Feature Store: Offline Feature Store và Online Feature Store.",
+    "answer": "- **Offline Feature Store:**\n  - Công nghệ: Lưu trên Data Warehouse / Data Lake (như Snowflake, BigQuery, S3 Parquet).\n  - Mục đích: Lưu trữ dữ liệu lịch sử khổng lồ qua nhiều năm, hỗ trợ đọc theo lô lớn (High-throughput Batch reads) để phục vụ quá trình huấn luyện mô hình và phân tích khám phá.\n- **Online Feature Store:**\n  - Công nghệ: Lưu trên cơ sở dữ liệu In-Memory / NoSQL (như Redis, DynamoDB, Cassandra).\n  - Mục đích: Chỉ lưu các giá trị mới nhất của đặc trưng, tối ưu hóa cho việc truy vấn đọc cực nhanh với độ trễ thấp tính bằng mili-giây (Low-latency Point lookups, $< 10ms$) phục vụ dự báo thời gian thực.",
+    "explanation": "Sự kết hợp giữa Offline Store và Online Store tạo nên kiến trúc Dual-Storage hoàn chỉnh cho Feature Store hiện đại.",
+    "eli5": "- Offline: Nhà kho chứa tài liệu lưu trữ 10 năm trước (để nghiên cứu).\n- Online: Ngăn bàn làm việc lấy hồ sơ trong 1 giây (để xử lý ngay cho khách đang đứng chờ).",
+    "commonMistakes": [
+      "Dùng trực tiếp Data Warehouse làm Online Serving cho ứng dụng cần độ trễ mili-giây"
+    ]
+  },
+  {
+    "id": "ch6_q45",
+    "number": "C6.45",
+    "chapterId": "ch6",
+    "topic": "feature-store",
+    "type": "theory",
+    "prompt": "Khái niệm Point-in-time Correctness (Time-travel trong Feature Store) là gì và tại sao nó tối quan trọng trong việc huấn luyện mô hình?",
+    "answer": "Là khả năng trích xuất chính xác giá trị của các đặc trưng **tại đúng mốc thời gian trong quá khứ** mà sự kiện xảy ra (tránh hiện tượng Data Leakage / Nhìn trộm tương lai). Ví dụ: Khi huấn luyện dự đoán khách hàng có trả được nợ vào ngày 01/01/2023 không, mô hình chỉ được phép lấy các chỉ số tín dụng tính đến ngày 31/12/2022, tuyệt đối không được lấy nhầm dữ liệu của tháng 06/2023.",
+    "explanation": "Nếu không có Time-travel, mô hình sẽ vô tình học từ dữ liệu tương lai, dẫn đến ảo tưởng về độ chính xác nhưng khi chạy thực tế sẽ sập hoàn toàn.",
+    "eli5": "Giống cỗ máy thời gian: Quay lại đúng ngày đó, chỉ được dùng những thông tin người ta đã biết vào ngày đó để dự đoán, không được ăn gian xem trước tương lai.",
+    "commonMistakes": [
+      "Lấy giá trị hiện tại của bảng khách hàng để huấn luyện cho các giao dịch xảy ra từ 2 năm trước"
+    ]
+  },
+  {
+    "id": "ch6_q46",
+    "number": "C6.46",
+    "chapterId": "ch6",
+    "topic": "mlops",
+    "type": "theory",
+    "prompt": "Khái niệm MLOps là gì? Vai trò của Model Registry và Model Versioning trong hạ tầng Kho dữ liệu (Slide 28)?",
+    "answer": "Theo Slide 28:\n- **MLOps:** Là tập hợp các quy trình áp dụng tư duy DevOps vào Machine Learning, giúp tự động hóa và quản lý toàn diện vòng đời mô hình từ thử nghiệm đến môi trường vận hành thực tế.\n- **Model Registry:** Là danh mục lưu trữ tập trung tất cả các mô hình đã được huấn luyện thành công; giúp theo dõi siêu dữ liệu và quản lý trạng thái chuyển đổi của mô hình (Development $\\to$ Staging $\\to$ Approved / Production $\\to$ Retired).\n- **Model Versioning:** Ràng buộc chặt chẽ phiên bản mô hình ML đi kèm với đúng **phiên bản dữ liệu (Data Version)** và mã nguồn tạo ra nó tại thời điểm đó để đảm bảo khả năng tái lập kiểm thử 100%.",
+    "explanation": "Chi tiết Slide 28: Giống như Git cho Machine Learning, giúp doanh nghiệp kiểm soát và phục hồi mô hình an toàn.",
+    "eli5": "MLOps là dây chuyền tự động. Model Registry là tủ trưng bày các bản sản phẩm. Model Versioning là sổ lưu trữ tem bảo hành ghi rõ bản này nấu từ mẻ gạo nào ngày nào.",
+    "commonMistakes": [
+      "Chỉ lưu file trọng số mô hình (.pkl, .onnx) mà không lưu thông tin phiên bản dữ liệu huấn luyện"
+    ]
+  },
+  {
+    "id": "ch6_q47",
+    "number": "C6.47",
+    "chapterId": "ch6",
+    "topic": "mlops",
+    "type": "theory",
+    "prompt": "Phân biệt hai hiện tượng suy giảm hiệu năng mô hình (Model Drift) theo thời gian: Data Drift và Concept Drift (Slide 29). Nêu ví dụ thực tế.",
+    "answer": "Theo Slide 29:\n1. **Data Drift (Trôi dạt dữ liệu):** Phân phối của dữ liệu đầu vào $P(X)$ bị thay đổi so với dữ liệu huấn luyện, trong khi mối quan hệ ánh xạ với nhãn mục tiêu không đổi.\n   - *Ví dụ:* Dữ liệu huấn luyện mua sắm chủ yếu là nhóm khách hàng 18-25 tuổi, nhưng sau chiến dịch quảng cáo, lượng lớn khách hàng 45-60 tuổi tham gia vào hệ thống với mức thu nhập và chi tiêu hoàn toàn khác.\n2. **Concept Drift (Trôi dạt khái niệm):** Mối quan hệ thống kê giữa thuộc tính đầu vào $X$ và nhãn mục tiêu $Y$ bị thay đổi ($P(Y|X)$ thay đổi), dù phân phối đầu vào có thể không đổi.\n   - *Ví dụ:* Trước đại dịch Covid-19, mua nhiều khẩu trang và nước rửa tay là hành vi dị biệt (Anomaly); nhưng trong đại dịch, đây là hành vi hoàn toàn bình thường.",
+    "explanation": "Chi tiết Slide 29: Cả hai hiện tượng đều làm suy giảm độ chính xác của mô hình và đòi hỏi phải có cơ chế giám sát liên tục.",
+    "eli5": "- Data Drift: Khách hàng đổi người (già hơn, giàu hơn).\n- Concept Drift: Định nghĩa đúng sai bị đảo lộn theo thời thế (ví dụ trước dịch đeo khẩu trang vào ngân hàng là cướp, trong dịch không đeo là bị phạt).",
+    "commonMistakes": [
+      "Đồng nhất Data Drift và Concept Drift làm một"
+    ]
+  },
+  {
+    "id": "ch6_q48",
+    "number": "C6.48",
+    "chapterId": "ch6",
+    "topic": "mlops",
+    "type": "theory",
+    "prompt": "Cơ chế Tự động huấn luyện lại mô hình (Auto-retraining Loop) trong MLOps được thiết lập như thế nào để khắc phục Model Drift (Slide 29)?",
+    "answer": "Giải pháp (Slide 29):\n1. Thiết lập các chỉ số giám sát chất lượng mô hình (như độ suy giảm Accuracy, F1-Score, hoặc độ lệch phân phối Population Stability Index - PSI) chạy định kỳ trên DWH.\n2. Khi chỉ số đo lường vượt ngưỡng cảnh báo (Threshold) cho phép, hệ thống tự động kích hoạt luồng pipeline (Airflow / DBT / Stored Procedure) lấy dữ liệu mới nhất trong Feature Store để huấn luyện lại mô hình (**Auto-retraining**).\n3. Mô hình mới được tự động đánh giá chéo; nếu hiệu năng vượt trội hơn mô hình cũ, nó sẽ tự động được cập nhật vào Model Registry và triển khai thay thế.",
+    "explanation": "Vòng lặp kín (Closed-loop) đảm bảo hệ thống luôn tự thích nghi với biến động thị trường.",
+    "eli5": "Giống như phần mềm tự động phát hiện virus mới, khi thấy độ bắt trúng giảm xuống thì tự động tải dữ liệu mới về học lại và tự nâng cấp.",
+    "commonMistakes": [
+      "Huấn luyện mô hình một lần rồi bỏ mặc chạy vĩnh viễn không bao giờ cập nhật"
+    ]
+  },
+  {
+    "id": "ch6_q49",
+    "number": "C6.49",
+    "chapterId": "ch6",
+    "topic": "automl",
+    "type": "theory",
+    "prompt": "Khái niệm AutoML là gì và 3 công đoạn chính được tự động hóa hoàn toàn bởi AutoML theo Slide 30 là gì?",
+    "answer": "Theo Slide 30:\n- **Khái niệm:** AutoML (Automated Machine Learning) là công nghệ tự động hóa toàn bộ chuỗi quy trình xây dựng mô hình Học máy, giảm thiểu tối đa các thao tác thử sai lặp đi lặp lại của con người.\n- **3 công đoạn được tự động hóa hoàn toàn:**\n  1. **Automated Feature Engineering:** Tự động tạo, chọn lọc và biến đổi các đặc trưng hữu ích từ dữ liệu thô.\n  2. **Automated Model / Algorithm Selection:** Tự động thử nghiệm và huấn luyện đồng thời trên nhiều thuật toán khác nhau (Linear, Random Forest, XGBoost, LightGBM...) để chọn ra thuật toán tốt nhất.\n  3. **Automated Hyperparameter Tuning:** Tự động dò tìm bộ siêu tham số tối ưu (bằng Bayesian Optimization hoặc Random Search) để tối đa hóa hiệu năng mô hình.",
+    "explanation": "Chi tiết Slide 30: Giúp rút ngắn thời gian phát triển mô hình từ vài tuần xuống còn vài giờ.",
+    "eli5": "Giống như chế độ nấu ăn tự động trên nồi chiên không dầu: Chỉ cần bỏ nguyên liệu vào, nồi tự cân chỉnh nhiệt độ, thời gian và công thức nấu chuẩn nhất.",
+    "commonMistakes": [
+      "Nghĩ rằng AutoML loại bỏ hoàn toàn vai trò của con người (con người vẫn cần định nghĩa bài toán nghiệp vụ và chuẩn bị dữ liệu sạch)"
+    ]
+  },
+  {
+    "id": "ch6_q50",
+    "number": "C6.50",
+    "chapterId": "ch6",
+    "topic": "deployment-udf",
+    "type": "theory",
+    "prompt": "Trình bày cơ chế triển khai mô hình Machine Learning dưới dạng hàm định nghĩa sẵn (User-Defined Function - UDF) trong DWH và khái niệm Dự báo tức thời (Scoring on-the-fly) ở Slide 31.",
+    "answer": "Theo Slide 31:\n- **Đóng gói thành UDF:** Sau khi mô hình ML được huấn luyện và phê duyệt, nó được xuất xưởng và đăng ký trực tiếp thành một hàm SQL tự định nghĩa (**UDF**) ngay trong Data Warehouse.\n- **Dự báo tức thời (Scoring on-the-fly):** Người dùng nghiệp vụ hoặc ứng dụng không cần phải gọi API bên ngoài phức tạp. Để dự báo, người dùng chỉ cần thực thi một câu lệnh `SELECT` thông thường:\n  ```sql\n  SELECT customer_id, predict_churn_udf(age, balance, tenure) AS churn_risk\n  FROM customers;\n  ```\n  Hàm UDF sẽ tự động tính toán và trả về kết quả dự báo theo thời gian thực trực tiếp trên từng dòng dữ liệu đang truy vấn với hiệu năng xử lý song song cực cao.",
+    "explanation": "Chi tiết Slide 31: Đây là đỉnh cao của In-Database ML, biến việc suy luận máy học trở nên tự nhiên và dễ dàng như các phép toán cộng trừ trong SQL.",
+    "eli5": "Biến mô hình AI thành một cái nút bấm trong bảng tính Excel: gõ `=predict_churn(...)` vào cột là kết quả dự báo hiện ra ngay lập tức cho từng người.",
+    "commonMistakes": [
+      "Nghĩ rằng muốn dự báo bắt buộc phải dựng một cụm máy chủ microservice REST API riêng bên ngoài"
+    ]
+  }
+]

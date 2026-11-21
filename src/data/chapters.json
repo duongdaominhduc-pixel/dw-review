@@ -1507,24 +1507,29 @@
         "status": "done",
         "sections": [
           {
-            "id": "sec-5-1-1",
-            "title": "1. Khái niệm Luật kết hợp (Association Rules)",
-            "content": "### 1. Khái niệm Luật kết hợp (Association Rules)\nTheo **Slide 4**, luật kết hợp là một mối quan hệ thống kê giữa các tập hợp các item trong cơ sở dữ liệu giao dịch, nhằm phát hiện các mẫu hành vi ngầm ẩn giữa các sản phẩm hoặc sự kiện.\n- Dạng tổng quát:\n  $$X \\Rightarrow Y$$\n  Trong đó:\n  - $X$ (**Antecedent - Tiền đề**): Tập hợp các item xuất hiện trước.\n  - $Y$ (**Consequent - Hậu đề**): Tập hợp các item xuất hiện sau (với $X \\cap Y = \\emptyset$).\n  - **Ý nghĩa nghiệp vụ:** Nếu khách hàng mua tập sản phẩm $X$, thì họ cũng có khả năng cao sẽ mua thêm tập sản phẩm $Y$.\n\n---\n\n### 2. Các thang đo chất lượng luật cốt lõi\n#### a. Độ hỗ trợ (Support) - Tần suất xuất hiện\nĐo lường mức độ phổ biến của luật trong toàn bộ CSDL:\n$$Sup(X \\Rightarrow Y) = P(X \\cap Y) = \\frac{\\text{count}(X \\cup Y)}{N}$$\n- Tiến gần 1: Tập luật cực kỳ phổ biến.\n- Tiến gần 0: Tập luật hiếm gặp.\n\n#### b. Độ tin cậy (Confidence) - Xác suất có điều kiện\nĐo lường mức độ chắc chắn của dự đoán:\n$$Conf(X \\Rightarrow Y) = P(Y|X) = \\frac{Sup(X \\cap Y)}{Sup(X)} = \\frac{\\text{count}(X \\cup Y)}{\\text{count}(X)}$$\n- $Conf = 1$ ($100\\%$): Tuyệt đối đúng.\n- $0.9 \\le Conf < 1$: Rất mạnh, đáng tin cậy cao.\n- $0.5 \\le Conf < 0.9$: Trung bình, tin cậy vừa phải.\n- $Conf < 0.5$: Luật yếu.\n\n#### c. Độ nâng (Lift) - Tương quan phụ thuộc\nĐo lường mức độ tương quan giữa tiền đề và hậu đề:\n$$Lift(X \\Rightarrow Y) = \\frac{Conf(X \\Rightarrow Y)}{P(Y)} = \\frac{P(X \\cap Y)}{P(X) \\cdot P(Y)}$$\n- $Lift > 1$: Tương quan dương (Hiệp đồng, mua $X$ thúc đẩy mua $Y$).\n- $Lift = 1$: Độc lập thống kê (Không có tác động qua lại).\n- $Lift < 1$: Tương quan âm (Hàng thay thế, mua $X$ làm giảm khả năng mua $Y$)."
+            "kind": "objectives",
+            "items": [
+              "Khái niệm Luật kết hợp (Association Rules)",
+              "Chỉ số nâng cao: Leverage và Conviction",
+              "Bài toán thực hành tính toán từng bước (Slide 9-10)",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
           },
           {
-            "id": "sec-5-1-2",
-            "title": "2. Chỉ số nâng cao: Leverage và Conviction",
-            "content": "### 3. Hai độ đo nâng cao: Leverage và Conviction\n#### a. Leverage (Độ đòn bẩy)\nĐo lường sự sai khác giữa tần suất đồng xuất hiện thực tế và tần suất kỳ vọng nếu hai biến độc lập hoàn toàn:\n$$Leverage(X \\Rightarrow Y) = P(X \\cap Y) - P(X) \\cdot P(Y)$$\n- Phạm vi giá trị: $[-0.25, 0.25]$.\n- $Leverage = 0$ khi $X$ và $Y$ độc lập thống kê.\n- Khác với Lift là một tỷ số (phép chia), Leverage là một hiệu số (phép trừ xác suất), ưu tiên các luật có độ hỗ trợ lớn.\n\n#### b. Conviction (Độ tin chắc)\nĐo lường tỷ lệ giữa tần suất kỳ vọng luật bị sai nếu độc lập chia cho tần suất luật bị sai thực tế:\n$$Conviction(X \\Rightarrow Y) = \\frac{1 - P(Y)}{1 - Conf(X \\Rightarrow Y)}$$\n- $Conviction = 1$: Tiền đề và hậu đề độc lập.\n- $Conviction \\to \\infty$: Khi $Conf = 1$ (luật không bao giờ sai).\n\n---\n\n### 4. Ngưỡng lọc luật chuẩn công nghiệp\nTheo **Slide 9**:\n- **$minsup$ tối thiểu:** Thường đặt là **$0.01$ ($1\\%$)** để loại bỏ các trường hợp cá biệt.\n- **$minconf$ tối thiểu:** Thường đặt là **$0.8$ ($80\\%$)** để đảm bảo độ tin cậy khi ra quyết định kinh doanh."
+            "kind": "concept",
+            "markdown": "### 1. Khái niệm Luật kết hợp (Association Rules)\nTheo **Slide 4**, luật kết hợp là một mối quan hệ thống kê giữa các tập hợp các item trong cơ sở dữ liệu giao dịch, nhằm phát hiện các mẫu hành vi ngầm ẩn giữa các sản phẩm hoặc sự kiện.\n- Dạng tổng quát:\n  $$X \\Rightarrow Y$$\n  Trong đó:\n  - $X$ (**Antecedent - Tiền đề**): Tập hợp các item xuất hiện trước.\n  - $Y$ (**Consequent - Hậu đề**): Tập hợp các item xuất hiện sau (với $X \\cap Y = \\emptyset$).\n  - **Ý nghĩa nghiệp vụ:** Nếu khách hàng mua tập sản phẩm $X$, thì họ cũng có khả năng cao sẽ mua thêm tập sản phẩm $Y$.\n\n---\n\n### 2. Các thang đo chất lượng luật cốt lõi\n#### a. Độ hỗ trợ (Support) - Tần suất xuất hiện\nĐo lường mức độ phổ biến của luật trong toàn bộ CSDL:\n$$Sup(X \\Rightarrow Y) = P(X \\cap Y) = \\frac{\\text{count}(X \\cup Y)}{N}$$\n- Tiến gần 1: Tập luật cực kỳ phổ biến.\n- Tiến gần 0: Tập luật hiếm gặp.\n\n#### b. Độ tin cậy (Confidence) - Xác suất có điều kiện\nĐo lường mức độ chắc chắn của dự đoán:\n$$Conf(X \\Rightarrow Y) = P(Y|X) = \\frac{Sup(X \\cap Y)}{Sup(X)} = \\frac{\\text{count}(X \\cup Y)}{\\text{count}(X)}$$\n- $Conf = 1$ ($100\\%$): Tuyệt đối đúng.\n- $0.9 \\le Conf < 1$: Rất mạnh, đáng tin cậy cao.\n- $0.5 \\le Conf < 0.9$: Trung bình, tin cậy vừa phải.\n- $Conf < 0.5$: Luật yếu.\n\n#### c. Độ nâng (Lift) - Tương quan phụ thuộc\nĐo lường mức độ tương quan giữa tiền đề và hậu đề:\n$$Lift(X \\Rightarrow Y) = \\frac{Conf(X \\Rightarrow Y)}{P(Y)} = \\frac{P(X \\cap Y)}{P(X) \\cdot P(Y)}$$\n- $Lift > 1$: Tương quan dương (Hiệp đồng, mua $X$ thúc đẩy mua $Y$).\n- $Lift = 1$: Độc lập thống kê (Không có tác động qua lại).\n- $Lift < 1$: Tương quan âm (Hàng thay thế, mua $X$ làm giảm khả năng mua $Y$)."
           },
           {
-            "id": "sec-5-1-3",
-            "title": "3. Bài toán thực hành tính toán từng bước (Slide 9-10)",
-            "content": "### 5. Bài toán tính toán mẫu từ Slide 9-10\nCho cơ sở dữ liệu gồm $N = 8$ giao dịch:\n- **T1:** $\\{a, b, c\\}$\n- **T2:** $\\{a, b, c, d, e\\}$\n- **T3:** $\\{b\\}$\n- **T4:** $\\{c, d, e\\}$\n- **T5:** $\\{c\\}$\n- **T6:** $\\{b, c, d\\}$\n- **T7:** $\\{c, d, e\\}$\n- **T8:** $\\{c, e\\}$\n\nXét luật kết hợp $L: \\{c, d\\} \\Rightarrow \\{e\\}$:\n1. **Đếm tần suất:**\n   - Tập tiền đề $\\{c, d\\}$ xuất hiện trong: T2, T4, T6, T7 $\\implies \\text{count}(\\{c, d\\}) = 4$.\n   - Cả hai tập $\\{c, d, e\\}$ xuất hiện trong: T2, T4, T7 $\\implies \\text{count}(\\{c, d, e\\}) = 3$.\n   - Tập hậu đề $\\{e\\}$ xuất hiện trong: T2, T4, T7, T8 $\\implies \\text{count}(\\{e\\}) = 4$.\n2. **Tính các chỉ số:**\n   - **Độ hỗ trợ:**\n     $$Sup(L) = \\frac{\\text{count}(\\{c, d, e\\})}{N} = \\frac{3}{8} = 0.375 = 37.5\\%$$\n   - **Độ tin cậy:**\n     $$Conf(L) = \\frac{\\text{count}(\\{c, d, e\\})}{\\text{count}(\\{c, d\\})} = \\frac{3}{4} = 0.75 = 75\\%$$\n   - **Xác suất hậu đề:**\n     $$P(e) = \\frac{4}{8} = 0.5$$\n   - **Độ nâng:**\n     $$Lift(L) = \\frac{Conf(L)}{P(e)} = \\frac{0.75}{0.5} = 1.5$$\n   - **Độ đòn bẩy:**\n     $$Leverage(L) = P(cd \\cap e) - P(cd)P(e) = \\frac{3}{8} - \\left(\\frac{4}{8} \\times \\frac{4}{8}\\right) = 0.375 - 0.25 = 0.125$$\n   - **Độ tin chắc:**\n     $$Conviction(L) = \\frac{1 - 0.5}{1 - 0.75} = \\frac{0.5}{0.25} = 2.0$$\n\n> **Kết luận:** Khách hàng mua $c$ và $d$ có khả năng mua thêm $e$ cao gấp **$1.5$ lần** so với mức ngẫu nhiên thông thường."
+            "kind": "concept",
+            "markdown": "### 3. Hai độ đo nâng cao: Leverage và Conviction\n#### a. Leverage (Độ đòn bẩy)\nĐo lường sự sai khác giữa tần suất đồng xuất hiện thực tế và tần suất kỳ vọng nếu hai biến độc lập hoàn toàn:\n$$Leverage(X \\Rightarrow Y) = P(X \\cap Y) - P(X) \\cdot P(Y)$$\n- Phạm vi giá trị: $[-0.25, 0.25]$.\n- $Leverage = 0$ khi $X$ và $Y$ độc lập thống kê.\n- Khác với Lift là một tỷ số (phép chia), Leverage là một hiệu số (phép trừ xác suất), ưu tiên các luật có độ hỗ trợ lớn.\n\n#### b. Conviction (Độ tin chắc)\nĐo lường tỷ lệ giữa tần suất kỳ vọng luật bị sai nếu độc lập chia cho tần suất luật bị sai thực tế:\n$$Conviction(X \\Rightarrow Y) = \\frac{1 - P(Y)}{1 - Conf(X \\Rightarrow Y)}$$\n- $Conviction = 1$: Tiền đề và hậu đề độc lập.\n- $Conviction \\to \\infty$: Khi $Conf = 1$ (luật không bao giờ sai).\n\n---\n\n### 4. Ngưỡng lọc luật chuẩn công nghiệp\nTheo **Slide 9**:\n- **$minsup$ tối thiểu:** Thường đặt là **$0.01$ ($1\\%$)** để loại bỏ các trường hợp cá biệt.\n- **$minconf$ tối thiểu:** Thường đặt là **$0.8$ ($80\\%$)** để đảm bảo độ tin cậy khi ra quyết định kinh doanh."
           },
           {
-            "id": "sec-5-1-4",
-            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
-            "content": "### 💡 Mẹo ghi nhớ cho sinh viên\n- **Support:** Mẫu số luôn là **TỔNG SỐ GIAO DỊCH ($N$)**.\n- **Confidence:** Mẫu số là **SỐ LƯỢNG TIỀN ĐỀ ($\text{count}(X)$)**.\n- **Lift:** Bằng Confidence chia cho xác suất hậu đề $P(Y)$.\n- **Lift > 1:** Tốt; **Lift = 1:** Vô dụng; **Lift < 1:** Tiêu cực."
+            "kind": "example",
+            "markdown": "### 5. Bài toán tính toán mẫu từ Slide 9-10\nCho cơ sở dữ liệu gồm $N = 8$ giao dịch:\n- **T1:** $\\{a, b, c\\}$\n- **T2:** $\\{a, b, c, d, e\\}$\n- **T3:** $\\{b\\}$\n- **T4:** $\\{c, d, e\\}$\n- **T5:** $\\{c\\}$\n- **T6:** $\\{b, c, d\\}$\n- **T7:** $\\{c, d, e\\}$\n- **T8:** $\\{c, e\\}$\n\nXét luật kết hợp $L: \\{c, d\\} \\Rightarrow \\{e\\}$:\n1. **Đếm tần suất:**\n   - Tập tiền đề $\\{c, d\\}$ xuất hiện trong: T2, T4, T6, T7 $\\implies \\text{count}(\\{c, d\\}) = 4$.\n   - Cả hai tập $\\{c, d, e\\}$ xuất hiện trong: T2, T4, T7 $\\implies \\text{count}(\\{c, d, e\\}) = 3$.\n   - Tập hậu đề $\\{e\\}$ xuất hiện trong: T2, T4, T7, T8 $\\implies \\text{count}(\\{e\\}) = 4$.\n2. **Tính các chỉ số:**\n   - **Độ hỗ trợ:**\n     $$Sup(L) = \\frac{\\text{count}(\\{c, d, e\\})}{N} = \\frac{3}{8} = 0.375 = 37.5\\%$$\n   - **Độ tin cậy:**\n     $$Conf(L) = \\frac{\\text{count}(\\{c, d, e\\})}{\\text{count}(\\{c, d\\})} = \\frac{3}{4} = 0.75 = 75\\%$$\n   - **Xác suất hậu đề:**\n     $$P(e) = \\frac{4}{8} = 0.5$$\n   - **Độ nâng:**\n     $$Lift(L) = \\frac{Conf(L)}{P(e)} = \\frac{0.75}{0.5} = 1.5$$\n   - **Độ đòn bẩy:**\n     $$Leverage(L) = P(cd \\cap e) - P(cd)P(e) = \\frac{3}{8} - \\left(\\frac{4}{8} \\times \\frac{4}{8}\\right) = 0.375 - 0.25 = 0.125$$\n   - **Độ tin chắc:**\n     $$Conviction(L) = \\frac{1 - 0.5}{1 - 0.75} = \\frac{0.5}{0.25} = 2.0$$\n\n> **Kết luận:** Khách hàng mua $c$ và $d$ có khả năng mua thêm $e$ cao gấp **$1.5$ lần** so với mức ngẫu nhiên thông thường."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo ghi nhớ cho sinh viên\n- **Support:** Mẫu số luôn là **TỔNG SỐ GIAO DỊCH ($N$)**.\n- **Confidence:** Mẫu số là **SỐ LƯỢNG TIỀN ĐỀ ($\text{count}(X)$)**.\n- **Lift:** Bằng Confidence chia cho xác suất hậu đề $P(Y)$.\n- **Lift > 1:** Tốt; **Lift = 1:** Vô dụng; **Lift < 1:** Tiêu cực."
           }
         ],
         "miniQuiz": [
@@ -1567,24 +1572,29 @@
         "status": "done",
         "sections": [
           {
-            "id": "sec-5-2-1",
-            "title": "1. Bài toán khai phá tập phổ biến & Không gian tìm kiếm",
-            "content": "### 1. Không gian tìm kiếm tổ hợp\nTheo **Slide 15-20**, cho tập gồm $n$ item khác nhau $I = \\{i_1, i_2, ..., i_n\\}$.\n- Một tập con chứa $k$ item được gọi là một **$k$-itemset**.\n- Tổng số tập con không rỗng cần kiểm tra trong không gian tìm kiếm là:\n  $$2^{|I|} - 1 = 2^n - 1$$\n- Ví dụ với $n = 5$ (Pasta, Lemon, Bread, Orange, Cake), ta có $2^5 - 1 = 31$ tập con.\n- Nếu $n = 100$, không gian tìm kiếm là $2^{100} - 1 \\approx 1.26 \\times 10^{30}$, vượt xa năng lực tính toán của mọi siêu máy tính nếu duyệt vét cạn (brute-force)."
+            "kind": "objectives",
+            "items": [
+              "Bài toán khai phá tập phổ biến & Không gian tìm kiếm",
+              "Hai tính chất cốt lõi của Apriori (Anti-monotonicity)",
+              "Bài toán thực hành từng bước từ Slide 27-41",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
           },
           {
-            "id": "sec-5-2-2",
-            "title": "2. Hai tính chất cốt lõi của Apriori (Anti-monotonicity)",
-            "content": "### 2. Hai nguyên lý nền tảng của Apriori (R. Agrawal 1993)\n#### a. Tính chất 1: Tính đơn điệu giảm của độ hỗ trợ\nVới hai tập mục $X$ và $Y$:\n$$X \\subseteq Y \\implies Sup(Y) \\le Sup(X)$$\n*Giải thích:* Khi mở rộng thêm các điều kiện item vào giỏ hàng, số lượng giao dịch đáp ứng đồng thời chỉ có thể giữ nguyên hoặc giảm xuống.\n- Ví dụ (Slide 25):\n  $$Sup(\\{pasta\\}) = 4 \\ge Sup(\\{pasta, lemon\\}) = 3 \\ge Sup(\\{pasta, lemon, orange\\}) = 2$$\n\n#### b. Tính chất 2: Nguyên lý tỉa nhánh Apriori (Apriori Pruning Principle)\n- **Mọi tập con không rỗng của một tập phổ biến (frequent itemset) đều phải là tập phổ biến.**\n- **Hệ quả tương đương (Tỉa cành):**\n  $$\\text{Nếu } \\exists X \\subset Y \\text{ mà } X \\text{ không phổ biến (infrequent)} \\implies Y \\text{ chắc chắn không phổ biến.}$$\n- *Ý nghĩa:* Nếu biết $\\{bread\\}$ là không phổ biến, ta có thể lập tức loại bỏ toàn bộ các tập cha như $\\{bread, lemon\\}$, $\\{bread, pasta\\}$, $\\{bread, lemon, orange, cake\\}$ mà không cần tốn công quét CSDL để đếm."
+            "kind": "example",
+            "markdown": "### 1. Không gian tìm kiếm tổ hợp\nTheo **Slide 15-20**, cho tập gồm $n$ item khác nhau $I = \\{i_1, i_2, ..., i_n\\}$.\n- Một tập con chứa $k$ item được gọi là một **$k$-itemset**.\n- Tổng số tập con không rỗng cần kiểm tra trong không gian tìm kiếm là:\n  $$2^{|I|} - 1 = 2^n - 1$$\n- Ví dụ với $n = 5$ (Pasta, Lemon, Bread, Orange, Cake), ta có $2^5 - 1 = 31$ tập con.\n- Nếu $n = 100$, không gian tìm kiếm là $2^{100} - 1 \\approx 1.26 \\times 10^{30}$, vượt xa năng lực tính toán của mọi siêu máy tính nếu duyệt vét cạn (brute-force)."
           },
           {
-            "id": "sec-5-2-3",
-            "title": "3. Bài toán thực hành từng bước từ Slide 27-41",
-            "content": "### 3. Thực hành thuật toán Apriori với CSDL 4 giao dịch (minsup = 2)\nCho 4 giao dịch:\n- **T1:** Pasta, Lemon, Bread, Orange\n- **T2:** Pasta, Lemon\n- **T3:** Pasta, Orange, Cake\n- **T4:** Pasta, Lemon, Orange, Cake\n\n#### Vòng 1: Tìm $L_1$ (1-itemsets)\n- Đếm qua CSDL:\n  - Pasta: 4\n  - Lemon: 3\n  - Bread: 1 ($< 2 \\implies$ **LOẠI**)\n  - Orange: 3\n  - Cake: 2\n- Kết quả $L_1 = \\{\\{pasta\\}, \\{lemon\\}, \\{orange\\}, \\{cake\\}\\}$.\n\n#### Vòng 2: Sinh $C_2$ và Tìm $L_2$\n- Kết hợp các cặp trong $L_1$ sinh $C_2$: $\\binom{4}{2} = 6$ ứng viên.\n- Không có ứng viên nào chứa tập con không phổ biến.\n- Đếm support qua CSDL:\n  - $\\{pasta, lemon\\}$: 3\n  - $\\{pasta, orange\\}$: 3\n  - $\\{pasta, cake\\}$: 2\n  - $\\{lemon, orange\\}$: 2\n  - $\\{lemon, cake\\}$: 1 ($< 2 \\implies$ **LOẠI**)\n  - $\\{orange, cake\\}$: 2\n- Kết quả $L_2 = \\{\\{pasta, lemon\\}, \\{pasta, orange\\}, \\{pasta, cake\\}, \\{lemon, orange\\}, \\{orange, cake\\}\\}$.\n\n#### Vòng 3: Sinh $C_3$, Prune và Tìm $L_3$\n- Nối các tập có chung phần tử đầu:\n  - $\\{pasta, lemon, orange\\}$: Các tập con 2 phần tử là $\\{pasta, lemon\\}, \\{pasta, orange\\}, \\{lemon, orange\\}$ đều $\\in L_2$ $\\implies$ **Hợp lệ** ($sup = 2$).\n  - $\\{pasta, orange, cake\\}$: Các tập con $\\{pasta, orange\\}, \\{pasta, cake\\}, \\{orange, cake\\}$ đều $\\in L_2$ $\\implies$ **Hợp lệ** ($sup = 2$).\n  - Các ứng viên khác như $\\{pasta, lemon, cake\\}$ có chứa $\\{lemon, cake\\} \\notin L_2$ nên bị **TỈA BỎ NGAY LẬP TỨC (Pruned)**.\n- Kết quả $L_3 = \\{\\{pasta, lemon, orange\\}, \\{pasta, orange, cake\\}\\}$.\n\n#### Vòng 4: Sinh $C_4$ và Dừng\n- Ứng viên 4 phần tử duy nhất $\\{pasta, lemon, orange, cake\\}$ chứa tập con $\\{lemon, cake\\} \\notin L_2$ nên bị tỉa bỏ. $C_4 = \\emptyset$. Thuật toán dừng lại."
+            "kind": "concept",
+            "markdown": "### 2. Hai nguyên lý nền tảng của Apriori (R. Agrawal 1993)\n#### a. Tính chất 1: Tính đơn điệu giảm của độ hỗ trợ\nVới hai tập mục $X$ và $Y$:\n$$X \\subseteq Y \\implies Sup(Y) \\le Sup(X)$$\n*Giải thích:* Khi mở rộng thêm các điều kiện item vào giỏ hàng, số lượng giao dịch đáp ứng đồng thời chỉ có thể giữ nguyên hoặc giảm xuống.\n- Ví dụ (Slide 25):\n  $$Sup(\\{pasta\\}) = 4 \\ge Sup(\\{pasta, lemon\\}) = 3 \\ge Sup(\\{pasta, lemon, orange\\}) = 2$$\n\n#### b. Tính chất 2: Nguyên lý tỉa nhánh Apriori (Apriori Pruning Principle)\n- **Mọi tập con không rỗng của một tập phổ biến (frequent itemset) đều phải là tập phổ biến.**\n- **Hệ quả tương đương (Tỉa cành):**\n  $$\\text{Nếu } \\exists X \\subset Y \\text{ mà } X \\text{ không phổ biến (infrequent)} \\implies Y \\text{ chắc chắn không phổ biến.}$$\n- *Ý nghĩa:* Nếu biết $\\{bread\\}$ là không phổ biến, ta có thể lập tức loại bỏ toàn bộ các tập cha như $\\{bread, lemon\\}$, $\\{bread, pasta\\}$, $\\{bread, lemon, orange, cake\\}$ mà không cần tốn công quét CSDL để đếm."
           },
           {
-            "id": "sec-5-2-4",
-            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
-            "content": "### 💡 Tóm tắt công thức tổ hợp sinh ứng viên\nNếu có $n$ item phổ biến kích thước 1, số lượng ứng viên 2-itemset được sinh ra ở vòng 2 là:\n$$\\binom{n}{2} = \\frac{n(n - 1)}{2} \\approx \\frac{n^2}{2}$$\nKhi $n = 6$ (như trong câu 27 đề cương), số ứng viên xấp xỉ là $6^2 / 2 = 18$ (hoặc chính xác là $\\binom{6}{2} = 15$)."
+            "kind": "example",
+            "markdown": "### 3. Thực hành thuật toán Apriori với CSDL 4 giao dịch (minsup = 2)\nCho 4 giao dịch:\n- **T1:** Pasta, Lemon, Bread, Orange\n- **T2:** Pasta, Lemon\n- **T3:** Pasta, Orange, Cake\n- **T4:** Pasta, Lemon, Orange, Cake\n\n#### Vòng 1: Tìm $L_1$ (1-itemsets)\n- Đếm qua CSDL:\n  - Pasta: 4\n  - Lemon: 3\n  - Bread: 1 ($< 2 \\implies$ **LOẠI**)\n  - Orange: 3\n  - Cake: 2\n- Kết quả $L_1 = \\{\\{pasta\\}, \\{lemon\\}, \\{orange\\}, \\{cake\\}\\}$.\n\n#### Vòng 2: Sinh $C_2$ và Tìm $L_2$\n- Kết hợp các cặp trong $L_1$ sinh $C_2$: $\\binom{4}{2} = 6$ ứng viên.\n- Không có ứng viên nào chứa tập con không phổ biến.\n- Đếm support qua CSDL:\n  - $\\{pasta, lemon\\}$: 3\n  - $\\{pasta, orange\\}$: 3\n  - $\\{pasta, cake\\}$: 2\n  - $\\{lemon, orange\\}$: 2\n  - $\\{lemon, cake\\}$: 1 ($< 2 \\implies$ **LOẠI**)\n  - $\\{orange, cake\\}$: 2\n- Kết quả $L_2 = \\{\\{pasta, lemon\\}, \\{pasta, orange\\}, \\{pasta, cake\\}, \\{lemon, orange\\}, \\{orange, cake\\}\\}$.\n\n#### Vòng 3: Sinh $C_3$, Prune và Tìm $L_3$\n- Nối các tập có chung phần tử đầu:\n  - $\\{pasta, lemon, orange\\}$: Các tập con 2 phần tử là $\\{pasta, lemon\\}, \\{pasta, orange\\}, \\{lemon, orange\\}$ đều $\\in L_2$ $\\implies$ **Hợp lệ** ($sup = 2$).\n  - $\\{pasta, orange, cake\\}$: Các tập con $\\{pasta, orange\\}, \\{pasta, cake\\}, \\{orange, cake\\}$ đều $\\in L_2$ $\\implies$ **Hợp lệ** ($sup = 2$).\n  - Các ứng viên khác như $\\{pasta, lemon, cake\\}$ có chứa $\\{lemon, cake\\} \\notin L_2$ nên bị **TỈA BỎ NGAY LẬP TỨC (Pruned)**.\n- Kết quả $L_3 = \\{\\{pasta, lemon, orange\\}, \\{pasta, orange, cake\\}\\}$.\n\n#### Vòng 4: Sinh $C_4$ và Dừng\n- Ứng viên 4 phần tử duy nhất $\\{pasta, lemon, orange, cake\\}$ chứa tập con $\\{lemon, cake\\} \\notin L_2$ nên bị tỉa bỏ. $C_4 = \\emptyset$. Thuật toán dừng lại."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Tóm tắt công thức tổ hợp sinh ứng viên\nNếu có $n$ item phổ biến kích thước 1, số lượng ứng viên 2-itemset được sinh ra ở vòng 2 là:\n$$\\binom{n}{2} = \\frac{n(n - 1)}{2} \\approx \\frac{n^2}{2}$$\nKhi $n = 6$ (như trong câu 27 đề cương), số ứng viên xấp xỉ là $6^2 / 2 = 18$ (hoặc chính xác là $\\binom{6}{2} = 15$)."
           }
         ],
         "miniQuiz": [
@@ -1622,24 +1632,29 @@
         "status": "done",
         "sections": [
           {
-            "id": "sec-5-3-1",
-            "title": "1. Hạn chế của Apriori & Sự ra đời của FP-Growth",
-            "content": "### 1. Tại sao FP-Growth ra đời?\nTheo **Slide 42**, Apriori có 2 điểm nghẽn nghiêm trọng:\n1. **Quá nhiều lần quét CSDL (Multiple DB Scans):** CSDL hàng triệu dòng mà quét lại $k$ lần sẽ làm tắc nghẽn ổ đĩa.\n2. **Bùng nổ tổ hợp ứng viên (Candidate Generation Explosion):** Sinh hàng triệu ứng viên vô nghĩa gây tràn bộ nhớ RAM.\n\n**FP-Growth (Frequent Pattern Growth - Jiawei Han 2000):**\n- **Chỉ quét CSDL đúng 2 lần.**\n- **Hoàn toàn không sinh tập ứng viên (No Candidate Generation).**\n- **Nén dữ liệu vào cây FP-tree (Frequent Pattern Tree) trong RAM.**"
+            "kind": "objectives",
+            "items": [
+              "Hạn chế của Apriori & Sự ra đời của FP-Growth",
+              "Cấu trúc cây FP-tree & Quy tắc sắp xếp giảm dần",
+              "Conditional Pattern Base & Khai phá đệ quy (Slide 58-62)",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
           },
           {
-            "id": "sec-5-3-2",
-            "title": "2. Cấu trúc cây FP-tree & Quy tắc sắp xếp giảm dần",
-            "content": "### 2. Quy trình xây dựng cây FP-tree từng bước\n#### Bước 1: Quét CSDL lần 1 & Tạo Header Table\n- Quét qua toàn bộ CSDL để đếm tần suất đơn lẻ của từng item.\n- Loại bỏ các item có $count < minsup\\_count$.\n- **Sắp xếp các item phổ biến còn lại theo thứ tự giảm dần của tần suất (frequency-descending order).**\n  - *Quy tắc bắt buộc:* Các item trong mỗi giao dịch phải được viết theo thứ tự này để tối đa hóa việc dùng chung tiền tố (Prefix Sharing).\n  - Ví dụ (Slide 50): Với thứ tự `F > C > A > B > M > P`, tập $\\{C, A, M\\}$ là hợp lệ, còn $\\{M, C, A\\}$ là sai quy chuẩn.\n\n#### Bước 2: Quét CSDL lần 2 & Xây dựng cây FP-tree\n- Đọc từng giao dịch, lọc bỏ item hiếm, sắp xếp theo thứ tự Header Table.\n- Chèn từng chuỗi vào cây:\n  - Bắt đầu từ nút gốc **Root (null)**.\n  - Nếu nhánh đã có sẵn nút tương ứng $\\implies$ tăng $count$ lên 1.\n  - Nếu nhánh chưa có $\\implies$ tạo nút mới với $count = 1$.\n  - Cập nhật con trỏ liên kết ngang (node-link) từ Header Table trỏ vào nút mới."
+            "kind": "concept",
+            "markdown": "### 1. Tại sao FP-Growth ra đời?\nTheo **Slide 42**, Apriori có 2 điểm nghẽn nghiêm trọng:\n1. **Quá nhiều lần quét CSDL (Multiple DB Scans):** CSDL hàng triệu dòng mà quét lại $k$ lần sẽ làm tắc nghẽn ổ đĩa.\n2. **Bùng nổ tổ hợp ứng viên (Candidate Generation Explosion):** Sinh hàng triệu ứng viên vô nghĩa gây tràn bộ nhớ RAM.\n\n**FP-Growth (Frequent Pattern Growth - Jiawei Han 2000):**\n- **Chỉ quét CSDL đúng 2 lần.**\n- **Hoàn toàn không sinh tập ứng viên (No Candidate Generation).**\n- **Nén dữ liệu vào cây FP-tree (Frequent Pattern Tree) trong RAM.**"
           },
           {
-            "id": "sec-5-3-3",
-            "title": "3. Conditional Pattern Base & Khai phá đệ quy (Slide 58-62)",
-            "content": "### 3. Khai phá từ Conditional Pattern Base (CPB)\nDuyệt Header Table từ dưới lên trên (từ item hiếm nhất đến item phổ biến nhất):\n- **Conditional Pattern Base (CPB):** Tập hợp các đường dẫn tiền tố từ nút gốc đến nút đang xét (kèm count của nút đó).\n- **Conditional FP-Tree:** Cây con có điều kiện được tạo bằng cách giữ lại các item trong CPB có tổng số lần xuất hiện $\\ge minsup\\_count$.\n\n#### Bảng chi tiết từ Slide 59-61 ($minsup\\_count = 3$):\n| Item | Conditional Pattern Base (CPB) | Tổng số lần xuất hiện | Conditional FP-Tree | Frequent Patterns sinh ra |\n| :---: | :--- | :--- | :---: | :--- |\n| **P** | $\\{\\{F, C, A, M : 2\\}, \\{C, B : 1\\}\\}$ | $\\{F:2, C:3, A:2, M:2, B:1\\}$ | $\\{C : 3\\}$ | $\\{C, P : 3\\}$ |\n| **M** | $\\{\\{F, C, A : 2\\}, \\{F, C, A, B : 1\\}\\}$ | $\\{F:3, C:3, A:3, B:1\\}$ | $\\{F:3, C:3, A:3\\}$ | $\\{F, M\\}, \\{C, M\\}, \\{A, M\\}, \\{F, C, M\\}, \\{F, A, M\\}, \\{C, A, M\\}, \\{F, C, A, M\\}$ |\n| **B** | $\\{\\{F : 1\\}, \\{C : 1\\}, \\{F, C, A : 1\\}\\}$ | $\\{F:2, C:2, A:1\\}$ | **Rỗng ($-$)** | Không có tập kết hợp |\n| **A** | $\\{\\{F, C : 3\\}\\}$ | $\\{F:3, C:3\\}$ | $\\{F:3, C:3\\}$ | $\\{F, A\\}, \\{C, A\\}, \\{F, C, A\\}$ |\n| **C** | $\\{\\{F : 3\\}\\}$ | $\\{F:3\\}$ | $\\{F:3\\}$ | $\\{F, C : 3\\}$ |\n\n> **Ghi chú quan trọng:** Vì item $B$ chỉ có $F:2, C:2, A:1$ (tất cả đều $< 3$), Conditional FP-Tree của B hoàn toàn rỗng!"
+            "kind": "concept",
+            "markdown": "### 2. Quy trình xây dựng cây FP-tree từng bước\n#### Bước 1: Quét CSDL lần 1 & Tạo Header Table\n- Quét qua toàn bộ CSDL để đếm tần suất đơn lẻ của từng item.\n- Loại bỏ các item có $count < minsup\\_count$.\n- **Sắp xếp các item phổ biến còn lại theo thứ tự giảm dần của tần suất (frequency-descending order).**\n  - *Quy tắc bắt buộc:* Các item trong mỗi giao dịch phải được viết theo thứ tự này để tối đa hóa việc dùng chung tiền tố (Prefix Sharing).\n  - Ví dụ (Slide 50): Với thứ tự `F > C > A > B > M > P`, tập $\\{C, A, M\\}$ là hợp lệ, còn $\\{M, C, A\\}$ là sai quy chuẩn.\n\n#### Bước 2: Quét CSDL lần 2 & Xây dựng cây FP-tree\n- Đọc từng giao dịch, lọc bỏ item hiếm, sắp xếp theo thứ tự Header Table.\n- Chèn từng chuỗi vào cây:\n  - Bắt đầu từ nút gốc **Root (null)**.\n  - Nếu nhánh đã có sẵn nút tương ứng $\\implies$ tăng $count$ lên 1.\n  - Nếu nhánh chưa có $\\implies$ tạo nút mới với $count = 1$.\n  - Cập nhật con trỏ liên kết ngang (node-link) từ Header Table trỏ vào nút mới."
           },
           {
-            "id": "sec-5-3-4",
-            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
-            "content": "### 💡 So sánh Apriori vs FP-Growth\n| Tiêu chí | Apriori | FP-Growth |\n| :--- | :--- | :--- |\n| **Số lần quét CSDL** | $k+1$ lần (rất nhiều) | Đúng 2 lần |\n| **Sinh tập ứng viên** | Có ($O(n^2/2)$) | **Hoàn toàn không** |\n| **Cấu trúc lưu trữ** | Mảng/Bảng băm | Cây nén FP-tree trong RAM |\n| **Hiệu năng trên Big Data** | Chậm, dễ tràn RAM | Nhanh hơn 10 - 100 lần |"
+            "kind": "example",
+            "markdown": "### 3. Khai phá từ Conditional Pattern Base (CPB)\nDuyệt Header Table từ dưới lên trên (từ item hiếm nhất đến item phổ biến nhất):\n- **Conditional Pattern Base (CPB):** Tập hợp các đường dẫn tiền tố từ nút gốc đến nút đang xét (kèm count của nút đó).\n- **Conditional FP-Tree:** Cây con có điều kiện được tạo bằng cách giữ lại các item trong CPB có tổng số lần xuất hiện $\\ge minsup\\_count$.\n\n#### Bảng chi tiết từ Slide 59-61 ($minsup\\_count = 3$):\n| Item | Conditional Pattern Base (CPB) | Tổng số lần xuất hiện | Conditional FP-Tree | Frequent Patterns sinh ra |\n| :---: | :--- | :--- | :---: | :--- |\n| **P** | $\\{\\{F, C, A, M : 2\\}, \\{C, B : 1\\}\\}$ | $\\{F:2, C:3, A:2, M:2, B:1\\}$ | $\\{C : 3\\}$ | $\\{C, P : 3\\}$ |\n| **M** | $\\{\\{F, C, A : 2\\}, \\{F, C, A, B : 1\\}\\}$ | $\\{F:3, C:3, A:3, B:1\\}$ | $\\{F:3, C:3, A:3\\}$ | $\\{F, M\\}, \\{C, M\\}, \\{A, M\\}, \\{F, C, M\\}, \\{F, A, M\\}, \\{C, A, M\\}, \\{F, C, A, M\\}$ |\n| **B** | $\\{\\{F : 1\\}, \\{C : 1\\}, \\{F, C, A : 1\\}\\}$ | $\\{F:2, C:2, A:1\\}$ | **Rỗng ($-$)** | Không có tập kết hợp |\n| **A** | $\\{\\{F, C : 3\\}\\}$ | $\\{F:3, C:3\\}$ | $\\{F:3, C:3\\}$ | $\\{F, A\\}, \\{C, A\\}, \\{F, C, A\\}$ |\n| **C** | $\\{\\{F : 3\\}\\}$ | $\\{F:3\\}$ | $\\{F:3\\}$ | $\\{F, C : 3\\}$ |\n\n> **Ghi chú quan trọng:** Vì item $B$ chỉ có $F:2, C:2, A:1$ (tất cả đều $< 3$), Conditional FP-Tree của B hoàn toàn rỗng!"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 So sánh Apriori vs FP-Growth\n| Tiêu chí | Apriori | FP-Growth |\n| :--- | :--- | :--- |\n| **Số lần quét CSDL** | $k+1$ lần (rất nhiều) | Đúng 2 lần |\n| **Sinh tập ứng viên** | Có ($O(n^2/2)$) | **Hoàn toàn không** |\n| **Cấu trúc lưu trữ** | Mảng/Bảng băm | Cây nén FP-tree trong RAM |\n| **Hiệu năng trên Big Data** | Chậm, dễ tràn RAM | Nhanh hơn 10 - 100 lần |"
           }
         ],
         "miniQuiz": [
@@ -1681,24 +1696,29 @@
         "status": "done",
         "sections": [
           {
-            "id": "sec-5-4-1",
-            "title": "1. Khái niệm Phân lớp (Classification) bằng Decision Tree",
-            "content": "### 1. Phân loại dữ liệu bằng Cây quyết định\nBài toán Phân lớp (Classification) thuộc nhóm học có giám sát (Supervised Learning):\n- Mục tiêu: Xây dựng mô hình từ tập huấn luyện (training set) có nhãn lớp để dự đoán nhãn lớp của các đối tượng dữ liệu mới.\n- **Cấu trúc cây quyết định:**\n  - **Nút gốc (Root node):** Thuộc tính tốt nhất được chọn để phân tách đầu tiên.\n  - **Nút nội bộ (Internal nodes):** Các phép kiểm tra trên thuộc tính.\n  - **Các nhánh (Branches):** Kết quả của phép kiểm tra.\n  - **Nút lá (Leaf nodes):** Nhãn lớp quyết định (Class label)."
+            "kind": "objectives",
+            "items": [
+              "Khái niệm Phân lớp (Classification) bằng Decision Tree",
+              "Bảng so sánh kinh điển ID3 vs C4.5 (Slide 65)",
+              "Chi tiết công thức: Information Gain vs Gain Ratio",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
           },
           {
-            "id": "sec-5-4-2",
-            "title": "2. Bảng so sánh kinh điển ID3 vs C4.5 (Slide 65)",
-            "content": "### 2. So sánh toàn diện ID3 và C4.5 (Slide 65)\nC4.5 được phát triển bởi Ross Quinlan để khắc phục các nhược điểm chết người của thuật toán ID3:\n\n| Tiêu chí so sánh | Thuật toán ID3 (1986) | Thuật toán C4.5 (1993) |\n| :--- | :--- | :--- |\n| **Tiêu chí chọn thuộc tính** | **Information Gain** (Dựa trên Shannon Entropy) | **Gain Ratio** (Độ lợi thông tin chuẩn hóa theo Split Info) |\n| **Hỗ trợ loại dữ liệu** | **Chỉ dữ liệu rời rạc** (Categorical) | **Cả rời rạc và liên tục** (Numerical) |\n| **Xử lý giá trị Null / Missing** | **Không hỗ trợ** (Báo lỗi hệ thống) | **Hỗ trợ** (Gán trọng số xác suất cho các nhánh) |\n| **Kỹ thuật cắt tỉa cây** | **Không có cơ chế cắt tỉa** | **Có cơ chế Post-pruning** (Cắt tỉa sau dựa trên độ lỗi) |\n| **Kiểm soát Overfitting** | **Kém** (Cây quá sâu, dễ bị quá khớp) | **Tốt** (Cây gọn gàng, tính tổng quát cao) |"
+            "kind": "concept",
+            "markdown": "### 1. Phân loại dữ liệu bằng Cây quyết định\nBài toán Phân lớp (Classification) thuộc nhóm học có giám sát (Supervised Learning):\n- Mục tiêu: Xây dựng mô hình từ tập huấn luyện (training set) có nhãn lớp để dự đoán nhãn lớp của các đối tượng dữ liệu mới.\n- **Cấu trúc cây quyết định:**\n  - **Nút gốc (Root node):** Thuộc tính tốt nhất được chọn để phân tách đầu tiên.\n  - **Nút nội bộ (Internal nodes):** Các phép kiểm tra trên thuộc tính.\n  - **Các nhánh (Branches):** Kết quả của phép kiểm tra.\n  - **Nút lá (Leaf nodes):** Nhãn lớp quyết định (Class label)."
           },
           {
-            "id": "sec-5-4-3",
-            "title": "3. Chi tiết công thức: Information Gain vs Gain Ratio",
-            "content": "### 3. Tại sao Gain Ratio vượt trội hơn Information Gain?\n- **Nhược điểm của Information Gain (ID3):**\n  Information Gain bị thiên vị nặng nề đối với các thuộc tính có nhiều giá trị phân biệt (ví dụ thuộc tính `Mã_CCCD` hay `ID_Khách_hàng`). Khi chia theo thuộc tính này, mỗi nhánh chỉ có 1 bản ghi, Entropy nhánh bằng 0, dẫn đến Information Gain đạt cực đại. Tuy nhiên, cây này hoàn toàn vô dụng vì không có tính tổng quát.\n- **C4.5 chuẩn hóa bằng Split Info:**\n  $$SplitInfo_A(D) = - \\sum_{j=1}^v \\frac{|D_j|}{|D|} \\log_2 \\left(\\frac{|D_j|}{|D|}\\right)$$\n  $$GainRatio(A) = \\frac{Gain(A)}{SplitInfo_A(D)}$$\n  Thuộc tính nào càng bị xé vụn ra nhiều nhánh thì $SplitInfo$ càng lớn, làm cho $GainRatio$ bị giảm đi (bị phạt), giúp thuật toán chọn được thuộc tính thực sự hữu ích."
+            "kind": "concept",
+            "markdown": "### 2. So sánh toàn diện ID3 và C4.5 (Slide 65)\nC4.5 được phát triển bởi Ross Quinlan để khắc phục các nhược điểm chết người của thuật toán ID3:\n\n| Tiêu chí so sánh | Thuật toán ID3 (1986) | Thuật toán C4.5 (1993) |\n| :--- | :--- | :--- |\n| **Tiêu chí chọn thuộc tính** | **Information Gain** (Dựa trên Shannon Entropy) | **Gain Ratio** (Độ lợi thông tin chuẩn hóa theo Split Info) |\n| **Hỗ trợ loại dữ liệu** | **Chỉ dữ liệu rời rạc** (Categorical) | **Cả rời rạc và liên tục** (Numerical) |\n| **Xử lý giá trị Null / Missing** | **Không hỗ trợ** (Báo lỗi hệ thống) | **Hỗ trợ** (Gán trọng số xác suất cho các nhánh) |\n| **Kỹ thuật cắt tỉa cây** | **Không có cơ chế cắt tỉa** | **Có cơ chế Post-pruning** (Cắt tỉa sau dựa trên độ lỗi) |\n| **Kiểm soát Overfitting** | **Kém** (Cây quá sâu, dễ bị quá khớp) | **Tốt** (Cây gọn gàng, tính tổng quát cao) |"
           },
           {
-            "id": "sec-5-4-4",
-            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
-            "content": "### 💡 Mẹo phân biệt thi cử\n- Nhớ câu khẩu quyết: **ID3 = Information Gain + Rời rạc + Không tỉa cành**.\n- **C4.5 = Gain Ratio + Liên tục + Post-pruning (Cắt tỉa sau)**."
+            "kind": "example",
+            "markdown": "### 3. Tại sao Gain Ratio vượt trội hơn Information Gain?\n- **Nhược điểm của Information Gain (ID3):**\n  Information Gain bị thiên vị nặng nề đối với các thuộc tính có nhiều giá trị phân biệt (ví dụ thuộc tính `Mã_CCCD` hay `ID_Khách_hàng`). Khi chia theo thuộc tính này, mỗi nhánh chỉ có 1 bản ghi, Entropy nhánh bằng 0, dẫn đến Information Gain đạt cực đại. Tuy nhiên, cây này hoàn toàn vô dụng vì không có tính tổng quát.\n- **C4.5 chuẩn hóa bằng Split Info:**\n  $$SplitInfo_A(D) = - \\sum_{j=1}^v \\frac{|D_j|}{|D|} \\log_2 \\left(\\frac{|D_j|}{|D|}\\right)$$\n  $$GainRatio(A) = \\frac{Gain(A)}{SplitInfo_A(D)}$$\n  Thuộc tính nào càng bị xé vụn ra nhiều nhánh thì $SplitInfo$ càng lớn, làm cho $GainRatio$ bị giảm đi (bị phạt), giúp thuật toán chọn được thuộc tính thực sự hữu ích."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo phân biệt thi cử\n- Nhớ câu khẩu quyết: **ID3 = Information Gain + Rời rạc + Không tỉa cành**.\n- **C4.5 = Gain Ratio + Liên tục + Post-pruning (Cắt tỉa sau)**."
           }
         ],
         "miniQuiz": [
@@ -1728,24 +1748,29 @@
         "status": "done",
         "sections": [
           {
-            "id": "sec-5-5-1",
-            "title": "1. Nguyên lý phân loại Naive Bayes (Slide 66)",
-            "content": "### 1. Phân loại Naive Bayes\nTheo **Slide 66**, Naive Bayes dự báo đối tượng thuộc về nhóm nào bằng cách tính toán xác suất đối tượng rơi vào từng nhóm dựa trên đặc trưng của nó. Đối tượng sẽ được xếp vào lớp có xác suất hậu nghiệm cao nhất (**MAP - Maximum A Posteriori**).\n- **Định lý Bayes:**\n  $$P(C|X) = \\frac{P(X|C) \\cdot P(C)}{P(X)}$$\n  Trong đó:\n  - $P(C|X)$: Xác suất đối tượng mang đặc trưng $X$ thuộc về lớp $C$ (Posterior).\n  - $P(C)$: Xác suất tiên nghiệm của lớp $C$ (Prior).\n  - $P(X|C)$: Khả năng quan sát thấy đặc trưng $X$ khi đã biết thuộc lớp $C$ (Likelihood).\n  - $P(X)$: Xác suất của đặc trưng $X$ trong toàn tập dữ liệu (Evidence - hằng số chuẩn hóa).\n\n---\n\n### 2. Giả định 'Naive' (Độc lập có điều kiện)\nĐể tính $P(X|C)$ với $X = (x_1, x_2, ..., x_d)$, Naive Bayes giả định tất cả các thuộc tính độc lập hoàn toàn với nhau khi biết nhãn lớp $C$:\n$$P(X|C) = \\prod_{i=1}^d P(x_i|C) = P(x_1|C) \\cdot P(x_2|C) \\cdot ... \\cdot P(x_d|C)$$\nQuy tắc phân loại:\n$$C^* = \\arg\\max_{C_k} \\left[ P(C_k) \\prod_{i=1}^d P(x_i|C_k) \\right]$$"
+            "kind": "objectives",
+            "items": [
+              "Nguyên lý phân loại Naive Bayes (Slide 66)",
+              "Hiện tượng Zero-frequency & Hiệu chỉnh Laplace",
+              "Mạng niềm tin Bayes (Bayesian Belief Networks - Slide 67)",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
           },
           {
-            "id": "sec-5-5-2",
-            "title": "2. Hiện tượng Zero-frequency & Hiệu chỉnh Laplace",
-            "content": "### 3. Vấn đề Tần suất bằng 0 (Zero-frequency Problem)\nNếu một thuộc tính $x_i$ chưa từng xuất hiện cùng với lớp $C$ trong tập huấn luyện, ta có $P(x_i|C) = 0$.\nDo phép nhân dồn:\n$$0 \\times P(x_2|C) \\times ... \\times P(C) = 0$$\nToàn bộ tích xác suất bị triệt tiêu thành 0, khiến mô hình kết luận xác suất bằng 0 dù các đặc trưng khác có khớp đến đâu.\n\n#### Giải pháp: Hiệu chỉnh Laplace (Laplacian Correction / Smoothing)\nCộng thêm $1$ vào tử số và cộng thêm số lượng giá trị khả dĩ $q$ vào mẫu số:\n$$P(x_i|C) = \\frac{\\text{count}(x_i, C) + 1}{\\text{count}(C) + q}$$\nĐảm bảo xác suất không bao giờ bằng 0 mà vẫn duy trì tính chất tổng xác suất bằng 1."
+            "kind": "concept",
+            "markdown": "### 1. Phân loại Naive Bayes\nTheo **Slide 66**, Naive Bayes dự báo đối tượng thuộc về nhóm nào bằng cách tính toán xác suất đối tượng rơi vào từng nhóm dựa trên đặc trưng của nó. Đối tượng sẽ được xếp vào lớp có xác suất hậu nghiệm cao nhất (**MAP - Maximum A Posteriori**).\n- **Định lý Bayes:**\n  $$P(C|X) = \\frac{P(X|C) \\cdot P(C)}{P(X)}$$\n  Trong đó:\n  - $P(C|X)$: Xác suất đối tượng mang đặc trưng $X$ thuộc về lớp $C$ (Posterior).\n  - $P(C)$: Xác suất tiên nghiệm của lớp $C$ (Prior).\n  - $P(X|C)$: Khả năng quan sát thấy đặc trưng $X$ khi đã biết thuộc lớp $C$ (Likelihood).\n  - $P(X)$: Xác suất của đặc trưng $X$ trong toàn tập dữ liệu (Evidence - hằng số chuẩn hóa).\n\n---\n\n### 2. Giả định 'Naive' (Độc lập có điều kiện)\nĐể tính $P(X|C)$ với $X = (x_1, x_2, ..., x_d)$, Naive Bayes giả định tất cả các thuộc tính độc lập hoàn toàn với nhau khi biết nhãn lớp $C$:\n$$P(X|C) = \\prod_{i=1}^d P(x_i|C) = P(x_1|C) \\cdot P(x_2|C) \\cdot ... \\cdot P(x_d|C)$$\nQuy tắc phân loại:\n$$C^* = \\arg\\max_{C_k} \\left[ P(C_k) \\prod_{i=1}^d P(x_i|C_k) \\right]$$"
           },
           {
-            "id": "sec-5-5-3",
-            "title": "3. Mạng niềm tin Bayes (Bayesian Belief Networks - Slide 67)",
-            "content": "### 4. Mạng niềm tin Bayes (Bayesian Belief Networks / DAG)\nTheo **Slide 67**, Naive Bayes Network là một cấu trúc đồ thị kết hợp với lý thuyết xác suất, cho phép mô hình hóa các hệ thống phức tạp có nhiều biến số phụ thuộc lẫn nhau, **khắc phục hoàn toàn nhược điểm 'Naive'**.\n- **Cấu trúc gồm 2 thành phần:**\n  1. **Đồ thị có hướng không chu trình (DAG - Directed Acyclic Graph):**\n     - Nút (Nodes): Đại diện cho các biến ngẫu nhiên.\n     - Cung (Arcs): Biểu thị mối quan hệ phụ thuộc có điều kiện trực tiếp (nguyên nhân $\\to$ kết quả).\n  2. **Bảng xác suất có điều kiện (CPT - Conditional Probability Table):**\n     - Mỗi nút có một bảng CPT định nghĩa phân phối xác suất của nó theo các nút cha trực tiếp: $P(X_i | Parents(X_i))$.\n- **Tính toán xác suất đồng thời:**\n  $$P(x_1, x_2, ..., x_n) = \\prod_{i=1}^n P(x_i | Parents(X_i))$$"
+            "kind": "concept",
+            "markdown": "### 3. Vấn đề Tần suất bằng 0 (Zero-frequency Problem)\nNếu một thuộc tính $x_i$ chưa từng xuất hiện cùng với lớp $C$ trong tập huấn luyện, ta có $P(x_i|C) = 0$.\nDo phép nhân dồn:\n$$0 \\times P(x_2|C) \\times ... \\times P(C) = 0$$\nToàn bộ tích xác suất bị triệt tiêu thành 0, khiến mô hình kết luận xác suất bằng 0 dù các đặc trưng khác có khớp đến đâu.\n\n#### Giải pháp: Hiệu chỉnh Laplace (Laplacian Correction / Smoothing)\nCộng thêm $1$ vào tử số và cộng thêm số lượng giá trị khả dĩ $q$ vào mẫu số:\n$$P(x_i|C) = \\frac{\\text{count}(x_i, C) + 1}{\\text{count}(C) + q}$$\nĐảm bảo xác suất không bao giờ bằng 0 mà vẫn duy trì tính chất tổng xác suất bằng 1."
           },
           {
-            "id": "sec-5-5-4",
-            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
-            "content": "### 💡 Điểm cốt lõi cần nhớ\n- **Naive Bayes:** Cực nhanh, giả định các biến độc lập khi biết lớp. Cần dùng Laplace smoothing để tránh xác suất 0.\n- **Bayesian Network:** Dùng đồ thị DAG + bảng CPT để biểu diễn các biến phụ thuộc lẫn nhau."
+            "kind": "example",
+            "markdown": "### 4. Mạng niềm tin Bayes (Bayesian Belief Networks / DAG)\nTheo **Slide 67**, Naive Bayes Network là một cấu trúc đồ thị kết hợp với lý thuyết xác suất, cho phép mô hình hóa các hệ thống phức tạp có nhiều biến số phụ thuộc lẫn nhau, **khắc phục hoàn toàn nhược điểm 'Naive'**.\n- **Cấu trúc gồm 2 thành phần:**\n  1. **Đồ thị có hướng không chu trình (DAG - Directed Acyclic Graph):**\n     - Nút (Nodes): Đại diện cho các biến ngẫu nhiên.\n     - Cung (Arcs): Biểu thị mối quan hệ phụ thuộc có điều kiện trực tiếp (nguyên nhân $\\to$ kết quả).\n  2. **Bảng xác suất có điều kiện (CPT - Conditional Probability Table):**\n     - Mỗi nút có một bảng CPT định nghĩa phân phối xác suất của nó theo các nút cha trực tiếp: $P(X_i | Parents(X_i))$.\n- **Tính toán xác suất đồng thời:**\n  $$P(x_1, x_2, ..., x_n) = \\prod_{i=1}^n P(x_i | Parents(X_i))$$"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Điểm cốt lõi cần nhớ\n- **Naive Bayes:** Cực nhanh, giả định các biến độc lập khi biết lớp. Cần dùng Laplace smoothing để tránh xác suất 0.\n- **Bayesian Network:** Dùng đồ thị DAG + bảng CPT để biểu diễn các biến phụ thuộc lẫn nhau."
           }
         ],
         "miniQuiz": [
@@ -1775,24 +1800,29 @@
         "status": "done",
         "sections": [
           {
-            "id": "sec-5-6-1",
-            "title": "1. Khái niệm Gom cụm (Clustering) & K-Means",
-            "content": "### 1. Phân cụm dữ liệu (Clustering)\nGom cụm là bài toán học không giám sát (Unsupervised Learning):\n- Không có sẵn nhãn lớp (unlabeled data).\n- Mục tiêu: Gom các điểm dữ liệu thành các cụm sao cho các điểm trong cùng cụm có độ tương đồng cao nhất (intra-cluster similarity cao), và các điểm giữa các cụm khác nhau có độ tương đồng thấp nhất (inter-cluster similarity thấp).\n\n---\n\n### 2. Thuật toán K-Means\n- **Tâm cụm:** Trọng tâm ảo (**Mean**), tính bằng trung bình cộng tọa độ các điểm trong cụm.\n- **Hàm mục tiêu:** Tối thiểu hóa tổng bình phương sai số (SSE - Sum of Squared Errors):\n  $$SSE = \\sum_{i=1}^K \\sum_{x \\in C_i} \\|x - m_i\\|^2$$\n- **Quy trình lặp:**\n  1. Khởi tạo ngẫu nhiên $K$ tâm cụm ban đầu.\n  2. Gán mỗi điểm dữ liệu vào tâm cụm gần nó nhất theo khoảng cách Euclidean.\n  3. Cập nhật lại tọa độ tâm cụm bằng trung bình cộng các điểm vừa gán.\n  4. Lặp lại bước 2-3 cho đến khi tâm cụm không còn dịch chuyển (hội tụ)."
+            "kind": "objectives",
+            "items": [
+              "Khái niệm Gom cụm (Clustering) & K-Means",
+              "So sánh K-Means vs K-Medoids (Slide 68)",
+              "Xác định K tối ưu & Các biến thể (Slide 68-69)",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
           },
           {
-            "id": "sec-5-6-2",
-            "title": "2. So sánh K-Means vs K-Medoids (Slide 68)",
-            "content": "### 3. So sánh chi tiết K-Means và K-Medoids (Slide 68)\n| Tiêu chí | K-Means | K-Medoids (PAM) |\n| :--- | :--- | :--- |\n| **Tâm cụm (Center)** | **Mean (Trọng tâm ảo)** | **Medoid (Điểm thật có trong CSDL)** |\n| **Loại dữ liệu** | Chỉ dữ liệu số (**Numerical**) | Mọi loại dữ liệu (kể cả Categorical, Text) |\n| **Ưu điểm** | Chạy rất nhanh với dữ liệu lớn ($O(tKn)$) | Chống nhiễu và ngoại lai (**Outliers**) cực tốt |\n| **Nhược điểm** | Rất nhạy cảm với ngoại lai (**Outliers**) | Chạy rất chậm trên dữ liệu lớn ($O(tK(n-K)^2)$) |\n\n*Tại sao K-Means nhạy với Outliers?*\nVì Mean lấy trung bình cộng tất cả các điểm. Nếu xuất hiện một điểm dị biệt có tọa độ cực lớn, nó sẽ kéo phăng tâm cụm về phía nó, làm sai lệch cấu trúc tự nhiên của toàn bộ cụm."
+            "kind": "concept",
+            "markdown": "### 1. Phân cụm dữ liệu (Clustering)\nGom cụm là bài toán học không giám sát (Unsupervised Learning):\n- Không có sẵn nhãn lớp (unlabeled data).\n- Mục tiêu: Gom các điểm dữ liệu thành các cụm sao cho các điểm trong cùng cụm có độ tương đồng cao nhất (intra-cluster similarity cao), và các điểm giữa các cụm khác nhau có độ tương đồng thấp nhất (inter-cluster similarity thấp).\n\n---\n\n### 2. Thuật toán K-Means\n- **Tâm cụm:** Trọng tâm ảo (**Mean**), tính bằng trung bình cộng tọa độ các điểm trong cụm.\n- **Hàm mục tiêu:** Tối thiểu hóa tổng bình phương sai số (SSE - Sum of Squared Errors):\n  $$SSE = \\sum_{i=1}^K \\sum_{x \\in C_i} \\|x - m_i\\|^2$$\n- **Quy trình lặp:**\n  1. Khởi tạo ngẫu nhiên $K$ tâm cụm ban đầu.\n  2. Gán mỗi điểm dữ liệu vào tâm cụm gần nó nhất theo khoảng cách Euclidean.\n  3. Cập nhật lại tọa độ tâm cụm bằng trung bình cộng các điểm vừa gán.\n  4. Lặp lại bước 2-3 cho đến khi tâm cụm không còn dịch chuyển (hội tụ)."
           },
           {
-            "id": "sec-5-6-3",
-            "title": "3. Xác định K tối ưu & Các biến thể (Slide 68-69)",
-            "content": "### 4. Cách chọn số cụm K: Phương pháp khuỷu tay (Elbow Method)\nChạy K-Means với các giá trị $K = 1, 2, ..., 10$. Vẽ đồ thị hàm mất mát SSE theo $K$.\nĐiểm uốn gập khúc rõ rệt trên đồ thị (nhìn giống như khuỷu tay) chính là giá trị $K$ tối ưu (cân bằng giữa độ nén mô hình và độ chính xác).\n\n---\n\n### 5. Bốn biến thể nâng cấp (Slide 69)\n1. **Mini-Batch K-Means:** Bản K-Means dành cho Big Data, bốc các mẫu con ngẫu nhiên để cập nhật tâm cụm, tiết kiệm RAM và thời gian.\n2. **K-Modes:** Bản K-Means dành riêng cho dữ liệu phân loại (Categorical). Thay Mean bằng Mode (giá trị có tần số lớn nhất).\n3. **K-Prototypes:** Thuật toán lai kết hợp K-Means và K-Modes, xử lý tập dữ liệu hỗn hợp (vừa có thuộc tính số vừa có thuộc tính chữ).\n4. **CLARA / CLARANS:** Bản phân tách mẫu ngẫu nhiên của K-Medoids giúp K-Medoids có thể chạy được trên dữ liệu lớn."
+            "kind": "concept",
+            "markdown": "### 3. So sánh chi tiết K-Means và K-Medoids (Slide 68)\n| Tiêu chí | K-Means | K-Medoids (PAM) |\n| :--- | :--- | :--- |\n| **Tâm cụm (Center)** | **Mean (Trọng tâm ảo)** | **Medoid (Điểm thật có trong CSDL)** |\n| **Loại dữ liệu** | Chỉ dữ liệu số (**Numerical**) | Mọi loại dữ liệu (kể cả Categorical, Text) |\n| **Ưu điểm** | Chạy rất nhanh với dữ liệu lớn ($O(tKn)$) | Chống nhiễu và ngoại lai (**Outliers**) cực tốt |\n| **Nhược điểm** | Rất nhạy cảm với ngoại lai (**Outliers**) | Chạy rất chậm trên dữ liệu lớn ($O(tK(n-K)^2)$) |\n\n*Tại sao K-Means nhạy với Outliers?*\nVì Mean lấy trung bình cộng tất cả các điểm. Nếu xuất hiện một điểm dị biệt có tọa độ cực lớn, nó sẽ kéo phăng tâm cụm về phía nó, làm sai lệch cấu trúc tự nhiên của toàn bộ cụm."
           },
           {
-            "id": "sec-5-6-4",
-            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
-            "content": "### 💡 Mẹo ghi nhớ\n- **K-Means:** Mean, tâm ảo, nhanh, ghét Outliers.\n- **K-Medoids:** Medoid, điểm thật, chậm, chịu được Outliers.\n- **Dữ liệu phân loại (chữ):** Dùng K-Modes. Dữ liệu hỗn hợp: Dùng K-Prototypes."
+            "kind": "example",
+            "markdown": "### 4. Cách chọn số cụm K: Phương pháp khuỷu tay (Elbow Method)\nChạy K-Means với các giá trị $K = 1, 2, ..., 10$. Vẽ đồ thị hàm mất mát SSE theo $K$.\nĐiểm uốn gập khúc rõ rệt trên đồ thị (nhìn giống như khuỷu tay) chính là giá trị $K$ tối ưu (cân bằng giữa độ nén mô hình và độ chính xác).\n\n---\n\n### 5. Bốn biến thể nâng cấp (Slide 69)\n1. **Mini-Batch K-Means:** Bản K-Means dành cho Big Data, bốc các mẫu con ngẫu nhiên để cập nhật tâm cụm, tiết kiệm RAM và thời gian.\n2. **K-Modes:** Bản K-Means dành riêng cho dữ liệu phân loại (Categorical). Thay Mean bằng Mode (giá trị có tần số lớn nhất).\n3. **K-Prototypes:** Thuật toán lai kết hợp K-Means và K-Modes, xử lý tập dữ liệu hỗn hợp (vừa có thuộc tính số vừa có thuộc tính chữ).\n4. **CLARA / CLARANS:** Bản phân tách mẫu ngẫu nhiên của K-Medoids giúp K-Medoids có thể chạy được trên dữ liệu lớn."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo ghi nhớ\n- **K-Means:** Mean, tâm ảo, nhanh, ghét Outliers.\n- **K-Medoids:** Medoid, điểm thật, chậm, chịu được Outliers.\n- **Dữ liệu phân loại (chữ):** Dùng K-Modes. Dữ liệu hỗn hợp: Dùng K-Prototypes."
           }
         ],
         "miniQuiz": [
@@ -1823,24 +1853,29 @@
         "status": "done",
         "sections": [
           {
-            "id": "sec-5-7-1",
-            "title": "1. Nguyên lý phân cụm dựa trên mật độ (Slide 70)",
-            "content": "### 1. Nguyên lý của DBSCAN\nDBSCAN (*Density-Based Spatial Clustering of Applications with Noise*) tiếp cận bài toán gom cụm hoàn toàn khác K-Means:\n- **Định nghĩa cụm:** Cụm là một vùng không gian có **mật độ điểm dữ liệu dày đặc**, được ngăn cách bởi các vùng có mật độ thấp (vùng thưa thớt).\n- **Đặc điểm đột phá:** **Không cần biết trước số cụm $K$**.\n\n---\n\n### 2. Hai tham số cốt lõi\n1. **Eps ($\\epsilon$ - Epsilon):** Bán kính lân cận quét xung quanh một điểm dữ liệu.\n2. **MinPts (Minimum Points):** Số lượng điểm tối thiểu phải có trong bán kính Eps (tính cả điểm đang xét) để tạo thành một vùng mật độ cao."
+            "kind": "objectives",
+            "items": [
+              "Nguyên lý phân cụm dựa trên mật độ (Slide 70)",
+              "Ba loại điểm trong DBSCAN (Core, Border, Noise)",
+              "Cơ chế loang điểm & Các ưu điểm vượt trội",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
           },
           {
-            "id": "sec-5-7-2",
-            "title": "2. Ba loại điểm trong DBSCAN (Core, Border, Noise)",
-            "content": "### 3. Phân loại 3 loại điểm trong DBSCAN (Slide 70)\nMọi điểm dữ liệu trong không gian đều được phân vào đúng 1 trong 3 nhóm:\n1. **Điểm lõi (Core Point):**\n   - Số điểm trong lân cận bán kính Eps $\\ge MinPts$.\n   - Là hạt nhân để khởi tạo và mở rộng cụm.\n2. **Điểm biên (Border Point):**\n   - Nằm trong vùng lân cận bán kính Eps của một điểm lõi, nhưng bản thân nó có $< MinPts$ điểm lân cận.\n   - Nằm ở mép ngoài của cụm.\n3. **Điểm nhiễu (Noise / Outlier):**\n   - Không phải điểm lõi, cũng không phải điểm biên.\n   - Nằm trơ trọi ở vùng mật độ thấp $\\implies$ Bị thuật toán gạt bỏ ra khỏi cụm."
+            "kind": "concept",
+            "markdown": "### 1. Nguyên lý của DBSCAN\nDBSCAN (*Density-Based Spatial Clustering of Applications with Noise*) tiếp cận bài toán gom cụm hoàn toàn khác K-Means:\n- **Định nghĩa cụm:** Cụm là một vùng không gian có **mật độ điểm dữ liệu dày đặc**, được ngăn cách bởi các vùng có mật độ thấp (vùng thưa thớt).\n- **Đặc điểm đột phá:** **Không cần biết trước số cụm $K$**.\n\n---\n\n### 2. Hai tham số cốt lõi\n1. **Eps ($\\epsilon$ - Epsilon):** Bán kính lân cận quét xung quanh một điểm dữ liệu.\n2. **MinPts (Minimum Points):** Số lượng điểm tối thiểu phải có trong bán kính Eps (tính cả điểm đang xét) để tạo thành một vùng mật độ cao."
           },
           {
-            "id": "sec-5-7-3",
-            "title": "3. Cơ chế loang điểm & Các ưu điểm vượt trội",
-            "content": "### 4. Cơ chế loang điểm (Density Propagation)\n- Chọn ngẫu nhiên một điểm chưa thăm.\n- Nếu là điểm Core: Khởi tạo một cụm mới. Thuật toán tiến hành 'loang' (loang như vệt dầu loang) bằng cách gom tất cả các điểm có thể tiếp cận về mặt mật độ (**Density-reachable**). Nếu gặp một điểm Core khác, tiếp tục mở rộng vùng biên cho đến khi không còn điểm Core nào mới.\n- Nếu là điểm Noise: Tạm thời đánh dấu là nhiễu (có thể trở thành Border point sau này nếu gặp điểm Core khác).\n\n---\n\n### 5. So sánh DBSCAN vs K-Means\n| Tiêu chí | K-Means | DBSCAN |\n| :--- | :--- | :--- |\n| **Xác định số cụm K** | Bắt buộc phải nhập trước | **Tự động tìm ra số cụm** |\n| **Hình dạng cụm** | Chỉ tìm được hình cầu / lồi (Spherical) | **Mọi hình dạng bất kỳ (Arbitrary shapes, xoắn ốc, chữ U...)** |\n| **Xử lý nhiễu (Noise)** | Ép mọi điểm nhiễu vào cụm | **Tự động phát hiện và loại bỏ Outliers** |"
+            "kind": "concept",
+            "markdown": "### 3. Phân loại 3 loại điểm trong DBSCAN (Slide 70)\nMọi điểm dữ liệu trong không gian đều được phân vào đúng 1 trong 3 nhóm:\n1. **Điểm lõi (Core Point):**\n   - Số điểm trong lân cận bán kính Eps $\\ge MinPts$.\n   - Là hạt nhân để khởi tạo và mở rộng cụm.\n2. **Điểm biên (Border Point):**\n   - Nằm trong vùng lân cận bán kính Eps của một điểm lõi, nhưng bản thân nó có $< MinPts$ điểm lân cận.\n   - Nằm ở mép ngoài của cụm.\n3. **Điểm nhiễu (Noise / Outlier):**\n   - Không phải điểm lõi, cũng không phải điểm biên.\n   - Nằm trơ trọi ở vùng mật độ thấp $\\implies$ Bị thuật toán gạt bỏ ra khỏi cụm."
           },
           {
-            "id": "sec-5-7-4",
-            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
-            "content": "### 💡 Mẹo nhận diện câu hỏi trắc nghiệm\n- Nhắc đến **Core, Border, Noise** $\\implies$ Chọn **DBSCAN**.\n- Nhắc đến **Eps và MinPts** $\\implies$ Chọn **DBSCAN**.\n- Nhắc đến **Cụm hình dạng bất kỳ, tự động lọc Outlier** $\\implies$ Chọn **DBSCAN**."
+            "kind": "example",
+            "markdown": "### 4. Cơ chế loang điểm (Density Propagation)\n- Chọn ngẫu nhiên một điểm chưa thăm.\n- Nếu là điểm Core: Khởi tạo một cụm mới. Thuật toán tiến hành 'loang' (loang như vệt dầu loang) bằng cách gom tất cả các điểm có thể tiếp cận về mặt mật độ (**Density-reachable**). Nếu gặp một điểm Core khác, tiếp tục mở rộng vùng biên cho đến khi không còn điểm Core nào mới.\n- Nếu là điểm Noise: Tạm thời đánh dấu là nhiễu (có thể trở thành Border point sau này nếu gặp điểm Core khác).\n\n---\n\n### 5. So sánh DBSCAN vs K-Means\n| Tiêu chí | K-Means | DBSCAN |\n| :--- | :--- | :--- |\n| **Xác định số cụm K** | Bắt buộc phải nhập trước | **Tự động tìm ra số cụm** |\n| **Hình dạng cụm** | Chỉ tìm được hình cầu / lồi (Spherical) | **Mọi hình dạng bất kỳ (Arbitrary shapes, xoắn ốc, chữ U...)** |\n| **Xử lý nhiễu (Noise)** | Ép mọi điểm nhiễu vào cụm | **Tự động phát hiện và loại bỏ Outliers** |"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo nhận diện câu hỏi trắc nghiệm\n- Nhắc đến **Core, Border, Noise** $\\implies$ Chọn **DBSCAN**.\n- Nhắc đến **Eps và MinPts** $\\implies$ Chọn **DBSCAN**.\n- Nhắc đến **Cụm hình dạng bất kỳ, tự động lọc Outlier** $\\implies$ Chọn **DBSCAN**."
           }
         ],
         "miniQuiz": [
@@ -1870,24 +1905,29 @@
         "status": "done",
         "sections": [
           {
-            "id": "sec-5-8-1",
-            "title": "1. Phân cụm phân cấp (Hierarchical Clustering)",
-            "content": "### 1. Phân cụm phân cấp (Hierarchical Clustering)\nTheo **Slide 71**, phân cụm phân cấp xây dựng một cây phân cấp các cụm gọi là **Dendrogram**.\n- **Hai phương pháp tiếp cận:**\n  1. **Agglomerative (Gộp dần - Bottom-up, điển hình: AGNES):** Bắt đầu coi mỗi điểm là 1 cụm riêng lẻ, sau đó lần lượt gộp các cặp cụm gần nhau nhất lại cho đến khi chỉ còn 1 cụm duy nhất.\n  2. **Divisive (Tách dần - Top-down, điển hình: DIANA):** Bắt đầu coi toàn bộ dữ liệu là 1 cụm lớn duy nhất, sau đó lần lượt chia nhỏ cụm ra cho đến khi mỗi cụm chỉ còn 1 điểm.\n- **Các độ đo khoảng cách giữa 2 cụm:**\n  - **Single-link:** Khoảng cách ngắn nhất giữa 2 điểm thuộc 2 cụm.\n  - **Complete-link:** Khoảng cách dài nhất giữa 2 điểm thuộc 2 cụm.\n  - **Average-link:** Khoảng cách trung bình giữa tất cả các cặp điểm.\n- **Thuật toán tiêu biểu nâng cao:** **BIRCH, CURE**."
+            "kind": "objectives",
+            "items": [
+              "Phân cụm phân cấp (Hierarchical Clustering)",
+              "Phân cụm dựa trên lưới (Grid-based Clustering)",
+              "Phát hiện Ngoại lai (Outlier Detection - Slide 72)",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
           },
           {
-            "id": "sec-5-8-2",
-            "title": "2. Phân cụm dựa trên lưới (Grid-based Clustering)",
-            "content": "### 2. Phân cụm dựa trên lưới (Grid-based Clustering)\nTheo **Slide 71**, thay vì xử lý từng điểm dữ liệu, Grid-based chia không gian đa chiều thành **các ô lưới (grid cells)** có kích thước xác định:\n- Các thuộc tính thống kê (số điểm, mean, min, max...) được tính toán sẵn cho từng ô lưới.\n- Việc gom cụm được thực hiện trực tiếp trên các ô lưới có mật độ cao liền kề nhau.\n- **Ưu điểm lớn nhất:** **Tốc độ xử lý siêu nhanh**, độ phức tạp thời gian chỉ phụ thuộc vào số ô lưới, hoàn toàn độc lập với số điểm dữ liệu $N$, chuyên trị Big Data.\n- **Thuật toán tiêu biểu:** **STING, CLIQUE, WaveCluster**."
+            "kind": "concept",
+            "markdown": "### 1. Phân cụm phân cấp (Hierarchical Clustering)\nTheo **Slide 71**, phân cụm phân cấp xây dựng một cây phân cấp các cụm gọi là **Dendrogram**.\n- **Hai phương pháp tiếp cận:**\n  1. **Agglomerative (Gộp dần - Bottom-up, điển hình: AGNES):** Bắt đầu coi mỗi điểm là 1 cụm riêng lẻ, sau đó lần lượt gộp các cặp cụm gần nhau nhất lại cho đến khi chỉ còn 1 cụm duy nhất.\n  2. **Divisive (Tách dần - Top-down, điển hình: DIANA):** Bắt đầu coi toàn bộ dữ liệu là 1 cụm lớn duy nhất, sau đó lần lượt chia nhỏ cụm ra cho đến khi mỗi cụm chỉ còn 1 điểm.\n- **Các độ đo khoảng cách giữa 2 cụm:**\n  - **Single-link:** Khoảng cách ngắn nhất giữa 2 điểm thuộc 2 cụm.\n  - **Complete-link:** Khoảng cách dài nhất giữa 2 điểm thuộc 2 cụm.\n  - **Average-link:** Khoảng cách trung bình giữa tất cả các cặp điểm.\n- **Thuật toán tiêu biểu nâng cao:** **BIRCH, CURE**."
           },
           {
-            "id": "sec-5-8-3",
-            "title": "3. Phát hiện Ngoại lai (Outlier Detection - Slide 72)",
-            "content": "### 3. Các kỹ thuật phát hiện ngoại lai (Slide 72)\nNgoại lai (Outlier / Anomaly) là đối tượng dữ liệu có sự sai khác đáng kể so với phần còn lại của tập dữ liệu.\n\n#### a. Statistical-based (Dựa trên thống kê)\n- Giả định dữ liệu tuân theo một phân phối xác suất (thường là phân phối Chuẩn $\\mathcal{N}(\\mu, \\sigma^2)$).\n- **Quy tắc $3\\sigma$ (Empirical Rule):** Các điểm nằm ngoài khoảng $[\\mu - 3\\sigma, \\mu + 3\\sigma]$ có xác suất xuất hiện cực thấp ($< 0.3\\%$) $\\implies$ là ngoại lai.\n- **Quy tắc Boxplot (IQR):** Điểm nằm ngoài $[Q_1 - 1.5 IQR, Q_3 + 1.5 IQR]$ là ngoại lai.\n- *Đặc điểm:* Rất nhanh, nhưng kém hiệu quả nếu dữ liệu thực tế không tuân theo phân phối chuẩn.\n\n#### b. Distance-based (Dựa trên khoảng cách)\n- Một điểm là ngoại lai nếu nó nằm cách xa hầu hết các điểm khác trong không gian hình học.\n- Dùng khoảng cách đến $k$ láng giềng gần nhất ($k$-NN Outlier Score). Điểm nào có khoảng cách trung bình đến các láng giềng lớn nhất là ngoại lai.\n- *Đặc điểm:* Không cần giả định phân phối, dùng tốt cho đa chiều, nhưng tốn chi phí tính toán."
+            "kind": "concept",
+            "markdown": "### 2. Phân cụm dựa trên lưới (Grid-based Clustering)\nTheo **Slide 71**, thay vì xử lý từng điểm dữ liệu, Grid-based chia không gian đa chiều thành **các ô lưới (grid cells)** có kích thước xác định:\n- Các thuộc tính thống kê (số điểm, mean, min, max...) được tính toán sẵn cho từng ô lưới.\n- Việc gom cụm được thực hiện trực tiếp trên các ô lưới có mật độ cao liền kề nhau.\n- **Ưu điểm lớn nhất:** **Tốc độ xử lý siêu nhanh**, độ phức tạp thời gian chỉ phụ thuộc vào số ô lưới, hoàn toàn độc lập với số điểm dữ liệu $N$, chuyên trị Big Data.\n- **Thuật toán tiêu biểu:** **STING, CLIQUE, WaveCluster**."
           },
           {
-            "id": "sec-5-8-4",
-            "title": "4. Tổng kết & Câu hỏi Mini-Quiz",
-            "content": "### 💡 Bảng đối chiếu nhanh Slide 71-72\n- **Dendrogram, AGNES, DIANA, BIRCH, CURE** $\\implies$ Hierarchical Clustering.\n- **Ô lưới, STING, CLIQUE, tốc độ siêu nhanh độc lập với N** $\\implies$ Grid-based Clustering.\n- **Phân phối chuẩn $3\\sigma$, Boxplot IQR** $\\implies$ Statistical-based Outliers.\n- **Khoảng cách k-NN trong không gian hình học** $\\implies$ Distance-based Outliers."
+            "kind": "example",
+            "markdown": "### 3. Các kỹ thuật phát hiện ngoại lai (Slide 72)\nNgoại lai (Outlier / Anomaly) là đối tượng dữ liệu có sự sai khác đáng kể so với phần còn lại của tập dữ liệu.\n\n#### a. Statistical-based (Dựa trên thống kê)\n- Giả định dữ liệu tuân theo một phân phối xác suất (thường là phân phối Chuẩn $\\mathcal{N}(\\mu, \\sigma^2)$).\n- **Quy tắc $3\\sigma$ (Empirical Rule):** Các điểm nằm ngoài khoảng $[\\mu - 3\\sigma, \\mu + 3\\sigma]$ có xác suất xuất hiện cực thấp ($< 0.3\\%$) $\\implies$ là ngoại lai.\n- **Quy tắc Boxplot (IQR):** Điểm nằm ngoài $[Q_1 - 1.5 IQR, Q_3 + 1.5 IQR]$ là ngoại lai.\n- *Đặc điểm:* Rất nhanh, nhưng kém hiệu quả nếu dữ liệu thực tế không tuân theo phân phối chuẩn.\n\n#### b. Distance-based (Dựa trên khoảng cách)\n- Một điểm là ngoại lai nếu nó nằm cách xa hầu hết các điểm khác trong không gian hình học.\n- Dùng khoảng cách đến $k$ láng giềng gần nhất ($k$-NN Outlier Score). Điểm nào có khoảng cách trung bình đến các láng giềng lớn nhất là ngoại lai.\n- *Đặc điểm:* Không cần giả định phân phối, dùng tốt cho đa chiều, nhưng tốn chi phí tính toán."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Bảng đối chiếu nhanh Slide 71-72\n- **Dendrogram, AGNES, DIANA, BIRCH, CURE** $\\implies$ Hierarchical Clustering.\n- **Ô lưới, STING, CLIQUE, tốc độ siêu nhanh độc lập với N** $\\implies$ Grid-based Clustering.\n- **Phân phối chuẩn $3\\sigma$, Boxplot IQR** $\\implies$ Statistical-based Outliers.\n- **Khoảng cách k-NN trong không gian hình học** $\\implies$ Distance-based Outliers."
           }
         ],
         "miniQuiz": [
@@ -1912,52 +1952,462 @@
   },
   {
     "id": "ch6",
-    "title": "Chương 6: Khai phá Web và Đồ thị (PageRank, BFS/DFS)",
+    "title": "Chương 6: In-Database Machine Learning và MLOps",
     "order": 6,
     "objectives": [
-      "Hiểu nguyên lý thuật toán PageRank của Google",
-      "Tính toán PageRank từng vòng lặp với Damping Factor",
-      "Phân biệt và thực thi duyệt đồ thị BFS và DFS"
+      "Hiểu rõ sự khác biệt giữa kiến trúc Traditional ML và In-Database ML trong tối ưu hiệu năng và bảo mật dữ liệu",
+      "Nắm vững thuật toán dự đoán chuỗi CPT+ (Prediction Tree, Inverted Index, Lookup Table, Count Table)",
+      "Làm chủ thuật toán Google PageRank, hệ số suy giảm Damping Factor (df = 0.85) và thuật toán duyệt đồ thị BFS/DFS",
+      "Thành thạo huấn luyện mô hình bằng SQL chuẩn với BigQuery ML (CREATE MODEL, ML.PREDICT) và Snowflake Cortex",
+      "Hiểu sâu cơ chế Snowpark, thư viện Anaconda tích hợp, Secure Sandboxing và Python Worksheets",
+      "Thiết kế và vận hành Feature Store tập trung: đảm bảo Discovery, Consistency (tránh Training-Serving Skew) và Lineage",
+      "Vận hành MLOps trong DWH: Model Registry, Model Versioning, giám sát suy giảm hiệu năng (Data Drift vs Concept Drift) và Auto-retraining",
+      "Ứng dụng AutoML và triển khai mô hình thành hàm định nghĩa sẵn (UDF) để dự báo tức thời (Scoring on-the-fly) trong câu lệnh SQL"
     ],
     "lessons": [
       {
         "id": "les-6-1",
-        "title": "Bài 1: Thuật toán PageRank và Damping Factor",
-        "status": "empty",
+        "order": 1,
+        "title": "Bài 1: Kiến trúc In-Database Machine Learning: Tối ưu hiệu năng tại chỗ",
+        "duration": "40 phút",
+        "status": "done",
         "sections": [
           {
-            "kind": "lab",
-            "labId": "pagerank-lab"
+            "kind": "objectives",
+            "items": [
+              "Đột phá kiến trúc: Move Compute to Data (Slide 4)",
+              "Ba trụ cột tối ưu hóa: Scalability, Governance và Simplicity (Slide 5)",
+              "Tách rời Compute & Storage trong Cloud DWH",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Tại sao cần In-Database Machine Learning?\nTrong kỷ nguyên Big Data, khối lượng dữ liệu lưu trữ trong Data Warehouse đã chạm ngưỡng hàng chục tới hàng trăm Terabyte. Cách làm Machine Learning truyền thống bộc lộ những điểm nghẽn chí tử:\n\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-indigo-400 mb-3 text-center\">\n    ⚡ SO SÁNH KIẾN TRÚC: TRADITIONAL ML vs IN-DATABASE ML (SLIDE 4)\n  </div>\n  <svg viewBox=\"0 0 820 280\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Background panels -->\n    <rect x=\"10\" y=\"20\" width=\"380\" height=\"240\" rx=\"16\" fill=\"#1e293b\" stroke=\"#f43f5e\" stroke-width=\"1.5\" stroke-dasharray=\"4,4\"/>\n    <rect x=\"430\" y=\"20\" width=\"380\" height=\"240\" rx=\"16\" fill=\"#1e293b\" stroke=\"#10b981\" stroke-width=\"2\"/>\n\n    <!-- Labels -->\n    <text x=\"200\" y=\"45\" fill=\"#f43f5e\" font-weight=\"bold\" font-size=\"14\" text-anchor=\"middle\">❌ TRADITIONAL ML (Cũ - Tốn kém & Rủi ro)</text>\n    <text x=\"620\" y=\"45\" fill=\"#10b981\" font-weight=\"bold\" font-size=\"14\" text-anchor=\"middle\">✅ IN-DATABASE ML (Hiện đại - Tại chỗ)</text>\n\n    <!-- Traditional Side -->\n    <rect x=\"30\" y=\"70\" width=\"130\" height=\"60\" rx=\"10\" fill=\"#334155\" stroke=\"#94a3b8\"/>\n    <text x=\"95\" y=\"98\" fill=\"#f8fafc\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Data Warehouse</text>\n    <text x=\"95\" y=\"116\" fill=\"#cbd5e1\" font-size=\"10\" text-anchor=\"middle\">Lưu trữ Terabyte</text>\n\n    <path d=\"M 160 100 L 240 100\" stroke=\"#f43f5e\" stroke-width=\"2.5\" marker-end=\"url(#arrow-red)\"/>\n    <text x=\"200\" y=\"90\" fill=\"#f87171\" font-size=\"9\" text-anchor=\"middle\" font-weight=\"bold\">Extract Data</text>\n    <text x=\"200\" y=\"120\" fill=\"#fca5a5\" font-size=\"8\" text-anchor=\"middle\">Nghẽn mạng & Trễ</text>\n\n    <rect x=\"240\" y=\"70\" width=\"130\" height=\"60\" rx=\"10\" fill=\"#334155\" stroke=\"#f43f5e\"/>\n    <text x=\"305\" y=\"98\" fill=\"#f8fafc\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">External ML Server</text>\n    <text x=\"305\" y=\"116\" fill=\"#cbd5e1\" font-size=\"10\" text-anchor=\"middle\">Python / GPU Cluster</text>\n\n    <rect x=\"30\" y=\"160\" width=\"340\" height=\"80\" rx=\"10\" fill=\"#47151e\" stroke=\"#f43f5e\"/>\n    <text x=\"45\" y=\"185\" fill=\"#fecdd3\" font-size=\"11\" font-weight=\"bold\">⚠️ Nhược điểm nghiêm trọng:</text>\n    <text x=\"45\" y=\"205\" fill=\"#ffe4e6\" font-size=\"10\">• Dịch chuyển dữ liệu lớn tốn băng thông & chi phí cao.</text>\n    <text x=\"45\" y=\"222\" fill=\"#ffe4e6\" font-size=\"10\">• Nguy cơ bảo mật khi dữ liệu rời khỏi ranh giới an toàn.</text>\n\n    <!-- In-Database Side -->\n    <rect x=\"450\" y=\"70\" width=\"340\" height=\"80\" rx=\"12\" fill=\"#064e3b\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <text x=\"620\" y=\"95\" fill=\"#a7f3d0\" font-size=\"13\" font-weight=\"bold\" text-anchor=\"middle\">HẠ TẦNG DATA WAREHOUSE TẬP TRUNG</text>\n    <rect x=\"470\" y=\"105\" width=\"130\" height=\"35\" rx=\"8\" fill=\"#047857\"/>\n    <text x=\"535\" y=\"127\" fill=\"#ffffff\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Data Storage (In-Place)</text>\n    <rect x=\"640\" y=\"105\" width=\"130\" height=\"35\" rx=\"8\" fill=\"#0284c7\"/>\n    <text x=\"705\" y=\"127\" fill=\"#ffffff\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">ML Algorithms Exec</text>\n\n    <rect x=\"450\" y=\"165\" width=\"340\" height=\"75\" rx=\"10\" fill=\"#065f46\" stroke=\"#34d399\"/>\n    <text x=\"465\" y=\"190\" fill=\"#a7f3d0\" font-size=\"11\" font-weight=\"bold\">🚀 Ưu điểm vượt trội:</text>\n    <text x=\"465\" y=\"210\" fill=\"#d1fae5\" font-size=\"10\">✓ Move compute to data: Zero data movement, độ trễ 0s.</text>\n    <text x=\"465\" y=\"226\" fill=\"#d1fae5\" font-size=\"10\">✓ Quản trị RBAC thống nhất, tận dụng Auto-scaling của DWH.</text>\n  </svg>\n</div>\n\n\n#### a. Cách tiếp cận truyền thống (Traditional ML):\n- **Quy trình:** Dữ liệu được trích xuất (Extract) qua mạng $\\to$ Nạp vào máy chủ ML riêng biệt (máy trạm cá nhân, cụm Spark, máy chủ GPU).\n- **Hệ quả tiêu cực:**\n  - **Tắc nghẽn băng thông & Độ trễ cao:** Di chuyển Terabyte dữ liệu qua Internet/mạng nội bộ mất hàng giờ đồng hồ.\n  - **Rủi ro bảo mật & Vi phạm tuân thủ (GDPR, HIPAA):** Dữ liệu nhạy cảm bị sao chép phân tán sang môi trường bên ngoài, thoát khỏi sự kiểm soát của hệ thống kiểm toán (Audit Log).\n  - **Chi phí hạ tầng nhân đôi:** Doanh nghiệp vừa phải trả tiền lưu trữ DWH, vừa phải duy trì cụm máy chủ ML đắt đỏ.\n\n#### b. Kiến trúc In-Database ML hiện đại:\n- **Nguyên lý cốt lõi:** **Dữ liệu được giữ nguyên tại chỗ (In-Place)**. Thay vì di chuyển dữ liệu đến thuật toán, ta đóng gói thuật toán ML và đẩy xuống thực thi trực tiếp trên hạ tầng lưu trữ của Data Warehouse (*Move compute to data, not data to compute*).\n- **Ưu điểm vượt trội:**\n  - Triệt tiêu $100\\%$ chi phí và thời gian dịch chuyển dữ liệu.\n  - Tận dụng sức mạnh tính toán song song quy mô lớn (Massive Parallel Processing - MPP) của DWH.\n  - Bảo mật dữ liệu tuyệt đối theo tiêu chuẩn doanh nghiệp."
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 2. Ba trụ cột tối ưu hệ thống của In-Database ML (Slide 5)\nTheo **Slide 5**, kiến trúc In-Database mang lại 3 giá trị sống còn:\n\n| Trụ cột | Giá trị kỹ thuật cụ thể | Lợi ích kinh doanh |\n| :--- | :--- | :--- |\n| **1. Scalability (Khả năng mở rộng)** | Tận dụng cơ chế tự động mở rộng (Auto-scaling) và tính toán song song của Cloud DWH để xử lý hàng Terabyte dữ liệu mà không cần cấu hình cụm Spark/Hadoop phức tạp. | Tiết kiệm chi phí đầu tư phần cứng chuyên dụng; mở rộng dung lượng tính toán chỉ bằng một cú nhấp chuột. |\n| **2. Governance (Quản trị tập trung)** | Kiểm soát quyền truy cập dựa trên vai trò (**RBAC**) đồng nhất. Phân quyền ai được chạy mô hình ML giống hệt như phân quyền truy cập bảng dữ liệu thô. Toàn bộ lịch sử chạy được ghi nhận vào Audit Log. | Đáp ứng hoàn hảo các tiêu chuẩn kiểm toán quốc tế nghiêm ngặt như PCI-DSS, SOC 2, ISO 27001. |\n| **3. Simplicity (Sự đơn giản hóa)** | Tích hợp trực tiếp các tác vụ huấn luyện và dự đoán vào các luồng dữ liệu tự động (**ELT Pipelines**) sẵn có của doanh nghiệp (như DBT, Airflow, Stored Procedures). | Giảm thiểu độ phức tạp trong kiến trúc, xóa bỏ rào cản chuyển giao giữa Data Engineering và Data Science. |"
+          },
+          {
+            "kind": "example",
+            "markdown": "### 3. Sức mạnh của nguyên lý tách rời Compute & Storage\nTrên các nền tảng Modern Cloud DWH như **Snowflake** hay **Google BigQuery**:\n- Tầng lưu trữ (Storage) là tập trung và dùng chung.\n- Bạn có thể bật một **Cụm tính toán ảo (Virtual Warehouse / Slot)** kích thước cực lớn (ví dụ cỡ 4X-Large) dành riêng cho tác vụ huấn luyện mô hình ML.\n- Quá trình huấn luyện ngốn tài nguyên này **hoàn toàn độc lập** và **không làm chậm hay ảnh hưởng** đến các báo cáo Dashboard/BI của ban giám đốc đang truy vấn cùng lúc trên bảng dữ liệu đó.\n- Huấn luyện xong, cụm tính toán tự động tắt (Auto-suspend) sau 60 giây, giúp tối ưu chi phí đến từng xu."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo ghi nhớ cho sinh viên\n- Nhớ câu châm ngôn: **'Move Compute to Data'**.\n- Không xuất file CSV ra máy ngoài! Huấn luyện ngay tại chỗ trong DWH!"
           }
         ],
         "miniQuiz": [
-          "q31a",
-          "q31b",
-          "q40"
+          {
+            "question": "Ưu điểm cốt lõi nhất của kiến trúc In-Database Machine Learning so với Traditional ML là gì?",
+            "options": [
+              "A. Giữ nguyên dữ liệu tại chỗ, loại bỏ chi phí dịch chuyển dữ liệu và đảm bảo bảo mật tập trung",
+              "B. Bắt buộc phải cài đặt cụm Apache Spark riêng biệt bên ngoài kho dữ liệu",
+              "C. Chỉ chạy được các mô hình hồi quy tuyến tính đơn giản",
+              "D. Luôn cần xuất dữ liệu ra định dạng CSV để nạp vào Python"
+            ],
+            "answer": "A. Giữ nguyên dữ liệu tại chỗ, loại bỏ chi phí dịch chuyển dữ liệu và đảm bảo bảo mật tập trung",
+            "explanation": "Theo Slide 4: In-Database ML đẩy thuật toán vào thực thi ngay trên hạ tầng DWH, loại bỏ hoàn toàn độ trễ di chuyển dữ liệu và bảo mật dữ liệu tuyệt đối."
+          }
         ],
         "relatedQuestionIds": [
-          "q31a",
-          "q31b",
-          "q40"
-        ],
-        "labIds": [
-          "pagerank-lab"
+          "ch6_q01",
+          "ch6_q02",
+          "ch6_q03",
+          "ch6_q04",
+          "ch6_q05"
         ]
       },
       {
         "id": "les-6-2",
-        "title": "Bài 2: Duyệt đồ thị theo chiều rộng (BFS) và chiều sâu (DFS)",
-        "status": "empty",
-        "sections": [],
+        "order": 2,
+        "title": "Bài 2: Dự đoán chuỗi tuần tự với CPT & CPT+ (Compact Prediction Tree+)",
+        "duration": "55 phút",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Khái niệm Dự đoán chuỗi & CPT+ (Slide 9-11)",
+              "Ba cấu trúc dữ liệu cốt lõi của CPT (Slide 13)",
+              "Bài toán thực hành từng bước từ Slide 12-16",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Bài toán Dự đoán chuỗi tuần tự (Sequence Prediction)\nTrong thương mại điện tử và phân tích Web Access Log:\n- Hành vi người dùng diễn ra theo trình tự thời gian: Ví dụ khách hàng duyệt trang $\\to$ xem chi tiết sản phẩm $\\to$ thêm vào giỏ $\\to$ thanh toán.\n- **Mục tiêu:** Cho một chuỗi hành vi trong quá khứ $s$, hãy dự đoán phần tử tiếp theo mà người dùng sẽ bấm vào.\n- **Thuật toán CPT+ (Philippe Fournier-Viger 2015 - Slide 9):** Mô hình nén cây không mất thông tin (Lossless compression) giúp dự đoán chuỗi với độ chính xác cao và tốc độ truy vấn cực nhanh."
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 2. Ba cấu trúc dữ liệu tạo nên sức mạnh CPT (Slide 13)\n\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-sky-400 mb-3 text-center\">\n    🌲 CẤU TRÚC THUẬT TOÁN CPT (COMPACT PREDICTION TREE) & BƯỚC DỰ ĐOÁN (SLIDE 12-15)\n  </div>\n  <svg viewBox=\"0 0 800 320\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- 3 Core structures -->\n    <!-- 1. Prediction Tree -->\n    <rect x=\"10\" y=\"10\" width=\"360\" height=\"300\" rx=\"14\" fill=\"#0f172a\" stroke=\"#38bdf8\" stroke-width=\"1.5\"/>\n    <text x=\"190\" y=\"32\" fill=\"#38bdf8\" font-size=\"13\" font-weight=\"bold\" text-anchor=\"middle\">1. Prediction Tree (Cây nén)</text>\n\n    <!-- Tree nodes -->\n    <circle cx=\"190\" cy=\"65\" r=\"16\" fill=\"#3b82f6\"/>\n    <text x=\"190\" y=\"70\" fill=\"#ffffff\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">root</text>\n\n    <!-- Branch s1 -->\n    <line x1=\"180\" y1=\"80\" x2=\"70\" y2=\"120\" stroke=\"#64748b\" stroke-width=\"2\"/>\n    <circle cx=\"70\" cy=\"120\" r=\"14\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"70\" y=\"125\" fill=\"#f8fafc\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">A</text>\n\n    <line x1=\"70\" y1=\"134\" x2=\"70\" y2=\"165\" stroke=\"#64748b\" stroke-width=\"1.5\"/>\n    <circle cx=\"70\" cy=\"165\" r=\"13\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"70\" y=\"169\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">B</text>\n\n    <line x1=\"70\" y1=\"178\" x2=\"70\" y2=\"205\" stroke=\"#64748b\" stroke-width=\"1.5\"/>\n    <circle cx=\"70\" cy=\"205\" r=\"13\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"70\" y=\"209\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">C</text>\n\n    <line x1=\"70\" y1=\"218\" x2=\"70\" y2=\"245\" stroke=\"#64748b\" stroke-width=\"1.5\"/>\n    <circle cx=\"70\" cy=\"245\" r=\"13\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"70\" y=\"249\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">D</text>\n\n    <line x1=\"70\" y1=\"258\" x2=\"70\" y2=\"285\" stroke=\"#f43f5e\" stroke-width=\"2\"/>\n    <circle cx=\"70\" cy=\"285\" r=\"13\" fill=\"#f43f5e\"/>\n    <text x=\"70\" y=\"289\" fill=\"#ffffff\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">F</text>\n    <text x=\"95\" y=\"289\" fill=\"#f43f5e\" font-size=\"9\">(Hậu tố s1)</text>\n\n    <!-- Branch s3 -->\n    <line x1=\"190\" y1=\"81\" x2=\"190\" y2=\"120\" stroke=\"#64748b\" stroke-width=\"2\"/>\n    <circle cx=\"190\" cy=\"120\" r=\"14\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"190\" y=\"125\" fill=\"#f8fafc\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">E</text>\n\n    <line x1=\"190\" y1=\"134\" x2=\"190\" y2=\"165\" stroke=\"#64748b\" stroke-width=\"1.5\"/>\n    <circle cx=\"190\" cy=\"165\" r=\"13\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"190\" y=\"169\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">A</text>\n\n    <line x1=\"190\" y1=\"178\" x2=\"190\" y2=\"205\" stroke=\"#64748b\" stroke-width=\"1.5\"/>\n    <circle cx=\"190\" cy=\"205\" r=\"13\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"190\" y=\"209\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">D</text>\n\n    <line x1=\"190\" y1=\"218\" x2=\"190\" y2=\"245\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <circle cx=\"190\" cy=\"245\" r=\"13\" fill=\"#10b981\"/>\n    <text x=\"190\" y=\"249\" fill=\"#ffffff\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">C</text>\n\n    <line x1=\"190\" y1=\"258\" x2=\"190\" y2=\"285\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <circle cx=\"190\" cy=\"285\" r=\"13\" fill=\"#10b981\"/>\n    <text x=\"190\" y=\"289\" fill=\"#ffffff\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">B</text>\n    <text x=\"220\" y=\"289\" fill=\"#10b981\" font-size=\"9\">(Hậu tố s3)</text>\n\n    <!-- Branch s4 -->\n    <line x1=\"200\" y1=\"80\" x2=\"310\" y2=\"120\" stroke=\"#64748b\" stroke-width=\"2\"/>\n    <circle cx=\"310\" cy=\"120\" r=\"14\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"310\" y=\"125\" fill=\"#f8fafc\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">E</text>\n\n    <line x1=\"310\" y1=\"134\" x2=\"310\" y2=\"165\" stroke=\"#64748b\" stroke-width=\"1.5\"/>\n    <circle cx=\"310\" cy=\"165\" r=\"13\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"310\" y=\"169\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">G</text>\n\n    <line x1=\"310\" y1=\"178\" x2=\"310\" y2=\"205\" stroke=\"#64748b\" stroke-width=\"1.5\"/>\n    <circle cx=\"310\" cy=\"205\" r=\"13\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"310\" y=\"209\" fill=\"#f8fafc\" font-size=\"10\" text-anchor=\"middle\">A,D</text>\n\n    <line x1=\"310\" y1=\"218\" x2=\"310\" y2=\"255\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <circle cx=\"310\" cy=\"255\" r=\"14\" fill=\"#10b981\"/>\n    <text x=\"310\" y=\"260\" fill=\"#ffffff\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">B,C</text>\n    <text x=\"310\" y=\"285\" fill=\"#10b981\" font-size=\"9\" text-anchor=\"middle\">(Hậu tố s4)</text>\n\n    <!-- 2. Inverted Index Table -->\n    <rect x=\"390\" y=\"10\" width=\"180\" height=\"170\" rx=\"12\" fill=\"#1e293b\" stroke=\"#cbd5e1\" stroke-width=\"1\"/>\n    <text x=\"480\" y=\"30\" fill=\"#f8fafc\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">2. Inverted Index</text>\n    <text x=\"405\" y=\"55\" fill=\"#94a3b8\" font-size=\"10\" font-family=\"monospace\">Item | s1 s2 s3 s4</text>\n    <text x=\"405\" y=\"75\" fill=\"#38bdf8\" font-size=\"10\" font-family=\"monospace\">  A  |  1  0  1  1  <--</text>\n    <text x=\"405\" y=\"95\" fill=\"#e2e8f0\" font-size=\"10\" font-family=\"monospace\">  B  |  1  1  1  1</text>\n    <text x=\"405\" y=\"115\" fill=\"#e2e8f0\" font-size=\"10\" font-family=\"monospace\">  C  |  1  1  1  1</text>\n    <text x=\"405\" y=\"135\" fill=\"#38bdf8\" font-size=\"10\" font-family=\"monospace\">  D  |  1  1  1  1  <--</text>\n    <text x=\"405\" y=\"155\" fill=\"#a7f3d0\" font-size=\"9\" font-weight=\"bold\">Tìm s có cả A,D: {s1,s3,s4}</text>\n\n    <!-- 3. Count Table Output -->\n    <rect x=\"390\" y=\"190\" width=\"400\" height=\"120\" rx=\"12\" fill=\"#064e3b\" stroke=\"#10b981\" stroke-width=\"1.5\"/>\n    <text x=\"590\" y=\"215\" fill=\"#34d399\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">3. Count Table Dự đoán cho s = &lt;A, D&gt;</text>\n    <text x=\"405\" y=\"240\" fill=\"#ffffff\" font-size=\"11\">• Mẫu số: 3 nhánh chứa hậu tố (s1, s3, s4)</text>\n    <text x=\"405\" y=\"260\" fill=\"#ffffff\" font-size=\"11\">• Ứng viên B: xuất hiện ở s3, s4 => P(B) = 2/3 = 66.7%</text>\n    <text x=\"405\" y=\"280\" fill=\"#ffffff\" font-size=\"11\">• Ứng viên C: xuất hiện ở s3, s4 => P(C) = 2/3 = 66.7%</text>\n    <text x=\"405\" y=\"300\" fill=\"#fecdd3\" font-size=\"11\">• Ứng viên F: xuất hiện ở s1 => P(F) = 1/3 = 33.3%</text>\n  </svg>\n</div>\n\n\n1. **Prediction Tree (Cây dự đoán):** Cây nén lưu trữ các chuỗi giao dịch. Các chuỗi có cùng tiền tố sẽ dùng chung các nhánh nút, giúp tiết kiệm bộ nhớ RAM tối đa.\n2. **Inverted Index (Chỉ mục đảo):** Bảng bit matrix cho biết mỗi item (A, B, C...) có mặt trong các chuỗi tuần tự nào ($s_1, s_2, ...$). Giúp tìm kiếm các chuỗi tương tự trong $O(1)$.\n3. **Lookup Table (Bảng tra cứu):** Lưu trữ con trỏ nối trực tiếp từ mã chuỗi $s_i$ tới nút lá cuối cùng của chuỗi đó trên cây, hỗ trợ duyệt ngược lên gốc."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 3. Chi tiết bài toán dự đoán chuỗi từ Slide 12-15\nCho cơ sở dữ liệu gồm 4 chuỗi tuần tự:\n- $s_1 = \\langle A, B, C, D, F \\rangle$\n- $s_2 = \\langle D, C, B, E \\rangle$\n- $s_3 = \\langle E, A, D, C, B \\rangle$\n- $s_4 = \\langle E, G, A, D, B, C \\rangle$\n\n**Cần dự đoán phần tử kế tiếp của chuỗi $s = \\langle A, D \\rangle$:**\n\n#### Bước 1: Tra Inverted Index tìm chuỗi tương tự\n- Tìm các chuỗi chứa cả $A$ và $D$:\n  - $A \\in \\{s_1, s_3, s_4\\}$\n  - $D \\in \\{s_1, s_2, s_3, s_4\\}$\n  - Giao lại: **$\\{s_1, s_3, s_4\\}$** ($s_2$ bị loại vì không có $A$).\n\n#### Bước 2: Tìm chuỗi hậu tố xuất hiện sau $\\{A, D\\}$\n- Trong $s_1 = \\langle A, B, C, D, F \\rangle$: Hậu tố sau cặp $A, D$ là $\\langle F \\rangle$.\n- Trong $s_3 = \\langle E, A, D, C, B \\rangle$: Hậu tố sau cặp $A, D$ là $\\langle C, B \\rangle$.\n- Trong $s_4 = \\langle E, G, A, D, B, C \\rangle$: Hậu tố sau cặp $A, D$ là $\\langle B, C \\rangle$.\n- **Tập phần tử ứng viên:** $\\{C, B, F\\}$.\n\n#### Bước 3: Tính điểm trong Count Table (CT)\n> **Quy tắc vàng (Slide 15):** Mẫu số trong các phép tính ước lượng chính là **số nhánh chứa chuỗi hậu tố** (ở đây có 3 nhánh: $s_1, s_3, s_4 \\implies \\text{Mẫu số} = 3$).\n\n- Xác suất của **C**: Xuất hiện trong hậu tố của $s_3$ và $s_4$:\n  $$P(\\{C\\} | P_y(s)) = \\frac{2}{3} \\approx 0.667$$\n- Xác suất của **B**: Xuất hiện trong hậu tố của $s_3$ và $s_4$:\n  $$P(\\{B\\} | P_y(s)) = \\frac{2}{3} \\approx 0.667$$\n- Xác suất của **F**: Chỉ xuất hiện trong hậu tố của $s_1$:\n  $$P(\\{F\\} | P_y(s)) = \\frac{1}{3} \\approx 0.333$$\n\n**Kết luận:** Phần tử kế tiếp của chuỗi $\\langle A, D \\rangle$ là **B hoặc C** với điểm số cao nhất là **$0.667$**."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Giải nhanh bài tập Slide 16\nChuỗi cần dự đoán: $\\langle A, B \\rangle$.\nNhìn vào cây:\n- Nhánh 1: $A \\to B \\to C \\implies$ Hậu tố là $\\langle C \\rangle$.\n- Nhánh 2: $A \\to B \\to D \\to C \\implies$ Hậu tố là $\\langle D, C \\rangle$.\nTổng số nhánh = 2. C xuất hiện ở cả 2 nhánh ($2/2 = 1.0$). D xuất hiện ở 1 nhánh ($1/2 = 0.5$).\n$\\implies$ **Dự đoán phần tử tiếp theo là C ($100\\%$)**."
+          }
+        ],
         "miniQuiz": [
-          "q33b",
-          "q34"
+          {
+            "question": "Trong thuật toán CPT, mẫu số khi tính xác suất dự đoán của các phần tử ứng viên trong Count Table là gì?",
+            "options": [
+              "A. Số lượng nhánh chứa chuỗi hậu tố thỏa mãn",
+              "B. Tổng số chuỗi tuần tự trong toàn bộ CSDL",
+              "C. Tổng số item phân biệt có trong cây",
+              "D. Độ dài của chuỗi cần dự đoán"
+            ],
+            "answer": "A. Số lượng nhánh chứa chuỗi hậu tố thỏa mãn",
+            "explanation": "Theo ghi chú quan trọng ở Slide 15: Mẫu số trong các phép tính ước lượng phần tử chính là số nhánh chứa chuỗi hậu tố."
+          }
         ],
         "relatedQuestionIds": [
-          "q33b",
-          "q34"
+          "q32",
+          "q33",
+          "ch6_q11",
+          "ch6_q12",
+          "ch6_q13",
+          "ch6_q14",
+          "ch6_q15",
+          "ch6_q16",
+          "ch6_q17",
+          "ch6_q18",
+          "ch6_q19",
+          "ch6_q20"
+        ]
+      },
+      {
+        "id": "les-6-3",
+        "order": 3,
+        "title": "Bài 3: Thuật toán Google PageRank & Phân tích Đồ thị Web",
+        "duration": "50 phút",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Lịch sử & Mô hình Random Surfer (Slide 17-18)",
+              "Bài toán tính toán chi tiết Node F từ Slide 18",
+              "Tìm kiếm đồ thị: BFS vs DFS (Câu 33b, 34 đề cương)",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Thuật toán Google PageRank (Larry Page & Sergey Brin 1998)\nPageRank là thuật toán nền tảng đưa Google trở thành công cụ tìm kiếm số 1 thế giới:\n- **Tư duy cốt lõi:** Một trang web được coi là quan trọng nếu có nhiều trang web uy tín khác trỏ liên kết (link) đến nó.\n- Mỗi liên kết giống như một **phiếu bầu tín nhiệm**.\n\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 text-center\">\n    🌐 THUẬT TOÁN GOOGLE PAGERANK & VÍ DỤ TÍNH NODE F (SLIDE 17-18)\n  </div>\n  <svg viewBox=\"0 0 800 280\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Graph Nodes -->\n    <!-- Node B (Big authority) -->\n    <circle cx=\"260\" cy=\"110\" r=\"55\" fill=\"#fbbf24\" stroke=\"#d97706\" stroke-width=\"3\"/>\n    <text x=\"260\" y=\"105\" fill=\"#78350f\" font-size=\"18\" font-weight=\"black\" text-anchor=\"middle\">B</text>\n    <text x=\"260\" y=\"125\" fill=\"#92400e\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">PR = 38.4</text>\n\n    <!-- Node C -->\n    <circle cx=\"430\" cy=\"100\" r=\"45\" fill=\"#fed7aa\" stroke=\"#f97316\" stroke-width=\"2\"/>\n    <text x=\"430\" y=\"98\" fill=\"#7c2d12\" font-size=\"16\" font-weight=\"bold\" text-anchor=\"middle\">C</text>\n    <text x=\"430\" y=\"115\" fill=\"#9a3412\" font-size=\"11\" text-anchor=\"middle\">PR = 34.3</text>\n\n    <!-- Node E -->\n    <circle cx=\"340\" cy=\"210\" r=\"30\" fill=\"#f472b6\" stroke=\"#db2777\" stroke-width=\"2\"/>\n    <text x=\"340\" y=\"210\" fill=\"#831843\" font-size=\"13\" font-weight=\"bold\" text-anchor=\"middle\">E (PR=8.1)</text>\n    <text x=\"340\" y=\"225\" fill=\"#831843\" font-size=\"9\" text-anchor=\"middle\">Trỏ ra 3 nơi: C(E)=3</text>\n\n    <!-- Node F (Target) -->\n    <circle cx=\"460\" cy=\"210\" r=\"25\" fill=\"#c084fc\" stroke=\"#9333ea\" stroke-width=\"2.5\"/>\n    <text x=\"460\" y=\"210\" fill=\"#3b0764\" font-size=\"13\" font-weight=\"black\" text-anchor=\"middle\">F</text>\n    <text x=\"460\" y=\"224\" fill=\"#581c87\" font-size=\"9\" font-weight=\"bold\" text-anchor=\"middle\">PR = 3.9</text>\n\n    <!-- Edge E -> F -->\n    <path d=\"M 370 210 L 430 210\" stroke=\"#f43f5e\" stroke-width=\"3\" marker-end=\"url(#arrow)\"/>\n    <text x=\"400\" y=\"202\" fill=\"#f43f5e\" font-size=\"9\" font-weight=\"bold\" text-anchor=\"middle\">1/3 link</text>\n\n    <!-- Edge E -> B -->\n    <path d=\"M 325 185 L 290 155\" stroke=\"#94a3b8\" stroke-width=\"2\"/>\n    <!-- Edge E -> D -->\n    <path d=\"M 315 225 L 210 210\" stroke=\"#94a3b8\" stroke-width=\"2\"/>\n\n    <!-- Right Side Calculation Box -->\n    <rect x=\"520\" y=\"20\" width=\"270\" height=\"240\" rx=\"12\" fill=\"#1e293b\" stroke=\"#f59e0b\" stroke-width=\"1.5\"/>\n    <text x=\"655\" y=\"45\" fill=\"#fbbf24\" font-size=\"13\" font-weight=\"bold\" text-anchor=\"middle\">CÔNG THỨC & TÍNH TOÁN</text>\n\n    <text x=\"535\" y=\"75\" fill=\"#f8fafc\" font-size=\"11\" font-weight=\"bold\">Hệ số suy giảm (Damping):</text>\n    <text x=\"535\" y=\"93\" fill=\"#cbd5e1\" font-size=\"11\">df = 0.85  =>  1 - df = 0.15</text>\n\n    <text x=\"535\" y=\"125\" fill=\"#f8fafc\" font-size=\"11\" font-weight=\"bold\">Bước 0: PR₀(tất cả) = 1.0</text>\n    <text x=\"535\" y=\"145\" fill=\"#f8fafc\" font-size=\"11\" font-weight=\"bold\">Vòng lặp 1 tính cho Node F:</text>\n    <text x=\"535\" y=\"165\" fill=\"#38bdf8\" font-size=\"10\" font-family=\"monospace\">PR₁(F) = 1 - df + df * (PR₀(E)/C(E))</text>\n    <text x=\"535\" y=\"185\" fill=\"#38bdf8\" font-size=\"10\" font-family=\"monospace\">       = 0.15 + 0.85 * (1 / 3)</text>\n    <text x=\"535\" y=\"205\" fill=\"#4ade80\" font-size=\"12\" font-weight=\"bold\" font-family=\"monospace\">       = 0.15 + 0.283 = 0.43</text>\n\n    <text x=\"535\" y=\"235\" fill=\"#fbbf24\" font-size=\"10\">Sau ~50 vòng lặp, PR(F) hội tụ về 3.9</text>\n  </svg>\n</div>\n\n\n---\n\n### 2. Công thức toán học của PageRank\n$$PR(A) = 1 - df + df \\sum_{i=1}^n \\frac{PR(T_i)}{C(T_i)}$$\nTrong đó:\n- $df$: Hệ số suy giảm (**Damping Factor**), tiêu chuẩn khoa học luôn chọn là **$0.85$** (Slide 18 & câu 40 đề cương).\n- $1 - df = 0.15$: Xác suất người dùng không bấm link mà ngẫu nhiên gõ một địa chỉ mới (Random Surfer).\n- $T_i$: Các trang web trỏ link tới trang $A$.\n- $C(T_i)$: Tổng số link đi ra (**Out-degrees**) của trang $T_i$."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 3. Thực hành tính toán từng bước cho Node F (Slide 18)\nCho đồ thị các trang web:\n- Xét **Node F**: Chỉ nhận duy nhất **1 liên kết từ Node E**.\n- Node E lại trỏ link ra 3 nơi khác nhau ($B, D, F$) $\\implies C(E) = 3$.\n- **Bước khởi tạo (Vòng 0):** Tất cả các trang đều có điểm ban đầu là $PR_0 = 1$.\n\n#### Áp dụng công thức tính $PR_1(F)$ ở Vòng lặp 1:\n$$PR_1(F) = 1 - df + df \\times \\frac{PR_0(E)}{C(E)}$$\n$$PR_1(F) = 1 - 0.85 + 0.85 \\times \\frac{1}{3}$$\n$$PR_1(F) = 0.15 + 0.2833 = 0.4333 \\approx \\mathbf{0.43}$$\n\n#### Quá trình hội tụ:\n- Thuật toán tiếp tục lặp lại các vòng: Điểm số của từng trang được cập nhật liên tục dựa trên điểm số của vòng trước.\n- **Điều kiện dừng:** Khi độ chênh lệch điểm số giữa 2 vòng lặp liên tiếp đạt ngưỡng sai số $\\epsilon = 0.0001$.\n- Kết quả sau khoảng **50 vòng lặp**: Điểm số của $F$ hội tụ về **$PR(F) = 3.9$**."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 4. So sánh hai thuật toán duyệt đồ thị: BFS và DFS\n\n| Tiêu chí so sánh | Breadth-First Search (BFS) | Depth-First Search (DFS) |\n| :--- | :--- | :--- |\n| **Cấu trúc dữ liệu** | **Hàng đợi (Queue - FIFO)** | **Ngăn xếp (Stack - LIFO)** hoặc Đệ quy |\n| **Chiến lược duyệt** | Duyệt loang theo từng tầng láng giềng gần nhất trước khi đi xa hơn. | Đi sâu nhất có thể theo từng nhánh đến khi gặp ngõ cụt thì mới quay lui (Backtracking). |\n| **Đường đi ngắn nhất** | **Đảm bảo tìm được đường đi ngắn nhất** trên đồ thị không trọng số. | Không đảm bảo tìm được đường đi ngắn nhất. |\n| **Ứng dụng tiêu biểu** | Tìm độ sâu bạn bè (LinkedIn 1st, 2nd, 3rd), Web Crawler, tìm đường đi ngắn nhất. | Kiểm tra chu trình trong luồng dữ liệu DAG (Airflow/DBT), kiểm tra tính liên thông, giải mê cung. |"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo làm bài thi\n- Damping factor luôn bằng **$0.85$**.\n- BFS $\\implies$ **Queue** $\\implies$ Đường đi ngắn nhất.\n- DFS $\\implies$ **Stack** $\\implies$ Duyệt sâu & Quay lui."
+          }
         ],
-        "labIds": []
+        "miniQuiz": [
+          {
+            "question": "Cho Node X chỉ nhận 1 link từ Node Y. Biết PR(Y) = 1.0 và Y trỏ ra 2 trang. Với df = 0.85, điểm PR của X ở vòng 1 là bao nhiêu?",
+            "options": [
+              "A. 0.575",
+              "B. 0.43",
+              "C. 0.85",
+              "D. 1.0"
+            ],
+            "answer": "A. 0.575",
+            "explanation": "PR1(X) = 1 - df + df * (PR0(Y) / C(Y)) = 1 - 0.85 + 0.85 * (1 / 2) = 0.15 + 0.425 = 0.575."
+          }
+        ],
+        "relatedQuestionIds": [
+          "q31a",
+          "q31b",
+          "q33b",
+          "q34",
+          "q40",
+          "ch6_q21",
+          "ch6_q22",
+          "ch6_q23",
+          "ch6_q24",
+          "ch6_q25",
+          "ch6_q26",
+          "ch6_q27",
+          "ch6_q28",
+          "ch6_q29",
+          "ch6_q30"
+        ]
+      },
+      {
+        "id": "les-6-4",
+        "order": 4,
+        "title": "Bài 4: Huấn luyện mô hình bằng SQL: Google BigQuery ML & Snowflake Cortex",
+        "duration": "45 phút",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "BigQuery ML: Học máy bằng SQL chuẩn (Slide 23)",
+              "Snowflake Cortex: AI & LLM Functions (Slide 24)",
+              "So sánh BigQuery ML vs Snowflake Cortex",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Google BigQuery ML: Dân chủ hóa Machine Learning\nTheo **Slide 23**, BigQuery ML cho phép xây dựng mô hình Học máy bằng cú pháp SQL chuẩn mà không cần viết mã Python phức tạp.\n- **Bộ ba câu lệnh thần thánh:**\n  1. `CREATE MODEL`: Khởi tạo và bắt đầu huấn luyện mô hình.\n  2. `ML.EVALUATE`: Trích xuất nhanh các chỉ số đánh giá (ROC-AUC, Precision, Recall, F1).\n  3. `ML.PREDICT`: Gọi mô hình để dự báo ngay trên các bảng dữ liệu mới đang lưu trữ.\n\n```sql\n-- 1. Huấn luyện mô hình phân loại Logistic Regression\nCREATE OR REPLACE MODEL `ecommerce.customer_churn_model`\nOPTIONS(\n  model_type = 'LOGISTIC_REG',\n  input_label_cols = ['churned'],\n  auto_class_weights = TRUE\n) AS\nSELECT tenure, monthly_spend, complaints_count, churned\nFROM `ecommerce.customer_features`;\n\n-- 2. Đánh giá chất lượng mô hình\nSELECT * FROM ML.EVALUATE(MODEL `ecommerce.customer_churn_model`);\n\n-- 3. Dự báo cho tập khách hàng mới\nSELECT customer_id, predicted_churned, predicted_churned_probs\nFROM ML.PREDICT(\n  MODEL `ecommerce.customer_churn_model`,\n  TABLE `ecommerce.new_customers`\n);\n```"
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 2. Xử lý AI/ML tiên tiến với Snowflake Cortex (Slide 24)\nSnowflake Cortex cung cấp hai nhóm hàm AI đóng gói sẵn:\n\n#### a. Cortex ML Functions (Xử lý bài toán số):\n- **Forecasting:** Dự báo chuỗi thời gian tự động (doanh số, nhu cầu tồn kho) xử lý được tính mùa vụ và ngày nghỉ.\n- **Anomaly Detection:** Phát hiện tự động các điểm dữ liệu bất thường trong vận hành.\n\n#### b. Cortex LLM Functions (Xử lý ngôn ngữ tự nhiên ngay trong SQL):\n- `SNOWFLAKE.CORTEX.SUMMARIZE(text)`: Tự động tóm tắt văn bản dài thành đoạn văn ngắn gọn.\n- `SNOWFLAKE.CORTEX.TRANSLATE(text, from, to)`: Dịch thuật trực tiếp giữa các ngôn ngữ.\n- `SNOWFLAKE.CORTEX.EXTRACT_ANSWER(source, question)`: Trích xuất câu trả lời từ tài liệu PDF/Hợp đồng.\n- `SNOWFLAKE.CORTEX.COMPLETE(model, prompt)`: Gọi các mô hình LLM mã nguồn mở hàng đầu (Llama 3, Mistral) để trả lời truy vấn phức tạp."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 3. Bảng so sánh BigQuery ML và Snowflake Cortex\n\n| Tiêu chí | Google BigQuery ML | Snowflake Cortex |\n| :--- | :--- | :--- |\n| **Cơ chế gọi** | Cú pháp SQL mở rộng (`CREATE MODEL`, `ML.PREDICT`) | Các hàm SQL tích hợp sẵn (Built-in Functions) |\n| **Thế mạnh chính** | Huấn luyện mô hình tùy biến (Custom models: Logistic, XGBoost, DNN, K-Means) | Các hàm đóng gói sẵn (Turnkey ML: Forecasting, Anomaly) và GenAI/LLM |\n| **Tích hợp LLM** | Kết nối Vertex AI Foundation Models | Cortex LLM Functions trực tiếp không cần cấu hình |"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Điểm mấu chốt\n- BigQuery ML: `CREATE MODEL`, `ML.EVALUATE`, `ML.PREDICT`.\n- Snowflake Cortex: `Forecasting`, `Anomaly Detection`, `SUMMARIZE`, `TRANSLATE`."
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Trong BigQuery ML, câu lệnh nào được dùng để trích xuất các chỉ số ROC-AUC và F1-score sau khi huấn luyện mô hình?",
+            "options": [
+              "A. SELECT * FROM ML.EVALUATE(MODEL ...)",
+              "B. SELECT * FROM ML.PREDICT(MODEL ...)",
+              "C. SELECT * FROM ML.CONFUSION_MATRIX(MODEL ...)",
+              "D. CREATE EVALUATE MODEL ..."
+            ],
+            "answer": "A. SELECT * FROM ML.EVALUATE(MODEL ...)",
+            "explanation": "Theo Slide 23: Hàm ML.EVALUATE dùng để trích xuất nhanh các chỉ số đánh giá chất lượng của mô hình."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch6_q31",
+          "ch6_q32",
+          "ch6_q33",
+          "ch6_q34",
+          "ch6_q35"
+        ]
+      },
+      {
+        "id": "les-6-5",
+        "order": 5,
+        "title": "Bài 5: Tích hợp Python/R trong kho dữ liệu: Cơ chế Snowpark & Runtime Sandboxing",
+        "duration": "45 phút",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Khái niệm Snowpark & Pushdown Optimization (Slide 25)",
+              "Ba cơ chế bảo mật và vận hành của Snowpark (Slide 26)",
+              "Phân biệt UDF vs Stored Procedure trong Snowpark",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Snowpark là gì? (Slide 25)\nSnowpark là bộ công cụ cho phép lập trình viên viết code bằng **Python, Java, Scala** để xử lý dữ liệu ngay trên Data Warehouse:\n- Cung cấp **DataFrame API** quen thuộc giống hệt `pyspark` hay `pandas`.\n- **Cơ chế Pushdown Execution:** Code Python không chạy trên máy trạm mà được chuyển dịch thành cây biểu thức SQL tối ưu và đẩy thẳng xuống thực thi song song trên cụm server của Snowflake.\n- Dữ liệu không bao giờ bị tải về máy cá nhân, xóa bỏ hoàn toàn giới hạn RAM của máy trạm."
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 2. Ba cơ chế Runtime then chốt (Slide 26)\n1. **Kho thư viện Anaconda tích hợp:**\n   - Snowflake hợp tác độc quyền với Anaconda, cài đặt sẵn hàng ngàn thư viện Data Science chuẩn mực (`numpy`, `pandas`, `scipy`, `scikit-learn`, `xgboost`, `pytorch`).\n   - Loại bỏ hoàn toàn lỗi xung đột phiên bản (Dependency Hell).\n2. **Cơ chế Secure Sandboxing:**\n   - Mã Python chạy trong môi trường container cô lập an toàn tuyệt đối.\n   - Chặn quyền truy cập mạng Internet tự do (Network Egress) để chống thất thoát dữ liệu (Data Exfiltration) và ngăn ngừa mã độc.\n3. **Python Worksheets:**\n   - Giao diện Web IDE tích hợp sẵn trong Snowflake UI, cho phép viết code Python, chạy thử nghiệm và hiển thị biểu đồ trực tiếp trên trình duyệt."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 3. Phân biệt Snowpark UDF và Stored Procedure\n\n| Đặc tính | Snowpark UDF (User-Defined Function) | Snowpark Stored Procedure |\n| :--- | :--- | :--- |\n| **Mục đích** | Biến đổi dữ liệu trên từng dòng hoặc cụm dòng (Inference / Scoring). | Điều phối pipeline, huấn luyện mô hình, thực hiện các lệnh quản trị DDL/DML. |\n| **Cách gọi** | Gọi bên trong câu lệnh `SELECT` (`SELECT my_udf(col) FROM table`). | Gọi bằng lệnh `CALL my_sp(...)`. |\n| **Quyền hạn** | Chỉ đọc, là hàm thuần túy (Pure Function), không được thay đổi database. | Có quyền ghi, tạo bảng, xóa bảng, quản trị tài nguyên. |"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Lưu ý thực chiến\n- Muốn dự đoán từng dòng: Viết **UDF**.\n- Muốn định kỳ huấn luyện lại mô hình và lưu bảng kết quả: Viết **Stored Procedure**."
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Cơ chế Secure Sandboxing trong Snowpark có vai trò quan trọng nhất là gì?",
+            "options": [
+              "A. Cô lập môi trường chạy mã Python an toàn, ngăn chặn mã độc và thất thoát dữ liệu",
+              "B. Tăng tốc độ đường truyền mạng Internet cá nhân",
+              "C. Cho phép tải dữ liệu về máy trạm không giới hạn",
+              "D. Tự động chuyển đổi code Python thành mã C++"
+            ],
+            "answer": "A. Cô lập môi trường chạy mã Python an toàn, ngăn chặn mã độc và thất thoát dữ liệu",
+            "explanation": "Theo Slide 26: Secure Sandbox cách ly hoàn toàn môi trường thực thi để bảo vệ an toàn thông tin hạ tầng dữ liệu của doanh nghiệp."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch6_q36",
+          "ch6_q37",
+          "ch6_q38",
+          "ch6_q39",
+          "ch6_q40"
+        ]
+      },
+      {
+        "id": "les-6-6",
+        "order": 6,
+        "title": "Bài 6: Quản lý Feature Store: Kho lưu trữ đặc trưng dùng chung",
+        "duration": "50 phút",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Khái niệm Feature Store & 3 Lợi ích lớn (Slide 27)",
+              "Giải quyết hiện tượng Training-Serving Skew",
+              "Kiến trúc Dual-Store: Offline vs Online Store",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. Tại sao doanh nghiệp cần Feature Store? (Slide 27)\nFeature Engineering chiếm 70-80% thời gian của dự án ML. Nếu không quản lý tập trung:\n- Nhóm Churn tự tính `tổng_chi_tiêu_30_ngày`.\n- Nhóm Fraud cũng tự tính `tổng_chi_tiêu_30_ngày` với công thức hơi lệch một chút.\n- Gây lãng phí tài nguyên và tạo ra sự thiếu nhất quán số liệu.\n\n**Feature Store là thư viện/kho lưu trữ tập trung** có nhiệm vụ quản lý, lưu trữ và phân phối các đặc trưng dữ liệu đã được tính toán sẵn cho nhiều mô hình ML sử dụng lại.\n\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3 text-center\">\n    🏢 KIẾN TRÚC FEATURE STORE HAI TẦNG: OFFLINE vs ONLINE STORE (SLIDE 27)\n  </div>\n  <svg viewBox=\"0 0 800 240\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Sources -->\n    <rect x=\"20\" y=\"70\" width=\"120\" height=\"90\" rx=\"10\" fill=\"#334155\" stroke=\"#94a3b8\"/>\n    <text x=\"80\" y=\"105\" fill=\"#f8fafc\" font-size=\"12\" font-weight=\"bold\" text-anchor=\"middle\">Data Sources</text>\n    <text x=\"80\" y=\"125\" fill=\"#cbd5e1\" font-size=\"10\" text-anchor=\"middle\">DWH, S3, Kafka</text>\n\n    <path d=\"M 140 115 L 200 115\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n\n    <!-- Feature Store Core -->\n    <rect x=\"200\" y=\"30\" width=\"280\" height=\"180\" rx=\"14\" fill=\"#0f172a\" stroke=\"#10b981\" stroke-width=\"2\"/>\n    <text x=\"340\" y=\"55\" fill=\"#34d399\" font-size=\"13\" font-weight=\"bold\" text-anchor=\"middle\">CENTRAL FEATURE STORE</text>\n    <text x=\"340\" y=\"72\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Discovery • Consistency • Lineage</text>\n\n    <!-- Offline Store -->\n    <rect x=\"220\" y=\"90\" width=\"240\" height=\"45\" rx=\"8\" fill=\"#1e293b\" stroke=\"#38bdf8\"/>\n    <text x=\"340\" y=\"112\" fill=\"#38bdf8\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Offline Store (Snowflake / BigQuery / S3)</text>\n    <text x=\"340\" y=\"126\" fill=\"#94a3b8\" font-size=\"8\" text-anchor=\"middle\">Lưu dữ liệu lịch sử • Dùng cho Batch Training</text>\n\n    <!-- Online Store -->\n    <rect x=\"220\" y=\"145\" width=\"240\" height=\"45\" rx=\"8\" fill=\"#1e293b\" stroke=\"#f59e0b\"/>\n    <text x=\"340\" y=\"167\" fill=\"#f59e0b\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Online Store (Redis / DynamoDB)</text>\n    <text x=\"340\" y=\"181\" fill=\"#94a3b8\" font-size=\"8\" text-anchor=\"middle\">Lưu giá trị mới nhất • Low Latency &lt; 10ms</text>\n\n    <!-- Consumers -->\n    <path d=\"M 460 112 L 540 112\" stroke=\"#38bdf8\" stroke-width=\"2\"/>\n    <rect x=\"540\" y=\"85\" width=\"230\" height=\"55\" rx=\"10\" fill=\"#0369a1\"/>\n    <text x=\"655\" y=\"108\" fill=\"#ffffff\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Model Training (Batch)</text>\n    <text x=\"655\" y=\"125\" fill=\"#e0f2fe\" font-size=\"9\" text-anchor=\"middle\">Tránh Data Leakage qua Time-Travel</text>\n\n    <path d=\"M 460 167 L 540 167\" stroke=\"#f59e0b\" stroke-width=\"2\"/>\n    <rect x=\"540\" y=\"150\" width=\"230\" height=\"55\" rx=\"10\" fill=\"#b45309\"/>\n    <text x=\"655\" y=\"173\" fill=\"#ffffff\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">Real-time Serving (Inference)</text>\n    <text x=\"655\" y=\"190\" fill=\"#fef3c7\" font-size=\"9\" text-anchor=\"middle\">Đồng nhất logic, triệt tiêu Skew</text>\n  </svg>\n</div>\n\n\n---\n\n### 2. Ba lợi ích lớn của Feature Store (Slide 27)\n1. **Discovery (Tìm kiếm & Tái sử dụng):** Các Data Scientist dễ dàng tra cứu danh mục đặc trưng có sẵn, không phải tốn công tính toán lại từ đầu.\n2. **Consistency (Tính nhất quán):** Triệt tiêu hoàn toàn sự sai lệch định nghĩa giữa các nhóm và các ứng dụng.\n3. **Lineage (Truy vết nguồn gốc):** Ghi nhận rõ ràng đặc trưng được sinh ra từ bảng nguồn nào, vào thời điểm nào và đang phục vụ những mô hình nào."
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 3. Vấn nạn Training-Serving Skew & Giải pháp\n- **Hiện tượng Skew:** Mô hình khi huấn luyện (Training) đạt độ chính xác $98\\%$, nhưng khi đưa lên Production phục vụ khách hàng thực tế (Serving) thì đoán sai hàng loạt.\n- **Nguyên nhân cốt lõi:**\n  - Lúc huấn luyện: Dùng code SQL tính toán trên dữ liệu lịch sử trong DWH.\n  - Lúc chạy thực tế: Đội Backend viết lại bằng code Java/NodeJS gọi API thời gian thực, dẫn đến công thức bị lệch vài chi tiết nhỏ.\n- **Giải pháp của Feature Store:** Cung cấp **Single Source of Truth**. Cùng một định nghĩa đặc trưng sẽ được dùng chung cho cả lúc huấn luyện và lúc chạy thực tế."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 4. Hai tầng lưu trữ của Feature Store\n\n| Tiêu chí | Offline Feature Store | Online Feature Store |\n| :--- | :--- | :--- |\n| **Công nghệ lưu trữ** | Data Warehouse / Data Lake (Snowflake, BigQuery, Parquet trên S3) | In-Memory NoSQL Key-Value Store (Redis, DynamoDB) |\n| **Mục đích sử dụng** | Huấn luyện mô hình theo lô (Batch Training) | Phục vụ dự đoán thời gian thực (Real-time Inference) |\n| **Độ trễ truy vấn** | Vài giây đến vài phút (High throughput) | Dưới **$10$ mili-giây** (Ultra-low latency) |\n| **Dung lượng lưu trữ** | Toàn bộ lịch sử nhiều năm (Terabytes) | Chỉ lưu giá trị mới nhất của thực thể |"
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Khái niệm Time-Travel (Point-in-time Correctness)\nKhi ghép nối dữ liệu để huấn luyện, Feature Store cho phép quay ngược thời gian để lấy đúng giá trị đặc trưng tại thời điểm giao dịch xảy ra, ngăn chặn hoàn toàn việc dữ liệu tương lai bị rò rỉ vào tập huấn luyện (Data Leakage)."
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Tầng Online Feature Store thường sử dụng công nghệ nào để đảm bảo độ trễ truy vấn dưới 10ms phục vụ dự báo thời gian thực?",
+            "options": [
+              "A. Redis hoặc DynamoDB (In-Memory Key-Value Store)",
+              "B. Apache Hive trên đĩa từ HDD",
+              "C. File nén CSV trên Google Drive",
+              "D. Bảng dữ liệu thô trong cơ sở dữ liệu OLAP"
+            ],
+            "answer": "A. Redis hoặc DynamoDB (In-Memory Key-Value Store)",
+            "explanation": "Online Store bắt buộc phải dùng các cơ sở dữ liệu In-Memory có độ trễ cực thấp như Redis để trả kết quả đặc trưng cho API trong vài mili-giây."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch6_q41",
+          "ch6_q42",
+          "ch6_q43",
+          "ch6_q44",
+          "ch6_q45"
+        ]
+      },
+      {
+        "id": "les-6-7",
+        "order": 7,
+        "title": "Bài 7: MLOps trong DWH: Quản lý phiên bản và Giám sát Model Drift",
+        "duration": "45 phút",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Khái niệm MLOps & Model Registry (Slide 28)",
+              "Hiện tượng suy giảm hiệu năng: Data Drift vs Concept Drift (Slide 29)",
+              "Thiết lập Auto-retraining Loop trong Data Warehouse",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. MLOps trong Kho dữ liệu là gì? (Slide 28)\nMLOps áp dụng tư duy DevOps vào vòng đời học máy:\n- Tự động hóa từ khâu chuẩn bị dữ liệu, huấn luyện, kiểm thử, triển khai đến giám sát vận hành.\n- **Model Registry (Sổ đăng ký mô hình):** Nơi lưu trữ tập trung các mô hình đã huấn luyện thành công. Quản lý rõ ràng trạng thái: *Đang phát triển (Dev) $\\to$ Thử nghiệm (Staging) $\\to$ Đã phê duyệt (Production) $\\to$ Hạ tải (Archived)*.\n- **Model Versioning:** Ràng buộc chặt chẽ phiên bản mô hình với **phiên bản dữ liệu (Data Version)** và mã nguồn tạo ra nó.\n\n\n<div class=\"my-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-xl overflow-x-auto\">\n  <div class=\"text-xs font-bold uppercase tracking-wider text-purple-400 mb-3 text-center\">\n    🔄 VÒNG ĐỜI MLOps KHÉP KÍN & GIÁM SÁT DRIFT TRONG KHO DỮ LIỆU (SLIDE 28-29)\n  </div>\n  <svg viewBox=\"0 0 800 240\" class=\"w-full max-w-4xl mx-auto block font-sans\" xmlns=\"http://www.w3.org/2000/svg\">\n    <!-- Step 1 -->\n    <rect x=\"20\" y=\"80\" width=\"130\" height=\"60\" rx=\"10\" fill=\"#1e293b\" stroke=\"#818cf8\" stroke-width=\"1.5\"/>\n    <text x=\"85\" y=\"105\" fill=\"#c7d2fe\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">1. Data Version</text>\n    <text x=\"85\" y=\"123\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Phiên bản hóa dữ liệu</text>\n\n    <path d=\"M 150 110 L 190 110\" stroke=\"#818cf8\" stroke-width=\"2\"/>\n\n    <!-- Step 2 -->\n    <rect x=\"190\" y=\"80\" width=\"130\" height=\"60\" rx=\"10\" fill=\"#1e293b\" stroke=\"#818cf8\" stroke-width=\"1.5\"/>\n    <text x=\"255\" y=\"105\" fill=\"#c7d2fe\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">2. Model Registry</text>\n    <text x=\"255\" y=\"123\" fill=\"#94a3b8\" font-size=\"9\" text-anchor=\"middle\">Quản lý phiên bản model</text>\n\n    <path d=\"M 320 110 L 360 110\" stroke=\"#818cf8\" stroke-width=\"2\"/>\n\n    <!-- Step 3 -->\n    <rect x=\"360\" y=\"80\" width=\"130\" height=\"60\" rx=\"10\" fill=\"#065f46\" stroke=\"#34d399\" stroke-width=\"2\"/>\n    <text x=\"425\" y=\"105\" fill=\"#a7f3d0\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">3. Deploy as UDF</text>\n    <text x=\"425\" y=\"123\" fill=\"#d1fae5\" font-size=\"9\" text-anchor=\"middle\">Scoring trực tiếp qua SQL</text>\n\n    <path d=\"M 490 110 L 530 110\" stroke=\"#34d399\" stroke-width=\"2\"/>\n\n    <!-- Step 4 -->\n    <rect x=\"530\" y=\"80\" width=\"140\" height=\"60\" rx=\"10\" fill=\"#7f1d1d\" stroke=\"#f87171\" stroke-width=\"1.5\"/>\n    <text x=\"600\" y=\"102\" fill=\"#fecdd3\" font-size=\"11\" font-weight=\"bold\" text-anchor=\"middle\">4. Monitor Drift</text>\n    <text x=\"600\" y=\"118\" fill=\"#fee2e2\" font-size=\"9\" text-anchor=\"middle\">Data Drift vs Concept Drift</text>\n    <text x=\"600\" y=\"132\" fill=\"#fee2e2\" font-size=\"8\" text-anchor=\"middle\">Accuracy &lt; Ngưỡng?</text>\n\n    <!-- Feedback loop back to step 1 -->\n    <path d=\"M 600 80 L 600 35 L 85 35 L 85 80\" stroke=\"#f43f5e\" stroke-width=\"2\" stroke-dasharray=\"4,4\"/>\n    <text x=\"340\" y=\"25\" fill=\"#fb7185\" font-size=\"10\" font-weight=\"bold\" text-anchor=\"middle\">🔁 Kích hoạt Auto-retraining Pipeline khi phát hiện Drift</text>\n  </svg>\n</div>\n"
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 2. Hai nguyên nhân khiến mô hình suy giảm hiệu năng (Slide 29)\nMô hình ML sau khi triển khai sẽ bị 'già cỗi' và tụt giảm độ chính xác theo thời gian:\n\n#### a. Data Drift (Trôi dạt dữ liệu):\n- **Bản chất:** Phân phối xác suất của dữ liệu đầu vào $P(X)$ thay đổi, nhưng quy luật ánh xạ sang nhãn $Y$ không đổi.\n- **Ví dụ:** Một ngân hàng trước đây chỉ cho vay nhóm khách hàng công chức nhà nước (thu nhập ổn định). Sau này mở rộng sang cho vay sinh viên và tài xế công nghệ. Phân phối độ tuổi và thu nhập $X$ đã dịch chuyển hoàn toàn.\n\n#### b. Concept Drift (Trôi dạt khái niệm):\n- **Bản chất:** Mối quan hệ thống kê giữa đặc trưng đầu vào $X$ và nhãn mục tiêu $Y$ bị biến đổi ($P(Y|X)$ thay đổi).\n- **Ví dụ:** Trước khủng hoảng kinh tế, người có tỷ lệ nợ trên thu nhập (DTI) ở mức 40% vẫn trả nợ tốt; nhưng khi khủng hoảng xảy ra, cùng mức DTI 40% đó lại có tỷ lệ vỡ nợ tăng vọt gấp 3 lần."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 3. Vòng lặp tự động huấn luyện lại (Auto-retraining Loop)\nĐể khắc phục Drift:\n1. Thiết lập các câu truy vấn SQL chạy định kỳ đo lường chỉ số trôi dạt (như **Population Stability Index - PSI** hoặc **Wasserstein Distance**).\n2. Khi độ chính xác hoặc PSI vượt ngưỡng cảnh báo đỏ:\n   - Hệ thống tự động kích hoạt luồng pipeline (Airflow DAG hoặc Stored Procedure).\n   - Lấy dữ liệu mới nhất trong Feature Store của 3 tháng gần nhất để huấn luyện lại mô hình mới.\n   - So sánh mô hình mới (Challenger) với mô hình hiện tại (Champion). Nếu mô hình mới thắng thế, nó sẽ tự động được đưa lên Production."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo phân biệt Drift\n- **Data Drift:** Dữ liệu đầu vào $X$ đổi.\n- **Concept Drift:** Mối quan hệ giữa $X$ và nhãn $Y$ đổi."
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Hiện tượng Concept Drift xảy ra khi nào trong quá trình vận hành mô hình Machine Learning?",
+            "options": [
+              "A. Khi mối quan hệ thống kê giữa đặc trưng đầu vào X và nhãn mục tiêu Y bị thay đổi theo thời gian",
+              "B. Khi máy chủ hết dung lượng ổ cứng",
+              "C. Khi dữ liệu đầu vào bị mất kết nối mạng Internet",
+              "D. Khi câu lệnh SQL bị lỗi cú pháp"
+            ],
+            "answer": "A. Khi mối quan hệ thống kê giữa đặc trưng đầu vào X và nhãn mục tiêu Y bị thay đổi theo thời gian",
+            "explanation": "Theo Slide 29: Concept Drift là sự thay đổi trong mối quan hệ giữa thuộc tính đầu vào và nhãn mục tiêu."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch6_q46",
+          "ch6_q47",
+          "ch6_q48"
+        ]
+      },
+      {
+        "id": "les-6-8",
+        "order": 8,
+        "title": "Bài 8: AutoML & Triển khai mô hình dưới dạng hàm tự định nghĩa (UDF)",
+        "duration": "45 phút",
+        "status": "done",
+        "sections": [
+          {
+            "kind": "objectives",
+            "items": [
+              "Khái niệm AutoML & Ba công đoạn tự động (Slide 30)",
+              "Triển khai mô hình thành hàm SQL UDF & Scoring on-the-fly (Slide 31)",
+              "Tổng kết toàn diện Chương 6: Bức tranh toàn cảnh In-Database ML & MLOps",
+              "Tổng kết & Câu hỏi Mini-Quiz"
+            ]
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 1. AutoML: Tự động hóa toàn diện quy trình Machine Learning (Slide 30)\nAutoML (*Automated Machine Learning*) giải phóng con người khỏi các công việc thủ công lặp đi lặp lại.\nTheo **Slide 30**, ba công đoạn cốt lõi được tự động hóa hoàn toàn gồm:\n1. **Automated Feature Engineering:** Tự động tạo đặc trưng tương tác, băm khoảng (Binning), điền giá trị thiếu và chọn lọc các đặc trưng quan trọng nhất.\n2. **Automated Algorithm Selection:** Tự động chạy thử nghiệm song song trên hàng chục thuật toán (Logistic, Random Forest, XGBoost, LightGBM, CatBoost) trên cùng tập dữ liệu để chọn ra ứng viên quán quân.\n3. **Automated Hyperparameter Tuning:** Tự động tinh chỉnh các siêu tham số (Learning rate, Max depth, L2 regularization) bằng thuật toán tìm kiếm Bayes (Bayesian Optimization) để đạt hiệu năng tối đa."
+          },
+          {
+            "kind": "concept",
+            "markdown": "### 2. Biến mô hình Machine Learning thành lệnh SQL trực quan (Slide 31)\nSau khi mô hình được huấn luyện và phê duyệt trong Model Registry:\n- Mô hình được đóng gói trực tiếp thành một hàm tự định nghĩa **UDF (User-Defined Function)** ngay trong DWH.\n- **Dự báo tức thời (Scoring on-the-fly):**\n  Không cần gọi API mạng hay xuất file, người dùng chỉ cần viết câu lệnh `SELECT` thông thường:\n\n```sql\n-- Chạy dự báo trực tiếp thời gian thực trên hàng triệu khách hàng\nSELECT\n  customer_id,\n  full_name,\n  monthly_balance,\n  -- Gọi trực tiếp mô hình ML như một hàm SQL bình thường!\n  PREDICT_CREDIT_RISK_UDF(monthly_balance, credit_score, age) AS risk_label\nFROM dw_gold.active_customers\nWHERE status = 'ACTIVE';\n```\n\n- **Lợi ích đột phá:**\n  - Kết quả dự báo được tính toán song song tức thì theo từng dòng dữ liệu.\n  - Tích hợp mượt mà vào mọi công cụ Dashboard (Tableau, PowerBI, Looker) mà không cần lập trình viên can thiệp."
+          },
+          {
+            "kind": "example",
+            "markdown": "### 3. Bức tranh toàn cảnh In-Database ML & MLOps\nKhép lại Chương 6, bạn đã nắm vững toàn bộ chuỗi mắt xích hiện đại của hệ sinh thái dữ liệu:\n1. **Kiến trúc:** Chuyển tính toán vào DWH (Move Compute to Data).\n2. **Mô hình chuỗi:** Dùng CPT+ để dự đoán hành động kế tiếp của khách hàng.\n3. **Mô hình đồ thị:** Dùng Google PageRank để xếp hạng uy tín và phát hiện gian lận.\n4. **Công cụ SQL:** Huấn luyện bằng BigQuery ML và Snowflake Cortex.\n5. **Môi trường code:** Chạy Python an toàn trong Snowpark Sandbox.\n6. **Kho đặc trưng:** Quản lý tập trung bằng Feature Store hai tầng (Offline & Online).\n7. **Vận hành:** MLOps khép kín với Model Registry và giám sát Data/Concept Drift.\n8. **Xuất xưởng:** Đóng gói thành SQL UDF để dự báo tức thời on-the-fly."
+          },
+          {
+            "kind": "note",
+            "markdown": "### 💡 Mẹo nhớ nhanh\n- **AutoML:** Tự động tạo Feature + Chọn thuật toán + Tinh chỉnh siêu tham số.\n- **UDF Scoring on-the-fly:** Gọi mô hình ML bằng câu lệnh `SELECT` SQL bình thường!"
+          }
+        ],
+        "miniQuiz": [
+          {
+            "question": "Khái niệm 'Scoring on-the-fly' bằng hàm UDF trong Data Warehouse có nghĩa là gì?",
+            "options": [
+              "A. Dự báo kết quả trực tiếp và tức thời trên từng dòng dữ liệu ngay trong câu lệnh SELECT của SQL",
+              "B. Bắt buộc phải xuất dữ liệu ra file Excel rồi dùng máy tính cầm tay để tính",
+              "C. Mô hình chỉ có thể chấm điểm khi hệ thống đã ngắt kết nối mạng",
+              "D. Gửi email thông báo điểm số cho khách hàng vào cuối tháng"
+            ],
+            "answer": "A. Dự báo kết quả trực tiếp và tức thời trên từng dòng dữ liệu ngay trong câu lệnh SELECT của SQL",
+            "explanation": "Theo Slide 31: Scoring on-the-fly biến mô hình thành hàm UDF cho phép người dùng dự báo trực tiếp bằng câu lệnh SELECT SQL thông thường mà không cần viết code API."
+          }
+        ],
+        "relatedQuestionIds": [
+          "ch6_q49",
+          "ch6_q50"
+        ]
       }
     ]
   },
